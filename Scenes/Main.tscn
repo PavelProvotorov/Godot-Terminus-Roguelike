@@ -1,0 +1,445 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Resources/fonts/FONT_8BITWONDER_NORMAL.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Resources/fonts/FONT_UpheavalPro.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/ui_main.png" type="Texture" id=3]
+[ext_resource path="res://Resources/styles/8BITWONDER_RUS_STYLE.tres" type="StyleBox" id=4]
+[ext_resource path="res://Scripts/Textlog.gd" type="Script" id=7]
+[ext_resource path="res://Assets/ui_text.png" type="Texture" id=8]
+[ext_resource path="res://Scripts/nodes/Main.gd" type="Script" id=9]
+[ext_resource path="res://Resources/fonts/FONT_UpheavalPro_Small.tres" type="DynamicFont" id=10]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform bool apply = true;
+uniform float amount = 1.0;
+uniform sampler2D offset_texture : hint_white;
+
+void fragment() {
+	vec4 texture_color = texture(SCREEN_TEXTURE, SCREEN_UV);
+	vec4 color = texture_color;
+	
+	if (apply == true) {
+		float adjusted_amount = amount * texture(offset_texture, SCREEN_UV).r / 100.0;
+		color.r = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x + adjusted_amount, SCREEN_UV.y)).r;
+		color.g = texture(SCREEN_TEXTURE, SCREEN_UV).g;
+		color.b = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x - adjusted_amount, SCREEN_UV.y)).b;
+	}
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/apply = true
+shader_param/amount = 0.1
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends RichTextLabel
+
+onready var containerWidth = self.rect_size.x
+onready var containerHeight = self.rect_size.y
+onready var containerFont = self.get_font(\"normal_font\")
+onready var containerStyle = self.get_stylebox(\"normal\")
+onready var styleMarginLeft:int = containerStyle.content_margin_left
+onready var styleMarginRight:int = containerStyle.content_margin_right
+onready var contentBoxWidth:int = (containerWidth - (styleMarginLeft + styleMarginRight))
+const lineCountMax:int = 25
+const lineCountMin:int = 0
+var lineCount:int = 0
+
+func _ready():
+#	print(containerFont.get_string_size(\"111111111111111111\"))
+#	print(containerFont.get_string_size(\"line1 line2\"))
+#	print(containerFont.get_string_size(\" \"))
+#	print(containerWidth)
+#	print(containerHeight)
+	var test = self.get_visible_line_count()
+	var pupa = \"iiiiiiiiiiiiiiimi\"
+	var lupa = containerFont.get_string_size(pupa)
+#	print(lupa)
+#	print(contentBoxWidth)
+#	print(test)
+#	add_text_to_log(\"You have added text number one\")
+#	add_text_to_log(\"You have added text number two\")
+#	add_text_to_log(\"You have added text number three\")
+#	add_text_to_log(\"You have added text number four\")
+#	add_text_to_log(\"You have added text number five\")
+#	add_text_to_log(\"You have added tex\")
+#	add_text_to_log(\"Line1\")
+#	add_text_to_log(\"Line2\")
+#	add_text_to_log(\"Line3\")
+#	add_text_to_log(\"Line4\")
+#	add_text_to_log(\"Line5\")
+#	add_text_to_log(\"Line6\")
+#	add_text_to_log(\"Line7\")
+#	add_text_to_log(\"Line8\")
+#	add_text_to_log(\"Line9\")
+#	add_text_to_log(\"Line10\")
+#	add_text_to_log(\"Line11\")
+#	add_text_to_log(\"Line12\")
+#	add_text_to_log(\"Line13\")
+#	add_text_to_log(\"Line14\")
+#	add_text_to_log(\"Line15\")
+#	add_text_to_log(\"Line16\")
+#	add_text_to_log(\"Line17\")
+#	add_text_to_log(\"Line18\")
+#	add_text_to_log(\"Line19\")
+#	add_text_to_log(\"Line20\")
+#	add_text_to_log(\"Line21\")
+#	add_text_to_log(\"Line22\")
+#	add_text_to_log(\"Line23\")
+#	add_text_to_log(\"Line24\")
+#	add_text_to_log(\"Line25\")
+
+func add_text_to_log(pushText:String):
+	lineCount = self.get_line_count()
+	print(\"LINE COUNT START: %s\" %lineCount)
+	get_text_total_lines(pushText)
+	lineCount = self.get_line_count()
+	print(\"LINE COUNT FINISH: %s\" %lineCount)
+	if lineCount > lineCountMax:
+		for line in (lineCount - lineCountMax):
+			remove_line(line)
+			pass
+		pass
+	elif lineCount < lineCountMax:
+		pass
+	else:
+		pass
+	format_text_bbcode()
+
+func get_text_total_lines(newText:String):
+	var newString:String = \"*\"
+	var currentText:String = self.get_text()
+	var latestText:String = newText
+	var finalText:String
+	var lineSizeMax:int = contentBoxWidth
+	var lineSizeMin:int = 0
+	var lineSizeOld:int = 0
+	var lineSizeNew:int = 0
+	var i:int = 0
+
+	while i < latestText.length():
+		print(\"---------------\")
+		print(\"CHAR: %s\" %latestText[i])
+		print(\"CHAR SIZE: %s\" %containerFont.get_string_size(latestText[i]).x)
+		lineSizeOld = containerFont.get_string_size(newString).x
+		print(\"old_size: %s\" %lineSizeOld)
+		lineSizeNew = containerFont.get_string_size(newString + latestText[i]).x
+		print(\"new_size: %s\" %lineSizeNew)
+		if lineSizeNew <= lineSizeMax:
+			print(\"SMALLER - ADD CHAR\")
+			if newString[0] == \" \":
+				print(\"SPACE - REMOVE\")
+				newString = \"\" + latestText[i]
+				pass
+			else:
+				newString = newString + latestText[i]
+				print(newString)
+				pass
+			pass
+		elif lineSizeNew > lineSizeMax:
+			print(\"BIGGER - NEW LINE\")
+			if lineCount == 0:
+				self.add_text(newString)
+			elif lineCount > 0:
+				self.newline()
+				self.add_text(newString)
+			elif lineCount < 0:
+				push_error(\"TextLog line count is negative\")
+			else:
+				pass
+			newString = \"\" + latestText[i]
+			if latestText[i] != \" \":
+				newString + latestText[i]
+			else: 
+				pass
+			lineCount += 1
+			print(newString)
+			pass
+		else: 
+			pass
+		i+=1
+	self.newline()
+	self.add_text(newString)
+	pass
+
+func format_text_bbcode():
+	pass
+
+#func push_text(valueText:String):
+#	splitText = []
+#	splitTextFinal = []
+#	var splitTextSize:int
+#	var lineCountSize:int
+#	var lineCount:int
+#	var dataCheck:bool
+#	var lineA
+#	var lineB
+#	var lineC
+#
+#	splitText = valueText.split(\" \", true, 0)
+#	print(splitText)
+#	splitTextSize = splitText.size()
+#	if splitTextSize == 1:
+#		pass
+#	elif splitTextSize > 1:
+#		for i in splitTextSize:
+#			print(\"---------------------------\")
+#			print(\"THE I IS: %s\" %i)
+#			if i < (splitTextSize-1):
+#				lineA = splitText[i]
+#				lineB = splitText[i+1]
+#				dataCheck = compare_text(lineA,lineB)
+#				print(\"DATA CHECK IS: %s\" %dataCheck)
+#				if dataCheck == null:
+#					pass
+#				elif dataCheck == true:
+#					lineC = (lineA + \" \" + lineB)
+#					print(\"MASHED LINE: %s\" %lineC)
+#					splitText[i] = lineC
+#					splitText.erase(lineB)
+#					print(splitText)
+#					pass
+#				elif dataCheck == false:
+#					print(splitText)
+#					pass
+#			elif i >= (splitTextSize-1):
+#				print(\"REACHED LAST WORD\")
+#				pass
+#	elif splitTextSize < 1:
+#		pass
+#	else:
+#		pass
+#
+#func compare_text(valueA:String,valueB:String):
+#	var compareA = containerFont.get_string_size(valueA).x
+#	var compareB = containerFont.get_string_size(valueB).x
+#	var compareC = containerFont.get_string_size(\" \").x
+#	print(compareA++compareB+compareC)
+#	if (compareA++compareB+compareC) <= lineMaxLength:
+#		print(\"CAN COMBINE LINES\")
+#		print(valueA)
+#		print(valueB)
+#		return true
+#	elif (compareA+compareB+compareC) > lineMaxLength:
+#		print(\"CANNOT COMBINE LINES\")
+#		print(valueA)
+#		print(valueB)
+#		return false
+#	else:
+#		pass
+
+#func add_line(listText:Array):
+#	var lineCountSize:int
+#	var lineCount:int
+#
+#	newline()
+#	self.add_text(\"listText\")
+#	lineCount = get_line_count()
+#	if lineCount >= lineCountMax:
+#		lineCountSize = lineCount - lineCountMax
+#		for line in lineCountSize:
+#			self.remove_line(line)
+#			print(line)
+#	elif lineCount < lineCountMax:
+#		pass
+#	else:
+#		pass
+#	dataTextLog = self.text
+#	self.set_text(dataTextLog)
+
+#func _add_line(valueText:String):
+#	lineCount = get_line_count()
+#	if lineCount >= lineCountMax:
+#		nodeTextLog.remove_line(lineCountMin)
+#		newline()
+#		nodeTextLog.add_text(valueText)
+#	elif lineCount < lineCountMax:
+#		newline()
+#		nodeTextLog.add_text(valueText)
+#	else:
+#		pass
+#	dataTextLog = nodeTextLog.text
+#	nodeTextLog.set_text(dataTextLog)
+"
+
+[node name="Main" type="Node2D"]
+z_index = 1
+script = ExtResource( 9 )
+
+[node name="GUI" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="GUI_LAYER_SHADER" type="CanvasLayer" parent="GUI"]
+layer = 4
+
+[node name="Chromatic_Aberration" type="ColorRect" parent="GUI/GUI_LAYER_SHADER"]
+material = SubResource( 2 )
+margin_right = 256.0
+margin_bottom = 144.0
+
+[node name="GUI_LAYER_MAIN" type="CanvasLayer" parent="GUI"]
+layer = 2
+
+[node name="UI_MAIN" type="TextureRect" parent="GUI/GUI_LAYER_MAIN"]
+margin_right = 256.0
+margin_bottom = 144.0
+texture = ExtResource( 3 )
+
+[node name="UI_HEALTH" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 32.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 8, 8 )
+custom_fonts/font = ExtResource( 2 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="UI_SHIELD" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
+visible = false
+margin_left = 32.0
+margin_top = 128.0
+margin_right = 64.0
+margin_bottom = 144.0
+rect_min_size = Vector2( 16, 16 )
+custom_fonts/font = ExtResource( 2 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="UI_AMMO" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
+margin_left = 8.0
+margin_top = 16.0
+margin_right = 32.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 8, 8 )
+custom_fonts/font = ExtResource( 2 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="UI_TURN" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
+visible = false
+margin_left = 184.0
+margin_top = 128.0
+margin_right = 216.0
+margin_bottom = 144.0
+rect_min_size = Vector2( 16, 16 )
+custom_fonts/font = ExtResource( 2 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="UI_TEXT" type="TextureRect" parent="GUI/GUI_LAYER_MAIN"]
+visible = false
+margin_right = 128.0
+margin_bottom = 72.0
+texture = ExtResource( 8 )
+
+[node name="UI_TEXTLOG" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_TEXT"]
+margin_left = 32.0
+margin_top = 8.0
+margin_right = 96.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 16, 16 )
+custom_fonts/font = ExtResource( 10 )
+text = "< Become aware of happiness once you have lost it. Then an age comes, a second one, in which you already know, at the moment when you begin to experience true happiness, that you are, at the end of the day, going to lose it. When I met Belle, I understood that I had just entered this second age. I also understood that I hadn’t reached the third age, in which anticipation of the loss of happiness prevents you from living. >"
+autowrap = true
+clip_text = true
+script = ExtResource( 7 )
+
+[node name="Control" type="Control" parent="."]
+visible = false
+margin_right = 480.0
+margin_bottom = 272.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextLog" type="RichTextLabel" parent="Control"]
+margin_top = 128.0
+margin_right = 80.0
+margin_bottom = 257.0
+custom_fonts/normal_font = ExtResource( 1 )
+custom_styles/normal = ExtResource( 4 )
+bbcode_enabled = true
+meta_underlined = false
+text = "
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"
+scroll_active = false
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header" type="RichTextLabel" parent="Control"]
+margin_right = 480.0
+margin_bottom = 16.0
+custom_fonts/normal_font = ExtResource( 1 )
+custom_styles/normal = ExtResource( 4 )
+tab_size = 1
+text = "header"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Footer" type="RichTextLabel" parent="Control"]
+margin_left = 16.0
+margin_top = 256.0
+margin_right = 496.0
+margin_bottom = 272.0
+custom_fonts/normal_font = ExtResource( 1 )
+custom_styles/normal = ExtResource( 4 )
+tab_size = 1
+text = "footer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlainTextLog" type="Label" parent="Control"]
+margin_top = 16.0
+margin_right = 80.0
+margin_bottom = 128.0
+custom_fonts/font = ExtResource( 2 )
+custom_styles/normal = ExtResource( 4 )
+text = "пришла пора купить собаку и продать кота, выкинув его за лапу"
+autowrap = true
+max_lines_visible = 9
+__meta__ = {
+"_edit_use_anchors_": false
+}

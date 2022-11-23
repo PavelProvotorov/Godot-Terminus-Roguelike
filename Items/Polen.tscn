@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Resources/animations/Animation_Polen.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Scripts/items/Polen.gd" type="Script" id=2]
+[ext_resource path="res://Sounds/sfx_pickup.mp3" type="AudioStream" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 3, 3 )
+
+[node name="Polen" type="StaticBody2D" groups=["ITEM"]]
+z_index = 1
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+z_index = 1
+frames = ExtResource( 1 )
+animation = "IDLE"
+frame = 3
+playing = true
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 4, 4 )
+z_index = 1
+shape = SubResource( 1 )
+
+[node name="Sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
