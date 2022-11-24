@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "TileMap",
-"class": "Generator2D",
-"language": "GDScript",
-"path": "res://Dump/Scripts/classes/Generator2D.gd"
-}, {
 "base": "StaticBody2D",
 "class": "Item2D",
 "language": "GDScript",
@@ -23,22 +18,15 @@ _global_script_classes=[ {
 "class": "Mob2D",
 "language": "GDScript",
 "path": "res://Scripts/classes/Mob2D.gd"
-}, {
-"base": "Node",
-"class": "Modifier2D",
-"language": "GDScript",
-"path": "res://Dump/Scripts/classes/Modifier2D.gd"
 } ]
 _global_script_class_icons={
-"Generator2D": "",
 "Item2D": "",
-"Mob2D": "",
-"Modifier2D": ""
+"Mob2D": ""
 }
 
 [application]
 
-config/name="Untitled-Space-Roguelite-Old"
+config/name="Untitled-Space-Roguelite"
 run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 

@@ -33,11 +33,13 @@ func _ready():
 	pass
 
 func on_action_move():
+	if stat_speed == 1 && AI_state == Global.AI_STATE_LIST.STATE_ENGAGE: stat_speed = 2
 	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
+	if stat_speed == 1 && AI_state == Global.AI_STATE_LIST.STATE_ENGAGE: stat_speed = 2
 	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
 	pass

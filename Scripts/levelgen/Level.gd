@@ -146,6 +146,9 @@ func manager_mob_actions():
 				moving_entity.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 				mob_action_attack(moving_entity_position,target_entity_position)
 				yield(self,"on_mob_action_finished")
+				moving_entity.on_action_attack()
+				yield(moving_entity,"on_action_finished")
+#				yield(self,"on_mob_action_finished")
 				
 			# If target is not near > continue wandering
 			elif target_near == false:
@@ -172,7 +175,13 @@ func manager_mob_actions():
 							yield(self,"on_mob_action_finished")
 						break
 				yield(self.get_idle_frame(),"completed")
-		
+				
+	# ENGAGED NONE CLASS STATE
+		elif moving_entity.AI_state == Global.AI_STATE_LIST.STATE_ENGAGE && moving_entity.AI_class == Global.AI_CLASS_LIST.CLASS_NONE: 
+			moving_entity.on_action_move()
+			yield(moving_entity,"on_action_finished")
+			yield(self.get_idle_frame(),"completed")
+	
 	# IDLE STATE
 		elif moving_entity.AI_state == Global.AI_STATE_LIST.STATE_IDLE: 
 			yield(self.get_idle_frame(),"completed")

@@ -29,18 +29,21 @@ onready var LEVEL_LIST = {
 onready var MOB_LIST = {
 	1: {
 		"Grunt": 100,
-		"Parasite": 25
+		"Parasite": 25,
+		"Colony": 5
 	},
 	2: {
 		"Grunt": 100,
 		"Parasite": 50,
-		"Bloater": 25
+		"Bloater": 25,
+		"Colony": 10
 	},
 	3: {
 		"Grunt": 100,
 		"Parasite": 100,
 		"Bloater": 50,
-		"Hydra": 25
+		"Hydra": 25,
+		"Colony": 15
 	},
 	4: {
 		"Goo": 100,
