@@ -288,7 +288,7 @@ func level_queue_prepare():
 		for group in node_child_group_list:
 			if groups_to_check.has(group): node_child_group = true
 			else: node_child_group = false
-		if node_child_group == true && node_child_state == true:
+		if node_child_group == true && node_child_state == true && node_child.stat_speed != 0:
 			var node_child_name:String = node_to_scan.get_child(idx).name
 			var node_child_data:int = node_to_scan.get_child(idx).stat_ambition
 			var node_child_fetch = [node_child_data,node_child_name]

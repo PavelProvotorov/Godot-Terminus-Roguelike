@@ -10,6 +10,7 @@ onready var NODE_GUI = get_node("/root/Main/GUI")
 onready var NODE_UI_TEXT = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT")
 onready var UI_AMMO = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_AMMO")
 onready var UI_HEALTH = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_HEALTH")
+onready var UI_TURN = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_TURN")
 onready var NODE_UI_TEXTLOG = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT/UI_TEXTLOG")
 onready var NODE_TEXTLOG = get_node("/root/Main/Control/TextLog")
 onready var NODE_MAIN = get_node("/root/Main")
@@ -85,9 +86,15 @@ func game_state_manager(state):
 	if GAME_STATE == GAME_STATE_LIST.STATE_NONE:
 		print("< NO GAME STATE>")
 	elif GAME_STATE == GAME_STATE_LIST.STATE_PLAYER_TURN:
+		# Check through buffs on Player
+		get_tree().call_group("PLAYER","buff_tick")
+		yield(self.get_idle_frame(),"completed")
 #		print("< PLAYER MOVEMENT STARTED >")
 		NODE_PLAYER.turn_count = 0
 	elif GAME_STATE == GAME_STATE_LIST.STATE_MOB_TURN:
+		# Check through buffs on Mobs
+		get_tree().call_group("HOSTILE","buff_tick")
+		yield(self.get_idle_frame(),"completed")
 #		print("< MOB MOVEMENT STARTED >")
 		LEVEL.level_queue_prepare()
 		LEVEL.manager_mob()

@@ -329,11 +329,9 @@ autowrap = true
 clip_text = true
 
 [node name="UI_TURN" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
-visible = false
-margin_left = 184.0
-margin_top = 128.0
-margin_right = 216.0
-margin_bottom = 144.0
+margin_top = 48.0
+margin_right = 32.0
+margin_bottom = 64.0
 rect_min_size = Vector2( 16, 16 )
 custom_fonts/font = ExtResource( 2 )
 text = "0"

@@ -2,8 +2,8 @@
 
 [ext_resource path="res://Resources/tilesets/TileSet_Logic.tres" type="TileSet" id=1]
 [ext_resource path="res://Scripts/levelgen/LevelLogic.gd" type="Script" id=2]
+[ext_resource path="res://Resources/tilesets/TileSet_0.tres" type="TileSet" id=3]
 [ext_resource path="res://Scripts/levelgen/Level.gd" type="Script" id=4]
-[ext_resource path="res://Resources/tilesets/TileSet_1.tres" type="TileSet" id=5]
 [ext_resource path="res://Resources/tilesets/TileSet_Fog.tres" type="TileSet" id=6]
 
 [sub_resource type="Gradient" id=4]
@@ -45,19 +45,19 @@ script = ExtResource( 2 )
 
 [node name="Base" type="TileMap" parent="."]
 z_index = 1
-tile_set = ExtResource( 5 )
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 8, 8 )
+format = 1
+
+[node name="Deco" type="TileMap" parent="."]
+z_index = 1
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )
 format = 1
 
 [node name="Wall" type="TileMap" parent="."]
 z_index = 1
-tile_set = ExtResource( 5 )
-cell_size = Vector2( 8, 8 )
-format = 1
-
-[node name="Deco" type="TileMap" parent="."]
-z_index = 2
-tile_set = ExtResource( 5 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )
 format = 1
 
@@ -71,6 +71,7 @@ tile_data = PoolIntArray( 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 
 [node name="Particles2D" type="Particles2D" parent="."]
 visible = false
 position = Vector2( 64, 32 )
-z_index = 3
+z_index = 1
+amount = 4
 visibility_rect = Rect2( -64, -32, 128, 72 )
 process_material = SubResource( 1 )

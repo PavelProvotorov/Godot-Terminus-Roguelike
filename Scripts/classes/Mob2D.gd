@@ -1,6 +1,7 @@
 extends KinematicBody2D
 class_name Mob2D
 
+onready var NODE_BUFFS = $Buffs
 onready var NODE_POSITION_2D = $Position2D
 onready var NODE_ANIMATED_SPRITE = $AnimatedSprite
 onready var NODE_ANIMATED_SPRITE_TARGET = $AnimatedSpriteTarget
@@ -102,6 +103,31 @@ func raycast_cast_to(node_name,cell_start,cell_finish):
 
 func disable_target():
 	NODE_ANIMATED_SPRITE_TARGET.visible = false
+
+func buff_tick():
+	for buff in NODE_BUFFS.get_children():
+		if buff.buff_infinite == false:
+			buff.buff_duration -= 1
+			if buff.buff_duration == 0: 
+				buff.buff_on_action_remove()
+			else: 
+				buff.buff_on_action_tick()
+				yield(buff,"on_action_finished")
+		elif buff.buff_infinite == true:
+			pass
+	pass
+
+func buff_add(buff_name,buff_owner):
+	var buff_data = load("res://Buffs/%s.tscn" %buff_name)
+	var buff_instance = buff_data.instance()
+	buff_owner.NODE_BUFFS.add_child(buff_instance)
+	buff_instance.buff_owner = buff_owner
+	buff_instance.buff_on_action_add()
+	yield(buff_instance,"on_action_finished")
+
+func buff_remove(buff_name,buff_owner):
+	buff_owner.NODE_BUFFS.remove_child(buff_name)
+	yield(self.get_idle_frame(),"completed")
 
 func get_raycast_exceptions(raycast,group):
 	var node_to_scan = Global.LEVEL_LAYER_LOGIC

@@ -38,7 +38,7 @@ enum TILESET_BASE {
 	TILE_FLOOR       = 0,
 	TILE_BLOCK       = 1,
 #	TILE_DOOR        = 2,
-#	TILE_DECO        = 3,
+	TILE_DECO        = 3,
 #	TILE_DOOR_CLOSED = 2,
 #	TILE_DOOR_OPEN   = 3,
 #	TILE_EXIT        = 4,
@@ -80,8 +80,10 @@ func generator_room_prepare():
 	# Get border cells
 	map_border = []
 	map_border = get_used_cells_by_id(TILESET_LOGIC.TILE_EMPTY)
-	min_width = randi() % 3 +1
-	stop_width = min_width * 2 + 1
+#	min_width = randi() % 3 +1
+#	stop_width = min_width * 2 + 1
+	min_width = randi() % 7
+	stop_width = min_width + 1
 	
 	# Generate room
 	generator_room_subdivide(4, 1, map_width - 4, map_height - 2)
@@ -97,10 +99,11 @@ func generator_room_prepare():
 	generator_room_add_items()
 	
 	# Set textures
-	tilemap_texture_set_random(TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_FLOOR,[0,0,0,1,2,3,4,5])
-	tilemap_texture_set_random(TILESET_BASE.TILE_BLOCK,TILESET_LOGIC.TILE_BLOCK,[0,1,2,3,4,5])
-	tilemap_texture_set_random(TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_EXIT,[14])
-	tilemap_texture_set_random(TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_ENTRANCE,[15])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_FLOOR,[0,0,0,1,2,3,4,5])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_BLOCK,TILESET_LOGIC.TILE_BLOCK,[0,1,2,3,4,5])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_DECO,TILESET_BASE.TILE_DECO,TILESET_LOGIC.TILE_FLOOR,[0,0,0,0,0,0,0,0,0,1,2,3])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_EXIT,[14])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_ENTRANCE,[15])
 	tilemap_texture_set_walls(TILESET_BASE.TILE_WALL,[0,1,2,3,4,5])
 	pass
 
@@ -320,7 +323,7 @@ func generator_room_sort_room_vectors(rooms:Array):
 	return rooms_array
 
 func generator_room_add_mobs():
-	var mob_list = Data.MOB_LIST[Global.LEVEL_COUNT].keys()
+	var mob_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("MOBS").keys()
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var mob_count  = (round(rand_range(3,6)))
 	var mobs_spawned:int = 0
@@ -330,7 +333,7 @@ func generator_room_add_mobs():
 		randomize()
 		var cell = free_cells[randi() % free_cells.size()]
 		var mob_type = mob_list[randi() % mob_list.size()]
-		var mob_chance = Data.MOB_LIST[Global.LEVEL_COUNT][mob_type]
+		var mob_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("MOBS")[mob_type]
 		var spawn_chance = util_chance(mob_chance)
 		if spawn_chance == true:
 			Global.LEVEL.level_mob_spawn(mob_type,cell)
@@ -341,7 +344,7 @@ func generator_room_add_mobs():
 	pass
 
 func generator_room_add_items():
-	var item_list = Data.ITEM_LIST[Global.LEVEL_COUNT].keys()
+	var item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS").keys()
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var item_count  = (round(rand_range(1,3)))
 	
@@ -349,7 +352,7 @@ func generator_room_add_items():
 		randomize()
 		var cell = free_cells[randi() % free_cells.size()]
 		var item_type = item_list[randi() % item_list.size()]
-		var item_chance = Data.ITEM_LIST[Global.LEVEL_COUNT][item_type]
+		var item_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")[item_type]
 		var spawn_chance = util_chance(item_chance)
 		if spawn_chance == true:
 			Global.LEVEL.level_item_spawn(item_type,cell)
@@ -387,7 +390,7 @@ func tilemap_texture_set_random_animated(tile_base_id:int,tile_list:Array):
 		pass
 	pass
 
-func tilemap_texture_set_random(tile_base_id:int,tile_logic_id:int,tile_list:Array):
+func tilemap_texture_set_random(layer_type,tile_base_id:int,tile_logic_id:int,tile_list:Array):
 	randomize()
 	var cell_array = self.get_used_cells_by_id(tile_logic_id)
 	var tile_array = utility_atlas_get_tiles(tile_base_id,Global.LEVEL_LAYER_BASE)
@@ -398,7 +401,7 @@ func tilemap_texture_set_random(tile_base_id:int,tile_logic_id:int,tile_list:Arr
 	pass
 	for cell in cell_array:
 		var tile = tile_array_final[randi() % tile_array_final.size()]
-		Global.LEVEL_LAYER_BASE.set_cell(cell.x,cell.y,tile_base_id,false,false,false,tile)
+		layer_type.set_cell(cell.x,cell.y,tile_base_id,false,false,false,tile)
 	pass
 
 func utility_atlas_get_tiles(id,layer):

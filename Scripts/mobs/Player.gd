@@ -81,6 +81,7 @@ func _ready():
 func ui_update():
 	Global.UI_AMMO.set_text(self.stat_ammo as String)
 	Global.UI_HEALTH.set_text(self.stat_health as String)
+	Global.UI_TURN.set_text(self.stat_speed as String)
 
 func _unhandled_input(key):
 #	if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_NONE:

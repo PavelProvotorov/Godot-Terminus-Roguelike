@@ -10,11 +10,13 @@ var player_position
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
-	level_load("Level_0")
+	level_load("Level_1")
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL.level_mob_spawn("Player",Global.LEVEL_ENTRANCE)
 #	Global.LEVEL.level_mob_spawn("Grunt",Global.LEVEL_EXIT)
 	Global.LEVEL.target_entity = Global.NODE_PLAYER
+	
+#	Global.NODE_PLAYER.buff_add("Speed",Global.NODE_PLAYER)
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL_LAYER_LOGIC.fog_update()
 	yield(get_tree(),"idle_frame")
@@ -30,11 +32,13 @@ func level_load(level_name:String):
 
 func level_select():
 	Global.LEVEL_COUNT += 1
-	var level_list = Data.LEVEL_LIST[Global.LEVEL_COUNT].keys()
+	var level_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("LEVELS").keys()
+	print(level_list)
 	for level in level_list:
 		randomize()
 		var level_name = level_list[randi() % level_list.size()]
-		var spawn_chance = util_chance(Data.LEVEL_LIST[Global.LEVEL_COUNT][level_name])
+		var level_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("LEVELS")[level_name]
+		var spawn_chance = util_chance(level_chance)
 		if spawn_chance == true:
 			level_change(level_name)
 	pass
