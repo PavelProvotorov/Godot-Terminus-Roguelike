@@ -1,13 +1,12 @@
 extends Item2D
 
-onready var NODE_SOUND = $Sound
-
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	NODE_SOUND.stream = Sound.sfx_pickup
 	count = round(rand_range(3,6))
+	item_name = "Ammo"
+	NODE_NAME.set_text(item_name)
 	pass
 
 # ACTIONS
@@ -16,8 +15,10 @@ func on_action_pickup():
 	Global.NODE_PLAYER.stat_ammo += count
 	if Global.NODE_PLAYER.stat_ammo >= Global.NODE_PLAYER.stat_ammo_max: Global.NODE_PLAYER.stat_ammo = Global.NODE_PLAYER.stat_ammo_max
 	if Global.NODE_PLAYER.stat_ammo <= Global.NODE_PLAYER.stat_ammo_max: pass
-	Sound.play_sound(Global.NODE_PLAYER,Sound.sfx_pickup)
-	item_remove()
+	Global.NODE_PLAYER.spawn_text(count,Global.NODE_PLAYER.position/grid_size,Color.gold,0.0)
+	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
+	Global.NODE_PLAYER.check_turn()
+	item_remove(item_parent)
 
 func on_action_use():
 	pass

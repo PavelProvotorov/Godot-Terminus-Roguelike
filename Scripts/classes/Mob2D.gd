@@ -7,7 +7,6 @@ onready var NODE_ANIMATED_SPRITE = $AnimatedSprite
 onready var NODE_ANIMATED_SPRITE_TARGET = $AnimatedSpriteTarget
 onready var NODE_COLLISION_2D = $CollisionShape2D
 onready var NODE_RAYCAST_COLLIDE = $RayCastCollide
-onready var NODE_SOUND = $Sound
 onready var NODE_TWEEN = $Tween
 onready var NODE_MAIN = self
 
@@ -18,7 +17,8 @@ const grid_size = 8
 const ANIMATIONS= {
 	IDLE   = "IDLE",
 	MELEE  = "MELEE",
-	RANGED = "RANGED"
+	RANGED = "RANGED",
+	THROW = "THROW"
 }
 
 # READY
@@ -32,12 +32,26 @@ func calculate_melee_damage(is_attacker,is_target):
 	is_target.stat_health -= is_attacker.stat_melee_dmg
 	if is_target.stat_health <= 0:
 		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
+		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
+	else:
+		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightgray,0.0)
 #		is_target.queue_free()
 	
-func calculate_ranged_damage(is_attacker,is_target):
-	is_target.stat_health -= is_attacker.stat_ranged_dmg
+func calculate_ranged_damage(is_attacker,is_target,attacker_ranged_damage):
+	is_target.stat_health -= attacker_ranged_damage
 	if is_target.stat_health <= 0:
 		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
+		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+	else:
+		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightgray,0.0)
+
+func calculate_other_damage(is_attacker_damage,is_target):
+	is_target.stat_health -= is_attacker_damage
+	if is_target.stat_health <= 0:
+		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
+		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+	else:
+		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.gray,0.0)
 
 func animation_flip(is_flip_h:bool, is_flip_v:bool):
 	NODE_ANIMATED_SPRITE.flip_h = is_flip_h
@@ -100,6 +114,16 @@ func raycast_cast_to(node_name,cell_start,cell_finish):
 	var cell_cast_to = Vector2(((cell_finish.x-cell_start.x)*grid_size),((cell_finish.y-cell_start.y)*grid_size))
 	node_name.cast_to = Vector2(cell_cast_to.x,cell_cast_to.y)
 	node_name.force_raycast_update()
+
+func spawn_text(text_value,text_position:Vector2,color_type:Color,time_seconds:float):
+	yield(get_tree().create_timer(time_seconds),"timeout")
+	var text_data = load("res://Scenes/FloatingText.tscn")
+	var text_instance = text_data.instance()
+	text_instance.text = text_value
+	text_instance.color_type = color_type
+	Global.LEVEL_LAYER_FOG.add_child(text_instance)
+	text_instance.set_global_position(Vector2((text_position.x+0.5)*Global.grid_size,(text_position.y)*Global.grid_size))
+	pass
 
 func disable_target():
 	NODE_ANIMATED_SPRITE_TARGET.visible = false

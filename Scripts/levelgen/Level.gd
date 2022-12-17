@@ -214,7 +214,8 @@ func mob_action_move(cellA:Vector2,cellB:Vector2):
 	cellB = Vector2((cellB.x)*grid_size,(cellB.y)*grid_size)
 	if cellA - cellB == Vector2(-grid_size,0): moving_entity.animation_flip(false,false)
 	if cellA - cellB == Vector2(grid_size,0): moving_entity.animation_flip(true,false)
-	Sound.play_sound(moving_entity,moving_entity.sound_on_move)
+	Sound.sound_spawn(Global.NODE_SOUNDS,moving_entity.sound_on_move,moving_entity_position)
+#	Sound.play_sound(moving_entity,moving_entity.sound_on_move)
 	moving_entity.action_move_tween(cellA,cellB)
 	
 	#MOB MOVEMENT | FINISH
@@ -231,7 +232,8 @@ func mob_action_attack(cellA:Vector2,cellB:Vector2):
 	if cellA - cellB == Vector2(grid_size,0): moving_entity.animation_flip(true,false)
 
 	moving_entity.z_index += 1
-	Sound.play_sound(moving_entity,moving_entity.sound_on_melee)
+#	Sound.play_sound(moving_entity,moving_entity.sound_on_melee)
+	Sound.sound_spawn(Global.NODE_SOUNDS,moving_entity.sound_on_melee,moving_entity_position)
 	moving_entity.calculate_melee_damage(moving_entity,target_entity)
 	moving_entity.action_attack_tween(cellA,cellB)
 	
@@ -250,8 +252,9 @@ func mob_action_shoot(cellA:Vector2,cellB:Vector2):
 	if cellA - cellB == Vector2(grid_size,0): moving_entity.animation_flip(true,false)
 
 	moving_entity.z_index += 1
-	Sound.play_sound(moving_entity,moving_entity.sound_on_ranged)
-	moving_entity.calculate_ranged_damage(moving_entity,target_entity)
+#	Sound.play_sound(moving_entity,moving_entity.sound_on_ranged)
+	Sound.sound_spawn(Global.NODE_SOUNDS,moving_entity.sound_on_ranged,moving_entity_position)
+	moving_entity.calculate_ranged_damage(moving_entity,target_entity,moving_entity.stat_ranged_dmg)
 	moving_entity.action_shoot_tween(cellA,get_negative_vector(cellA,cellB))
 	
 	#MOB ATTACK | FINISH

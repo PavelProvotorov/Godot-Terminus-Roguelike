@@ -1,7 +1,6 @@
 extends Node2D
 
 var grid_size = Global.grid_size
-var level_list = []
 
 var next_level
 var current_level
@@ -33,7 +32,6 @@ func level_load(level_name:String):
 func level_select():
 	Global.LEVEL_COUNT += 1
 	var level_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("LEVELS").keys()
-	print(level_list)
 	for level in level_list:
 		randomize()
 		var level_name = level_list[randi() % level_list.size()]
@@ -44,7 +42,7 @@ func level_select():
 	pass
 
 func level_change(level_name:String):
-	var current_level = Global.LEVEL
+	current_level = Global.LEVEL
 	
 	# Prevent Player action while level loads
 	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
@@ -54,13 +52,16 @@ func level_change(level_name:String):
 	current_level.visible = false
 	Global.NODE_MAIN.remove_child(current_level)
 	current_level.queue_free()
-	yield(self.get_idle_frame(),"completed")
+#	print("test 1")
+#	yield(self.get_idle_frame(),"completed")
 	
 	# Load the next level
 	level_load(level_name)
-	yield(self.get_idle_frame(),"completed")
+#	print("test 2")
+#	yield(self.get_idle_frame(),"completed")
 	Global.LEVEL_LAYER_LOGIC.add_child(Global.NODE_PLAYER)
 	Global.NODE_PLAYER.position = (Global.LEVEL_ENTRANCE * grid_size)
+#	print("test 3")
 	yield(self.get_idle_frame(),"completed")
 
 	Global.LEVEL_LAYER_LOGIC.fog_update()

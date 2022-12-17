@@ -1239,3 +1239,45 @@
 #				elif moving_entity.NODE_RAYCAST_COLLIDE.is_colliding() == true:
 #					pass
 #			yield(self.get_idle_frame(),"completed")
+
+#func get_raycast_exceptions(raycast,group):
+#	var node_to_scan = Global.LEVEL_LAYER_LOGIC
+#	var node_to_scan_size:int = node_to_scan.get_child_count()
+#	for i in node_to_scan_size:
+#		var node_child = node_to_scan.get_child(i)
+#		if node_child.is_in_group(group) == true:
+#			raycast.add_exception(node_child)
+#	pass
+
+#func action_use(slot_id,slot_ui):
+#	PLAYER_ACTION_INPUT = true
+#
+#	var slot = Data.INVENTORY[slot_id]
+#	if slot.empty() == false:
+#		var item = slot[0]
+#		item.on_action_use()
+#		yield(self.get_idle_frame(),"completed")
+#		check_turn()
+#	PLAYER_ACTION_INPUT = false
+#	pass
+
+#	for item in item_count:
+#		randomize()
+#		var cell = free_cells[randi() % free_cells.size()]
+#		var item_type = item_list[randi() % item_list.size()]
+#		var item_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")[item_type]
+#		var spawn_chance = util_chance(item_chance)
+#		if spawn_chance == true:
+#			Global.LEVEL.level_item_spawn(item_type,cell)
+#			free_cells.erase(cell)
+#	pass
+
+#func float_tween():
+#	NODE_TWEEN.interpolate_property(self,"scale",scale,Vector2(0.7,0.7),0.2,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+#	NODE_TWEEN.start()
+#	yield(NODE_TWEEN,"tween_completed")
+#	NODE_TWEEN.interpolate_property(self,"scale",Vector2(0.7,0.7),Vector2(0.1,0.1),0.4,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+#	NODE_TWEEN.start()
+#	yield(NODE_TWEEN,"tween_completed")
+#	NODE_TWEEN.emit_signal("tween_all_completed")
+#	pass

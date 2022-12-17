@@ -14,7 +14,14 @@ onready var LEVEL_DATA = {
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 	2: {
@@ -29,7 +36,14 @@ onready var LEVEL_DATA = {
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 	3: {
@@ -40,12 +54,19 @@ onready var LEVEL_DATA = {
 			"Grunt": 100,
 			"Parasite": 100,
 			"Bloater": 50,
-			"Hydra": 25,
+#			"Hydra": 25,
 			"Colony": 15
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 	4: {
@@ -56,12 +77,19 @@ onready var LEVEL_DATA = {
 			"Grunt": 100,
 			"Parasite": 100,
 			"Bloater": 75,
-			"Hydra": 50,
+#			"Hydra": 50,
 			"Colony": 25
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 	5: {
@@ -75,7 +103,14 @@ onready var LEVEL_DATA = {
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 	6: {
@@ -85,12 +120,19 @@ onready var LEVEL_DATA = {
 		"MOBS": {
 			"GruntInfected": 100,
 			"Goo": 75,
-			"Horror": 50,
-			"Sludge": 25 
+			"Horror": 25,
+			"Sludge": 50 
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 	7: {
@@ -100,12 +142,19 @@ onready var LEVEL_DATA = {
 		"MOBS": {
 			"GruntInfected": 100,
 			"Goo": 100,
-			"Horror": 75,
-			"Sludge": 50 
+			"Horror": 50,
+			"Sludge": 75 
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 	8: {
@@ -115,12 +164,19 @@ onready var LEVEL_DATA = {
 		"MOBS": {
 			"GruntInfected": 100,
 			"Goo": 100,
-			"Horror": 100,
-			"Sludge": 75 
+			"Horror": 75,
+			"Sludge": 100 
 		},
 		"ITEMS": {
 			"Ammo": 100,
-			"Medkit": 100
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
 		},
 	},
 }

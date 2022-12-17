@@ -7,9 +7,15 @@ const map_height = 9
 const grid_size = 8
 
 onready var NODE_GUI = get_node("/root/Main/GUI")
+onready var NODE_TEXT = get_node("/root/Main/Text")
+onready var NODE_SOUNDS = get_node("/root/Main/Sounds")
 onready var NODE_UI_TEXT = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT")
+onready var NODE_UI_INVENTORY = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_INVENTORY")
+onready var NODE_UI_WEAPON = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_WEAPON")
+onready var NODE_UI_ARMOR = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_ARMOR")
 onready var UI_AMMO = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_AMMO")
 onready var UI_HEALTH = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_HEALTH")
+onready var UI_LEVEL = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_LEVEL")
 onready var UI_TURN = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_TURN")
 onready var NODE_UI_TEXTLOG = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT/UI_TEXTLOG")
 onready var NODE_TEXTLOG = get_node("/root/Main/Control/TextLog")
@@ -55,6 +61,17 @@ const DIRECTION_LIST:Array = [
 	Vector2.LEFT,
 	Vector2.RIGHT
 	]
+
+const DIRECTION_LIST_8:Array = [
+	Vector2(1,0),
+	Vector2(1,1),
+	Vector2(0,1),
+	Vector2(0,-1),
+	Vector2(1,-1),
+	Vector2(-1,-1),
+	Vector2(-1,1),
+	Vector2(-1,0)
+]
 
 enum AI_STATE_LIST {
 	STATE_IDLE,

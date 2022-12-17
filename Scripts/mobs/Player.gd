@@ -3,6 +3,7 @@ extends Mob2D
 onready var NODE_RAYCAST_MOB = $RayCastMob
 onready var NODE_RAYCAST_FOG = $RayCastFog
 onready var NODE_CAMERA_2D = $Camera2D
+onready var NODE_ITEMS = $Items
 
 var AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 var AI_class = Global.AI_CLASS_LIST.CLASS_NONE
@@ -15,13 +16,21 @@ const INPUT_LIST = {
 	UI_PICK  = "ui_pick",
 	UI_SHOOT = "ui_shoot",
 	UI_SKIP  = "ui_skip",
-	UI_SPACE = "ui_space"
+	UI_SPACE = "ui_space",
+	UI_1 = "ui_1",
+	UI_2 = "ui_2",
+	UI_3 = "ui_3",
+	UI_4 = "ui_4",
+	UI_5 = "ui_5",
+	UI_6 = "ui_6"
 }
 
 var turn_count:int
 var border_check:bool = true
+var action_throw_item
 
 var PLAYER_ACTION_SHOOT = false
+var PLAYER_ACTION_THROW = false
 var PLAYER_ACTION_INPUT = false
 var PLAYER_ACTION_TEXT = false
 
@@ -34,12 +43,13 @@ signal on_action_finished
 
 # STATS
 #---------------------------------------------------------------------------------------
+var equiped_weapon = Global.NODE_UI_WEAPON.get_child(0).get_child(0)
 var stat_visibility:int = 7
 var stat_melee_dmg:int = 2
-var stat_ranged_dmg:int = 3
-var stat_weapon_range:int = 3
+#var stat_ranged_dmg:int = 3
+#var stat_weapon_range:int = 3
 
-var stat_ammo:int = 10
+var stat_ammo:int = 12
 const stat_ammo_max:int = 99
 var stat_speed:int = 1
 const stat_speed_max:int = 99
@@ -49,7 +59,7 @@ const stat_health_max:int = 99
 var sound_on_move = Sound.sfx_move
 var sound_on_hit = Sound.sfx_hit_0
 var sound_on_melee = Sound.sfx_punch_0
-var sound_on_ranged = Sound.sfx_shoot_1
+#var sound_on_ranged = Sound.sfx_shoot_1
 var sound_on_death = Sound.sfx_death_1
 var sound_on_noammo = Sound.sfx_noammo
 
@@ -81,6 +91,7 @@ func _ready():
 func ui_update():
 	Global.UI_AMMO.set_text(self.stat_ammo as String)
 	Global.UI_HEALTH.set_text(self.stat_health as String)
+	Global.UI_LEVEL.set_text(Global.LEVEL_COUNT as String)
 	Global.UI_TURN.set_text(self.stat_speed as String)
 
 func _unhandled_input(key):
@@ -91,24 +102,43 @@ func _unhandled_input(key):
 	for input in INPUT_LIST.values():
 		if key.is_action_pressed(input):
 			if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_PLAYER_TURN:
-				if PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == false:
+				# MELEE MODE
+				if PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == false && PLAYER_ACTION_THROW == false:
 					if input == INPUT_LIST.UI_UP:    action_collision_check(Vector2.UP)
 					if input == INPUT_LIST.UI_DOWN:  action_collision_check(Vector2.DOWN)
 					if input == INPUT_LIST.UI_LEFT:  action_collision_check(Vector2.LEFT)
 					if input == INPUT_LIST.UI_RIGHT: action_collision_check(Vector2.RIGHT)
 					if input == INPUT_LIST.UI_PICK:  action_interact(Vector2(0,0))
 					if input == INPUT_LIST.UI_SKIP:  check_turn()
-					if input == INPUT_LIST.UI_SPACE: action_targets_check()
+					if input == INPUT_LIST.UI_SPACE: action_targets_check_shoot()
+					if input == INPUT_LIST.UI_1: action_use_item(1)
+					if input == INPUT_LIST.UI_2: action_use_item(2)
+					if input == INPUT_LIST.UI_3: action_use_item(3)
+					if input == INPUT_LIST.UI_4: action_use_item(4)
+					if input == INPUT_LIST.UI_5: action_use_item(5)
+					if input == INPUT_LIST.UI_6: action_use_item(6)
 #					if input == INPUT_LIST.UI_SPACE: 
 #						Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PAUSE
 #						Global.NODE_MAIN.level_select()
-				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == true && PLAYER_ACTION_TEXT == false:
-					if input == INPUT_LIST.UI_UP:    action_shoot(Vector2.UP)
-					if input == INPUT_LIST.UI_DOWN:  action_shoot(Vector2.DOWN)
-					if input == INPUT_LIST.UI_LEFT:  action_shoot(Vector2.LEFT)
-					if input == INPUT_LIST.UI_RIGHT: action_shoot(Vector2.RIGHT)
+				# RANGED MODE
+				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == true && PLAYER_ACTION_TEXT == false && PLAYER_ACTION_THROW == false:
+					if input == INPUT_LIST.UI_UP:    action_shoot(Vector2.UP,equiped_weapon.stat_shoot_count)
+					if input == INPUT_LIST.UI_DOWN:  action_shoot(Vector2.DOWN,equiped_weapon.stat_shoot_count)
+					if input == INPUT_LIST.UI_LEFT:  action_shoot(Vector2.LEFT,equiped_weapon.stat_shoot_count)
+					if input == INPUT_LIST.UI_RIGHT: action_shoot(Vector2.RIGHT,equiped_weapon.stat_shoot_count)
+					if input == INPUT_LIST.UI_SKIP:  check_turn()
 					if input == INPUT_LIST.UI_SPACE: action_targets_disbale()
-				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == true:
+					
+				# THROWING MODE
+				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_THROW == true && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == false:
+					if input == INPUT_LIST.UI_UP:    action_throw(Vector2.UP)
+					if input == INPUT_LIST.UI_DOWN:  action_throw(Vector2.DOWN)
+					if input == INPUT_LIST.UI_LEFT:  action_throw(Vector2.LEFT)
+					if input == INPUT_LIST.UI_RIGHT: action_throw(Vector2.RIGHT)
+					if input == INPUT_LIST.UI_SPACE: action_targets_disbale()
+				
+				# TEXT MODE
+				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == true && PLAYER_ACTION_THROW == false:
 					if input == INPUT_LIST.UI_SPACE:
 						Global.NODE_UI_TEXT.hide()
 						PLAYER_ACTION_TEXT = false
@@ -117,7 +147,7 @@ func _unhandled_input(key):
 				else:
 					pass
 
-func action_targets_check():
+func action_targets_check_shoot():
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_SHOOT = true
 	var directons = Global.DIRECTION_LIST
@@ -126,7 +156,8 @@ func action_targets_check():
 	if stat_ammo == 0:
 		PLAYER_ACTION_SHOOT = false
 		PLAYER_ACTION_INPUT = false
-		Sound.play_sound(self,sound_on_noammo)
+		spawn_text("out of ammo",self.position/grid_size,Color.white,0.0)
+		Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_noammo,self.position/grid_size)
 		return
 	
 	# Add items as collider exceptions
@@ -134,7 +165,7 @@ func action_targets_check():
 	
 	# Check for mob targes in range
 	for direction in directons:
-		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*stat_weapon_range)
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*equiped_weapon.stat_range)
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -145,11 +176,48 @@ func action_targets_check():
 	PLAYER_ACTION_INPUT = false
 	pass
 
+func action_targets_check_throw(stat_throwable_range):
+	PLAYER_ACTION_INPUT = true
+	PLAYER_ACTION_THROW = true
+	var directons = Global.DIRECTION_LIST
+	var ready_to_throw:bool = false
+	
+	# Add items as collider exceptions
+	get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
+	
+	# Check for mob targes in range
+	for direction in directons:
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*stat_throwable_range)
+		NODE_RAYCAST_COLLIDE.force_raycast_update()
+		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
+			var collider = NODE_RAYCAST_COLLIDE.get_collider()
+			if collider.get_class() == "KinematicBody2D":
+				collider.NODE_ANIMATED_SPRITE_TARGET.visible = true
+				ready_to_throw = true
+				
+	# Player OK to throw
+	if ready_to_throw == true:
+		NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.THROW)
+		NODE_RAYCAST_COLLIDE.clear_exceptions()
+		PLAYER_ACTION_INPUT = false
+		return true
+		
+	# Player NOT OK to throw
+	if ready_to_throw == false:
+		NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.THROW)
+		NODE_RAYCAST_COLLIDE.clear_exceptions()
+		PLAYER_ACTION_THROW = false
+		PLAYER_ACTION_INPUT = false
+		return false
+		
+	pass
+
 func action_targets_disbale():
 	PLAYER_ACTION_INPUT = true
 	get_tree().call_group("HOSTILE","disable_target")
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 	PLAYER_ACTION_SHOOT = false
+	PLAYER_ACTION_THROW = false
 	PLAYER_ACTION_INPUT = false
 	pass
 
@@ -187,17 +255,18 @@ func action_textlog():
 	Global.NODE_UI_TEXTLOG.show_text()
 	pass
 
-func action_use(slot_id,slot_ui):
+func action_use_item(slot_id:int):
 	PLAYER_ACTION_INPUT = true
-	
-	var slot = Data.INVENTORY[slot_id]
-	if slot.empty() == false:
-		var item = slot[0]
-		item.on_action_use()
-		yield(self.get_idle_frame(),"completed")
-		check_turn()
+	if Global.NODE_UI_INVENTORY.get_child_count() >= slot_id:
+		var slot = Global.NODE_UI_INVENTORY.get_child(slot_id-1)
+		var slot_item_count = slot.get_child_count()
+		# Check if slot has item
+		if slot_item_count == 1:
+			var item = slot.get_child(0)
+			item.on_action_use()
+	else: 
+		pass
 	PLAYER_ACTION_INPUT = false
-	pass
 
 func action_interact(direction):
 	PLAYER_ACTION_INPUT = true
@@ -213,7 +282,7 @@ func action_interact(direction):
 			Global.NODE_MAIN.level_select()
 			pass
 		pass
-	if NODE_RAYCAST_COLLIDE.is_colliding() == true:
+	elif NODE_RAYCAST_COLLIDE.is_colliding() == true:
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
 		if collider.get_class() == "StaticBody2D":
 			if collider.is_in_group(Global.GROUPS.ITEM) == true:
@@ -230,7 +299,7 @@ func action_move(direction):
 	if cellA - cellB == Vector2(-grid_size,0): animation_flip(false,false)
 	if cellA - cellB == Vector2(grid_size,0): animation_flip(true,false)
 	
-	Sound.play_sound(self,sound_on_move)
+	Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_move,self.position/grid_size)
 	NODE_MAIN.action_move_tween(cellA,cellB)
 	yield(NODE_TWEEN,"tween_all_completed")
 	Global.LEVEL_LAYER_LOGIC.fog_update()
@@ -245,7 +314,8 @@ func action_attack(direction,collider):
 	if cellA - cellB == Vector2(grid_size,0): animation_flip(true,false)
 	
 	NODE_MAIN.z_index += 1
-	Sound.play_sound(self,sound_on_melee)
+#	Sound.play_sound(self,sound_on_melee)
+	Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_melee,self.position/grid_size)
 	NODE_MAIN.calculate_melee_damage(self,collider)
 	NODE_MAIN.action_attack_tween(cellA,cellB)
 	yield(NODE_TWEEN,"tween_all_completed")
@@ -253,9 +323,51 @@ func action_attack(direction,collider):
 	NODE_MAIN.z_index -= 1
 	check_turn()
 
-func action_shoot(direction):
+func action_shoot(direction,shoot_count):
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_SHOOT = false
+	
+	for count in shoot_count:
+		
+		# Disable target animation
+		get_tree().call_group("HOSTILE","disable_target")
+		
+		# Add items as collider exceptions
+		get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
+		
+		# Check for mob targes in range
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*equiped_weapon.stat_range)
+		NODE_RAYCAST_COLLIDE.force_raycast_update()
+		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
+			var collider = NODE_RAYCAST_COLLIDE.get_collider()
+			if collider.get_class() == "KinematicBody2D":
+				if collider.is_in_group(Global.GROUPS.HOSTILE) == true && NODE_MAIN.stat_ammo > 0: 
+					var cellA = NODE_MAIN.position
+					var cellB = NODE_MAIN.position + (direction * grid_size)
+					
+					#ANIMATION FLIP CHECK
+					if cellA - cellB == Vector2(-grid_size,0): animation_flip(false,false)
+					if cellA - cellB == Vector2(grid_size,0): animation_flip(true,false)
+					
+					NODE_MAIN.z_index += 1
+					NODE_MAIN.stat_ammo -= 1
+					Sound.sound_spawn(Global.NODE_SOUNDS,equiped_weapon.sound_on_ranged,self.position/grid_size)
+					NODE_MAIN.calculate_ranged_damage(self,collider,equiped_weapon.stat_ranged_dmg)
+					action_shoot_tween(cellA,get_negative_vector(cellA,cellB))
+					yield(self.NODE_TWEEN,"tween_all_completed")
+					collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
+					NODE_MAIN.z_index -= 1
+#					check_turn()
+
+	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
+	NODE_RAYCAST_COLLIDE.clear_exceptions()
+	PLAYER_ACTION_INPUT = false
+	check_turn()
+	pass
+
+func action_throw(direction):
+	PLAYER_ACTION_INPUT = true
+	PLAYER_ACTION_THROW = false
 	
 	# Disable target animation
 	get_tree().call_group("HOSTILE","disable_target")
@@ -264,12 +376,12 @@ func action_shoot(direction):
 	get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 	
 	# Check for mob targes in range
-	NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*stat_weapon_range)
+	NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*(action_throw_item.stat_throwable_range))
 	NODE_RAYCAST_COLLIDE.force_raycast_update()
 	if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
 		if collider.get_class() == "KinematicBody2D":
-			if collider.is_in_group(Global.GROUPS.HOSTILE) == true && NODE_MAIN.stat_ammo > 0: 
+			if collider.is_in_group(Global.GROUPS.HOSTILE) == true: 
 				var cellA = NODE_MAIN.position
 				var cellB = NODE_MAIN.position + (direction * grid_size)
 				
@@ -278,12 +390,12 @@ func action_shoot(direction):
 				if cellA - cellB == Vector2(grid_size,0): animation_flip(true,false)
 				
 				NODE_MAIN.z_index += 1
-				NODE_MAIN.stat_ammo -= 1
-#				Sound.play_sound(self,sound_on_ranged)
-				Sound.sound_spawn(sound_on_ranged,self.position/grid_size)
-				NODE_MAIN.calculate_ranged_damage(self,collider)
+				Sound.sound_spawn(Global.NODE_SOUNDS,action_throw_item.sound_on_throw,self.position/grid_size)
+				NODE_MAIN.calculate_other_damage(action_throw_item.stat_dmg,collider)
 				action_shoot_tween(cellA,get_negative_vector(cellA,cellB))
 				yield(self.NODE_TWEEN,"tween_all_completed")
+				action_throw_item.on_action_throw()
+				action_throw_item = null
 				collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 				NODE_MAIN.z_index -= 1
 				check_turn()
@@ -299,18 +411,15 @@ func raycast_cast_to(node_name,cell_start,cell_finish):
 	node_name.force_raycast_update()
 
 func check_turn():
+	# Disable target animation
+	get_tree().call_group("HOSTILE","disable_target")
+	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
+	PLAYER_ACTION_SHOOT = false
+	
+	# Check player turn count
 	turn_count += 1
 	if turn_count == stat_speed: Global.game_state_manager(Global.GAME_STATE_LIST.STATE_MOB_TURN)
 	elif turn_count != stat_speed: pass
-
-#func get_raycast_exceptions(raycast,group):
-#	var node_to_scan = Global.LEVEL_LAYER_LOGIC
-#	var node_to_scan_size:int = node_to_scan.get_child_count()
-#	for i in node_to_scan_size:
-#		var node_child = node_to_scan.get_child(i)
-#		if node_child.is_in_group(group) == true:
-#			raycast.add_exception(node_child)
-#	pass
 	
 func get_negative_vector(origin_vector, destination_vector):
 	var negative_vector = (destination_vector - origin_vector).tangent().tangent() + origin_vector

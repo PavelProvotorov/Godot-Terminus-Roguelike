@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Resources/animations/Animation_Bloater.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Scripts/mobs/Bloater.gd" type="Script" id=2]
-[ext_resource path="res://Sounds/sfx_move.mp3" type="AudioStream" id=3]
 [ext_resource path="res://Resources/animations/Animation_Target.tres" type="SpriteFrames" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -40,8 +39,5 @@ position = Vector2( 4, 4 )
 
 [node name="Tween" type="Tween" parent="."]
 playback_process_mode = 0
-
-[node name="Sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 3 )
 
 [node name="Buffs" type="Node" parent="."]

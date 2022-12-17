@@ -329,6 +329,11 @@ func generator_room_add_mobs():
 	var mobs_spawned:int = 0
 	var done:bool = false
 	
+	#Remove cells, to not spawn mobs around spawn
+	for direction in Global.DIRECTION_LIST_8:
+		var cell = (Global.LEVEL_ENTRANCE) + (direction)
+		free_cells.erase(cell)
+	
 	while mobs_spawned != mob_count:
 		randomize()
 		var cell = free_cells[randi() % free_cells.size()]
@@ -347,8 +352,10 @@ func generator_room_add_items():
 	var item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS").keys()
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var item_count  = (round(rand_range(1,3)))
+	var items_spawned:int = 0
+	var done:bool = false
 	
-	for item in item_count:
+	while items_spawned != item_count:
 		randomize()
 		var cell = free_cells[randi() % free_cells.size()]
 		var item_type = item_list[randi() % item_list.size()]
@@ -357,6 +364,9 @@ func generator_room_add_items():
 		if spawn_chance == true:
 			Global.LEVEL.level_item_spawn(item_type,cell)
 			free_cells.erase(cell)
+			items_spawned += 1
+		if spawn_chance == false:
+			pass
 	pass
 
 # TEXTURE FUNCTIONS
@@ -630,6 +640,15 @@ func util_check_nearby_tile_8(x, y, tile_id):
 	if self.get_cell(x-1, y+1) == tile_id:  count += 1
 	if self.get_cell(x-1, y-1) == tile_id:  count += 1
 	return count
+
+func util_get_occupied_cells():
+	var occupied_cells = []
+	for idx in self.get_child_count():
+		var child = Global.LEVEL_LAYER_LOGIC.get_child(idx)
+		var child_position = (world_to_map(child.get_global_position()))
+		if child.is_in_group(Global.GROUPS.HOSTILE) or child.is_in_group(Global.GROUPS.PLAYER):
+			occupied_cells.append(child_position)
+	return occupied_cells
 
 func util_chance(percentage):
 	randomize()

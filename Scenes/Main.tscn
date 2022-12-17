@@ -1,13 +1,19 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Resources/fonts/FONT_8BITWONDER_NORMAL.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Resources/fonts/FONT_UpheavalPro.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/ui_main.png" type="Texture" id=3]
 [ext_resource path="res://Resources/styles/8BITWONDER_RUS_STYLE.tres" type="StyleBox" id=4]
+[ext_resource path="res://Resources/fonts/UpheavalPro.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Scripts/Inventory.gd" type="Script" id=6]
 [ext_resource path="res://Scripts/Textlog.gd" type="Script" id=7]
 [ext_resource path="res://Assets/ui_text.png" type="Texture" id=8]
 [ext_resource path="res://Scripts/nodes/Main.gd" type="Script" id=9]
 [ext_resource path="res://Resources/fonts/FONT_UpheavalPro_Small.tres" type="DynamicFont" id=10]
+[ext_resource path="res://Scripts/Weapon.gd" type="Script" id=11]
+[ext_resource path="res://Scripts/Armor.gd" type="Script" id=12]
+[ext_resource path="res://Scenes/ItemSlot.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Items/AssaultRifle.tscn" type="PackedScene" id=14]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -33,6 +39,12 @@ void fragment() {
 shader = SubResource( 1 )
 shader_param/apply = true
 shader_param/amount = 0.1
+
+[sub_resource type="DynamicFont" id=4]
+size = 6
+font_data = ExtResource( 5 )
+
+[sub_resource type="Theme" id=5]
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends RichTextLabel
@@ -284,15 +296,14 @@ margin_bottom = 144.0
 layer = 2
 
 [node name="UI_MAIN" type="TextureRect" parent="GUI/GUI_LAYER_MAIN"]
-margin_right = 256.0
-margin_bottom = 144.0
+margin_right = 128.0
+margin_bottom = 72.0
 texture = ExtResource( 3 )
 
 [node name="UI_HEALTH" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 32.0
-margin_bottom = 16.0
+margin_left = 40.0
+margin_right = 56.0
+margin_bottom = 8.0
 rect_min_size = Vector2( 8, 8 )
 custom_fonts/font = ExtResource( 2 )
 text = "0"
@@ -316,10 +327,9 @@ autowrap = true
 clip_text = true
 
 [node name="UI_AMMO" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
-margin_left = 8.0
-margin_top = 16.0
-margin_right = 32.0
-margin_bottom = 24.0
+margin_left = 72.0
+margin_right = 88.0
+margin_bottom = 8.0
 rect_min_size = Vector2( 8, 8 )
 custom_fonts/font = ExtResource( 2 )
 text = "0"
@@ -328,7 +338,20 @@ valign = 1
 autowrap = true
 clip_text = true
 
+[node name="UI_LEVEL" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
+margin_right = 24.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 8, 8 )
+custom_colors/font_color = Color( 0.160784, 0.160784, 0.160784, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
 [node name="UI_TURN" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
+visible = false
 margin_top = 48.0
 margin_right = 32.0
 margin_bottom = 64.0
@@ -357,6 +380,41 @@ text = "< Become aware of happiness once you have lost it. Then an age comes, a 
 autowrap = true
 clip_text = true
 script = ExtResource( 7 )
+
+[node name="UI_INVENTORY" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
+margin_left = 40.0
+margin_top = 64.0
+margin_right = 88.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 48, 8 )
+theme = SubResource( 5 )
+custom_constants/vseparation = 0
+custom_constants/hseparation = 8
+columns = 6
+script = ExtResource( 6 )
+
+[node name="UI_WEAPON" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
+margin_left = 29.0
+margin_top = 64.0
+margin_right = 39.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 10, 8 )
+script = ExtResource( 11 )
+
+[node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON" instance=ExtResource( 13 )]
+
+[node name="AssaultRifle" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON/ItemSlot" instance=ExtResource( 14 )]
+position = Vector2( 1, -2 )
+
+[node name="UI_ARMOR" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
+margin_left = 89.0
+margin_top = 64.0
+margin_right = 99.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 10, 8 )
+script = ExtResource( 12 )
+
+[node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_ARMOR" instance=ExtResource( 13 )]
 
 [node name="Control" type="Control" parent="."]
 visible = false
@@ -441,3 +499,7 @@ max_lines_visible = 9
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Text" type="Node" parent="."]

@@ -1,11 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/item_ammo.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/items/Ammo.gd" type="Script" id=2]
-[ext_resource path="res://Sounds/sfx_pickup.mp3" type="AudioStream" id=3]
+[ext_resource path="res://Resources/fonts/TeenyTinyPixls-o2zo.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 3, 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 2
+font_data = ExtResource( 3 )
 
 [node name="Ammo" type="StaticBody2D" groups=["ITEM"]]
 z_index = 2
@@ -20,5 +24,12 @@ position = Vector2( 4, 4 )
 z_index = 1
 shape = SubResource( 1 )
 
-[node name="Sound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 3 )
+[node name="Name" type="Label" parent="."]
+visible = false
+margin_left = 8.0
+margin_top = 2.0
+margin_right = 56.0
+margin_bottom = 8.0
+custom_fonts/font = SubResource( 2 )
+text = "Speed"
+valign = 1

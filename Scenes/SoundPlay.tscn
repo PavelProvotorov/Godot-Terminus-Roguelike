@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Sounds/Sound2D.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/SoundPlay.gd" type="Script" id=1]
 
-[node name="Sound" type="AudioStreamPlayer2D" groups=["NONE"]]
+[node name="SoundPlay" type="AudioStreamPlayer2D" groups=["NONE"]]
 z_index = 6
 script = ExtResource( 1 )
 
