@@ -124,6 +124,8 @@ func manager_mob_actions():
 					if check_direction == moving_entity_path[2]:
 						mob_action_shoot(moving_entity_path[0],moving_entity_path[0]+direction)
 						yield(self,"on_mob_action_finished")
+						moving_entity.on_action_shoot()
+						yield(moving_entity,"on_action_finished")
 					yield(self.get_idle_frame(),"completed")
 					
 	# WANDERING MELEE CLASS STATE

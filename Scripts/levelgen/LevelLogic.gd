@@ -14,6 +14,8 @@ var stop_width
 var rooms_array
 var map_border
 
+var generator_on:bool = true
+
 const DIRECTION_LIST:Array = [
 	Vector2.UP,
 	Vector2.DOWN,
@@ -68,6 +70,10 @@ enum TILESET_ANIMATED {
 	ANIMTILE_ASTEROID_2 = 6
 }
 
+# SIGNALS
+#---------------------------------------------------------------------------------------
+signal fog_update_completed
+
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
@@ -85,14 +91,19 @@ func generator_room_prepare():
 	min_width = randi() % 7
 	stop_width = min_width + 1
 	
-	# Generate room
-	generator_room_subdivide(4, 1, map_width - 4, map_height - 2)
-	generator_room_clear_dead_doors()
-	generator_room_get_rooms()
-	generator_room_fill_oneway_rooms(round(rand_range(0,1)))
-	generator_room_add_arks(round(rand_range(0,3)))
-	generator_room_clear_final()
-	generator_room_add_passage()
+	print("---------------------")
+	print(min_width)
+	print(stop_width)
+	
+	# Generate room (while loop to avoid no tile rooms)
+	while generator_on == true:
+		generator_room_subdivide(4, 1, map_width - 4, map_height - 2)
+		generator_room_clear_dead_doors()
+		generator_room_get_rooms()
+		generator_room_fill_oneway_rooms(round(rand_range(0,1)))
+		generator_room_add_arks(round(rand_range(0,3)))
+		generator_room_clear_final()
+		generator_room_add_passage()
 	
 	# Add content
 	generator_room_add_mobs()
@@ -280,20 +291,25 @@ func generator_room_add_passage():
 	randomize()
 	var cell:Vector2
 	var room = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
+	print(room)
 	
-	#ADD ENTRANCE
-	room.shuffle()
-	cell = (room[rand_range(0,room.size())])
-	self.set_cell(cell.x,cell.y,TILESET_LOGIC.TILE_ENTRANCE)
-	room.erase(cell)
-	Global.LEVEL_ENTRANCE = cell
-			
-	#ADD EXIT
-	room.shuffle()
-	cell = (room[rand_range(0,room.size())])
-	self.set_cell(cell.x,cell.y,TILESET_LOGIC.TILE_EXIT)
-	room.erase(cell)
-	Global.LEVEL_EXIT = cell
+	if room != []: 
+		generator_on = false
+		#ADD ENTRANCE
+		room.shuffle()
+		cell = (room[rand_range(0,room.size())])
+		self.set_cell(cell.x,cell.y,TILESET_LOGIC.TILE_ENTRANCE)
+		room.erase(cell)
+		Global.LEVEL_ENTRANCE = cell
+				
+		#ADD EXIT
+		room.shuffle()
+		cell = (room[rand_range(0,room.size())])
+		self.set_cell(cell.x,cell.y,TILESET_LOGIC.TILE_EXIT)
+		room.erase(cell)
+		Global.LEVEL_EXIT = cell
+	else:
+		return
 
 func generator_room_flood_fill(cell_x,cell_y):
 	var empty_cells_array = []
@@ -610,6 +626,7 @@ func fog_update():
 			pass
 	
 	player.NODE_RAYCAST_MOB.clear_exceptions()
+	emit_signal("fog_update_completed")
 
 # UTILITY FUNCTIONS
 #---------------------------------------------------------------------------------------

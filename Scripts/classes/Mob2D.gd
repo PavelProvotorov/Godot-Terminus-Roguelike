@@ -139,7 +139,7 @@ func buff_tick():
 				yield(buff,"on_action_finished")
 		elif buff.buff_infinite == true:
 			pass
-	pass
+	Global.LEVEL_LAYER_LOGIC.fog_update()
 
 func buff_add(buff_name,buff_owner):
 	var buff_data = load("res://Buffs/%s.tscn" %buff_name)

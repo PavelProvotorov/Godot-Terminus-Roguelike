@@ -16,6 +16,7 @@ var sfx_death_3 = preload("res://Sounds/sfx_death_3.mp3")
 var sfx_death_4 = preload("res://Sounds/sfx_death_4.mp3")
 var sfx_explosion_0 = preload("res://Sounds/sfx_explosion_0.mp3")
 var sfx_teleport = preload("res://Sounds/sfx_teleport.mp3")
+var sfx_menu_move = preload("res://Sounds/sfx_menu_move.mp3")
 # SIGNALS
 #---------------------------------------------------------------------------------------
 signal on_sound_finished

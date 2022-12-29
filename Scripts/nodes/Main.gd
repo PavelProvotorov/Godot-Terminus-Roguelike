@@ -12,10 +12,8 @@ func _ready():
 	level_load("Level_1")
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL.level_mob_spawn("Player",Global.LEVEL_ENTRANCE)
-#	Global.LEVEL.level_mob_spawn("Grunt",Global.LEVEL_EXIT)
 	Global.LEVEL.target_entity = Global.NODE_PLAYER
 	
-#	Global.NODE_PLAYER.buff_add("Speed",Global.NODE_PLAYER)
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL_LAYER_LOGIC.fog_update()
 	yield(get_tree(),"idle_frame")
@@ -47,24 +45,28 @@ func level_change(level_name:String):
 	# Prevent Player action while level loads
 	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
 	
+	#Fade in screen
+	Global.NODE_GUI_TRANSITION.transition_in(3)
+	yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
+	
 	# Delete the current level
 	Global.LEVEL_LAYER_LOGIC.remove_child(Global.NODE_PLAYER)
 	current_level.visible = false
 	Global.NODE_MAIN.remove_child(current_level)
 	current_level.queue_free()
-#	print("test 1")
-#	yield(self.get_idle_frame(),"completed")
 	
 	# Load the next level
 	level_load(level_name)
-#	print("test 2")
-#	yield(self.get_idle_frame(),"completed")
 	Global.LEVEL_LAYER_LOGIC.add_child(Global.NODE_PLAYER)
 	Global.NODE_PLAYER.position = (Global.LEVEL_ENTRANCE * grid_size)
-#	print("test 3")
 	yield(self.get_idle_frame(),"completed")
-
+	
 	Global.LEVEL_LAYER_LOGIC.fog_update()
+	
+	#Fade out screen
+	Global.NODE_GUI_TRANSITION.transition_out(3)
+	yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
+
 	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
 	pass
 

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scripts/levelgen/Level.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/levelgen/LevelLogic.gd" type="Script" id=2]
-[ext_resource path="res://Resources/tilesets/TileSet_1.tres" type="TileSet" id=3]
+[ext_resource path="res://Resources/tilesets/TileSet_2.tres" type="TileSet" id=3]
 [ext_resource path="res://Resources/tilesets/TileSet_Logic.tres" type="TileSet" id=4]
 [ext_resource path="res://Resources/tilesets/TileSet_Fog.tres" type="TileSet" id=5]
 

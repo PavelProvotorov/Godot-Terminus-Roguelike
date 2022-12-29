@@ -9,6 +9,8 @@ const grid_size = 8
 onready var NODE_GUI = get_node("/root/Main/GUI")
 onready var NODE_TEXT = get_node("/root/Main/Text")
 onready var NODE_SOUNDS = get_node("/root/Main/Sounds")
+onready var NODE_GUI_TRANSITION= get_node("/root/Main/GUI/GUI_TRANSITION")
+onready var NODE_GUI_LAYER_MAIN = get_node("/root/Main/GUI/GUI_LAYER_MAIN")
 onready var NODE_UI_TEXT = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT")
 onready var NODE_UI_INVENTORY = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_INVENTORY")
 onready var NODE_UI_WEAPON = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_WEAPON")
@@ -38,10 +40,12 @@ var LEVEL
 var LEVEL_ENTRANCE
 var LEVEL_EXIT
 
+#var LEVEL_COUNT = 1
 var LEVEL_COUNT = 1
 
 #---------------------------------------------------------------------------------------
-var GAME_STATE = GAME_STATE_LIST.STATE_PLAYER_TURN
+#var GAME_STATE = GAME_STATE_LIST.STATE_PLAYER_TURN
+var GAME_STATE = GAME_STATE_LIST.STATE_MENU
 
 const GROUPS = {
 	ITEM = "ITEM",
@@ -85,6 +89,7 @@ enum AI_CLASS_LIST {
 	CLASS_NONE
 }
 enum GAME_STATE_LIST {
+	STATE_MENU,
 	STATE_PLAYER_TURN,
 	STATE_MOB_TURN,
 	STATE_PAUSE,
@@ -104,9 +109,12 @@ func game_state_manager(state):
 		print("< NO GAME STATE>")
 	elif GAME_STATE == GAME_STATE_LIST.STATE_PLAYER_TURN:
 		# Check through buffs on Player
+#		get_tree().call_group("PLAYER","buff_tick")
+#		yield(self.get_idle_frame(),"completed")
+#		Global.LEVEL_LAYER_LOGIC.fog_update()
+#		print("< PLAYER MOVEMENT STARTED >")
 		get_tree().call_group("PLAYER","buff_tick")
 		yield(self.get_idle_frame(),"completed")
-#		print("< PLAYER MOVEMENT STARTED >")
 		NODE_PLAYER.turn_count = 0
 	elif GAME_STATE == GAME_STATE_LIST.STATE_MOB_TURN:
 		# Check through buffs on Mobs

@@ -1281,3 +1281,26 @@
 #	yield(NODE_TWEEN,"tween_completed")
 #	NODE_TWEEN.emit_signal("tween_all_completed")
 #	pass
+
+#func _unhandled_input(key):
+#	var next_button
+#	for input in INPUT_LIST.values():
+#		if key.is_action_pressed(input) and Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_MENU:
+#			# UP KEY PRESSED
+#			if input == INPUT_LIST.UI_UP:
+#				if current_button.focus_previous != null:
+#					next_button = current_button.focus_previous.get_name(current_button.focus_previous.get_name_count()-1)
+#					self.get_node(next_button).grab_focus()
+#
+#			# DOWN KEY PRESSED
+#			if input == INPUT_LIST.UI_DOWN:
+#				print("inputdown")
+#				if current_button.focus_next != null:
+#					next_button = current_button.focus_next.get_name(current_button.focus_next.get_name_count()-1)
+#					self.get_node(next_button).grab_focus()
+#					print(self.get_node(next_button))
+
+
+#func _on_Button_focused(button):
+#	# Update the current button when a new button is focused
+#	current_button = button

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Resources/fonts/FONT_8BITWONDER_NORMAL.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Resources/fonts/FONT_UpheavalPro.tres" type="DynamicFont" id=2]
@@ -13,7 +13,54 @@
 [ext_resource path="res://Scripts/Weapon.gd" type="Script" id=11]
 [ext_resource path="res://Scripts/Armor.gd" type="Script" id=12]
 [ext_resource path="res://Scenes/ItemSlot.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Items/AssaultRifle.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Items/Shotgun.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Menu.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scripts/Transition.gd" type="Script" id=16]
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.0666667, 0.0627451, 0.0627451, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "animation_transition_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.0666667, 0.0627451, 0.0627451, 0 ), Color( 0.0666667, 0.0627451, 0.0627451, 1 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "animation_transition_out"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.0666667, 0.0627451, 0.0627451, 1 ), Color( 0.0666667, 0.0627451, 0.0627451, 0 ) ]
+}
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -284,16 +331,31 @@ script = ExtResource( 9 )
 [node name="GUI" type="CanvasLayer" parent="."]
 layer = 0
 
+[node name="GUI_TRANSITION" type="CanvasLayer" parent="GUI"]
+layer = 5
+script = ExtResource( 16 )
+
+[node name="ColorRect" type="ColorRect" parent="GUI/GUI_TRANSITION"]
+margin_right = 128.0
+margin_bottom = 72.0
+color = Color( 0.0666667, 0.0627451, 0.0627451, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GUI/GUI_TRANSITION"]
+anims/RESET = SubResource( 6 )
+anims/animation_transition_in = SubResource( 7 )
+anims/animation_transition_out = SubResource( 8 )
+
 [node name="GUI_LAYER_SHADER" type="CanvasLayer" parent="GUI"]
 layer = 4
 
 [node name="Chromatic_Aberration" type="ColorRect" parent="GUI/GUI_LAYER_SHADER"]
 material = SubResource( 2 )
-margin_right = 256.0
-margin_bottom = 144.0
+margin_right = 128.0
+margin_bottom = 72.0
 
 [node name="GUI_LAYER_MAIN" type="CanvasLayer" parent="GUI"]
 layer = 2
+visible = false
 
 [node name="UI_MAIN" type="TextureRect" parent="GUI/GUI_LAYER_MAIN"]
 margin_right = 128.0
@@ -403,7 +465,7 @@ script = ExtResource( 11 )
 
 [node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON" instance=ExtResource( 13 )]
 
-[node name="AssaultRifle" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON/ItemSlot" instance=ExtResource( 14 )]
+[node name="Shotgun" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON/ItemSlot" instance=ExtResource( 14 )]
 position = Vector2( 1, -2 )
 
 [node name="UI_ARMOR" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
@@ -415,6 +477,8 @@ rect_min_size = Vector2( 10, 8 )
 script = ExtResource( 12 )
 
 [node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_ARMOR" instance=ExtResource( 13 )]
+
+[node name="Menu" parent="GUI" instance=ExtResource( 15 )]
 
 [node name="Control" type="Control" parent="."]
 visible = false

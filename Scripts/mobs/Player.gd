@@ -45,6 +45,7 @@ signal on_action_finished
 #---------------------------------------------------------------------------------------
 var equiped_weapon = Global.NODE_UI_WEAPON.get_child(0).get_child(0)
 var stat_visibility:int = 7
+const stat_visibility_max:int = 7
 var stat_melee_dmg:int = 2
 #var stat_ranged_dmg:int = 3
 #var stat_weapon_range:int = 3
@@ -109,7 +110,9 @@ func _unhandled_input(key):
 					if input == INPUT_LIST.UI_LEFT:  action_collision_check(Vector2.LEFT)
 					if input == INPUT_LIST.UI_RIGHT: action_collision_check(Vector2.RIGHT)
 					if input == INPUT_LIST.UI_PICK:  action_interact(Vector2(0,0))
-					if input == INPUT_LIST.UI_SKIP:  check_turn()
+					if input == INPUT_LIST.UI_SKIP:  
+						turn_count = stat_speed
+						check_turn()
 					if input == INPUT_LIST.UI_SPACE: action_targets_check_shoot()
 					if input == INPUT_LIST.UI_1: action_use_item(1)
 					if input == INPUT_LIST.UI_2: action_use_item(2)
@@ -126,7 +129,9 @@ func _unhandled_input(key):
 					if input == INPUT_LIST.UI_DOWN:  action_shoot(Vector2.DOWN,equiped_weapon.stat_shoot_count)
 					if input == INPUT_LIST.UI_LEFT:  action_shoot(Vector2.LEFT,equiped_weapon.stat_shoot_count)
 					if input == INPUT_LIST.UI_RIGHT: action_shoot(Vector2.RIGHT,equiped_weapon.stat_shoot_count)
-					if input == INPUT_LIST.UI_SKIP:  check_turn()
+					if input == INPUT_LIST.UI_SKIP:  
+						turn_count = stat_speed
+						check_turn()
 					if input == INPUT_LIST.UI_SPACE: action_targets_disbale()
 					
 				# THROWING MODE
@@ -165,7 +170,7 @@ func action_targets_check_shoot():
 	
 	# Check for mob targes in range
 	for direction in directons:
-		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*equiped_weapon.stat_range)
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(equiped_weapon.stat_range,stat_visibility))
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -187,7 +192,7 @@ func action_targets_check_throw(stat_throwable_range):
 	
 	# Check for mob targes in range
 	for direction in directons:
-		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*stat_throwable_range)
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(stat_throwable_range,stat_visibility))
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -287,7 +292,6 @@ func action_interact(direction):
 		if collider.get_class() == "StaticBody2D":
 			if collider.is_in_group(Global.GROUPS.ITEM) == true:
 						collider.on_action_pickup()
-						yield(self.get_idle_frame(),"completed")
 						check_turn()
 	PLAYER_ACTION_INPUT = false
 
@@ -336,7 +340,7 @@ func action_shoot(direction,shoot_count):
 		get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 		
 		# Check for mob targes in range
-		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*equiped_weapon.stat_range)
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(equiped_weapon.stat_range,stat_visibility))
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -357,7 +361,8 @@ func action_shoot(direction,shoot_count):
 					yield(self.NODE_TWEEN,"tween_all_completed")
 					collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 					NODE_MAIN.z_index -= 1
-#					check_turn()
+		elif NODE_RAYCAST_COLLIDE.is_colliding() == false:
+			pass
 
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
@@ -398,11 +403,14 @@ func action_throw(direction):
 				action_throw_item = null
 				collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 				NODE_MAIN.z_index -= 1
-				check_turn()
+				
+	elif NODE_RAYCAST_COLLIDE.is_colliding() == false:
+		pass
 				
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
 	PLAYER_ACTION_INPUT = false
+	check_turn()
 	pass
 
 func raycast_cast_to(node_name,cell_start,cell_finish):
@@ -415,11 +423,14 @@ func check_turn():
 	get_tree().call_group("HOSTILE","disable_target")
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 	PLAYER_ACTION_SHOOT = false
+	yield(self.get_idle_frame(),"completed")
 	
 	# Check player turn count
 	turn_count += 1
-	if turn_count == stat_speed: Global.game_state_manager(Global.GAME_STATE_LIST.STATE_MOB_TURN)
-	elif turn_count != stat_speed: pass
+	if turn_count >= stat_speed: 
+		Global.game_state_manager(Global.GAME_STATE_LIST.STATE_MOB_TURN)
+	elif turn_count != stat_speed: 
+		pass
 	
 func get_negative_vector(origin_vector, destination_vector):
 	var negative_vector = (destination_vector - origin_vector).tangent().tangent() + origin_vector

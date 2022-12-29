@@ -54,7 +54,6 @@ onready var LEVEL_DATA = {
 			"Grunt": 100,
 			"Parasite": 100,
 			"Bloater": 50,
-#			"Hydra": 25,
 			"Colony": 15
 		},
 		"ITEMS": {
@@ -77,7 +76,6 @@ onready var LEVEL_DATA = {
 			"Grunt": 100,
 			"Parasite": 100,
 			"Bloater": 75,
-#			"Hydra": 50,
 			"Colony": 25
 		},
 		"ITEMS": {
@@ -166,6 +164,90 @@ onready var LEVEL_DATA = {
 			"Goo": 100,
 			"Horror": 75,
 			"Sludge": 100 
+		},
+		"ITEMS": {
+			"Ammo": 100,
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
+		},
+	},
+	9: {
+		"LEVELS": {
+			"Level_3": 100
+		},
+		"MOBS": {
+			"Wart": 100,
+			"Hydra": 50,
+			"Behemoth": 25
+		},
+		"ITEMS": {
+			"Ammo": 100,
+			"Medkit": 100,
+			"Adrenalin": 100,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
+		},
+	},
+	10: {
+		"LEVELS": {
+			"Level_3": 100
+		},
+		"MOBS": {
+			"Wart": 100,
+			"Hydra": 75,
+			"Behemoth": 50
+		},
+		"ITEMS": {
+			"Ammo": 100,
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
+		},
+	},
+	11: {
+		"LEVELS": {
+			"Level_3": 100
+		},
+		"MOBS": {
+			"Wart": 100,
+			"Hydra": 100,
+			"Behemoth": 75
+		},
+		"ITEMS": {
+			"Ammo": 100,
+			"Medkit": 100,
+			"Adrenalin": 10,
+			"Steroids": 10,
+			"Grenade": 10,
+			"Teleport": 10,
+			"TacticalShotgun": 5,
+			"AssaultRifle": 5,
+			"Shotgun": 5
+		},
+	},
+	12: {
+		"LEVELS": {
+			"Level_3": 100
+		},
+		"MOBS": {
+			"Wart": 100,
+			"Hydra": 100,
+			"Behemoth": 100
 		},
 		"ITEMS": {
 			"Ammo": 100,
