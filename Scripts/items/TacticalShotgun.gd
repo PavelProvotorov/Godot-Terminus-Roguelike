@@ -3,7 +3,7 @@ extends Item2D
 var sound_on_ranged = Sound.sfx_shoot_1
 var stat_ranged_dmg = 4
 var stat_shoot_count = 1
-var stat_range = 3
+var stat_range = 2
 
 # READY
 #---------------------------------------------------------------------------------------

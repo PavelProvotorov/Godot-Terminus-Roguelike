@@ -7,6 +7,7 @@ var tilemap_astar_points:Array
 var tilemap_astar_cells:Array
 var tilemap_scan_node
 
+var grid_size = Global.grid_size
 var map_width = Global.map_width
 var map_height = Global.map_height
 var min_width
@@ -90,10 +91,6 @@ func generator_room_prepare():
 #	stop_width = min_width * 2 + 1
 	min_width = randi() % 7
 	stop_width = min_width + 1
-	
-	print("---------------------")
-	print(min_width)
-	print(stop_width)
 	
 	# Generate room (while loop to avoid no tile rooms)
 	while generator_on == true:
@@ -291,7 +288,6 @@ func generator_room_add_passage():
 	randomize()
 	var cell:Vector2
 	var room = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
-	print(room)
 	
 	if room != []: 
 		generator_on = false
@@ -555,9 +551,9 @@ func fog_fill():
 
 func fog_update():
 	var cell_array:Array
-	
-	var player = Global.LEVEL_LAYER_LOGIC.get_node("Player")
-	var player_position = Global.LEVEL_LAYER_LOGIC.world_to_map(player.get_global_position())
+
+	var player = Global.NODE_PLAYER
+	var player_position = player.position/grid_size
 	
 	var fog_range = player.stat_visibility
 	var rect_start = Vector2(player_position.x - fog_range, player_position.y - fog_range)
@@ -566,15 +562,23 @@ func fog_update():
 	var rect_height = ((rect_close.y - rect_start.y)+1)
 	var rect = Rect2(rect_start,rect_close)
 	
+	# Add collider exceptions
+	get_raycast_exceptions(player.NODE_RAYCAST_FOG,Global.GROUPS.ITEM)
+	get_raycast_exceptions(player.NODE_RAYCAST_FOG,Global.GROUPS.KINEMATIC)
+	
+	get_raycast_exceptions(player.NODE_RAYCAST_MOB,Global.GROUPS.ITEM)
+	
 	fog_fill()
 	
-	#FOG SPECIFIC CHECK
+	#FOG SPECIFIC RAYCAST CHECK
+	# Prepare cells to check
 	cell_array = []
 	for x in range(0, rect_width):
 		for y in range(0, rect_height):
 			var cell = Vector2((rect_start.x + x),(rect_start.y + y))
 			cell_array.append(cell)
-
+			
+	# Check cells
 	for cell in cell_array:
 		player.raycast_cast_to(player.NODE_RAYCAST_FOG,player_position,cell)
 		if player.NODE_RAYCAST_FOG.is_colliding() == true:
@@ -582,24 +586,18 @@ func fog_update():
 			var raycast_collider_point = player.NODE_RAYCAST_FOG.get_collision_point()
 			var raycast_collider_position = self.world_to_map(raycast_collider_point)
 			if raycast_collider == Global.LEVEL_LAYER_LOGIC:
-				var raycast_collider_title = Global.LEVEL_LAYER_LOGIC.get_cellv(raycast_collider_position)
-				if raycast_collider_title == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_BLOCK: pass
 				Global.LEVEL_LAYER_FOG.set_cell(raycast_collider_position.x, raycast_collider_position.y, TILESET_FOG.TILE_NONE)
-			elif raycast_collider.is_in_group(Global.GROUPS.KINEMATIC):
-				player.NODE_RAYCAST_FOG.add_exception(raycast_collider)
-				Global.LEVEL_LAYER_FOG.set_cell(cell.x, cell.y, TILESET_FOG.TILE_NONE)
-			elif raycast_collider.is_in_group(Global.GROUPS.ITEM):
-				player.NODE_RAYCAST_FOG.add_exception(raycast_collider)
-				Global.LEVEL_LAYER_FOG.set_cell(cell.x, cell.y, TILESET_FOG.TILE_NONE)
-		if player.NODE_RAYCAST_FOG.is_colliding() == false:
+		else:
 			Global.LEVEL_LAYER_FOG.set_cell(cell.x, cell.y, TILESET_FOG.TILE_NONE)
 			
-	#MOB SPECIFIC CHECK
+	#MOB SPECIFIC RAYCAST CHECK
 	cell_array = []
 	rect_start = Vector2(player_position.x - (fog_range+2), player_position.y - (fog_range+2))
 	rect_close = Vector2(player_position.x + (fog_range+2), player_position.y + (fog_range+2))
 	rect_width = ((rect_close.x - rect_start.x)+2)
 	rect_height = ((rect_close.y - rect_start.y)+2)
+	
+	# Prepare cells to check
 	for x in range(0, rect_width):
 		for y in range(0, rect_height):
 			var cell = Vector2((rect_start.x + x),(rect_start.y + y))
@@ -612,19 +610,13 @@ func fog_update():
 			var raycast_collider = player.NODE_RAYCAST_MOB.get_collider()
 			var raycast_collider_point = player.NODE_RAYCAST_MOB.get_collision_point()
 			var raycast_collider_position = self.world_to_map(raycast_collider_point)
-			if raycast_collider == Global.LEVEL_LAYER_LOGIC:
-				pass
-			elif raycast_collider.is_in_group(Global.GROUPS.ITEM):
-				player.NODE_RAYCAST_MOB.add_exception(raycast_collider)
-			elif raycast_collider.is_in_group(Global.GROUPS.HOSTILE) && raycast_collider.AI_state != Global.AI_STATE_LIST.STATE_WANDER:
+			if raycast_collider.is_in_group(Global.GROUPS.HOSTILE) && raycast_collider.AI_state != Global.AI_STATE_LIST.STATE_WANDER:
 				raycast_collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 				player.NODE_RAYCAST_MOB.add_exception(raycast_collider)
-#			elif raycast_collider.is_in_group(Global.GROUPS.HOSTILE):
-#				raycast_collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
-				player.NODE_RAYCAST_MOB.add_exception(raycast_collider)
-		if player.NODE_RAYCAST_MOB.is_colliding() == false:
+		else:
 			pass
 	
+	player.NODE_RAYCAST_FOG.clear_exceptions()
 	player.NODE_RAYCAST_MOB.clear_exceptions()
 	emit_signal("fog_update_completed")
 
@@ -673,3 +665,12 @@ func util_chance(percentage):
 		return true
 	else:                     
 		return false
+
+func get_raycast_exceptions(raycast,group):
+	var node_to_scan = Global.LEVEL_LAYER_LOGIC
+	var node_to_scan_size:int = node_to_scan.get_child_count()
+	for i in node_to_scan_size:
+		var node_child = node_to_scan.get_child(i)
+		if node_child.is_in_group(group) == true:
+			raycast.add_exception(node_child)
+	pass

@@ -1304,3 +1304,36 @@
 #func _on_Button_focused(button):
 #	# Update the current button when a new button is focused
 #	current_button = button
+
+#	var player = Global.LEVEL_LAYER_LOGIC.get_node("Player")
+#	var player_position = Global.LEVEL_LAYER_LOGIC.world_to_map(player.get_global_position())
+
+#	for cell in cell_array:
+#		player.raycast_cast_to(player.NODE_RAYCAST_MOB,player_position,cell)
+#		player.NODE_RAYCAST_MOB.force_raycast_update()
+#		if player.NODE_RAYCAST_MOB.is_colliding() == true:
+#			var raycast_collider = player.NODE_RAYCAST_MOB.get_collider()
+#			var raycast_collider_point = player.NODE_RAYCAST_MOB.get_collision_point()
+#			var raycast_collider_position = self.world_to_map(raycast_collider_point)
+#			if raycast_collider == Global.LEVEL_LAYER_LOGIC:
+#				pass
+##			elif raycast_collider.is_in_group(Global.GROUPS.ITEM):
+##				player.NODE_RAYCAST_MOB.add_exception(raycast_collider)
+#			elif raycast_collider.is_in_group(Global.GROUPS.HOSTILE) && raycast_collider.AI_state != Global.AI_STATE_LIST.STATE_WANDER:
+#				raycast_collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
+#				player.NODE_RAYCAST_MOB.add_exception(raycast_collider)
+##			elif raycast_collider.is_in_group(Global.GROUPS.HOSTILE):
+##				raycast_collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
+##				player.NODE_RAYCAST_MOB.add_exception(raycast_collider)
+#		if player.NODE_RAYCAST_MOB.is_colliding() == false:
+#			pass
+
+#			elif raycast_collider.is_in_group(Global.GROUPS.KINEMATIC):
+#				player.NODE_RAYCAST_FOG.add_exception(raycast_collider)
+#				Global.LEVEL_LAYER_FOG.set_cell(cell.x, cell.y, TILESET_FOG.TILE_NONE)
+#			elif raycast_collider.is_in_group(Global.GROUPS.ITEM):
+#				player.NODE_RAYCAST_FOG.add_exception(raycast_collider)
+#				Global.LEVEL_LAYER_FOG.set_cell(cell.x, cell.y, TILESET_FOG.TILE_NONE)
+
+#				var raycast_collider_title = Global.LEVEL_LAYER_LOGIC.get_cellv(raycast_collider_position)
+#				if raycast_collider_title == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_BLOCK: pass
