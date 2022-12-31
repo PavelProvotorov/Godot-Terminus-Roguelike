@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/sfx_shoot_3.mp3-1d42cb37e379a05ba3ab8220f0237a6a.mp3str"
+
+[deps]
+
+source_file="res://Sounds/sfx_shoot_3.mp3"
+dest_files=[ "res://.import/sfx_shoot_3.mp3-1d42cb37e379a05ba3ab8220f0237a6a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

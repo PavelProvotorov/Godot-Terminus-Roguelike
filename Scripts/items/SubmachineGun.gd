@@ -1,15 +1,15 @@
 extends Item2D
 
-var sound_on_ranged = Sound.sfx_shoot_1
-var stat_ranged_dmg = 3
-var stat_shoot_count = 1
-var stat_range = 2
+var sound_on_ranged = Sound.sfx_shoot_2
+var stat_ranged_dmg = 2
+var stat_shoot_count = 2
+var stat_range = 3
 
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	item_name = "Shotgun"
+	item_name = "Submachine Gun"
 	NODE_NAME.set_text(item_name)
 	pass
 

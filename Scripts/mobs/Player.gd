@@ -331,6 +331,7 @@ func action_shoot(direction,shoot_count):
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_SHOOT = false
 	
+	var turn_used:bool = false
 	for count in shoot_count:
 		# Disable target animation
 		get_tree().call_group("HOSTILE","disable_target")
@@ -360,11 +361,13 @@ func action_shoot(direction,shoot_count):
 					yield(self.NODE_TWEEN,"tween_all_completed")
 					collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 					NODE_MAIN.z_index -= 1
+					turn_used = true
 		else: pass
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
 	PLAYER_ACTION_INPUT = false
-	check_turn()
+	if turn_used == true: 
+		check_turn()
 
 func action_throw(direction):
 	PLAYER_ACTION_INPUT = true

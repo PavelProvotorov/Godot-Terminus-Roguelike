@@ -20,9 +20,3 @@ func on_action_pickup():
 	Global.NODE_PLAYER.spawn_text(item_name,self.position/grid_size,Color.white,0.0)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
 	pass
-
-func on_action_use():
-	pass
-
-func on_action_tick():
-	pass
