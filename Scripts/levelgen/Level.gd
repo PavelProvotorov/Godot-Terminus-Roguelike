@@ -48,14 +48,16 @@ func _ready():
 func manager_mob():
 #	print("---------------------------------------------------------")
 #	print("THE QUEUE SIZE IS: %s" %level_queue.size())
-	if level_queue.size() != 0:
+	if level_queue.size() != 0 and Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_MOB_TURN:
 		for mob in (level_queue.size()):
 			moving_entity = Global.LEVEL_LAYER_LOGIC.get_node(level_queue[mob][1])
 			manager_mob_actions()
 			yield(self,"on_manager_mob_actions_finished")
 #	print("< MANAGER MOB FINISHED, CHANGE TO PLAYER >")
-	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
-	pass
+	if Global.GAME_STATE != Global.GAME_STATE_LIST.STATE_NONE:
+		Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
+	else:
+		Global.NODE_MAIN.level_game_over()
 
 func manager_mob_actions():
 	
@@ -217,7 +219,6 @@ func mob_action_move(cellA:Vector2,cellB:Vector2):
 	if cellA - cellB == Vector2(-grid_size,0): moving_entity.animation_flip(false,false)
 	if cellA - cellB == Vector2(grid_size,0): moving_entity.animation_flip(true,false)
 	Sound.sound_spawn(Global.NODE_SOUNDS,moving_entity.sound_on_move,moving_entity_position)
-#	Sound.play_sound(moving_entity,moving_entity.sound_on_move)
 	moving_entity.action_move_tween(cellA,cellB)
 	
 	#MOB MOVEMENT | FINISH
@@ -234,7 +235,6 @@ func mob_action_attack(cellA:Vector2,cellB:Vector2):
 	if cellA - cellB == Vector2(grid_size,0): moving_entity.animation_flip(true,false)
 
 	moving_entity.z_index += 1
-#	Sound.play_sound(moving_entity,moving_entity.sound_on_melee)
 	Sound.sound_spawn(Global.NODE_SOUNDS,moving_entity.sound_on_melee,moving_entity_position)
 	moving_entity.calculate_melee_damage(moving_entity,target_entity)
 	moving_entity.action_attack_tween(cellA,cellB)
@@ -254,7 +254,6 @@ func mob_action_shoot(cellA:Vector2,cellB:Vector2):
 	if cellA - cellB == Vector2(grid_size,0): moving_entity.animation_flip(true,false)
 
 	moving_entity.z_index += 1
-#	Sound.play_sound(moving_entity,moving_entity.sound_on_ranged)
 	Sound.sound_spawn(Global.NODE_SOUNDS,moving_entity.sound_on_ranged,moving_entity_position)
 	moving_entity.calculate_ranged_damage(moving_entity,target_entity,moving_entity.stat_ranged_dmg)
 	moving_entity.action_shoot_tween(cellA,get_negative_vector(cellA,cellB))
@@ -354,7 +353,8 @@ func level_mob_spawn(mob_name,mob_position:Vector2):
 	var mob_instance = mob_data.instance()
 	Global.LEVEL_LAYER_LOGIC.add_child(mob_instance)
 	mob_instance.set_global_position(Vector2((mob_position.x)*grid_size,(mob_position.y)*grid_size))
-	yield(self.get_idle_frame(),"completed")
+#	yield(self.get_idle_frame(),"completed")
+	return mob_instance
 
 func level_mob_spawn_tween(mob_name,mob_position_a:Vector2,mob_position_b:Vector2):
 	var mob_data = load("res://Mobs/%s.tscn" %mob_name)

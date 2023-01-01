@@ -2,5 +2,5 @@
 
 [ext_resource path="res://Scripts/buffs/Blindness.gd" type="Script" id=1]
 
-[node name="Blindness" type="Node2D"]
+[node name="Blindness" type="Node2D" groups=["BUFF"]]
 script = ExtResource( 1 )

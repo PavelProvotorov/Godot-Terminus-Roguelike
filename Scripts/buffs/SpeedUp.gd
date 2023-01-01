@@ -12,7 +12,7 @@ func _ready():
 
 func buff_on_action_add():
 	buff_owner.stat_speed += 1
-	yield(self.get_idle_frame(),"completed")
+#	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
 	pass
 

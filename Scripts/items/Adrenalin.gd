@@ -23,6 +23,8 @@ func on_action_use():
 	Global.NODE_PLAYER.calculate_melee_damage(self,Global.NODE_PLAYER)
 	Global.NODE_PLAYER.spawn_text("Speed Up",Global.NODE_PLAYER.position/grid_size,Color.white,0.2)
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_hit_0,Global.NODE_PLAYER.position/grid_size)
+	if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_NONE:
+		Global.NODE_MAIN.level_game_over()
 	item_remove_from_inventory(item_parent)
 	pass
 

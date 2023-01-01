@@ -30,26 +30,40 @@ func _ready():
 #---------------------------------------------------------------------------------------
 func calculate_melee_damage(is_attacker,is_target):
 	is_target.stat_health -= is_attacker.stat_melee_dmg
-	if is_target.stat_health <= 0:
+	if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
 		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
 		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
+	elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
+		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
+		Global.NODE_PLAYER.stat_health = 0
+		Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
+		Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
 	else:
 		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightgray,0.0)
-#		is_target.queue_free()
 	
 func calculate_ranged_damage(is_attacker,is_target,attacker_ranged_damage):
 	is_target.stat_health -= attacker_ranged_damage
-	if is_target.stat_health <= 0:
+	if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
 		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
 		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+	elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
+		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+		Global.NODE_PLAYER.stat_health = 0
+		Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
+		Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
 	else:
 		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightgray,0.0)
 
 func calculate_other_damage(is_attacker_damage,is_target):
 	is_target.stat_health -= is_attacker_damage
-	if is_target.stat_health <= 0:
+	if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
 		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
 		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+	elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
+		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+		Global.NODE_PLAYER.stat_health = 0
+		Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
+		Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
 	else:
 		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.gray,0.0)
 
@@ -115,8 +129,8 @@ func raycast_cast_to(node_name,cell_start,cell_finish):
 	node_name.cast_to = Vector2(cell_cast_to.x,cell_cast_to.y)
 	node_name.force_raycast_update()
 
-func spawn_text(text_value,text_position:Vector2,color_type:Color,time_seconds:float):
-	yield(get_tree().create_timer(time_seconds),"timeout")
+func spawn_text(text_value,text_position:Vector2,color_type:Color,_time_seconds:float):
+#	yield(get_tree().create_timer(time_seconds),"timeout")
 	var text_data = load("res://Scenes/FloatingText.tscn")
 	var text_instance = text_data.instance()
 	text_instance.text = text_value

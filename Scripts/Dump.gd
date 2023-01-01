@@ -1337,3 +1337,6 @@
 
 #				var raycast_collider_title = Global.LEVEL_LAYER_LOGIC.get_cellv(raycast_collider_position)
 #				if raycast_collider_title == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_BLOCK: pass
+
+#	min_width = randi() % 3 +1
+#	stop_width = min_width * 2 + 1

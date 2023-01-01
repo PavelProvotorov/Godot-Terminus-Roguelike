@@ -23,6 +23,7 @@ onready var NODE_UI_TEXTLOG = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT/UI
 onready var NODE_TEXTLOG = get_node("/root/Main/Control/TextLog")
 onready var NODE_MAIN = get_node("/root/Main")
 
+var NODE_MENU
 var NODE_PLAYER
 
 # LEVEL VARIABLES

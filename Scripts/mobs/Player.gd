@@ -3,7 +3,6 @@ extends Mob2D
 onready var NODE_RAYCAST_MOB = $RayCastMob
 onready var NODE_RAYCAST_FOG = $RayCastFog
 onready var NODE_CAMERA_2D = $Camera2D
-onready var NODE_ITEMS = $Items
 
 var AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 var AI_class = Global.AI_CLASS_LIST.CLASS_NONE
@@ -34,12 +33,13 @@ var PLAYER_ACTION_THROW = false
 var PLAYER_ACTION_INPUT = false
 var PLAYER_ACTION_TEXT = false
 
-# SIGNALS
-#---------------------------------------------------------------------------------------
-signal on_action_finished
-
 # SOUNDS
 #---------------------------------------------------------------------------------------
+var sound_on_move = Sound.sfx_move
+var sound_on_hit = Sound.sfx_hit_0
+var sound_on_melee = Sound.sfx_punch_0
+var sound_on_death = Sound.sfx_death_1
+var sound_on_noammo = Sound.sfx_noammo
 
 # STATS
 #---------------------------------------------------------------------------------------
@@ -57,16 +57,9 @@ const stat_speed_max:int = 99
 var stat_health:int = 10
 const stat_health_max:int = 99
 
-var sound_on_move = Sound.sfx_move
-var sound_on_hit = Sound.sfx_hit_0
-var sound_on_melee = Sound.sfx_punch_0
-#var sound_on_ranged = Sound.sfx_shoot_1
-var sound_on_death = Sound.sfx_death_1
-var sound_on_noammo = Sound.sfx_noammo
-
 # READY
 #---------------------------------------------------------------------------------------
-func _physics_process(delta):
+func _physics_process(_delta):
 #	if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_PLAYER_TURN:
 #		_unhandled_input(Input)
 	ui_update()
@@ -426,6 +419,16 @@ func check_turn():
 		Global.game_state_manager(Global.GAME_STATE_LIST.STATE_MOB_TURN)
 	elif turn_count != stat_speed: 
 		pass
+
+func player_to_default():
+	Global.NODE_UI_INVENTORY.clear_inventory()
+	self.equiped_weapon = Data.shotgun.instance()
+	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
+	self.NODE_ANIMATED_SPRITE.visible = true
+	self.stat_health = 10
+	self.stat_ammo = 12
+	self.stat_speed = 1
+	pass
 	
 func get_negative_vector(origin_vector, destination_vector):
 	var negative_vector = (destination_vector - origin_vector).tangent().tangent() + origin_vector

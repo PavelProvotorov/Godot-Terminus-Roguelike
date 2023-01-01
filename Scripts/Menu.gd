@@ -6,6 +6,7 @@ onready var NODE_BACKGROUND = $Background
 onready var NODE_VBOX_CONTAINER = $VBoxContainer
 
 func _ready():
+	Global.NODE_MENU = self
 	current_button.grab_focus()
 
 # START BUTTON PRESSED
@@ -14,7 +15,6 @@ func _on_Button1_pressed():
 	
 	#Fade in screen
 	Global.NODE_GUI_TRANSITION.transition_in(1)
-#	yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
 	
 	NODE_BACKGROUND.visible = false
 	NODE_VBOX_CONTAINER.visible = false
@@ -22,7 +22,6 @@ func _on_Button1_pressed():
 	
 	#Fade out screen
 	Global.NODE_GUI_TRANSITION.transition_out(2)
-#	yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
 	
 	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
 	pass

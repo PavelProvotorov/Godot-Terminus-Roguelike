@@ -1,5 +1,7 @@
 extends Node
 
+var shotgun = preload("res://Items/Shotgun.tscn")
+
 # LEVELS
 #---------------------------------------------------------------------------------------
 onready var LEVEL_DATA = {
@@ -221,7 +223,7 @@ onready var LEVEL_DATA = {
 		"ITEMS": {
 			"Ammo": 100,
 			"Medkit": 100,
-			"Adrenalin": 100,
+			"Adrenalin": 10,
 			"Steroids": 10,
 			"Grenade": 10,
 			"Teleport": 10,

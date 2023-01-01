@@ -87,8 +87,6 @@ func generator_room_prepare():
 	# Get border cells
 	map_border = []
 	map_border = get_used_cells_by_id(TILESET_LOGIC.TILE_EMPTY)
-#	min_width = randi() % 3 +1
-#	stop_width = min_width * 2 + 1
 	min_width = randi() % 7
 	stop_width = min_width + 1
 	
@@ -97,8 +95,8 @@ func generator_room_prepare():
 		generator_room_subdivide(4, 1, map_width - 4, map_height - 2)
 		generator_room_clear_dead_doors()
 		generator_room_get_rooms()
-		generator_room_fill_oneway_rooms(round(rand_range(0,1)))
-		generator_room_add_arks(round(rand_range(0,3)))
+		generator_room_fill_oneway_rooms(round(rand_range(0,1))as int)
+		generator_room_add_arks(round(rand_range(0,3))as int)
 		generator_room_clear_final()
 		generator_room_add_passage()
 	
@@ -294,21 +292,20 @@ func generator_room_add_passage():
 		#ADD ENTRANCE
 		room.shuffle()
 		cell = (room[rand_range(0,room.size())])
-		self.set_cell(cell.x,cell.y,TILESET_LOGIC.TILE_ENTRANCE)
+		self.set_cell(cell.x as int,cell.y as int,TILESET_LOGIC.TILE_ENTRANCE)
 		room.erase(cell)
 		Global.LEVEL_ENTRANCE = cell
 				
 		#ADD EXIT
 		room.shuffle()
 		cell = (room[rand_range(0,room.size())])
-		self.set_cell(cell.x,cell.y,TILESET_LOGIC.TILE_EXIT)
+		self.set_cell(cell.x as int,cell.y as int,TILESET_LOGIC.TILE_EXIT)
 		room.erase(cell)
 		Global.LEVEL_EXIT = cell
 	else:
 		return
 
 func generator_room_flood_fill(cell_x,cell_y):
-	var empty_cells_array = []
 	var room = []
 	var to_fill = [Vector2(cell_x, cell_y)]
 	while to_fill:
@@ -339,7 +336,6 @@ func generator_room_add_mobs():
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var mob_count  = (round(rand_range(3,6)))
 	var mobs_spawned:int = 0
-	var done:bool = false
 	
 	#Remove cells, to not spawn mobs around spawn
 	for direction in Global.DIRECTION_LIST_8:
@@ -365,7 +361,6 @@ func generator_room_add_items():
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var item_count  = (round(rand_range(1,3)))
 	var items_spawned:int = 0
-	var done:bool = false
 	
 	while items_spawned != item_count:
 		randomize()

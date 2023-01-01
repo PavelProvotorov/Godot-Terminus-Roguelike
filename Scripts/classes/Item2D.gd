@@ -13,17 +13,16 @@ onready var count:int
 func _ready():
 	pass
 	
-func item_remove(item_parent):
-	item_parent.remove_child(self)
+func item_remove(parent):
+	parent.remove_child(self)
 	pass
 
-func item_remove_from_inventory(item_parent):
-	item_parent.remove_child(self)
-	item_parent.queue_free()
+func item_remove_from_inventory(parent):
+	parent.remove_child(self)
+	parent.queue_free()
 	pass
 
 func item_add_to_inventory(item):
-	var inventory_slots = Global.NODE_UI_INVENTORY.get_children()
 	if Global.NODE_UI_INVENTORY.get_child_count() < Global.NODE_UI_INVENTORY.item_slots_max:
 		# ADD NEW ITEM SLOT
 		var item_slot_data = load("res://Scenes/ItemSlot.tscn")
@@ -52,6 +51,21 @@ func weapon_add_to_inventory(item,player_position):
 	item.item_parent = weapon_slot
 	item.position = Vector2(1,-2)
 	Global.LEVEL_LAYER_LOGIC.remove_child(item)
+	weapon_slot.add_child(item)
+	
+	# ASSIGN WEAPON TO PLAYER
+	Global.NODE_PLAYER.equiped_weapon = item
+
+func weapon_replace_in_inventory(item):
+	var weapon_slot = Global.NODE_UI_WEAPON.get_child(0)
+	var weapon_slot_child = weapon_slot.get_child(0)
+	
+	# DELETE OLD WEAPON FROM SLOT
+	weapon_slot.remove_child(weapon_slot_child)
+	
+	# ADD NEW WEAPON TO SLOT
+	item.item_parent = weapon_slot
+	item.position = Vector2(1,-2)
 	weapon_slot.add_child(item)
 	
 	# ASSIGN WEAPON TO PLAYER
