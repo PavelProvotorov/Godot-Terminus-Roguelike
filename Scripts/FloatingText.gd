@@ -22,7 +22,7 @@ func float_tween():
 	NODE_TWEEN.interpolate_property(self,"scale",scale,Vector2(0.7,0.7),0.2,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 	NODE_TWEEN.start()
 	yield(NODE_TWEEN,"tween_completed")
-	NODE_TWEEN.interpolate_property(self,"scale",Vector2(0.7,0.7),Vector2(0.3,0.3),0.3,Tween.TRANS_LINEAR,Tween.EASE_OUT)
+	NODE_TWEEN.interpolate_property(self,"scale",Vector2(0.7,0.7),Vector2(0.3,0.3),0.4,Tween.TRANS_LINEAR,Tween.EASE_OUT)
 	NODE_TWEEN.start()
 	yield(NODE_TWEEN,"tween_completed")
 	NODE_TWEEN.emit_signal("tween_all_completed")

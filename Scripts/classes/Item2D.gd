@@ -38,6 +38,18 @@ func item_add_to_inventory(item):
 	else: 
 		pass
 
+func item_prepare_text():
+	var text_list = Data.TEXT_DATA.values()
+	var text = text_list[randi() % text_list.size()]
+	return text
+
+func item_display_text(item,text):
+	Global.NODE_PLAYER.PLAYER_ACTION_TEXT = true
+	Global.NODE_UI_TEXT.show()
+	Global.NODE_UI_TEXTLOG.text = text
+	Global.NODE_UI_TEXTLOG.show_text()
+	pass
+
 func weapon_add_to_inventory(item,player_position):
 	var weapon_slot = Global.NODE_UI_WEAPON.get_child(0)
 	var weapon_slot_child = weapon_slot.get_child(0)

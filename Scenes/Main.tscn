@@ -9,7 +9,6 @@
 [ext_resource path="res://Scripts/Textlog.gd" type="Script" id=7]
 [ext_resource path="res://Assets/ui_text.png" type="Texture" id=8]
 [ext_resource path="res://Scripts/nodes/Main.gd" type="Script" id=9]
-[ext_resource path="res://Resources/fonts/FONT_UpheavalPro_Small.tres" type="DynamicFont" id=10]
 [ext_resource path="res://Scripts/Weapon.gd" type="Script" id=11]
 [ext_resource path="res://Scripts/Armor.gd" type="Script" id=12]
 [ext_resource path="res://Scenes/ItemSlot.tscn" type="PackedScene" id=13]
@@ -89,6 +88,11 @@ shader_param/amount = 0.1
 
 [sub_resource type="DynamicFont" id=4]
 size = 6
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 3
+extra_spacing_bottom = -1
 font_data = ExtResource( 5 )
 
 [sub_resource type="Theme" id=5]
@@ -433,15 +437,15 @@ margin_bottom = 72.0
 texture = ExtResource( 8 )
 
 [node name="UI_TEXTLOG" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_TEXT"]
-margin_left = 32.0
-margin_top = 8.0
-margin_right = 96.0
-margin_bottom = 64.0
-rect_min_size = Vector2( 16, 16 )
-custom_fonts/font = ExtResource( 10 )
+margin_left = 33.0
+margin_top = 13.0
+margin_right = 95.0
+margin_bottom = 35.0
+custom_fonts/font = SubResource( 9 )
 text = "< Become aware of happiness once you have lost it. Then an age comes, a second one, in which you already know, at the moment when you begin to experience true happiness, that you are, at the end of the day, going to lose it. When I met Belle, I understood that I had just entered this second age. I also understood that I hadn’t reached the third age, in which anticipation of the loss of happiness prevents you from living. >"
 autowrap = true
 clip_text = true
+max_lines_visible = 7
 script = ExtResource( 7 )
 
 [node name="UI_INVENTORY" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]

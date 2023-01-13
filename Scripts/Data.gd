@@ -2,6 +2,14 @@ extends Node
 
 var shotgun = preload("res://Items/Shotgun.tscn")
 
+# TEXT
+#---------------------------------------------------------------------------------------
+onready var TEXT_DATA = {
+	"text_0": "this is text 0",
+	"text_1": "this is text 1",
+	"text_2": "this is text 2"
+}
+
 # LEVELS
 #---------------------------------------------------------------------------------------
 onready var LEVEL_DATA = {
@@ -27,7 +35,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	2: {
@@ -53,7 +62,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	3: {
@@ -79,7 +89,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	4: {
@@ -105,7 +116,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	5: {
@@ -130,7 +142,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	6: {
@@ -156,7 +169,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	7: {
@@ -182,7 +196,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	8: {
@@ -208,7 +223,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	9: {
@@ -218,7 +234,8 @@ onready var LEVEL_DATA = {
 		"MOBS": {
 			"Wart": 100,
 			"Hydra": 50,
-			"Behemoth": 25
+			"Behemoth": 25,
+			"Infestinator": 5,
 		},
 		"ITEMS": {
 			"Ammo": 100,
@@ -233,7 +250,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	10: {
@@ -243,7 +261,8 @@ onready var LEVEL_DATA = {
 		"MOBS": {
 			"Wart": 100,
 			"Hydra": 75,
-			"Behemoth": 50
+			"Behemoth": 50,
+			"Infestinator": 25
 		},
 		"ITEMS": {
 			"Ammo": 100,
@@ -258,7 +277,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	11: {
@@ -268,7 +288,8 @@ onready var LEVEL_DATA = {
 		"MOBS": {
 			"Wart": 100,
 			"Hydra": 100,
-			"Behemoth": 75
+			"Behemoth": 75,
+			"Infestinator": 50
 		},
 		"ITEMS": {
 			"Ammo": 100,
@@ -283,7 +304,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 	12: {
@@ -293,7 +315,8 @@ onready var LEVEL_DATA = {
 		"MOBS": {
 			"Wart": 100,
 			"Hydra": 100,
-			"Behemoth": 100
+			"Behemoth": 100,
+			"Infestinator": 100
 		},
 		"ITEMS": {
 			"Ammo": 100,
@@ -308,7 +331,8 @@ onready var LEVEL_DATA = {
 			"HuntingRifle": 5,
 			"SniperRifle": 5,
 			"SawnOff": 5,
-			"Shotgun": 5
+			"Shotgun": 5,
+			"BigDan001": 5
 		},
 	},
 }

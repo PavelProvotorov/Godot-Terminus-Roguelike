@@ -654,6 +654,16 @@ func util_get_occupied_cells():
 			occupied_cells.append(child_position)
 	return occupied_cells
 
+func util_get_free_fog_cells():
+	var fog_cells_free = []
+	var fog_cells = Global.LEVEL_LAYER_FOG.get_used_cells_by_id(TILESET_FOG.TILE_FULL)
+	var occupied_cells = util_get_occupied_cells()
+	for cell in fog_cells:
+		var cell_to_check = Global.LEVEL_LAYER_LOGIC.get_cellv(cell)
+		if cell_to_check == TILESET_BASE.TILE_FLOOR and occupied_cells.has(cell) == false:
+			fog_cells_free.append(cell)
+	return fog_cells_free
+
 func util_chance(percentage):
 	randomize()
 	if randi() % 100 <= percentage:  

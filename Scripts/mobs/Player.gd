@@ -104,8 +104,10 @@ func _unhandled_input(key):
 					if input == INPUT_LIST.UI_RIGHT: action_collision_check(Vector2.RIGHT)
 					if input == INPUT_LIST.UI_PICK:  action_interact(Vector2(0,0))
 					if input == INPUT_LIST.UI_SKIP:  
+#						action_textlog()
 						turn_count = stat_speed
 						check_turn()
+#						print(Global.LEVEL_LAYER_LOGIC.util_get_free_fog_cells())
 					if input == INPUT_LIST.UI_SPACE: action_targets_check_shoot()
 					if input == INPUT_LIST.UI_1: action_use_item(1)
 					if input == INPUT_LIST.UI_2: action_use_item(2)
@@ -283,9 +285,13 @@ func action_interact(direction):
 	elif NODE_RAYCAST_COLLIDE.is_colliding() == true:
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
 		if collider.get_class() == "StaticBody2D":
-			if collider.is_in_group(Global.GROUPS.ITEM) == true:
+			# Regular item
+			if collider.is_in_group(Global.GROUPS.ITEM) == true and collider.is_in_group(Global.GROUPS.TEXTLOG) == false:
 						collider.on_action_pickup()
 						check_turn()
+			# Textlog item
+			if collider.is_in_group(Global.GROUPS.ITEM) == true and collider.is_in_group(Global.GROUPS.TEXTLOG) == true:
+						collider.on_action_pickup()
 	PLAYER_ACTION_INPUT = false
 
 func action_move(direction):
