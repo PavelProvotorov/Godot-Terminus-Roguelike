@@ -135,7 +135,7 @@ func spawn_text(text_value,text_position:Vector2,color_type:Color,_time_seconds:
 	var text_instance = text_data.instance()
 	text_instance.text = text_value
 	text_instance.color_type = color_type
-	Global.LEVEL_LAYER_FOG.add_child(text_instance)
+	Global.NODE_TEXT.add_child(text_instance)
 	text_instance.set_global_position(Vector2((text_position.x+0.5)*Global.grid_size,(text_position.y)*Global.grid_size))
 	pass
 

@@ -1340,3 +1340,50 @@
 
 #	min_width = randi() % 3 +1
 #	stop_width = min_width * 2 + 1
+
+#	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_BLOCK,TILESET_LOGIC.TILE_EMPTY,[8,9,10])
+
+#func generator_room_add_objects():
+#	var count:int
+##	var cells_count:int = randi()%3+3
+#	var cells_count:int = 1
+#	var cells_list = []
+#	var cells_to_fill = []
+#	for cell in get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR):
+#		count = util_check_nearby_tile_4(cell.x, cell.y, TILESET_LOGIC.TILE_BLOCK)
+#		if count == 3:
+#			cells_list.append(cell)
+#		count = util_check_nearby_tile_8(cell.x, cell.y, TILESET_LOGIC.TILE_FLOOR)
+#		if count == 8 or count == 7:
+#			cells_list.append(cell)
+#		count = util_check_nearby_tile_8(cell.x, cell.y, TILESET_LOGIC.TILE_BLOCK)
+#		if count == 3 or count == 5:
+#			cells_to_fill.append(cell)
+#		count = util_check_diagonal_tile_4(cell.x, cell.y, TILESET_LOGIC.TILE_BLOCK)
+#		if count == 4:
+#			cells_to_fill.append(cell)
+
+#	for cell in get_used_cells_by_id(TILESET_LOGIC.TILE_BLOCK):
+#		count = util_check_nearby_tile_4(cell.x, cell.y, TILESET_LOGIC.TILE_FLOOR)
+#		if count >= 1 and map_border.has(cell) == false:
+#			cells_to_fill.append(cell)
+	
+#	for i in cells_count:
+#		if cells_list.size() >= i:
+#			var cell = cells_list[rand_range(0,cells_list.size())]
+#			if cells_list.has(Vector2(cell.x, cell.y-1)): cells_list.erase(Vector2(cell.x, cell.y-1))
+#			if cells_list.has(Vector2(cell.x, cell.y+1)): cells_list.erase(Vector2(cell.x, cell.y+1))
+#			if cells_list.has(Vector2(cell.x-1, cell.y)): cells_list.erase(Vector2(cell.x-1, cell.y))
+#			if cells_list.has(Vector2(cell.x+1, cell.y)): cells_list.erase(Vector2(cell.x+1, cell.y))
+#			if cells_list.has(Vector2(cell.x+1, cell.y+1)):  cells_list.erase(Vector2(cell.x+1, cell.y+1))
+#			if cells_list.has(Vector2(cell.x+1, cell.y-1)):  cells_list.erase(Vector2(cell.x+1, cell.y-1))
+#			if cells_list.has(Vector2(cell.x-1, cell.y+1)):  cells_list.erase(Vector2(cell.x-1, cell.y+1))
+#			if cells_list.has(Vector2(cell.x-1, cell.y-1)):  cells_list.erase(Vector2(cell.x-1, cell.y-1))
+#			cells_to_fill.append(cell)
+#		else:
+#			break
+#
+#
+#	for cell in cells_to_fill:
+#		set_cellv(cell,TILESET_LOGIC.TILE_EMPTY)
+#	pass

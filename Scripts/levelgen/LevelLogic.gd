@@ -13,6 +13,7 @@ var map_height = Global.map_height
 var min_width
 var stop_width
 var rooms_array
+var map_void
 var map_border
 
 var generator_on:bool = true
@@ -87,6 +88,8 @@ func generator_room_prepare():
 	# Get border cells
 	map_border = []
 	map_border = get_used_cells_by_id(TILESET_LOGIC.TILE_EMPTY)
+	map_void = [] 
+	map_void = get_used_cells_by_id(TILESET_LOGIC.TILE_VOID)
 	min_width = randi() % 7
 	stop_width = min_width + 1
 	
@@ -202,6 +205,10 @@ func generator_room_clear_final():
 	# ADD WALL ON INNER BORDER
 	for cell in map_border:
 		set_cellv(cell, TILESET_LOGIC.TILE_BLOCK)
+	
+	# ADD VOID OUTSIDE BORDER
+	for cell in map_void:
+		set_cellv(cell, TILESET_LOGIC.TILE_VOID)
 	
 	# CLEAR ALL BROKEN BITS
 	generator_room_get_rooms()
