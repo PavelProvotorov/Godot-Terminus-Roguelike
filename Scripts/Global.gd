@@ -41,11 +41,9 @@ var LEVEL
 var LEVEL_ENTRANCE
 var LEVEL_EXIT
 
-#var LEVEL_COUNT = 1
 var LEVEL_COUNT = 1
 
 #---------------------------------------------------------------------------------------
-#var GAME_STATE = GAME_STATE_LIST.STATE_PLAYER_TURN
 var GAME_STATE = GAME_STATE_LIST.STATE_MENU
 
 const GROUPS = {

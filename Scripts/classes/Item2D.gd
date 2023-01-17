@@ -83,5 +83,13 @@ func weapon_replace_in_inventory(item):
 	# ASSIGN WEAPON TO PLAYER
 	Global.NODE_PLAYER.equiped_weapon = item
 
+func item_action_add_ammo(count):
+	if count == 0: return
+	Global.NODE_PLAYER.stat_ammo += count
+	if Global.NODE_PLAYER.stat_ammo >= Global.NODE_PLAYER.stat_ammo_max: Global.NODE_PLAYER.stat_ammo = Global.NODE_PLAYER.stat_ammo_max
+	if Global.NODE_PLAYER.stat_ammo <= Global.NODE_PLAYER.stat_ammo_max: pass
+	Global.NODE_PLAYER.spawn_text(count,Global.NODE_PLAYER.position/grid_size,Color.gold,0.0)
+	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
+
 func get_idle_frame():
 	yield(get_tree(),"idle_frame")
