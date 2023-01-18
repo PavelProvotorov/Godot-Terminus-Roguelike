@@ -6,7 +6,7 @@ onready var NODE_NAME = $Name
 onready var grid_size = Global.grid_size
 onready var item_name:String
 onready var item_parent = Global.LEVEL_LAYER_LOGIC
-onready var count:int
+onready var ammo_count:int
 
 # READY
 #---------------------------------------------------------------------------------------
@@ -82,14 +82,18 @@ func weapon_replace_in_inventory(item):
 	
 	# ASSIGN WEAPON TO PLAYER
 	Global.NODE_PLAYER.equiped_weapon = item
+	
+	# CLEAR OUT STATS
+	item.ammo_count = 0
 
-func item_action_add_ammo(count):
+func item_action_add_ammo(count,item):
 	if count == 0: return
 	Global.NODE_PLAYER.stat_ammo += count
 	if Global.NODE_PLAYER.stat_ammo >= Global.NODE_PLAYER.stat_ammo_max: Global.NODE_PLAYER.stat_ammo = Global.NODE_PLAYER.stat_ammo_max
 	if Global.NODE_PLAYER.stat_ammo <= Global.NODE_PLAYER.stat_ammo_max: pass
-	Global.NODE_PLAYER.spawn_text(count,Global.NODE_PLAYER.position/grid_size,Color.gold,0.0)
-	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
+	item.ammo_count = 0
+#	Global.NODE_PLAYER.spawn_text(count,Global.NODE_PLAYER.position/grid_size,Color.gold,0.0)
+#	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
 
 func get_idle_frame():
 	yield(get_tree(),"idle_frame")

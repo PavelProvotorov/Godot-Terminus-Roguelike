@@ -1,7 +1,6 @@
 extends Item2D
 
 var sound_on_ranged = Sound.sfx_shoot_2
-var clip_ammo:int = randi()%5 + 2
 var stat_ranged_dmg = 2
 var stat_shoot_count = 2
 var stat_range = 3
@@ -10,6 +9,7 @@ var stat_range = 3
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
+	ammo_count = randi()%5+2
 	item_name = "Submachine Gun"
 	NODE_NAME.set_text(item_name)
 	pass
@@ -17,8 +17,8 @@ func _ready():
 # ACTIONS
 #---------------------------------------------------------------------------------------
 func on_action_pickup():
-	item_action_add_ammo(clip_ammo)
-#	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
 	Global.NODE_PLAYER.spawn_text(item_name,self.position/grid_size,Color.white,0.0)
+	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
+	item_action_add_ammo(ammo_count,self)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
 	pass

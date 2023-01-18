@@ -471,7 +471,6 @@ script = ExtResource( 11 )
 [node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON" instance=ExtResource( 13 )]
 
 [node name="Shotgun" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON/ItemSlot" instance=ExtResource( 14 )]
-position = Vector2( 1, -2 )
 
 [node name="UI_ARMOR" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
 margin_left = 89.0

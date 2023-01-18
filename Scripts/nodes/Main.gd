@@ -13,6 +13,7 @@ func _ready():
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL.level_mob_spawn("Player",Global.LEVEL_ENTRANCE)
 	Global.LEVEL.target_entity = Global.NODE_PLAYER
+	Global.LEVEL.target_entity.player_to_default()
 	
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL_LAYER_LOGIC.fog_update()

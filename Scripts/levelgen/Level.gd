@@ -353,7 +353,6 @@ func level_mob_spawn(mob_name,mob_position:Vector2):
 	var mob_instance = mob_data.instance()
 	Global.LEVEL_LAYER_LOGIC.add_child(mob_instance)
 	mob_instance.set_global_position(Vector2((mob_position.x)*grid_size,(mob_position.y)*grid_size))
-#	yield(self.get_idle_frame(),"completed")
 	return mob_instance
 
 func level_mob_spawn_tween(mob_name,mob_position_a:Vector2,mob_position_b:Vector2):

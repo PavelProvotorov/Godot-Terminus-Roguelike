@@ -43,7 +43,7 @@ var sound_on_noammo = Sound.sfx_noammo
 
 # STATS
 #---------------------------------------------------------------------------------------
-var equiped_weapon = Global.NODE_UI_WEAPON.get_child(0).get_child(0)
+var equiped_weapon
 var stat_visibility:int = 7
 const stat_visibility_max:int = 7
 var stat_melee_dmg:int = 2
