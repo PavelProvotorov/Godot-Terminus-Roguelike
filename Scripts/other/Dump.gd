@@ -1387,3 +1387,9 @@
 #	for cell in cells_to_fill:
 #		set_cellv(cell,TILESET_LOGIC.TILE_EMPTY)
 #	pass
+
+#func action_textlog():
+#	Global.NODE_UI_TEXT.show()
+#	Global.NODE_UI_TEXTLOG.text = "< random queen bee sounds >"
+#	Global.NODE_UI_TEXTLOG.show_text()
+#	pass

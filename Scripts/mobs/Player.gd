@@ -89,14 +89,12 @@ func ui_update():
 	Global.UI_TURN.set_text(self.stat_speed as String)
 
 func _unhandled_input(key):
-#	if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_NONE:
-#		return
 	if NODE_TWEEN.is_active() == true:
 		return
 	for input in INPUT_LIST.values():
 		if key.is_action_pressed(input):
 			if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_PLAYER_TURN:
-				# MELEE MODE
+				# MELEE MODE INPUT
 				if PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == false && PLAYER_ACTION_THROW == false:
 					if input == INPUT_LIST.UI_UP:    action_collision_check(Vector2.UP)
 					if input == INPUT_LIST.UI_DOWN:  action_collision_check(Vector2.DOWN)
@@ -104,10 +102,8 @@ func _unhandled_input(key):
 					if input == INPUT_LIST.UI_RIGHT: action_collision_check(Vector2.RIGHT)
 					if input == INPUT_LIST.UI_PICK:  action_interact(Vector2(0,0))
 					if input == INPUT_LIST.UI_SKIP:  
-#						action_textlog()
 						turn_count = stat_speed
 						check_turn()
-#						print(Global.LEVEL_LAYER_LOGIC.util_get_free_fog_cells())
 					if input == INPUT_LIST.UI_SPACE: action_targets_check_shoot()
 					if input == INPUT_LIST.UI_1: action_use_item(1)
 					if input == INPUT_LIST.UI_2: action_use_item(2)
@@ -115,10 +111,7 @@ func _unhandled_input(key):
 					if input == INPUT_LIST.UI_4: action_use_item(4)
 					if input == INPUT_LIST.UI_5: action_use_item(5)
 					if input == INPUT_LIST.UI_6: action_use_item(6)
-#					if input == INPUT_LIST.UI_SPACE: 
-#						Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PAUSE
-#						Global.NODE_MAIN.level_select()
-				# RANGED MODE
+				# RANGED MODE INPUT
 				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == true && PLAYER_ACTION_TEXT == false && PLAYER_ACTION_THROW == false:
 					if input == INPUT_LIST.UI_UP:    action_shoot(Vector2.UP,equiped_weapon.stat_shoot_count)
 					if input == INPUT_LIST.UI_DOWN:  action_shoot(Vector2.DOWN,equiped_weapon.stat_shoot_count)
@@ -129,7 +122,7 @@ func _unhandled_input(key):
 						check_turn()
 					if input == INPUT_LIST.UI_SPACE: action_targets_disbale()
 					
-				# THROWING MODE
+				# THROWING MODE INPUT
 				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_THROW == true && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == false:
 					if input == INPUT_LIST.UI_UP:    action_throw(Vector2.UP)
 					if input == INPUT_LIST.UI_DOWN:  action_throw(Vector2.DOWN)
@@ -137,16 +130,18 @@ func _unhandled_input(key):
 					if input == INPUT_LIST.UI_RIGHT: action_throw(Vector2.RIGHT)
 					if input == INPUT_LIST.UI_SPACE: action_targets_disbale()
 				
-				# TEXT MODE
+				# TEXT MODE INPUT
 				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == true && PLAYER_ACTION_THROW == false:
 					if input == INPUT_LIST.UI_SPACE:
 						Global.NODE_UI_TEXT.hide()
 						PLAYER_ACTION_TEXT = false
 						pass
 					pass
+				# NONE MODE
 				else:
 					pass
 
+# CHECK FOR TARGETS IN SHOOTING RANGE
 func action_targets_check_shoot():
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_SHOOT = true
@@ -176,6 +171,7 @@ func action_targets_check_shoot():
 	PLAYER_ACTION_INPUT = false
 	pass
 
+# CHECK FOR TARGETS IN THROWING RANGE
 func action_targets_check_throw(stat_throwable_range):
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_THROW = true
@@ -248,12 +244,6 @@ func action_collision_check(direction):
 				
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
 	PLAYER_ACTION_INPUT = false
-
-func action_textlog():
-	Global.NODE_UI_TEXT.show()
-	Global.NODE_UI_TEXTLOG.text = "< random queen bee sounds >"
-	Global.NODE_UI_TEXTLOG.show_text()
-	pass
 
 func action_use_item(slot_id:int):
 	PLAYER_ACTION_INPUT = true
@@ -426,6 +416,7 @@ func check_turn():
 	elif turn_count != stat_speed: 
 		pass
 
+# Setus up the default stats, clears intentory and adds weapon
 func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
 	self.equiped_weapon = Data.shotgun.instance()
