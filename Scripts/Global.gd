@@ -7,8 +7,9 @@ const map_height = 9
 const grid_size = 8
 
 onready var NODE_GUI = get_node("/root/Main/GUI")
-onready var NODE_TEXT = get_node("/root/Main/Text")
-onready var NODE_SOUNDS = get_node("/root/Main/Sounds")
+onready var NODE_TEXT = get_node("/root/Main/GUI/GUI_MISC/Text")
+onready var NODE_MUSIC = get_node("/root/Main/GUI/GUI_MISC/Music")
+onready var NODE_SOUNDS = get_node("/root/Main/GUI/GUI_MISC/Sounds")
 onready var NODE_GUI_TRANSITION= get_node("/root/Main/GUI/GUI_TRANSITION")
 onready var NODE_GUI_LAYER_MAIN = get_node("/root/Main/GUI/GUI_LAYER_MAIN")
 onready var NODE_UI_TEXT = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT")
@@ -20,9 +21,9 @@ onready var UI_HEALTH = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_HEALT
 onready var UI_LEVEL = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_LEVEL")
 onready var UI_TURN = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_TURN")
 onready var NODE_UI_TEXTLOG = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT/UI_TEXTLOG")
-onready var NODE_TEXTLOG = get_node("/root/Main/Control/TextLog")
 onready var NODE_MAIN = get_node("/root/Main")
 
+var CURRENT_MUSIC
 var NODE_MENU
 var NODE_PLAYER
 
@@ -86,6 +87,8 @@ enum AI_STATE_LIST {
 enum AI_CLASS_LIST {
 	CLASS_MELEE,
 	CLASS_RANGED,
+	CLASS_AMBUSH,
+	CLASS_WAITING,
 	CLASS_NONE
 }
 enum GAME_STATE_LIST {

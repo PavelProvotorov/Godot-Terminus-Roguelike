@@ -9,7 +9,7 @@ var stat_range = 2
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	ammo_count = randi()%2+1 
+	ammo_count = randi()%2+0 
 	item_name = "Shotgun"
 	NODE_NAME.set_text(item_name)
 	pass
@@ -21,4 +21,7 @@ func on_action_pickup():
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
 	item_action_add_ammo(ammo_count,self)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
+	pass
+
+func on_action_shoot():
 	pass

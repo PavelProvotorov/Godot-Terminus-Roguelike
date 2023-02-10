@@ -366,14 +366,71 @@ func generator_room_add_mobs():
 func generator_room_add_items():
 	var item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS").keys()
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
-	var item_count  = (round(rand_range(1,3)))
+	var common_item_count:int = randi() % 3 + 1
+	var consumables_item_count:int = randi() % 2
+	var weapons_item_count:int = randi() % 2
+	var other_item_count:int = randi() % 2
 	var items_spawned:int = 0
 	
-	while items_spawned != item_count:
+	# Spawn COMMON items
+	items_spawned = 0
+	item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["COMMON"].keys()
+	while items_spawned != common_item_count:
 		randomize()
 		var cell = free_cells[randi() % free_cells.size()]
 		var item_type = item_list[randi() % item_list.size()]
-		var item_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")[item_type]
+		var item_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["COMMON"][item_type]
+		var spawn_chance = util_chance(item_chance)
+		if spawn_chance == true:
+			Global.LEVEL.level_item_spawn(item_type,cell)
+			free_cells.erase(cell)
+			items_spawned += 1
+		if spawn_chance == false:
+			pass
+	pass
+	
+	# Spawn CONSUMABLE items
+	items_spawned = 0
+	item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["CONSUMABLES"].keys()
+	while items_spawned != consumables_item_count:
+		randomize()
+		var cell = free_cells[randi() % free_cells.size()]
+		var item_type = item_list[randi() % item_list.size()]
+		var item_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["CONSUMABLES"][item_type]
+		var spawn_chance = util_chance(item_chance)
+		if spawn_chance == true:
+			Global.LEVEL.level_item_spawn(item_type,cell)
+			free_cells.erase(cell)
+			items_spawned += 1
+		if spawn_chance == false:
+			pass
+	pass
+	
+	# Spawn WEAPON items
+	items_spawned = 0
+	item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["WEAPONS"].keys()
+	while items_spawned != weapons_item_count:
+		randomize()
+		var cell = free_cells[randi() % free_cells.size()]
+		var item_type = item_list[randi() % item_list.size()]
+		var item_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["WEAPONS"][item_type]
+		var spawn_chance = util_chance(item_chance)
+		if spawn_chance == true:
+			Global.LEVEL.level_item_spawn(item_type,cell)
+			free_cells.erase(cell)
+			items_spawned += 1
+		if spawn_chance == false:
+			pass
+	pass
+	
+	# Spawn OTHER items
+	items_spawned = 0
+	item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["OTHER"].keys()
+	while items_spawned != other_item_count:
+		randomize()
+		var cell = free_cells[randi() % free_cells.size()]
+		var item_type = item_list[randi() % item_list.size()]
+		var item_chance = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS")["OTHER"][item_type]
 		var spawn_chance = util_chance(item_chance)
 		if spawn_chance == true:
 			Global.LEVEL.level_item_spawn(item_type,cell)
@@ -557,7 +614,8 @@ func fog_update():
 	var player = Global.NODE_PLAYER
 	var player_position = player.position/grid_size
 	
-	var fog_range = player.stat_visibility
+	var visibility_level = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Visibility"]
+	var fog_range = min(player.stat_visibility, visibility_level)
 	var rect_start = Vector2(player_position.x - fog_range, player_position.y - fog_range)
 	var rect_close = Vector2(player_position.x + fog_range, player_position.y + fog_range)
 	var rect_width = ((rect_close.x - rect_start.x)+1)
@@ -673,7 +731,9 @@ func util_get_free_fog_cells():
 
 func util_chance(percentage):
 	randomize()
-	if randi() % 100 <= percentage:  
+	if percentage == 0:
+		return false
+	elif randi() % 100 <= percentage:  
 		return true
 	else:                     
 		return false

@@ -13,8 +13,9 @@ var sound_on_death = Sound.sfx_death_0
 
 # STATS
 #---------------------------------------------------------------------------------------
+var stat_visibility:int = 2
 var stat_ranged_dmg:int = 1
-var stat_melee_dmg:int = 3
+var stat_melee_dmg:int = 2
 var stat_ambition:int = 3
 var stat_health:int = 6
 var stat_speed:int = 1

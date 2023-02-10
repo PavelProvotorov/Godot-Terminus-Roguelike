@@ -130,10 +130,47 @@ func manager_mob_actions():
 						yield(moving_entity,"on_action_finished")
 					yield(self.get_idle_frame(),"completed")
 					
+	# ENGAGED AMBUSH CLASS STATE
+		elif moving_entity.AI_state == Global.AI_STATE_LIST.STATE_ENGAGE && moving_entity.AI_class == Global.AI_CLASS_LIST.CLASS_AMBUSH:
+			moving_entity_position = Global.LEVEL_LAYER_LOGIC.world_to_map(moving_entity.get_global_position())
+			target_entity_position = Global.LEVEL_LAYER_LOGIC.world_to_map(target_entity.get_global_position())
+			Global.LEVEL_LAYER_LOGIC.astar_find_occupied_points(moving_entity_position,target_entity_position)
+			moving_entity_path = Global.LEVEL_LAYER_LOGIC.astar_get_path(moving_entity_position,target_entity_position)
+			#CHECK IF MOB CAN REACH TARGET
+			if moving_entity_path.size() == 0:
+				yield(self.get_idle_frame(),"completed")
+			elif moving_entity_path.size() != 0 && moving_entity_path.size() != 3:
+				#If next cell is target position > attack
+				if moving_entity_path[1] == target_entity_position:
+					mob_action_attack(moving_entity_path[0],moving_entity_path[1])
+					yield(self,"on_mob_action_finished")
+				#If next cell is not target position > move
+				elif moving_entity_path[1] != target_entity_position:
+					# Check if mob enters a fog hidden cell
+					var cell_is_fog:bool = cell_is_fog(moving_entity_path[1])
+					if cell_is_fog == true:
+						mob_action_shift(moving_entity_path[0],moving_entity_path[1])
+						yield(self,"on_mob_action_finished")
+						moving_entity.on_action_move()
+						yield(moving_entity,"on_action_finished")
+					elif cell_is_fog == false:
+						mob_action_move(moving_entity_path[0],moving_entity_path[1])
+						yield(self,"on_mob_action_finished")
+						moving_entity.on_action_move()
+						yield(moving_entity,"on_action_finished")
+			elif moving_entity_path.size() == 3:
+				for direction in DIRECTION_LIST:
+					var check_direction = (moving_entity_path[0]+(direction*2))
+					if check_direction == moving_entity_path[2]:
+						mob_action_move(moving_entity_path[0],moving_entity_path[1])
+						yield(self,"on_mob_action_finished")
+					yield(self.get_idle_frame(),"completed")
+	
 	# WANDERING MELEE CLASS STATE
 		elif moving_entity.AI_state == Global.AI_STATE_LIST.STATE_WANDER && moving_entity.AI_class == Global.AI_CLASS_LIST.CLASS_MELEE:
 			moving_entity_position = Global.LEVEL_LAYER_LOGIC.world_to_map(moving_entity.get_global_position())
 			target_entity_position = Global.LEVEL_LAYER_LOGIC.world_to_map(target_entity.get_global_position())
+			moving_entity_path = Global.LEVEL_LAYER_LOGIC.astar_get_path(moving_entity_position,target_entity_position)
 			moving_entity.get_raycast_exceptions(moving_entity.NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 			var nearby_cells = DIRECTION_LIST
 			var target_near:bool = false
@@ -141,12 +178,13 @@ func manager_mob_actions():
 			
 			# Check if the target is nearby
 			for cell in nearby_cells:
-				var cell_to_check = (moving_entity_position + cell)
+				var cell_to_check = (moving_entity_position + (cell * moving_entity.stat_visibility))
 				if cell_to_check == target_entity_position: 
+					moving_entity.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 					target_near = true
 			
 			# If target is near > attack
-			if target_near == true:
+			if target_near == true && moving_entity_path.size() == 1:
 				moving_entity.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 				mob_action_attack(moving_entity_position,target_entity_position)
 				yield(self,"on_mob_action_finished")
@@ -179,7 +217,32 @@ func manager_mob_actions():
 							yield(self,"on_mob_action_finished")
 						break
 				yield(self.get_idle_frame(),"completed")
+			else:
+				yield(self.get_idle_frame(),"completed")
 				
+	# ENGAGED WAITING CLASS STATE
+		elif moving_entity.AI_state == Global.AI_STATE_LIST.STATE_ENGAGE && moving_entity.AI_class == Global.AI_CLASS_LIST.CLASS_WAITING: 
+			moving_entity_position = Global.LEVEL_LAYER_LOGIC.world_to_map(moving_entity.get_global_position())
+			target_entity_position = Global.LEVEL_LAYER_LOGIC.world_to_map(target_entity.get_global_position())
+			Global.LEVEL_LAYER_LOGIC.astar_find_occupied_points(moving_entity_position,target_entity_position)
+			moving_entity_path = Global.LEVEL_LAYER_LOGIC.astar_get_path(moving_entity_position,target_entity_position)
+			
+			#CHECK IF MOB CAN REACH TARGET
+			if moving_entity_path.size() == 0:
+				moving_entity.on_action_move()
+				yield(moving_entity,"on_action_finished")
+				yield(self.get_idle_frame(),"completed")
+			elif moving_entity_path.size() > 0:
+				#If next cell is target position > attack
+				if moving_entity_path[1] == target_entity_position:
+					mob_action_attack(moving_entity_path[0],moving_entity_path[1])
+					yield(self,"on_mob_action_finished")
+				else:
+					moving_entity.on_action_move()
+					yield(moving_entity,"on_action_finished")
+					yield(self.get_idle_frame(),"completed")
+
+	
 	# ENGAGED NONE CLASS STATE
 		elif moving_entity.AI_state == Global.AI_STATE_LIST.STATE_ENGAGE && moving_entity.AI_class == Global.AI_CLASS_LIST.CLASS_NONE: 
 			moving_entity.on_action_move()
@@ -379,7 +442,9 @@ func cell_is_fog(cell:Vector2):
 
 func util_chance(percentage):
 	randomize()
-	if randi() % 100 <= percentage:  
+	if percentage == 0:
+		return false
+	elif randi() % 100 <= percentage:  
 		return true
 	else:                     
 		return false

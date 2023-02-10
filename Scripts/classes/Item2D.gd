@@ -95,5 +95,14 @@ func item_action_add_ammo(count,item):
 #	Global.NODE_PLAYER.spawn_text(count,Global.NODE_PLAYER.position/grid_size,Color.gold,0.0)
 #	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
 
+func util_chance(percentage):
+	randomize()
+	if percentage == 0:
+		return false
+	elif randi() % 100 <= percentage:  
+		return true
+	else:                     
+		return false
+
 func get_idle_frame():
 	yield(get_tree(),"idle_frame")

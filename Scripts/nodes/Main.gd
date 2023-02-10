@@ -43,8 +43,8 @@ func level_select():
 func level_change(next_level:String):
 	current_level = Global.LEVEL
 	
-	# Prevent Player action while level loads
-	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
+	# Check music switch
+	Sound.music_spawn(Global.NODE_MUSIC,Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Music"])
 	
 	#Fade in screen
 	Global.NODE_GUI_TRANSITION.transition_in(3)
@@ -59,8 +59,10 @@ func level_change(next_level:String):
 	Global.NODE_GUI_TRANSITION.transition_out(3)
 	yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
 	yield(self.get_idle_frame(),"completed")
-
+	
+	# Return control to player
 	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
+	Global.NODE_PLAYER.PLAYER_ACTION_INPUT = false
 	pass
 
 func level_switch_player(current_level,next_level):
@@ -83,6 +85,10 @@ func level_switch_player(current_level,next_level):
 func level_game_over():
 	#Reset level counter
 	Global.LEVEL_COUNT = 1
+	
+	#Remove the current music
+	Global.CURRENT_MUSIC.music_fade_out()
+	Global.CURRENT_MUSIC = null
 	
 	#Delete current player instance
 	Global.NODE_PLAYER.queue_free()

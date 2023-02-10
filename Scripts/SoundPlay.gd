@@ -1,6 +1,5 @@
 extends AudioStreamPlayer2D
 
-#onready var NODE_SOUND_PLAY = $SoundPlay
 var sound_parent
 
 func _ready():

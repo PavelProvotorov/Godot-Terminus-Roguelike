@@ -46,7 +46,7 @@ func on_action_move():
 		position_b = position_a+direction
 		raycast_cast_to(NODE_RAYCAST_COLLIDE,position_a,position_b)
 		if NODE_RAYCAST_COLLIDE.is_colliding() == false:
-			var spawn = get_chance(50)
+			var spawn = get_chance(75)
 			if spawn == true:
 				var mob_instance = Global.LEVEL.level_mob_spawn_tween("Goo",position_a,position_b)
 				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE

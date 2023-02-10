@@ -1387,3 +1387,460 @@
 #	for cell in cells_to_fill:
 #		set_cellv(cell,TILESET_LOGIC.TILE_EMPTY)
 #	pass
+
+#onready var LEVEL_DATA_OLD = {
+#	1: {
+#		"SETTINGS": {
+#			"Visibility": 7
+#		},
+#		"LEVELS": {
+#			"Level_1": 100
+#		},
+#		"MOBS": {
+#			"Grunt": 100,
+#			"Parasite": 25,
+#			"Colony": 5
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	2: {
+#		"SETTINGS": {
+#			"Visibility": 7
+#		},
+#		"LEVELS": {
+#			"Level_1": 100
+#		},
+#		"MOBS": {
+#			"Grunt": 100,
+#			"Parasite": 50,
+#			"Bloater": 25,
+#			"Colony": 10
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	3: {
+#		"SETTINGS": {
+#			"Visibility": 7
+#		},
+#		"LEVELS": {
+#			"Level_1": 100
+#		},
+#		"MOBS": {
+#			"Grunt": 100,
+#			"Parasite": 100,
+#			"Bloater": 50,
+#			"Colony": 15
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	4: {
+#		"SETTINGS": {
+#			"Visibility": 7
+#		},
+#		"LEVELS": {
+#			"Level_1": 100
+#		},
+#		"MOBS": {
+#			"Grunt": 100,
+#			"Parasite": 100,
+#			"Bloater": 75,
+#			"Colony": 25
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	5: {
+#		"SETTINGS": {
+#			"Visibility": 5
+#		},
+#		"LEVELS": {
+#			"Level_2": 100
+#		},
+#		"MOBS": {
+#			"GruntInfected": 100,
+#			"Goo": 50,
+#			"Horror": 25
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	6: {
+#		"SETTINGS": {
+#			"Visibility": 5
+#		},
+#		"LEVELS": {
+#			"Level_2": 100
+#		},
+#		"MOBS": {
+#			"GruntInfected": 100,
+#			"Goo": 75,
+#			"Horror": 25,
+#			"Sludge": 50 
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	7: {
+#		"SETTINGS": {
+#			"Visibility": 5
+#		},
+#		"LEVELS": {
+#			"Level_2": 100
+#		},
+#		"MOBS": {
+#			"GruntInfected": 100,
+#			"Goo": 100,
+#			"Horror": 50,
+#			"Sludge": 75 
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	8: {
+#		"SETTINGS": {
+#			"Visibility": 5
+#		},
+#		"LEVELS": {
+#			"Level_2": 100
+#		},
+#		"MOBS": {
+#			"GruntInfected": 100,
+#			"Goo": 100,
+#			"Horror": 75,
+#			"Sludge": 100 
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	9: {
+#		"SETTINGS": {
+#			"Visibility": 4
+#		},
+#		"LEVELS": {
+#			"Level_3": 100
+#		},
+#		"MOBS": {
+#			"Wart": 100,
+#			"Hydra": 50,
+#			"Behemoth": 25,
+#			"Infestinator": 5,
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	10: {
+#		"SETTINGS": {
+#			"Visibility": 4
+#		},
+#		"LEVELS": {
+#			"Level_3": 100
+#		},
+#		"MOBS": {
+#			"Wart": 100,
+#			"Hydra": 75,
+#			"Behemoth": 50,
+#			"Infestinator": 25
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	11: {
+#		"SETTINGS": {
+#			"Visibility": 4
+#		},
+#		"LEVELS": {
+#			"Level_3": 100
+#		},
+#		"MOBS": {
+#			"Wart": 100,
+#			"Hydra": 100,
+#			"Behemoth": 75,
+#			"Infestinator": 50
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#	12: {
+#		"SETTINGS": {
+#			"Visibility": 4
+#		},
+#		"LEVELS": {
+#			"Level_3": 100
+#		},
+#		"MOBS": {
+#			"Wart": 100,
+#			"Hydra": 100,
+#			"Behemoth": 100,
+#			"Infestinator": 100
+#		},
+#		"ITEMS": {
+#			"COMMON": {
+#				"Ammo": 100,
+#				"Medkit": 50
+#			},
+#			"CONSUMABLES": {
+#				"Adrenalin": 10,
+#				"Steroids": 10,
+#				"Grenade": 10,
+#				"Teleport": 10
+#			},
+#			"WEAPONS": {
+#				"TacticalShotgun": 5,
+#				"AssaultRifle": 5,
+#				"SubmachineGun": 5,
+#				"HuntingRifle": 5,
+#				"SniperRifle": 5,
+#				"SawnOff": 5,
+#				"Shotgun": 5
+#			},
+#			"OTHER": {
+#				"BigDan001": 100
+#			}
+#		},
+#	},
+#}

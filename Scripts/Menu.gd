@@ -23,6 +23,7 @@ func _on_Button1_pressed():
 	#Fade out screen
 	Global.NODE_GUI_TRANSITION.transition_out(2)
 	
+	Sound.music_spawn(Global.NODE_MUSIC,Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Music"])
 	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
 	pass
 

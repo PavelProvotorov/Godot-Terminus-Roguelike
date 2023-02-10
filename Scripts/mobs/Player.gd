@@ -150,6 +150,7 @@ func _unhandled_input(key):
 func action_targets_check_shoot():
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_SHOOT = true
+	var visibility_level = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Visibility"]
 	var directons = Global.DIRECTION_LIST
 	
 	# Return if player has no ammo
@@ -165,7 +166,7 @@ func action_targets_check_shoot():
 	
 	# Check for mob targes in range
 	for direction in directons:
-		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(equiped_weapon.stat_range,stat_visibility))
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(visibility_level,min(equiped_weapon.stat_range,stat_visibility)))
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -179,6 +180,7 @@ func action_targets_check_shoot():
 func action_targets_check_throw(stat_throwable_range):
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_THROW = true
+	var visibility_level = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Visibility"]
 	var directons = Global.DIRECTION_LIST
 	var ready_to_throw:bool = false
 	
@@ -187,7 +189,7 @@ func action_targets_check_throw(stat_throwable_range):
 	
 	# Check for mob targes in range
 	for direction in directons:
-		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(stat_throwable_range,stat_visibility))
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(visibility_level,min(stat_throwable_range,stat_visibility)))
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -204,12 +206,11 @@ func action_targets_check_throw(stat_throwable_range):
 		
 	# Player NOT OK to throw
 	if ready_to_throw == false:
-		NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.THROW)
+		NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 		NODE_RAYCAST_COLLIDE.clear_exceptions()
 		PLAYER_ACTION_THROW = false
 		PLAYER_ACTION_INPUT = false
 		return false
-		
 	pass
 
 func action_targets_disbale():
@@ -278,9 +279,10 @@ func action_interact(direction):
 		var cell_player = NODE_MAIN.position
 		var cell = Global.LEVEL_LAYER_LOGIC.get_cellv(Vector2(cell_player.x/grid_size,cell_player.y/grid_size))
 		if cell == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_EXIT:
+			Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_exit,self.position/grid_size)
 			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PAUSE
 			Global.NODE_MAIN.level_select()
-			pass
+			return
 		pass
 	elif NODE_RAYCAST_COLLIDE.is_colliding() == true:
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -317,7 +319,6 @@ func action_attack(direction,collider):
 	if cellA - cellB == Vector2(grid_size,0): animation_flip(true,false)
 	
 	NODE_MAIN.z_index += 1
-#	Sound.play_sound(self,sound_on_melee)
 	Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_melee,self.position/grid_size)
 	NODE_MAIN.calculate_melee_damage(self,collider)
 	NODE_MAIN.action_attack_tween(cellA,cellB)
@@ -329,8 +330,9 @@ func action_attack(direction,collider):
 func action_shoot(direction,shoot_count):
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_SHOOT = false
-	
+	var visibility_level = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Visibility"]
 	var turn_used:bool = false
+	
 	for count in shoot_count:
 		# Disable target animation
 		get_tree().call_group("HOSTILE","disable_target")
@@ -339,7 +341,7 @@ func action_shoot(direction,shoot_count):
 		get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 		
 		# Check for mob targes in range
-		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(equiped_weapon.stat_range,stat_visibility))
+		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(visibility_level,min(equiped_weapon.stat_range,stat_visibility)))
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -362,6 +364,8 @@ func action_shoot(direction,shoot_count):
 					NODE_MAIN.z_index -= 1
 					turn_used = true
 		else: pass
+	equiped_weapon.on_action_shoot()
+	yield(self.get_idle_frame(),"completed")
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
 	PLAYER_ACTION_INPUT = false
@@ -371,6 +375,8 @@ func action_shoot(direction,shoot_count):
 func action_throw(direction):
 	PLAYER_ACTION_INPUT = true
 	PLAYER_ACTION_THROW = false
+	var visibility_level = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Visibility"]
+	var turn_used:bool = false
 	
 	# Disable target animation
 	get_tree().call_group("HOSTILE","disable_target")
@@ -379,7 +385,7 @@ func action_throw(direction):
 	get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 	
 	# Check for mob targes in range
-	NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*(action_throw_item.stat_throwable_range))
+	NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(visibility_level,min(action_throw_item.stat_throwable_range,stat_visibility)))
 	NODE_RAYCAST_COLLIDE.force_raycast_update()
 	if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -401,11 +407,13 @@ func action_throw(direction):
 				action_throw_item = null
 				collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 				NODE_MAIN.z_index -= 1
+				turn_used = true
 	else: pass
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
 	PLAYER_ACTION_INPUT = false
-	check_turn()
+	if turn_used == true: 
+		check_turn()
 
 func raycast_cast_to(node_name,cell_start,cell_finish):
 	var cell_cast_to = Vector2(((cell_finish.x-cell_start.x)*grid_size),((cell_finish.y-cell_start.y)*grid_size))

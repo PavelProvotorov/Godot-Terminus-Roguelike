@@ -9,7 +9,7 @@ var stat_range:int = 2
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	ammo_count = randi()%2+1 
+	ammo_count = randi()%2+0 
 	item_name = "Tactical Shotgun"
 	NODE_NAME.set_text(item_name)
 	pass

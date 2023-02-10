@@ -4,7 +4,7 @@ extends Item2D
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	ammo_count = randi()%6+3
+	ammo_count = randi()%4+2
 	item_name = "Ammo"
 	NODE_NAME.set_text(item_name)
 	pass

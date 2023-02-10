@@ -3,13 +3,13 @@ extends Item2D
 var sound_on_ranged = Sound.sfx_shoot_3
 var stat_ranged_dmg = 3
 var stat_shoot_count = 1
-var stat_range = 5
+var stat_range = 4
 
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	ammo_count = randi()%4+1 
+	ammo_count = randi()%1+0
 	item_name = "Hunting Rifle"
 	NODE_NAME.set_text(item_name)
 	pass
@@ -21,4 +21,7 @@ func on_action_pickup():
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
 	item_action_add_ammo(ammo_count,self)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
+	pass
+
+func on_action_shoot():
 	pass

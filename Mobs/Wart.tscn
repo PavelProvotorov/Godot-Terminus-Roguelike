@@ -14,6 +14,7 @@ script = ExtResource( 2 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "IDLE"
+frame = 1
 playing = true
 centered = false
 
@@ -22,6 +23,7 @@ visible = false
 position = Vector2( 4, 4 )
 frames = ExtResource( 4 )
 animation = "IDLE"
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
