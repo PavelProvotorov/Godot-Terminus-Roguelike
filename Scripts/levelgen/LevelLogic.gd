@@ -18,12 +18,6 @@ var map_border
 
 var generator_on:bool = true
 
-const floor_tile_list:Array = [0,0,0,1,2,3,4,5]
-const block_tile_list:Array = [0,1,2,3,4,5]
-const deco_tile_list:Array = [0,0,0,0,0,0,0,0,0,1,2,3]
-const entrance_tile_list:Array = [15]
-const exit_tile_list:Array = [14]
-
 const DIRECTION_LIST:Array = [
 	Vector2.UP,
 	Vector2.DOWN,
@@ -114,11 +108,11 @@ func generator_room_prepare():
 	generator_room_add_items()
 	
 	# Set textures
-	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_FLOOR,floor_tile_list)
-	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_BLOCK,TILESET_LOGIC.TILE_BLOCK,block_tile_list)
-	tilemap_texture_set_random(Global.LEVEL_LAYER_DECO,TILESET_BASE.TILE_DECO,TILESET_LOGIC.TILE_FLOOR,deco_tile_list)
-	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_EXIT,exit_tile_list)
-	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_ENTRANCE,entrance_tile_list)
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_FLOOR,[0,0,0,1,2,3,4,5])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_BLOCK,TILESET_LOGIC.TILE_BLOCK,[0,1,2,3,4,5])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_DECO,TILESET_BASE.TILE_DECO,TILESET_LOGIC.TILE_FLOOR,[0,0,0,0,0,0,0,0,0,1,2,3])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_EXIT,[14])
+	tilemap_texture_set_random(Global.LEVEL_LAYER_BASE,TILESET_BASE.TILE_FLOOR,TILESET_LOGIC.TILE_ENTRANCE,[15])
 	tilemap_texture_set_walls(TILESET_BASE.TILE_WALL,[0,1,2,3,4,5])
 	pass
 

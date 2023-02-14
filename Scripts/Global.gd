@@ -47,7 +47,6 @@ var LEVEL_COUNT = 1
 #---------------------------------------------------------------------------------------
 var GAME_STATE = GAME_STATE_LIST.STATE_MENU
 
-# Node groups
 const GROUPS = {
 	ITEM = "ITEM",
 	WEAPON = "WEAPON",
@@ -112,6 +111,11 @@ func game_state_manager(state):
 	if GAME_STATE == GAME_STATE_LIST.STATE_NONE:
 		print("< NO GAME STATE>")
 	elif GAME_STATE == GAME_STATE_LIST.STATE_PLAYER_TURN:
+		# Check through buffs on Player
+#		get_tree().call_group("PLAYER","buff_tick")
+#		yield(self.get_idle_frame(),"completed")
+#		Global.LEVEL_LAYER_LOGIC.fog_update()
+#		print("< PLAYER MOVEMENT STARTED >")
 		get_tree().call_group("PLAYER","buff_tick")
 		yield(self.get_idle_frame(),"completed")
 		NODE_PLAYER.turn_count = 0
