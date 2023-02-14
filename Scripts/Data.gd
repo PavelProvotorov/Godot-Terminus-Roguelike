@@ -67,7 +67,7 @@ onready var LEVEL_DATA = {
 				"Shotgun": 50,
 				"SubmachineGun": 50,
 				"HuntingRifle": 5,
-				"AssaultRifle": 1,
+				"AssaultRifle": 0,
 				"TacticalShotgun": 0,
 				"SniperRifle": 0
 			},
