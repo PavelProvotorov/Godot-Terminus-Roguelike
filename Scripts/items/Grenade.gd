@@ -1,8 +1,8 @@
 extends Item2D
 
-var sound_on_throw = Sound.sfx_explosion_0
-var stat_throwable_range = 3
-var stat_dmg = 8
+onready var sound_on_throw = Sound.sfx_explosion_0
+onready var stat_throwable_range = 3
+onready var stat_dmg = 8
 
 # READY
 #---------------------------------------------------------------------------------------
@@ -33,4 +33,7 @@ func on_action_throw():
 	pass
 
 func on_action_tick():
+	pass
+
+func on_action_read():
 	pass

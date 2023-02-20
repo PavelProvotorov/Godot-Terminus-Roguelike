@@ -1,9 +1,9 @@
 extends Item2D
 
-var sound_on_ranged = Sound.sfx_shoot_3
-var stat_ranged_dmg = 4
-var stat_shoot_count = 1
-var stat_range = 5
+onready var sound_on_ranged = Sound.sfx_shoot_3
+onready var stat_ranged_dmg = 4
+onready var stat_shoot_count = 1
+onready var stat_range = 5
 
 # READY
 #---------------------------------------------------------------------------------------
@@ -24,4 +24,7 @@ func on_action_pickup():
 	pass
 
 func on_action_shoot():
+	pass
+
+func on_action_read():
 	pass

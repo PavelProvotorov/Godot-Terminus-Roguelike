@@ -7,6 +7,7 @@ onready var grid_size = Global.grid_size
 onready var item_name:String
 onready var item_parent = Global.LEVEL_LAYER_LOGIC
 onready var ammo_count:int
+onready var item_text = null
 
 # READY
 #---------------------------------------------------------------------------------------
@@ -103,6 +104,12 @@ func util_chance(percentage):
 		return true
 	else:                     
 		return false
+
+func on_action_read():
+	if item_text != null:
+		item_display_text(self,item_text)
+	else:
+		pass
 
 func get_idle_frame():
 	yield(get_tree(),"idle_frame")

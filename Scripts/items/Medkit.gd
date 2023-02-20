@@ -1,6 +1,6 @@
 extends Item2D
 
-var count
+onready var count
 
 # READY
 #---------------------------------------------------------------------------------------
@@ -25,4 +25,7 @@ func on_action_use():
 	pass
 
 func on_action_tick():
+	pass
+
+func on_action_read():
 	pass

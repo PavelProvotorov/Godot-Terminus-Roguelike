@@ -1,7 +1,5 @@
 extends Item2D
 
-onready var item_text
-
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
@@ -25,4 +23,7 @@ func on_action_use():
 	pass
 
 func on_action_tick():
+	pass
+
+func on_action_read():
 	pass

@@ -239,7 +239,7 @@ onready var LEVEL_DATA = {
 	6: {
 		"SETTINGS": {
 			"Visibility": 6,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_2": 100
@@ -279,7 +279,7 @@ onready var LEVEL_DATA = {
 	7: {
 		"SETTINGS": {
 			"Visibility": 6,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_2": 100
@@ -320,7 +320,7 @@ onready var LEVEL_DATA = {
 	8: {
 		"SETTINGS": {
 			"Visibility": 6,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_2": 100
@@ -361,7 +361,7 @@ onready var LEVEL_DATA = {
 	9: {
 		"SETTINGS": {
 			"Visibility": 6,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_2": 100
@@ -402,7 +402,7 @@ onready var LEVEL_DATA = {
 	10: {
 		"SETTINGS": {
 			"Visibility": 6,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_2": 100
@@ -443,7 +443,7 @@ onready var LEVEL_DATA = {
 	11: {
 		"SETTINGS": {
 			"Visibility": 5,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_3": 100
@@ -483,7 +483,7 @@ onready var LEVEL_DATA = {
 	12: {
 		"SETTINGS": {
 			"Visibility": 5,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_3": 100
@@ -523,7 +523,7 @@ onready var LEVEL_DATA = {
 	13: {
 		"SETTINGS": {
 			"Visibility": 5,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_3": 100
@@ -563,7 +563,7 @@ onready var LEVEL_DATA = {
 	14: {
 		"SETTINGS": {
 			"Visibility": 5,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_3": 100
@@ -603,7 +603,7 @@ onready var LEVEL_DATA = {
 	15: {
 		"SETTINGS": {
 			"Visibility": 5,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_2"
 		},
 		"LEVELS": {
 			"Level_3": 100
@@ -643,7 +643,7 @@ onready var LEVEL_DATA = {
 	16: {
 		"SETTINGS": {
 			"Visibility": 4,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_3"
 		},
 		"LEVELS": {
 			"Level_4": 100
@@ -684,7 +684,7 @@ onready var LEVEL_DATA = {
 	17: {
 		"SETTINGS": {
 			"Visibility": 4,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_3"
 		},
 		"LEVELS": {
 			"Level_4": 100
@@ -725,7 +725,7 @@ onready var LEVEL_DATA = {
 	18: {
 		"SETTINGS": {
 			"Visibility": 4,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_3"
 		},
 		"LEVELS": {
 			"Level_4": 100
@@ -766,7 +766,7 @@ onready var LEVEL_DATA = {
 	19: {
 		"SETTINGS": {
 			"Visibility": 4,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_3"
 		},
 		"LEVELS": {
 			"Level_4": 100
@@ -807,7 +807,7 @@ onready var LEVEL_DATA = {
 	20: {
 		"SETTINGS": {
 			"Visibility": 4,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_3"
 		},
 		"LEVELS": {
 			"Level_4": 100

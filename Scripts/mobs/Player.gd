@@ -16,6 +16,7 @@ const INPUT_LIST = {
 	UI_SHOOT = "ui_shoot",
 	UI_SKIP  = "ui_skip",
 	UI_SPACE = "ui_space",
+	UI_READ = "ui_read",
 	UI_1 = "ui_1",
 	UI_2 = "ui_2",
 	UI_3 = "ui_3",
@@ -103,6 +104,7 @@ func _unhandled_input(key):
 					if input == INPUT_LIST.UI_LEFT:  action_collision_check(Vector2.LEFT)
 					if input == INPUT_LIST.UI_RIGHT: action_collision_check(Vector2.RIGHT)
 					if input == INPUT_LIST.UI_PICK:  action_interact(Vector2(0,0))
+					if input == INPUT_LIST.UI_READ:  action_read(Vector2(0,0))
 					if input == INPUT_LIST.UI_SKIP:  
 #						action_textlog()
 						turn_count = stat_speed
@@ -149,7 +151,8 @@ func _unhandled_input(key):
 
 func action_targets_check_shoot():
 	PLAYER_ACTION_INPUT = true
-	PLAYER_ACTION_SHOOT = true
+	PLAYER_ACTION_SHOOT = false
+	var ready_to_shoot:bool = false
 	var visibility_level = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Visibility"]
 	var directons = Global.DIRECTION_LIST
 	
@@ -168,11 +171,23 @@ func action_targets_check_shoot():
 	for direction in directons:
 		NODE_RAYCAST_COLLIDE.cast_to = ((direction*grid_size)*min(visibility_level,min(equiped_weapon.stat_range,stat_visibility)))
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
-		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
+		if NODE_RAYCAST_COLLIDE.is_colliding() == true:
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
 			if collider.get_class() == "KinematicBody2D":
 				collider.NODE_ANIMATED_SPRITE_TARGET.visible = true
-	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.RANGED)
+				ready_to_shoot = true
+				
+	# Player OK to shoot
+	if ready_to_shoot == true:
+		NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.RANGED)
+		PLAYER_ACTION_SHOOT = true
+	
+	# Player NOT OK to shoot
+	elif ready_to_shoot == false:
+		spawn_text("out of range",self.position/grid_size,Color.white,0.0)
+		Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_noammo,self.position/grid_size)
+		
+#	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.RANGED)
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
 	PLAYER_ACTION_INPUT = false
 	pass
@@ -295,6 +310,23 @@ func action_interact(direction):
 			if collider.is_in_group(Global.GROUPS.ITEM) == true and collider.is_in_group(Global.GROUPS.TEXTLOG) == true:
 						collider.on_action_pickup()
 	PLAYER_ACTION_INPUT = false
+
+func action_read(direction):
+	PLAYER_ACTION_INPUT = true
+	NODE_RAYCAST_COLLIDE.cast_to = (direction)
+	NODE_RAYCAST_COLLIDE.force_raycast_update()
+	
+	if NODE_RAYCAST_COLLIDE.is_colliding() == true:
+		var collider = NODE_RAYCAST_COLLIDE.get_collider()
+		if collider.get_class() == "StaticBody2D":
+			# Regular item
+			if collider.is_in_group(Global.GROUPS.ITEM) == true and collider.is_in_group(Global.GROUPS.TEXTLOG) == false:
+						collider.on_action_read()
+			# Textlog item
+			if collider.is_in_group(Global.GROUPS.ITEM) == true and collider.is_in_group(Global.GROUPS.TEXTLOG) == true:
+						collider.on_action_read()
+	PLAYER_ACTION_INPUT = false
+	pass
 
 func action_move(direction):
 	var cellA = NODE_MAIN.position
@@ -436,7 +468,9 @@ func check_turn():
 
 func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
-	self.equiped_weapon = Data.shotgun.instance()
+	self.equiped_weapon = Data.pistol.instance()
+#	self.equiped_weapon = Data.shotgun.instance()
+#	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true
 	self.stat_health = 10

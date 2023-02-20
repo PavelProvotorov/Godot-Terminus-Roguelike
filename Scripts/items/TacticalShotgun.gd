@@ -1,9 +1,9 @@
 extends Item2D
 
-var sound_on_ranged = Sound.sfx_shoot_1
-var stat_ranged_dmg:int = 4
-var stat_shoot_count:int = 1
-var stat_range:int = 2
+onready var sound_on_ranged = Sound.sfx_shoot_1
+onready var stat_ranged_dmg:int = 4
+onready var stat_shoot_count:int = 1
+onready var stat_range:int = 2
 
 # READY
 #---------------------------------------------------------------------------------------
@@ -21,4 +21,10 @@ func on_action_pickup():
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
 	item_action_add_ammo(ammo_count,self)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
+	pass
+
+func on_action_shoot():
+	pass
+
+func on_action_read():
 	pass

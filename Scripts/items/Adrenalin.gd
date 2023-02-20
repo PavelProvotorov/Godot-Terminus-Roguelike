@@ -1,6 +1,6 @@
 extends Item2D
 
-var stat_melee_dmg = 1
+onready var stat_melee_dmg = 1
 
 # READY
 #---------------------------------------------------------------------------------------
@@ -29,4 +29,7 @@ func on_action_use():
 	pass
 
 func on_action_tick():
+	pass
+
+func on_action_read():
 	pass

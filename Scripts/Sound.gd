@@ -2,8 +2,9 @@ extends Node
 
 onready var sfx_blink = preload("res://Sounds/sfx_blink.mp3")
 onready var sfx_exit = preload("res://Sounds/sfx_exit.mp3")
-onready var sfx_level_0 = preload("res://Sounds/sfx_level_0.mp3")
 onready var sfx_level_1 = preload("res://Sounds/sfx_level_1.mp3")
+onready var sfx_level_2 = preload("res://Sounds/sfx_level_2.mp3")
+onready var sfx_level_3 = preload("res://Sounds/sfx_level_3.mp3")
 onready var sfx_pickup = preload("res://Sounds/sfx_pickup.mp3")
 onready var sfx_move = preload("res://Sounds/sfx_move.mp3")
 onready var sfx_spit = preload("res://Sounds/sfx_spit.mp3")
@@ -11,6 +12,9 @@ onready var sfx_shoot_0 = preload("res://Sounds/sfx_shoot_0.mp3")
 onready var sfx_shoot_1 = preload("res://Sounds/sfx_shoot_1.mp3")
 onready var sfx_shoot_2 = preload("res://Sounds/sfx_shoot_2.mp3")
 onready var sfx_shoot_3 = preload("res://Sounds/sfx_shoot_3.mp3")
+
+onready var sfx_shoot_4 = preload("res://Sounds/sfx_shoot_4.mp3")
+
 onready var sfx_hit_0 = preload("res://Sounds/sfx_hit_0.mp3")
 onready var sfx_punch_0 = preload("res://Sounds/sfx_punch_0.mp3")
 onready var sfx_noammo = preload("res://Sounds/sfx_noammo.mp3")

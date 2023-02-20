@@ -6,6 +6,7 @@ func _ready():
 	randomize()
 	ammo_count = randi()%4+2
 	item_name = "Ammo"
+	item_text = "This is ammo \n hahahah"
 	NODE_NAME.set_text(item_name)
 	pass
 
