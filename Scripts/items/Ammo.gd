@@ -6,7 +6,6 @@ func _ready():
 	randomize()
 	ammo_count = randi()%4+2
 	item_name = "Ammo"
-	item_text = "This is ammo \n hahahah"
 	NODE_NAME.set_text(item_name)
 	pass
 
@@ -21,9 +20,3 @@ func on_action_pickup():
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
 	item_action_add_ammo(ammo_count,self)
 	item_remove(item_parent)
-
-func on_action_use():
-	pass
-
-func on_action_tick():
-	pass

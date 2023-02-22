@@ -1,5 +1,6 @@
 extends Node
 
+onready var sfx_type = preload("res://Sounds/sfx_type.mp3")
 onready var sfx_blink = preload("res://Sounds/sfx_blink.mp3")
 onready var sfx_exit = preload("res://Sounds/sfx_exit.mp3")
 onready var sfx_level_1 = preload("res://Sounds/sfx_level_1.mp3")

@@ -12,6 +12,14 @@ onready var TEXT_DATA = {
 	"text_2": "this is text 2"
 }
 
+# DESCRIPTION
+#---------------------------------------------------------------------------------------
+onready var DESCRIPTION_DATA = {
+	"item_shotgun": "This is a regular old Shotgun, used commonly among the guards.",
+	"item_assault_rifle": "this is text 1",
+	"item_submachine_gun": "this is text 2"
+}
+
 # LEVELS
 #---------------------------------------------------------------------------------------
 onready var LEVEL_DATA = {

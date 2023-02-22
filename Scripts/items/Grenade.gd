@@ -31,9 +31,3 @@ func on_action_use():
 func on_action_throw():
 	item_remove_from_inventory(item_parent)
 	pass
-
-func on_action_tick():
-	pass
-
-func on_action_read():
-	pass

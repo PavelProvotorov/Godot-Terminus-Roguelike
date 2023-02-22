@@ -27,9 +27,3 @@ func on_action_use():
 		Global.NODE_MAIN.level_game_over()
 	item_remove_from_inventory(item_parent)
 	pass
-
-func on_action_tick():
-	pass
-
-func on_action_read():
-	pass

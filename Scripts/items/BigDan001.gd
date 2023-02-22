@@ -18,12 +18,3 @@ signal on_action_finished
 func on_action_pickup():
 	item_display_text(self,item_text)
 	pass
-
-func on_action_use():
-	pass
-
-func on_action_tick():
-	pass
-
-func on_action_read():
-	pass

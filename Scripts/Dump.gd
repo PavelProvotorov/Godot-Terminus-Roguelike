@@ -1844,3 +1844,5 @@
 #		},
 #	},
 #}
+
+#	for i in text.length():

@@ -31,6 +31,3 @@ func on_action_shoot():
 	else:
 		pass
 	pass
-
-func on_action_read():
-	pass

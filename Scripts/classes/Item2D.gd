@@ -111,5 +111,14 @@ func on_action_read():
 	else:
 		pass
 
+func on_action_shoot():
+	pass
+
+func on_action_tick():
+	pass
+
+func on_action_use():
+	pass
+
 func get_idle_frame():
 	yield(get_tree(),"idle_frame")

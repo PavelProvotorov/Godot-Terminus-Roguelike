@@ -22,9 +22,3 @@ func on_action_pickup():
 	item_action_add_ammo(ammo_count,self)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
 	pass
-
-func on_action_shoot():
-	pass
-
-func on_action_read():
-	pass

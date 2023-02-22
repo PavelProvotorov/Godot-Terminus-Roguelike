@@ -141,11 +141,13 @@ func _unhandled_input(key):
 				
 				# TEXT MODE
 				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == true && PLAYER_ACTION_THROW == false:
-					if input == INPUT_LIST.UI_SPACE:
-						Global.NODE_UI_TEXT.hide()
-						PLAYER_ACTION_TEXT = false
-						pass
-					pass
+					Global.NODE_UI_TEXT.hide()
+					PLAYER_ACTION_TEXT = false
+#					if input == INPUT_LIST.UI_SPACE:
+#						Global.NODE_UI_TEXT.hide()
+#						PLAYER_ACTION_TEXT = false
+#						pass
+#					pass
 				else:
 					pass
 
@@ -319,12 +321,13 @@ func action_read(direction):
 	if NODE_RAYCAST_COLLIDE.is_colliding() == true:
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
 		if collider.get_class() == "StaticBody2D":
-			# Regular item
-			if collider.is_in_group(Global.GROUPS.ITEM) == true and collider.is_in_group(Global.GROUPS.TEXTLOG) == false:
-						collider.on_action_read()
-			# Textlog item
-			if collider.is_in_group(Global.GROUPS.ITEM) == true and collider.is_in_group(Global.GROUPS.TEXTLOG) == true:
-						collider.on_action_read()
+			collider.on_action_read()
+#			# Regular item
+#			if collider.is_in_group(Global.GROUPS.ITEM) == true:
+#						collider.on_action_read()
+#			# Textlog item
+#			if collider.is_in_group(Global.GROUPS.ITEM) == true:
+#						collider.on_action_read()
 	PLAYER_ACTION_INPUT = false
 	pass
 
@@ -468,8 +471,8 @@ func check_turn():
 
 func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
-	self.equiped_weapon = Data.pistol.instance()
-#	self.equiped_weapon = Data.shotgun.instance()
+#	self.equiped_weapon = Data.pistol.instance()
+	self.equiped_weapon = Data.shotgun.instance()
 #	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true
