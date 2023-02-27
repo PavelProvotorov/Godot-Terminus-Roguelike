@@ -21,6 +21,9 @@ const ANIMATIONS= {
 	THROW = "THROW"
 }
 
+# CONDITION FLAGS
+var is_vulnerable:bool = true
+
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
@@ -29,43 +32,58 @@ func _ready():
 # UTILITY
 #---------------------------------------------------------------------------------------
 func calculate_melee_damage(is_attacker,is_target):
-	is_target.stat_health -= is_attacker.stat_melee_dmg
-	if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
-		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
-		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
-	elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
-		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
-		Global.NODE_PLAYER.stat_health = 0
-		Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
-		Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
+	if is_target.is_vulnerable == false:
+		spawn_text(0,is_target.position/grid_size,Color.gray,0.0)
+		return false
 	else:
-		spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightgray,0.0)
+		is_target.stat_health -= is_attacker.stat_melee_dmg
+		if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
+			Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
+			spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
+		elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
+			spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
+			Global.NODE_PLAYER.stat_health = 0
+			Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
+			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
+		else:
+			spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightgray,0.0)
+	return true
 	
 func calculate_ranged_damage(is_attacker,is_target,attacker_ranged_damage):
-	is_target.stat_health -= attacker_ranged_damage
-	if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
-		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
-		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
-	elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
-		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
-		Global.NODE_PLAYER.stat_health = 0
-		Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
-		Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
+	if is_target.is_vulnerable == false:
+		spawn_text(0,is_target.position/grid_size,Color.gray,0.0)
+		return false
 	else:
-		spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightgray,0.0)
+		is_target.stat_health -= attacker_ranged_damage
+		if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
+			Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
+			spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+		elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
+			spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+			Global.NODE_PLAYER.stat_health = 0
+			Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
+			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
+		else:
+			spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightgray,0.0)
+	return true
 
 func calculate_other_damage(is_attacker_damage,is_target):
-	is_target.stat_health -= is_attacker_damage
-	if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
-		Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
-		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
-	elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
-		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
-		Global.NODE_PLAYER.stat_health = 0
-		Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
-		Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
+	if is_target.is_vulnerable == false:
+		spawn_text(0,is_target.position/grid_size,Color.gray,0.0)
+		return false
 	else:
-		spawn_text(is_attacker_damage,is_target.position/grid_size,Color.gray,0.0)
+		is_target.stat_health -= is_attacker_damage
+		if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
+			Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
+			spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+		elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
+			spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
+			Global.NODE_PLAYER.stat_health = 0
+			Global.NODE_PLAYER.NODE_ANIMATED_SPRITE.visible = false
+			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
+		else:
+			spawn_text(is_attacker_damage,is_target.position/grid_size,Color.gray,0.0)
+	return true
 
 func animation_flip(is_flip_h:bool, is_flip_v:bool):
 	NODE_ANIMATED_SPRITE.flip_h = is_flip_h

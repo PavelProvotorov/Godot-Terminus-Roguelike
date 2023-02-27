@@ -7,7 +7,9 @@ onready var count
 func _ready():
 	randomize()
 	count = round(rand_range(1,2))
-	item_name = "Health"
+	item_name = "Medkit"
+	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_medkit")
+	item_text = item_text % [item_name]
 	NODE_NAME.set_text(item_name)
 	pass
 

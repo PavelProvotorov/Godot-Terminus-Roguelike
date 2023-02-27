@@ -13,7 +13,6 @@ const INPUT_LIST = {
 	UI_LEFT  = "ui_left",
 	UI_RIGHT = "ui_right",
 	UI_PICK  = "ui_pick",
-	UI_SHOOT = "ui_shoot",
 	UI_SKIP  = "ui_skip",
 	UI_SPACE = "ui_space",
 	UI_READ = "ui_read",
@@ -89,7 +88,7 @@ func ui_update():
 	Global.UI_LEVEL.set_text(Global.LEVEL_COUNT as String)
 	Global.UI_TURN.set_text(self.stat_speed as String)
 
-func _unhandled_input(key):
+func _unhandled_key_input(key):
 #	if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_NONE:
 #		return
 	if NODE_TWEEN.is_active() == true:
@@ -143,11 +142,6 @@ func _unhandled_input(key):
 				elif PLAYER_ACTION_INPUT == false && PLAYER_ACTION_SHOOT == false && PLAYER_ACTION_TEXT == true && PLAYER_ACTION_THROW == false:
 					Global.NODE_UI_TEXT.hide()
 					PLAYER_ACTION_TEXT = false
-#					if input == INPUT_LIST.UI_SPACE:
-#						Global.NODE_UI_TEXT.hide()
-#						PLAYER_ACTION_TEXT = false
-#						pass
-#					pass
 				else:
 					pass
 

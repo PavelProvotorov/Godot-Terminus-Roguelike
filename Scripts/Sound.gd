@@ -1,5 +1,7 @@
 extends Node
 
+onready var sfx_shield_enable = preload("res://Sounds/sfx_shield_enable.mp3")
+onready var sfx_shield_disable = preload("res://Sounds/sfx_shield_disable.mp3")
 onready var sfx_type = preload("res://Sounds/sfx_type.mp3")
 onready var sfx_blink = preload("res://Sounds/sfx_blink.mp3")
 onready var sfx_exit = preload("res://Sounds/sfx_exit.mp3")

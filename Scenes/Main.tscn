@@ -90,7 +90,7 @@ size = 6
 font_data = ExtResource( 5 )
 
 [sub_resource type="DynamicFont" id=9]
-size = 3
+size = 4
 extra_spacing_bottom = -1
 font_data = ExtResource( 5 )
 
@@ -182,7 +182,8 @@ autowrap = true
 clip_text = true
 
 [node name="UI_LEVEL" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
-margin_right = 24.0
+margin_left = 48.0
+margin_right = 80.0
 margin_bottom = 8.0
 rect_min_size = Vector2( 8, 8 )
 custom_colors/font_color = Color( 0.160784, 0.160784, 0.160784, 1 )
@@ -213,14 +214,15 @@ margin_bottom = 72.0
 texture = ExtResource( 8 )
 
 [node name="UI_TEXTLOG" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_TEXT"]
-margin_left = 33.0
+margin_left = 32.0
 margin_top = 13.0
-margin_right = 95.0
+margin_right = 96.0
 margin_bottom = 59.0
 custom_fonts/font = SubResource( 9 )
 text = "< Become aware of happiness once you have lost it. Then an age comes, a second one, in which you already know, at the moment when you begin to experience true happiness, that you are, at the end of the day, going to lose it. When I met Belle, I understood that I had just entered this second age. I also understood that I hadn’t reached the third age, in which anticipation of the loss of happiness prevents you from living. >"
 autowrap = true
 clip_text = true
+max_lines_visible = 11
 script = ExtResource( 7 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="GUI/GUI_LAYER_MAIN/UI_TEXT/UI_TEXTLOG"]

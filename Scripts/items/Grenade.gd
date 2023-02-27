@@ -9,6 +9,8 @@ onready var stat_dmg = 8
 func _ready():
 	randomize()
 	item_name = "Grenade"
+	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_grenade")
+	item_text = item_text % [item_name]
 	NODE_NAME.set_text(item_name)
 	pass
 

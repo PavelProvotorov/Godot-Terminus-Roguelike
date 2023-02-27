@@ -11,6 +11,8 @@ func _ready():
 	randomize()
 	ammo_count = randi()%2+0 
 	item_name = "Tactical Shotgun"
+	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_tactical_shotgun") + "\n\n* Damage: %s\n* Range: %s"
+	item_text = item_text % [item_name,stat_ranged_dmg,stat_range]
 	NODE_NAME.set_text(item_name)
 	pass
 

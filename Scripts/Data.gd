@@ -15,9 +15,22 @@ onready var TEXT_DATA = {
 # DESCRIPTION
 #---------------------------------------------------------------------------------------
 onready var DESCRIPTION_DATA = {
-	"item_shotgun": "This is a regular old Shotgun, used commonly among the guards.",
-	"item_assault_rifle": "this is text 1",
-	"item_submachine_gun": "this is text 2"
+	"item_sawn_off": "A shotgun with a shorter gun barrel has increased power, but that also reduces its range drastically.",
+	"item_shotgun": "This is a trustworthy shotgun, used commonly among the guards and cleanup forces, ideal for enclosed spaces.",
+	"item_assault_rifle": "The weapon of choice for space mercenaries and soldiers, can quickly dispatch both crowds of enemies and your ammo reserves.",
+	"item_submachine_gun": "A compact and reliable weapon designed for space combat, with an advantage of a high fire rate.",
+	"item_hunting_rifle": "The perfect weapon for spacefaring adventurers, that can take down even the most elusive and dangerous targets.",
+	"item_sniper_rifle": "The sniper rifle is the ultimate weapon for any marksman looking to take down their targets from a safe distance.",
+	"item_tactical_shotgun": "A reliable and versatile military grade close-quarters weapon, perfect for taking down enemies while keeping a safe distance.",
+	"item_pistol": "A sleek and stylish weapon fine-tuned for optimal performance in any situation. Its compact size also makes it easy to maneuver with.",
+	"item_bigdan_001": "",
+	"item_grenade": "An ideal utility weapon, for engaging in intense space combat or conducting devastating strikes against enemy targets",
+	"item_medkit": "The essential tool for those looking to stay healthy and safe on their journeys. This compact and durable medkit contains everything you need to treat minor injuries and ailments.",
+	"item_adrenalin": "With its advanced formula, this drug can provide the user with a temporary burst of speed and energy, allowing them to perform at their best in even the most demanding situations.",
+	"item_steroids": "This performance-enhancing drug can provide users with a temporary boost to their strength, making them a fearsome unit in melee combat.",
+	"item_teleporter": "With its advanced technology, this device can teleport the user to a random destination within range. Great to have for safety measures.",
+	"item_ammo_pack": "This durable and lightweight ammo pack contains everything you need to reload your weapons on the go, from energy cells and plasma cartridges to high-caliber bullets and explosive rounds.",
+	"item_shield_generator": "The shield generator can create a powerful force field around the user, providing a barrier against incoming attacks for a short period of time."
 }
 
 # LEVELS
@@ -64,6 +77,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -104,6 +118,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -144,6 +159,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -184,6 +200,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -224,6 +241,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -264,6 +282,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -305,6 +324,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -346,6 +366,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -387,6 +408,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -428,6 +450,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -468,6 +491,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -508,6 +532,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -548,6 +573,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -588,6 +614,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -628,6 +655,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -669,6 +697,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -710,6 +739,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -751,6 +781,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -792,6 +823,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -833,6 +865,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -870,6 +903,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -907,6 +941,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -943,6 +978,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -979,6 +1015,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
@@ -1018,6 +1055,7 @@ onready var LEVEL_DATA = {
 				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,

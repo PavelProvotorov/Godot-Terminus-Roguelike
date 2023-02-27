@@ -43,7 +43,8 @@ func on_action_attack():
 	pass
 
 func on_action_shoot():
-	NODE_MAIN.buff_add("Blindness",Global.NODE_PLAYER)
+	if Global.NODE_PLAYER.is_vulnerable == true:
+		NODE_MAIN.buff_add("Blindness",Global.NODE_PLAYER)
 	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
 	pass

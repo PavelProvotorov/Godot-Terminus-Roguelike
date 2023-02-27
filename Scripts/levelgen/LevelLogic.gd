@@ -374,7 +374,7 @@ func generator_room_add_items():
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var common_item_count:int = randi() % 3 + 1
 	var consumables_item_count:int = randi() % 2
-	var weapons_item_count:int = randi() % 4
+	var weapons_item_count:int = randi() % 2
 	var other_item_count:int = randi() % 2
 	var items_spawned:int = 0
 	

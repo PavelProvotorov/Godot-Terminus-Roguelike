@@ -6,7 +6,9 @@ onready var stat_melee_dmg = 1
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	item_name = "Teleport"
+	item_name = "Teleporter"
+	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_teleporter")
+	item_text = item_text % [item_name]
 	NODE_NAME.set_text(item_name)
 	pass
 

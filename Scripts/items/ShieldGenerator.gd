@@ -6,8 +6,8 @@ onready var stat_melee_dmg = 1
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	item_name = "Adrenalin"
-	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_adrenalin")
+	item_name = "Shield Generator"
+	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_shield_generator")
 	item_text = item_text % [item_name]
 	NODE_NAME.set_text(item_name)
 	pass
@@ -21,11 +21,8 @@ func on_action_pickup():
 	pass
 
 func on_action_use():
-	Global.NODE_PLAYER.buff_add("SpeedUp",Global.NODE_PLAYER)
-#	Global.NODE_PLAYER.calculate_melee_damage(self,Global.NODE_PLAYER)
-	Global.NODE_PLAYER.spawn_text("Speed Up",Global.NODE_PLAYER.position/grid_size,Color.white,0.2)
-	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_hit_0,Global.NODE_PLAYER.position/grid_size)
-	if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_NONE:
-		Global.NODE_MAIN.level_game_over()
+	Global.NODE_PLAYER.buff_add("ProtectiveShield",Global.NODE_PLAYER)
+	Global.NODE_PLAYER.spawn_text("Shield Activated",Global.NODE_PLAYER.position/grid_size,Color.white,0.2)
+	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_shield_enable,Global.NODE_PLAYER.position/grid_size)
 	item_remove_from_inventory(item_parent)
 	pass
