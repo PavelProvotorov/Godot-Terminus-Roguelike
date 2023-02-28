@@ -432,6 +432,8 @@ func action_throw(direction):
 				NODE_MAIN.calculate_other_damage(action_throw_item.stat_dmg,collider)
 				action_shoot_tween(cellA,get_negative_vector(cellA,cellB))
 				yield(self.NODE_TWEEN,"tween_all_completed")
+				action_throw_item.item_throw_position = collider.position/grid_size
+				action_throw_item.item_last_target = Global.LEVEL_LAYER_LOGIC.get_node_or_null(collider.name)
 				action_throw_item.on_action_throw()
 				action_throw_item = null
 				collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE

@@ -1846,3 +1846,13 @@
 #}
 
 #	for i in text.length():
+
+#	var direction_list = Global.DIRECTION_LIST_8
+#	var mob_list = get_tree().get_nodes_in_group(Global.GROUPS.HOSTILE)
+#	for direction in direction_list:
+#		var check_direction = item_throw_position + direction
+#		for mob in mob_list:
+#			if mob.position/grid_size == check_direction:
+#				mob.calculate_other_damage(stat_frag_dmg,mob)
+#			if mob != null && mob.NODE_BUFFS.find_node("Slowness") == null:
+#				mob.buff_add("Slowness",mob)

@@ -7,6 +7,8 @@ onready var grid_size = Global.grid_size
 onready var item_name:String
 onready var item_parent = Global.LEVEL_LAYER_LOGIC
 onready var ammo_count:int
+onready var item_last_target
+onready var item_throw_position
 onready var item_text = null
 
 # READY

@@ -3,14 +3,14 @@ extends Item2D
 onready var sound_on_throw = Sound.sfx_explosion_0
 onready var stat_throwable_range = 3
 onready var stat_frag_dmg = 0
-onready var stat_dmg = 8
+onready var stat_dmg = 2
 
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	item_name = "Grenade"
-	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_grenade")
+	item_name = "EMP Grenade"
+	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_emp_grenade")
 	item_text = item_text % [item_name]
 	NODE_NAME.set_text(item_name)
 	pass
@@ -32,5 +32,7 @@ func on_action_use():
 	pass
 
 func on_action_throw():
+	if item_last_target != null && item_last_target.NODE_BUFFS.find_node("Slowness") == null:
+		item_last_target.buff_add("Slowness",item_last_target)
 	item_remove_from_inventory(item_parent)
 	pass

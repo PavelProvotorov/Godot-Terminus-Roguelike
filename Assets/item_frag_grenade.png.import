@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/item_stun_grenade.png-6306d64a3f23d0dea7395ebe3c1a24cf.stex"
+path="res://.import/item_frag_grenade.png-9d5f5243e86c4efea16eeefae4c80f35.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/item_stun_grenade.png"
-dest_files=[ "res://.import/item_stun_grenade.png-6306d64a3f23d0dea7395ebe3c1a24cf.stex" ]
+source_file="res://Assets/item_frag_grenade.png"
+dest_files=[ "res://.import/item_frag_grenade.png-9d5f5243e86c4efea16eeefae4c80f35.stex" ]
 
 [params]
 

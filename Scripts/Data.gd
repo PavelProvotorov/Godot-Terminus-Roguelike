@@ -24,6 +24,8 @@ onready var DESCRIPTION_DATA = {
 	"item_tactical_shotgun": "A reliable and versatile military grade close-quarters weapon, perfect for taking down enemies while keeping a safe distance.",
 	"item_pistol": "A sleek and stylish weapon fine-tuned for optimal performance in any situation. Its compact size also makes it easy to maneuver with.",
 	"item_bigdan_001": "",
+	"item_emp_grenade": "The EMP grenade can emit a blinding flash of light and a loud noise, slowing and stunning anyone caught in its blast radius.",
+	"item_frag_grenade": "The fragmentation grenade can create a devastating explosion that sends shrapnel flying in all directions, tearing through armor and flesh with ease.",
 	"item_grenade": "An ideal utility weapon, for engaging in intense space combat or conducting devastating strikes against enemy targets",
 	"item_medkit": "The essential tool for those looking to stay healthy and safe on their journeys. This compact and durable medkit contains everything you need to treat minor injuries and ailments.",
 	"item_adrenalin": "With its advanced formula, this drug can provide the user with a temporary burst of speed and energy, allowing them to perform at their best in even the most demanding situations.",
@@ -81,6 +83,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -122,6 +126,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -163,6 +169,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -204,6 +212,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -245,6 +255,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -286,6 +298,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -328,6 +342,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -370,6 +386,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -412,6 +430,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -454,6 +474,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -495,6 +517,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -536,6 +560,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -577,6 +603,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -618,6 +646,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -659,6 +689,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -701,6 +733,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -743,6 +777,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -785,6 +821,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -827,6 +865,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -869,6 +909,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -907,6 +949,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -945,6 +989,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -982,6 +1028,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -1019,6 +1067,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {
@@ -1059,6 +1109,8 @@ onready var LEVEL_DATA = {
 				"Adrenalin": 10,
 				"Steroids": 10,
 				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
 				"Teleport": 10
 			},
 			"WEAPONS": {

@@ -51,7 +51,6 @@ func on_action_shoot():
 	AI_class = Global.AI_CLASS_LIST.CLASS_MELEE
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_blink,Global.NODE_PLAYER.position/grid_size)
 	Global.NODE_PLAYER.position = position_a
-#	yield(self.get_idle_frame(),"completed")
 	self.position = position_b
 	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
