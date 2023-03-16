@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Sounds/sfx_type.mp3" type="AudioStream" id=1]
 [ext_resource path="res://Resources/fonts/FONT_UpheavalPro.tres" type="DynamicFont" id=2]
@@ -11,7 +11,6 @@
 [ext_resource path="res://Scripts/Weapon.gd" type="Script" id=11]
 [ext_resource path="res://Scripts/Armor.gd" type="Script" id=12]
 [ext_resource path="res://Scenes/ItemSlot.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Items/Shotgun.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/Menu.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scripts/Transition.gd" type="Script" id=16]
 
@@ -249,8 +248,6 @@ rect_min_size = Vector2( 10, 8 )
 script = ExtResource( 11 )
 
 [node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON" instance=ExtResource( 13 )]
-
-[node name="Shotgun" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON/ItemSlot" instance=ExtResource( 14 )]
 
 [node name="UI_ARMOR" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
 margin_left = 89.0

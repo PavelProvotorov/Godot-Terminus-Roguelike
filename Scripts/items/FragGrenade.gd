@@ -3,7 +3,7 @@ extends Item2D
 onready var sound_on_throw = Sound.sfx_explosion_0
 onready var stat_throwable_range = 3
 onready var stat_frag_dmg = 3
-onready var stat_dmg = 5
+onready var stat_dmg = 6
 
 # READY
 #---------------------------------------------------------------------------------------

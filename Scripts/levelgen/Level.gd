@@ -77,6 +77,8 @@ func manager_mob_actions():
 				if moving_entity_path[1] == target_entity_position:
 					mob_action_attack(moving_entity_path[0],moving_entity_path[1])
 					yield(self,"on_mob_action_finished")
+					moving_entity.on_action_attack()
+					yield(moving_entity,"on_action_finished")
 				#If next cell is not target position > move
 				elif moving_entity_path[1] != target_entity_position:
 					# Check if mob enters a fog hidden cell
@@ -106,6 +108,8 @@ func manager_mob_actions():
 				if moving_entity_path[1] == target_entity_position:
 					mob_action_attack(moving_entity_path[0],moving_entity_path[1])
 					yield(self,"on_mob_action_finished")
+					moving_entity.on_action_attack()
+					yield(moving_entity,"on_action_finished")
 				#If next cell is not target position > move
 				elif moving_entity_path[1] != target_entity_position:
 					# Check if mob enters a fog hidden cell
@@ -128,6 +132,7 @@ func manager_mob_actions():
 						yield(self,"on_mob_action_finished")
 						moving_entity.on_action_shoot()
 						yield(moving_entity,"on_action_finished")
+						yield(get_tree(),"idle_frame")
 					yield(self.get_idle_frame(),"completed")
 					
 	# ENGAGED AMBUSH CLASS STATE
@@ -144,6 +149,8 @@ func manager_mob_actions():
 				if moving_entity_path[1] == target_entity_position:
 					mob_action_attack(moving_entity_path[0],moving_entity_path[1])
 					yield(self,"on_mob_action_finished")
+					moving_entity.on_action_attack()
+					yield(moving_entity,"on_action_finished")
 				#If next cell is not target position > move
 				elif moving_entity_path[1] != target_entity_position:
 					# Check if mob enters a fog hidden cell
@@ -176,12 +183,20 @@ func manager_mob_actions():
 			var target_near:bool = false
 			nearby_cells.shuffle()
 			
+#			# Check if the target is nearby
+#			for cell in nearby_cells:
+#				var cell_to_check = (moving_entity_position + (cell * moving_entity.stat_visibility))
+#				if cell_to_check == target_entity_position: 
+#					moving_entity.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
+#					target_near = true
+			
 			# Check if the target is nearby
-			for cell in nearby_cells:
-				var cell_to_check = (moving_entity_position + (cell * moving_entity.stat_visibility))
-				if cell_to_check == target_entity_position: 
-					moving_entity.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
-					target_near = true
+			var position_a:Vector2 = moving_entity_position
+			var position_b:Vector2 = Global.NODE_PLAYER.position / grid_size
+			var distance = (round(position_a.distance_to(position_b)))
+			if distance <= moving_entity.stat_visibility:
+				moving_entity.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
+				target_near = true
 			
 			# If target is near > attack
 			if target_near == true && moving_entity_path.size() == 1:
@@ -237,6 +252,8 @@ func manager_mob_actions():
 				if moving_entity_path[1] == target_entity_position:
 					mob_action_attack(moving_entity_path[0],moving_entity_path[1])
 					yield(self,"on_mob_action_finished")
+					moving_entity.on_action_attack()
+					yield(moving_entity,"on_action_finished")
 				else:
 					moving_entity.on_action_move()
 					yield(moving_entity,"on_action_finished")
@@ -414,6 +431,14 @@ func level_item_spawn(item_name,item_position:Vector2):
 func level_mob_spawn(mob_name,mob_position:Vector2):
 	var mob_data = load("res://Mobs/%s.tscn" %mob_name)
 	var mob_instance = mob_data.instance()
+	Global.LEVEL_LAYER_LOGIC.add_child(mob_instance)
+	mob_instance.set_global_position(Vector2((mob_position.x)*grid_size,(mob_position.y)*grid_size))
+	return mob_instance
+
+func level_mob_spawn_invisible(mob_name,mob_position:Vector2):
+	var mob_data = load("res://Mobs/%s.tscn" %mob_name)
+	var mob_instance = mob_data.instance()
+	mob_instance.visible = false
 	Global.LEVEL_LAYER_LOGIC.add_child(mob_instance)
 	mob_instance.set_global_position(Vector2((mob_position.x)*grid_size,(mob_position.y)*grid_size))
 	return mob_instance

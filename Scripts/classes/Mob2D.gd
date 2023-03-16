@@ -5,6 +5,7 @@ onready var NODE_BUFFS = $Buffs
 onready var NODE_POSITION_2D = $Position2D
 onready var NODE_ANIMATED_SPRITE = $AnimatedSprite
 onready var NODE_ANIMATED_SPRITE_TARGET = $AnimatedSpriteTarget
+onready var NODE_ANIMATED_SPRITE_SHIELD = $AnimatedSpriteShield
 onready var NODE_COLLISION_2D = $CollisionShape2D
 onready var NODE_RAYCAST_COLLIDE = $RayCastCollide
 onready var NODE_TWEEN = $Tween
@@ -138,6 +139,12 @@ func action_shoot_tween(start,finish):
 	NODE_TWEEN.emit_signal("tween_all_completed")
 #	tween_speed_attack
 
+func tween_visibility_enable():
+	NODE_TWEEN.interpolate_property(self, "modulate:a", 0.3, 1.0, 0.1, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+
+func tween_visibility_disable():
+	pass
+
 func get_negative_vector(origin_vector, destination_vector):
 	var negative_vector = (destination_vector - origin_vector).tangent().tangent() + origin_vector
 	return Vector2(negative_vector.x,negative_vector.y)
@@ -191,6 +198,15 @@ func get_raycast_exceptions(raycast,group):
 	for i in node_to_scan_size:
 		var node_child = node_to_scan.get_child(i)
 		if node_child.is_in_group(group) == true:
+			raycast.add_exception(node_child)
+	pass
+
+func get_raycast_exceptions_by_visibility(raycast):
+	var node_to_scan = Global.LEVEL_LAYER_LOGIC
+	var node_to_scan_size:int = node_to_scan.get_child_count()
+	for i in node_to_scan_size:
+		var node_child = node_to_scan.get_child(i)
+		if node_child.visible == false:
 			raycast.add_exception(node_child)
 	pass
 

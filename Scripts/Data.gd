@@ -1,6 +1,7 @@
 extends Node
 
 onready var shotgun = preload("res://Items/Shotgun.tscn")
+onready var tactical_shotgun = preload("res://Items/TacticalShotgun.tscn")
 onready var assault_rifle = preload("res://Items/AssaultRifle.tscn")
 onready var pistol = preload("res://Items/Pistol.tscn")
 
@@ -921,23 +922,27 @@ onready var LEVEL_DATA = {
 				"HuntingRifle": 0,
 				"AssaultRifle": 75,
 				"TacticalShotgun": 75,
-				"SniperRifle": 15
+				"SniperRifle": 25
 			},
 			"OTHER": {
 				"BigDan001": 100
 			}
 		},
 	},
-	211: {
+	21: {
 		"SETTINGS": {
 			"Visibility": 3,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_5"
 		},
 		"LEVELS": {
 			"Level_5": 100
 		},
 		"MOBS": {
-			"Grunt": 100
+			"Zealot": 100,
+			"Protean": 10,
+			"Scout": 0,
+			"Stalker": 0,
+			"Templar": 0
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -956,12 +961,12 @@ onready var LEVEL_DATA = {
 			"WEAPONS": {
 				"Pistol": 0,
 				"SawnOff": 0,
-				"Shotgun": 5,
-				"SubmachineGun": 5,
+				"Shotgun": 0,
+				"SubmachineGun": 0,
 				"HuntingRifle": 0,
-				"AssaultRifle": 0,
-				"TacticalShotgun": 0,
-				"SniperRifle": 0
+				"AssaultRifle": 75,
+				"TacticalShotgun": 75,
+				"SniperRifle": 50
 			},
 			"OTHER": {
 				"BigDan001": 100
@@ -971,13 +976,17 @@ onready var LEVEL_DATA = {
 	22: {
 		"SETTINGS": {
 			"Visibility": 3,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_5"
 		},
 		"LEVELS": {
 			"Level_5": 100
 		},
 		"MOBS": {
-			"Grunt": 100
+			"Zealot": 100,
+			"Protean": 15,
+			"Scout": 25,
+			"Stalker": 10,
+			"Templar": 5
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -994,13 +1003,14 @@ onready var LEVEL_DATA = {
 				"Teleport": 10
 			},
 			"WEAPONS": {
-				"SawnOff": 1,
-				"Shotgun": 5,
-				"SubmachineGun": 5,
+				"Pistol": 0,
+				"SawnOff": 0,
+				"Shotgun": 0,
+				"SubmachineGun": 0,
 				"HuntingRifle": 0,
-				"AssaultRifle": 0,
-				"TacticalShotgun": 0,
-				"SniperRifle": 0
+				"AssaultRifle": 75,
+				"TacticalShotgun": 75,
+				"SniperRifle": 75
 			},
 			"OTHER": {
 				"BigDan001": 100
@@ -1010,13 +1020,17 @@ onready var LEVEL_DATA = {
 	23: {
 		"SETTINGS": {
 			"Visibility": 3,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_5"
 		},
 		"LEVELS": {
 			"Level_5": 100
 		},
 		"MOBS": {
-			"Grunt": 100
+			"Zealot": 75,
+			"Protean": 20,
+			"Scout": 50,
+			"Stalker": 25,
+			"Templar": 15
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -1033,13 +1047,14 @@ onready var LEVEL_DATA = {
 				"Teleport": 10
 			},
 			"WEAPONS": {
-				"SawnOff": 1,
-				"Shotgun": 5,
-				"SubmachineGun": 5,
+				"Pistol": 0,
+				"SawnOff": 0,
+				"Shotgun": 0,
+				"SubmachineGun": 0,
 				"HuntingRifle": 0,
-				"AssaultRifle": 0,
-				"TacticalShotgun": 0,
-				"SniperRifle": 0
+				"AssaultRifle": 75,
+				"TacticalShotgun": 75,
+				"SniperRifle": 75
 			},
 			"OTHER": {
 				"BigDan001": 100
@@ -1049,13 +1064,17 @@ onready var LEVEL_DATA = {
 	24: {
 		"SETTINGS": {
 			"Visibility": 3,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_5"
 		},
 		"LEVELS": {
 			"Level_5": 100
 		},
 		"MOBS": {
-			"Grunt": 100
+			"Zealot": 50,
+			"Protean": 25,
+			"Scout": 75,
+			"Stalker": 50,
+			"Templar": 40
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -1072,13 +1091,14 @@ onready var LEVEL_DATA = {
 				"Teleport": 10
 			},
 			"WEAPONS": {
-				"SawnOff": 1,
-				"Shotgun": 5,
-				"SubmachineGun": 5,
+				"Pistol": 0,
+				"SawnOff": 0,
+				"Shotgun": 0,
+				"SubmachineGun": 0,
 				"HuntingRifle": 0,
-				"AssaultRifle": 0,
-				"TacticalShotgun": 0,
-				"SniperRifle": 0
+				"AssaultRifle": 75,
+				"TacticalShotgun": 75,
+				"SniperRifle": 75
 			},
 			"OTHER": {
 				"BigDan001": 100
@@ -1088,16 +1108,17 @@ onready var LEVEL_DATA = {
 	25: {
 		"SETTINGS": {
 			"Visibility": 3,
-			"Music": "sfx_level_0"
+			"Music": "sfx_level_5"
 		},
 		"LEVELS": {
 			"Level_5": 100
 		},
 		"MOBS": {
-			"Wart": 100,
-			"Hydra": 100,
-			"Behemoth": 100,
-			"Infestinator": 100
+			"Zealot": 25,
+			"Protean": 25,
+			"Scout": 75,
+			"Stalker": 75,
+			"Templar": 50
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -1114,13 +1135,14 @@ onready var LEVEL_DATA = {
 				"Teleport": 10
 			},
 			"WEAPONS": {
-				"SawnOff": 1,
-				"Shotgun": 5,
-				"SubmachineGun": 5,
+				"Pistol": 0,
+				"SawnOff": 0,
+				"Shotgun": 0,
+				"SubmachineGun": 0,
 				"HuntingRifle": 0,
-				"AssaultRifle": 0,
-				"TacticalShotgun": 0,
-				"SniperRifle": 0
+				"AssaultRifle": 75,
+				"TacticalShotgun": 75,
+				"SniperRifle": 75
 			},
 			"OTHER": {
 				"BigDan001": 100

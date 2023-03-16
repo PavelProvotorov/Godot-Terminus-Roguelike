@@ -54,30 +54,52 @@ func item_display_text(item,text):
 	pass
 
 func weapon_add_to_inventory(item,player_position):
-	var weapon_slot = Global.NODE_UI_WEAPON.get_child(0)
-	var weapon_slot_child = weapon_slot.get_child(0)
-	
-	# DROP OLD WEAPON FROM SLOT
-	weapon_slot.remove_child(weapon_slot_child)
-	Global.LEVEL_LAYER_LOGIC.add_child(weapon_slot_child)
-	weapon_slot_child.position = player_position
-	
-	# ADD NEW WEAPON TO SLOT
-	item.item_parent = weapon_slot
-	item.position = Vector2(1,-2)
-	Global.LEVEL_LAYER_LOGIC.remove_child(item)
-	weapon_slot.add_child(item)
-	
-	# ASSIGN WEAPON TO PLAYER
-	Global.NODE_PLAYER.equiped_weapon = item
+	var weapon_slot
+	var weapon_slot_child
+	if Global.NODE_PLAYER.equiped_weapon != null:
+		weapon_slot = Global.NODE_UI_WEAPON.get_child(0)
+		weapon_slot_child = weapon_slot.get_child(0)
+		
+		# DROP OLD WEAPON FROM SLOT
+		weapon_slot.remove_child(weapon_slot_child)
+		Global.LEVEL_LAYER_LOGIC.add_child(weapon_slot_child)
+		weapon_slot_child.position = player_position
+		
+		# ADD NEW WEAPON TO SLOT
+		item.item_parent = weapon_slot
+		item.position = Vector2(1,-2)
+		Global.LEVEL_LAYER_LOGIC.remove_child(item)
+		weapon_slot.add_child(item)
+		
+		# ASSIGN WEAPON TO PLAYER
+		Global.NODE_PLAYER.equiped_weapon = item
+		
+	elif Global.NODE_PLAYER.equiped_weapon == null:
+		weapon_slot = Global.NODE_UI_WEAPON.get_child(0)
+		# ADD NEW WEAPON TO SLOT
+		item.item_parent = weapon_slot
+		item.position = Vector2(1,-2)
+		Global.LEVEL_LAYER_LOGIC.remove_child(item)
+		weapon_slot.add_child(item)
+		
+		# ASSIGN WEAPON TO PLAYER
+		Global.NODE_PLAYER.equiped_weapon = item
+
+	else:
+		pass
 
 func weapon_replace_in_inventory(item):
 	var weapon_slot = Global.NODE_UI_WEAPON.get_child(0)
-	var weapon_slot_child = weapon_slot.get_child(0)
+	var weapon_slot_child
 	
-	# DELETE OLD WEAPON FROM SLOT
-	weapon_slot.remove_child(weapon_slot_child)
-	
+	if weapon_slot.get_child_count() == 1:
+		# DELETE OLD WEAPON FROM SLOT
+		weapon_slot_child = weapon_slot.get_child(0)
+		weapon_slot.remove_child(weapon_slot_child)
+		pass
+	elif weapon_slot.get_child_count() == 0:
+		pass
+		
 	# ADD NEW WEAPON TO SLOT
 	item.item_parent = weapon_slot
 	item.position = Vector2(1,-2)

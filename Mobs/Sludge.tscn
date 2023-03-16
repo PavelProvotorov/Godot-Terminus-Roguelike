@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/mobs/Sludge.gd" type="Script" id=1]
 [ext_resource path="res://Resources/animations/Animation_Sludge.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://Resources/animations/Animation_Shield.tres" type="SpriteFrames" id=3]
 [ext_resource path="res://Resources/animations/Animation_Target.tres" type="SpriteFrames" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -22,6 +23,14 @@ visible = false
 position = Vector2( 4, 4 )
 frames = ExtResource( 4 )
 animation = "IDLE"
+playing = true
+
+[node name="AnimatedSpriteShield" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 4, 4 )
+frames = ExtResource( 3 )
+animation = "IDLE"
+frame = 4
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

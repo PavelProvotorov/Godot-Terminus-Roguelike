@@ -46,12 +46,26 @@ func on_action_attack():
 	pass
 
 func on_action_shoot():
-	var position_a:Vector2 = self.position
-	var position_b:Vector2 = Global.NODE_PLAYER.position
+	var position_a:Vector2 = self.get_position() / grid_size
+	var position_b:Vector2 = Global.NODE_PLAYER.get_position() / grid_size
+	
+	# VECTOR DECIMALS FIX
+	position_a = Vector2(int(position_a.x),int(position_a.y)) * grid_size
+	position_b = Vector2(int(position_b.x),int(position_b.y)) * grid_size
+	
+	var occupied_cells_list = Global.LEVEL_LAYER_LOGIC.util_get_occupied_cells()
+	var cell_type = Global.LEVEL_LAYER_LOGIC.get_cellv(position_a/grid_size)
+	
 	AI_class = Global.AI_CLASS_LIST.CLASS_MELEE
-	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_blink,Global.NODE_PLAYER.position/grid_size)
-	Global.NODE_PLAYER.position = position_a
-	self.position = position_b
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
+	if cell_type == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_FLOOR or cell_type == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_EXIT or cell_type == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_ENTRANCE:
+		Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_blink,Global.NODE_PLAYER.position/grid_size)
+		Global.NODE_PLAYER.set_position(position_a)
+		yield(get_tree(),"idle_frame")
+		self.set_position(position_b)
+		yield(get_tree(),"idle_frame")
+		yield(self.get_idle_frame(),"completed")
+		emit_signal("on_action_finished")
+	else:
+		yield(self.get_idle_frame(),"completed")
+		emit_signal("on_action_finished")
 	pass

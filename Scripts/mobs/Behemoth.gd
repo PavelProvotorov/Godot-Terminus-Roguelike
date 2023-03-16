@@ -1,6 +1,6 @@
 extends Mob2D
 
-var AI_state = Global.AI_STATE_LIST.STATE_IDLE
+var AI_state = Global.AI_STATE_LIST.STATE_WANDER
 var AI_class = Global.AI_CLASS_LIST.CLASS_MELEE
 
 # SOUNDS
@@ -13,6 +13,7 @@ var sound_on_death = Sound.sfx_death_0
 
 # STATS
 #---------------------------------------------------------------------------------------
+var stat_visibility:int = 3
 var stat_ranged_dmg:int = 1
 var stat_melee_dmg:int = 2
 var stat_ambition:int = 3
@@ -35,12 +36,13 @@ func _ready():
 func on_action_move():
 	if stat_health <6 && AI_state == Global.AI_STATE_LIST.STATE_ENGAGE:
 		stat_melee_dmg = 3
-		stat_speed = 2
 	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
+	if stat_health <6 && AI_state == Global.AI_STATE_LIST.STATE_ENGAGE:
+		stat_melee_dmg = 3
 	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
 	pass

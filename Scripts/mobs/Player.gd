@@ -109,7 +109,9 @@ func _unhandled_key_input(key):
 						turn_count = stat_speed
 						check_turn()
 #						print(Global.LEVEL_LAYER_LOGIC.util_get_free_fog_cells())
-					if input == INPUT_LIST.UI_SPACE: action_targets_check_shoot()
+					if input == INPUT_LIST.UI_SPACE: 
+						if equiped_weapon != null: 
+							action_targets_check_shoot()
 					if input == INPUT_LIST.UI_1: action_use_item(1)
 					if input == INPUT_LIST.UI_2: action_use_item(2)
 					if input == INPUT_LIST.UI_3: action_use_item(3)
@@ -160,7 +162,8 @@ func action_targets_check_shoot():
 		Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_noammo,self.position/grid_size)
 		return
 	
-	# Add items as collider exceptions
+	# Add collider exceptions
+	get_raycast_exceptions_by_visibility(NODE_RAYCAST_COLLIDE)
 	get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 	
 	# Check for mob targes in range
@@ -195,7 +198,8 @@ func action_targets_check_throw(stat_throwable_range):
 	var directons = Global.DIRECTION_LIST
 	var ready_to_throw:bool = false
 	
-	# Add items as collider exceptions
+	# Add collider exceptions
+	get_raycast_exceptions_by_visibility(NODE_RAYCAST_COLLIDE)
 	get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 	
 	# Check for mob targes in range
@@ -252,11 +256,11 @@ func action_collision_check(direction):
 		if collider.get_class() == "KinematicBody2D":
 			if collider.is_in_group(Global.GROUPS.HOSTILE) == true: 
 				action_attack(direction,collider)
-			if collider.is_in_group(Global.GROUPS.QUEEN) == true:
-				Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
-				PLAYER_ACTION_TEXT = true
-				action_textlog()
-				Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PLAYER_TURN
+#			if collider.is_in_group(Global.GROUPS.QUEEN) == true:
+#				Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
+#				PLAYER_ACTION_TEXT = true
+#				action_textlog()
+#				Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PLAYER_TURN
 				
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
 	PLAYER_ACTION_INPUT = false
@@ -337,6 +341,8 @@ func action_move(direction):
 	NODE_MAIN.action_move_tween(cellA,cellB)
 	yield(NODE_TWEEN,"tween_all_completed")
 	Global.LEVEL_LAYER_LOGIC.fog_update()
+	
+	yield(get_tree(),"idle_frame")
 	check_turn()
 
 func action_attack(direction,collider):
@@ -366,7 +372,8 @@ func action_shoot(direction,shoot_count):
 		# Disable target animation
 		get_tree().call_group("HOSTILE","disable_target")
 		
-		# Add items as collider exceptions
+		# Add collider exceptions
+		get_raycast_exceptions_by_visibility(NODE_RAYCAST_COLLIDE)
 		get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 		
 		# Check for mob targes in range
@@ -410,7 +417,8 @@ func action_throw(direction):
 	# Disable target animation
 	get_tree().call_group("HOSTILE","disable_target")
 	
-	# Add items as collider exceptions
+	# Add collider exceptions
+	get_raycast_exceptions_by_visibility(NODE_RAYCAST_COLLIDE)
 	get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 	
 	# Check for mob targes in range
@@ -469,6 +477,7 @@ func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
 #	self.equiped_weapon = Data.pistol.instance()
 	self.equiped_weapon = Data.shotgun.instance()
+#	self.equiped_weapon = Data.tactical_shotgun.instance()
 #	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true

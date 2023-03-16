@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Resources/animations/Animation_Zealot.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Scripts/mobs/Zealot.gd" type="Script" id=2]
+[ext_resource path="res://Resources/animations/Animation_Shield.tres" type="SpriteFrames" id=3]
+[ext_resource path="res://Resources/animations/Animation_Target.tres" type="SpriteFrames" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 4 )
+
+[node name="Zealot" type="KinematicBody2D" groups=["HOSTILE", "KINEMATIC"]]
+z_index = 3
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = ExtResource( 1 )
+animation = "IDLE"
+frame = 1
+playing = true
+centered = false
+
+[node name="AnimatedSpriteTarget" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 4, 4 )
+frames = ExtResource( 4 )
+animation = "IDLE"
+frame = 1
+playing = true
+
+[node name="AnimatedSpriteShield" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 4, 4 )
+frames = ExtResource( 3 )
+animation = "IDLE"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 4, 4 )
+z_index = 1
+shape = SubResource( 1 )
+
+[node name="RayCastCollide" type="RayCast2D" parent="."]
+position = Vector2( 4, 4 )
+cast_to = Vector2( 0, 0 )
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 4, 4 )
+
+[node name="Tween" type="Tween" parent="."]
+playback_process_mode = 0
+
+[node name="Buffs" type="Node" parent="."]
