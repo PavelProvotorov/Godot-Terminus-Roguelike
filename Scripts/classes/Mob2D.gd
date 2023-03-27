@@ -25,6 +25,11 @@ const ANIMATIONS= {
 # CONDITION FLAGS
 var is_vulnerable:bool = true
 
+# SIGNALS
+#---------------------------------------------------------------------------------------
+signal mob_action_completed
+signal mob_action_all_completed
+
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
@@ -103,15 +108,13 @@ func animation_change(animation_type:String,is_playing:bool,is_random:bool):
 func action_move_notween(start,finish):
 	self.position = finish
 	NODE_TWEEN.start()
-	yield(NODE_TWEEN,"tween_completed")
-	NODE_TWEEN.emit_signal("tween_all_completed")
+#	yield(NODE_TWEEN,"tween_completed")
+#	NODE_TWEEN.emit_signal("tween_all_completed")
 	pass
 
 func action_move_tween(start,finish):
 	NODE_TWEEN.interpolate_property(self,'position',start,finish,1.0/tween_speed_move, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	NODE_TWEEN.start()
-	yield(NODE_TWEEN,"tween_completed")
-	NODE_TWEEN.emit_signal("tween_all_completed")
 	pass
 
 func action_attack_tween(start,finish):
@@ -121,7 +124,7 @@ func action_attack_tween(start,finish):
 	NODE_TWEEN.interpolate_property(self,"position",finish,start,1.0/12)
 	NODE_TWEEN.start()
 	yield(NODE_TWEEN,"tween_completed")
-	NODE_TWEEN.emit_signal("tween_all_completed")
+#	NODE_TWEEN.emit_signal("tween_all_completed")
 	pass
 
 func action_shoot_tween(start,finish):
@@ -136,8 +139,10 @@ func action_shoot_tween(start,finish):
 	NODE_TWEEN.interpolate_property(self,"position",finish,start,1.0/12)
 	NODE_TWEEN.start()
 	yield(NODE_TWEEN,"tween_completed")
-	NODE_TWEEN.emit_signal("tween_all_completed")
-#	tween_speed_attack
+#	NODE_TWEEN.emit_signal("tween_all_completed")
+
+func tween_spawn_enable():
+	NODE_TWEEN.interpolate_property(NODE_ANIMATED_SPRITE, "scale", Vector2(0,0), Vector2(1,1), 0.5, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 
 func tween_visibility_enable():
 	NODE_TWEEN.interpolate_property(self, "modulate:a", 0.3, 1.0, 0.1, Tween.TRANS_SINE, Tween.EASE_IN_OUT)

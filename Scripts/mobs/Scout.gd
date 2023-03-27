@@ -40,8 +40,6 @@ func on_action_move():
 	if distance <= 2 && buff_use != 0: 
 		NODE_MAIN.buff_add("ProtectiveShield",NODE_MAIN)
 		buff_use -= 1
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
@@ -51,11 +49,7 @@ func on_action_attack():
 	if distance <= 2 && buff_use != 0: 
 		NODE_MAIN.buff_add("ProtectiveShield",NODE_MAIN)
 		buff_use -= 1
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

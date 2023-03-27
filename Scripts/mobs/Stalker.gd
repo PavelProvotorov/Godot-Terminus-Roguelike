@@ -39,9 +39,7 @@ func on_action_move():
 	if distance <= 1 && self.visible == false: 
 		self.visible = true
 		self.tween_visibility_enable()
-		self.stat_speed = 1
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
+		self.stat_speed = 2
 	pass
 
 func on_action_attack():
@@ -52,11 +50,7 @@ func on_action_attack():
 		self.visible = true
 		self.tween_visibility_enable()
 		self.stat_speed = 2
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

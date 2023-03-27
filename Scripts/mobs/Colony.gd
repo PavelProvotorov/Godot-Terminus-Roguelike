@@ -36,37 +36,27 @@ func on_action_move():
 	var directions_array = Global.DIRECTION_LIST
 	var position_a:Vector2 = Vector2(self.position.x/grid_size,self.position.y/grid_size)
 	var position_b:Vector2
-	var to_action:bool = get_chance(25)
+	var spawn:bool = get_chance(100)
 	directions_array.shuffle()
 	
 	# Get exceptions
 	get_raycast_exceptions(NODE_RAYCAST_COLLIDE,Global.GROUPS.ITEM)
 	
-	if to_action == true:
+	if spawn == true:
 		# Burst into maggots and die
 		for direction in directions_array:
 			position_b = position_a + direction
 			raycast_cast_to(NODE_RAYCAST_COLLIDE,position_a,position_b)
 			if NODE_RAYCAST_COLLIDE.is_colliding() == false:
 				var mob_instance = Global.LEVEL.level_mob_spawn_tween("Maggot",position_a,position_b)
-				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
-				yield(mob_instance.get_node("Tween"),"tween_all_completed")
-			elif NODE_RAYCAST_COLLIDE.is_colliding() == true:
-				pass
-		yield(self.get_idle_frame(),"completed")
+				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_SPAWN
+#				Global.LEVEL.level_queue.append(mob_instance.name)
+				Global.LEVEL.level_queue.insert(Global.LEVEL.level_queue_mob_count+1,mob_instance.name)
 		Global.LEVEL_LAYER_LOGIC.remove_child(self)
-	elif to_action == false:
-		yield(self.get_idle_frame(),"completed")
-			
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

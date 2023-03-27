@@ -36,18 +36,12 @@ func _ready():
 func on_action_move():
 	if stat_health <6 && AI_state == Global.AI_STATE_LIST.STATE_ENGAGE:
 		stat_melee_dmg = 3
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
 	if stat_health <6 && AI_state == Global.AI_STATE_LIST.STATE_ENGAGE:
 		stat_melee_dmg = 3
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

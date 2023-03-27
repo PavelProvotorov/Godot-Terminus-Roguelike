@@ -1856,3 +1856,21 @@
 #				mob.calculate_other_damage(stat_frag_dmg,mob)
 #			if mob != null && mob.NODE_BUFFS.find_node("Slowness") == null:
 #				mob.buff_add("Slowness",mob)
+
+#	print("MindFlayer position is: " + str(position_a/grid_size))
+#	print("MindFlayer Tween active: " + str(self.NODE_TWEEN.is_active()))
+#	print("Player position is: " + str(position_b/grid_size))
+#	print("Player Tween active: " + str(Global.NODE_PLAYER.NODE_TWEEN.is_active()))
+#	print("---------------------------")
+	
+	# VECTOR DECIMALS FIX
+#	position_a = Vector2(int(position_a.x),int(position_a.y)) * grid_size
+#	position_b = Vector2(int(position_b.x),int(position_b.y)) * grid_size
+#
+#	var occupied_cells_list = Global.LEVEL_LAYER_LOGIC.util_get_occupied_cells()
+#	var cell_type = Global.LEVEL_LAYER_LOGIC.get_cellv(position_a/grid_size)
+
+#				while mob_instance.NODE_TWEEN.is_active():
+#					yield(get_tree(),"idle_frame")
+#					pass
+#				break

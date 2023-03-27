@@ -82,6 +82,7 @@ enum AI_STATE_LIST {
 	STATE_IDLE,
 	STATE_WANDER,
 	STATE_ENGAGE,
+	STATE_SPAWN,
 	STATE_NONE
 }
 enum AI_CLASS_LIST {
@@ -119,13 +120,14 @@ func game_state_manager(state):
 		get_tree().call_group("PLAYER","buff_tick")
 		yield(self.get_idle_frame(),"completed")
 		NODE_PLAYER.turn_count = 0
+		NODE_PLAYER.PLAYER_ACTION_INPUT = false
 	elif GAME_STATE == GAME_STATE_LIST.STATE_MOB_TURN:
 		# Check through buffs on Mobs
-		get_tree().call_group("HOSTILE","buff_tick")
+#		get_tree().call_group("HOSTILE","buff_tick")
 		yield(self.get_idle_frame(),"completed")
 #		print("< MOB MOVEMENT STARTED >")
 		LEVEL.level_queue_prepare()
-		LEVEL.manager_mob()
+		LEVEL.on_mob_manager_started()
 	else:
 		pass
 	pass

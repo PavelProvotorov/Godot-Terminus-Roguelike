@@ -9,7 +9,7 @@ onready var stat_dmg = 6
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	item_name = "Fragmentation Grenade"
+	item_name = "FRAG Grenade"
 	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_frag_grenade")
 	item_text = item_text % [item_name]
 	NODE_NAME.set_text(item_name)

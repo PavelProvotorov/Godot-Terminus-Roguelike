@@ -16,7 +16,7 @@ var sound_on_death = Sound.sfx_death_1
 var stat_ranged_dmg:int = 1
 var stat_melee_dmg:int = 2
 var stat_ambition:int = 1
-var stat_health:int = 3
+var stat_health:int = 4
 var stat_speed:int = 1
 var spawn:bool = true
 
@@ -62,16 +62,10 @@ func on_action_move():
 					self.tween_visibility_enable()
 					self.position = mob_instance.position
 					mob_instance.position = position_a
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

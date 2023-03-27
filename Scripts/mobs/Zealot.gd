@@ -14,7 +14,7 @@ var sound_on_death = Sound.sfx_death_1
 # STATS
 #---------------------------------------------------------------------------------------
 var stat_ranged_dmg:int = 0
-var stat_melee_dmg:int = 1
+var stat_melee_dmg:int = 2
 var stat_ambition:int = 1
 var stat_health:int = 5
 var stat_speed:int = 1
@@ -33,16 +33,10 @@ func _ready():
 	pass
 
 func on_action_move():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

@@ -21,8 +21,11 @@ func on_action_pickup():
 	pass
 
 func on_action_use():
-	Global.NODE_PLAYER.buff_add("ProtectiveShield",Global.NODE_PLAYER)
-	Global.NODE_PLAYER.spawn_text("Shield Activated",Global.NODE_PLAYER.position/grid_size,Color.white,0.2)
-	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_shield_enable,Global.NODE_PLAYER.position/grid_size)
-	item_remove_from_inventory(item_parent)
+	if Global.NODE_PLAYER.is_vulnerable == true:
+		Global.NODE_PLAYER.buff_add("ProtectiveShield",Global.NODE_PLAYER)
+		Global.NODE_PLAYER.spawn_text("Shield Activated",Global.NODE_PLAYER.position/grid_size,Color.white,0.2)
+		Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_shield_enable,Global.NODE_PLAYER.position/grid_size)
+		item_remove_from_inventory(item_parent)
+	else:
+		pass
 	pass

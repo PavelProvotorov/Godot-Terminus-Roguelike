@@ -33,6 +33,13 @@ var PLAYER_ACTION_THROW = false
 var PLAYER_ACTION_INPUT = false
 var PLAYER_ACTION_TEXT = false
 
+# SIGNALS
+#---------------------------------------------------------------------------------------
+signal player_movement_completed
+signal player_melee_attack_completed
+signal player_ranged_attack_completed
+signal player_idle_completed
+
 # SOUNDS
 #---------------------------------------------------------------------------------------
 var sound_on_move = Sound.sfx_move
@@ -65,6 +72,11 @@ func _physics_process(_delta):
 	ui_update()
 
 func _ready():
+	connect("player_movement_completed",self,"on_player_movement_completed")
+	connect("player_melee_attack_completed",self,"on_player_melee_attack_completed")
+	connect("player_ranged_attack_completed",self,"on_player_ranged_attack_completed")
+	connect("player_idle_completed",self,"on_player_idle_completed")
+	
 	Global.NODE_PLAYER = self
 	tween_speed_move = 25
 	
@@ -105,7 +117,6 @@ func _unhandled_key_input(key):
 					if input == INPUT_LIST.UI_PICK:  action_interact(Vector2(0,0))
 					if input == INPUT_LIST.UI_READ:  action_read(Vector2(0,0))
 					if input == INPUT_LIST.UI_SKIP:  
-#						action_textlog()
 						turn_count = stat_speed
 						check_turn()
 #						print(Global.LEVEL_LAYER_LOGIC.util_get_free_fog_cells())
@@ -221,6 +232,8 @@ func action_targets_check_throw(stat_throwable_range):
 		
 	# Player NOT OK to throw
 	if ready_to_throw == false:
+		spawn_text("out of range",self.position/grid_size,Color.white,0.0)
+		Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_noammo,self.position/grid_size)
 		NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
 		NODE_RAYCAST_COLLIDE.clear_exceptions()
 		PLAYER_ACTION_THROW = false
@@ -247,7 +260,7 @@ func action_collision_check(direction):
 	NODE_RAYCAST_COLLIDE.force_raycast_update()
 	if NODE_RAYCAST_COLLIDE.is_colliding() == false:
 		action_move(direction)
-	if NODE_RAYCAST_COLLIDE.is_colliding() == true:
+	elif NODE_RAYCAST_COLLIDE.is_colliding() == true:
 		var cellA = NODE_MAIN.position
 		var cellB = NODE_MAIN.position + (direction * grid_size)
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
@@ -256,20 +269,10 @@ func action_collision_check(direction):
 		if collider.get_class() == "KinematicBody2D":
 			if collider.is_in_group(Global.GROUPS.HOSTILE) == true: 
 				action_attack(direction,collider)
-#			if collider.is_in_group(Global.GROUPS.QUEEN) == true:
-#				Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_NONE
-#				PLAYER_ACTION_TEXT = true
-#				action_textlog()
-#				Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PLAYER_TURN
-				
+		else: 
+			PLAYER_ACTION_INPUT = false
+			pass
 	NODE_RAYCAST_COLLIDE.clear_exceptions()
-	PLAYER_ACTION_INPUT = false
-
-func action_textlog():
-	Global.NODE_UI_TEXT.show()
-	Global.NODE_UI_TEXTLOG.text = "< random queen bee sounds >"
-	Global.NODE_UI_TEXTLOG.show_text()
-	pass
 
 func action_use_item(slot_id:int):
 	PLAYER_ACTION_INPUT = true
@@ -339,11 +342,8 @@ func action_move(direction):
 	
 	Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_move,self.position/grid_size)
 	NODE_MAIN.action_move_tween(cellA,cellB)
-	yield(NODE_TWEEN,"tween_all_completed")
-	Global.LEVEL_LAYER_LOGIC.fog_update()
-	
-	yield(get_tree(),"idle_frame")
-	check_turn()
+	yield(self.NODE_TWEEN,"tween_all_completed")
+	emit_signal("player_movement_completed")
 
 func action_attack(direction,collider):
 	var cellA = NODE_MAIN.position
@@ -357,10 +357,11 @@ func action_attack(direction,collider):
 	Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_melee,self.position/grid_size)
 	NODE_MAIN.calculate_melee_damage(self,collider)
 	NODE_MAIN.action_attack_tween(cellA,cellB)
-	yield(NODE_TWEEN,"tween_all_completed")
 	collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 	NODE_MAIN.z_index -= 1
-	check_turn()
+	yield(self.NODE_TWEEN,"tween_completed")
+	yield(self.NODE_TWEEN,"tween_all_completed")
+	emit_signal("player_melee_attack_completed")
 
 func action_shoot(direction,shoot_count):
 	PLAYER_ACTION_INPUT = true
@@ -471,6 +472,7 @@ func check_turn():
 	if turn_count >= stat_speed: 
 		Global.game_state_manager(Global.GAME_STATE_LIST.STATE_MOB_TURN)
 	elif turn_count != stat_speed: 
+		PLAYER_ACTION_INPUT = false
 		pass
 
 func player_to_default():
@@ -481,7 +483,7 @@ func player_to_default():
 #	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true
-	self.stat_health = 10
+	self.stat_health = 99
 	self.stat_ammo = 12
 	self.stat_speed = 1
 	pass
@@ -492,3 +494,22 @@ func get_negative_vector(origin_vector, destination_vector):
 
 func get_idle_frame():
 	yield(get_tree(),"idle_frame")
+
+# SIGNAL FUNCTIONS
+#---------------------------------------------------------------------------------------
+func on_player_movement_completed():
+	Global.LEVEL_LAYER_LOGIC.fog_update()
+	Global.NODE_PLAYER.check_turn()
+	pass
+
+func on_player_ranged_attack_completed():
+	Global.NODE_PLAYER.check_turn()
+	pass
+
+func on_player_melee_attack_completed():
+	Global.NODE_PLAYER.check_turn()
+	pass
+
+func on_player_idle_completed():
+	Global.NODE_PLAYER.check_turn()
+	pass

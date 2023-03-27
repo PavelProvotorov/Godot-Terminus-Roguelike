@@ -33,18 +33,12 @@ func _ready():
 	pass
 
 func on_action_move():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
 	if Global.NODE_PLAYER.is_vulnerable == true:
 		NODE_MAIN.buff_add("Blindness",Global.NODE_PLAYER)
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

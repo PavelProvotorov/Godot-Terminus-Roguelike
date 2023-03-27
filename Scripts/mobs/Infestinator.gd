@@ -33,13 +33,9 @@ func _ready():
 	pass
 
 func on_action_move():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
@@ -57,6 +53,4 @@ func on_action_shoot():
 				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
 			else:
 				pass
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass

@@ -36,10 +36,6 @@ func _ready():
 	$AnimatedSprite.set_frame(rand_range(0,$AnimatedSprite.get_sprite_frames().get_frame_count(current_animation)))
 	pass
 
-# SIGNALS
-#---------------------------------------------------------------------------------------
-signal on_action_finished
-
 # ACTIONS
 #---------------------------------------------------------------------------------------
 func on_action_pickup():

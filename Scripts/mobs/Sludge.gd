@@ -48,24 +48,25 @@ func on_action_move():
 		if NODE_RAYCAST_COLLIDE.is_colliding() == false:
 			var spawn = get_chance(75)
 			if spawn == true:
-				var mob_instance = Global.LEVEL.level_mob_spawn_tween("Goo",position_a,position_b)
-				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
-				yield(mob_instance.get_node("Tween"),"tween_all_completed")
+				var mob_instance
+				mob_instance = Global.LEVEL.level_mob_spawn_tween("Goo",position_a,position_b)
+				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_SPAWN
+#				Global.LEVEL.level_queue.append(mob_instance.name
+				print("-------------------------------")
+				print(Global.LEVEL.moving_entity)
+				print(Global.LEVEL.level_queue)
+				Global.LEVEL.level_queue.insert(Global.LEVEL.level_queue_mob_count+1,mob_instance.name)
+				print(Global.LEVEL.level_queue)
 				break
-			if spawn == false:
+			elif spawn == false:
 				break
-		elif NODE_RAYCAST_COLLIDE.is_colliding() == true:
-			pass
-	yield(get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
+	pass
+
+func on_action_idle():
 	pass

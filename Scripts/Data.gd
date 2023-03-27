@@ -5,6 +5,8 @@ onready var tactical_shotgun = preload("res://Items/TacticalShotgun.tscn")
 onready var assault_rifle = preload("res://Items/AssaultRifle.tscn")
 onready var pistol = preload("res://Items/Pistol.tscn")
 
+onready var goo = preload("res://Mobs/Goo.tscn")
+
 # TEXT
 #---------------------------------------------------------------------------------------
 onready var TEXT_DATA = {

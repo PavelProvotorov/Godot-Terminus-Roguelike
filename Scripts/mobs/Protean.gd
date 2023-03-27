@@ -33,8 +33,6 @@ func _ready():
 	pass
 
 func on_action_move():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_attack():
@@ -46,11 +44,7 @@ func on_action_attack():
 	elif break_weapon == false && Global.NODE_PLAYER.stat_ammo != 0:
 		Global.NODE_PLAYER.stat_ammo -= 1
 		pass
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
 
 func on_action_shoot():
-	yield(self.get_idle_frame(),"completed")
-	emit_signal("on_action_finished")
 	pass
