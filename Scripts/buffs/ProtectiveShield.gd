@@ -19,7 +19,7 @@ func buff_on_action_add():
 	pass
 
 func buff_on_action_tick():
-	yield(self.get_idle_frame(),"completed")
+#	yield(self.get_idle_frame(),"completed")
 	emit_signal("on_action_finished")
 	pass
 	

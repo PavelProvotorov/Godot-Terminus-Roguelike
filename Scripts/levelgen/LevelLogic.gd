@@ -347,12 +347,10 @@ func generator_room_sort_room_vectors(rooms:Array):
 func generator_room_add_mobs():
 	var mob_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("MOBS").keys()
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
-#	var mob_count  = (round(rand_range(3,6)))
-	
-	var mob_count  = 1
+	var mob_count  = (round(rand_range(3,6)))
 	var mobs_spawned:int = 0
 	
-	#Remove cells, to not spawn mobs around spawn
+	#Exclude cells, to prevent spawn of mobs around entrance
 	for direction in Global.DIRECTION_LIST_8:
 		var cell = (Global.LEVEL_ENTRANCE) + (direction)
 		free_cells.erase(cell)
@@ -375,8 +373,7 @@ func generator_room_add_items():
 	var item_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("ITEMS").keys()
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var common_item_count:int = randi() % 3 + 1
-#	var consumables_item_count:int = randi() % 2
-	var consumables_item_count:int = 10
+	var consumables_item_count:int = randi() % 2
 	var weapons_item_count:int = randi() % 2
 	var other_item_count:int = randi() % 2
 	var items_spawned:int = 0

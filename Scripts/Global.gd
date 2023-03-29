@@ -123,7 +123,7 @@ func game_state_manager(state):
 		NODE_PLAYER.PLAYER_ACTION_INPUT = false
 	elif GAME_STATE == GAME_STATE_LIST.STATE_MOB_TURN:
 		# Check through buffs on Mobs
-#		get_tree().call_group("HOSTILE","buff_tick")
+		get_tree().call_group("HOSTILE","buff_tick")
 		yield(self.get_idle_frame(),"completed")
 #		print("< MOB MOVEMENT STARTED >")
 		LEVEL.level_queue_prepare()

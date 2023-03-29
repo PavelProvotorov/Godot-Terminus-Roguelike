@@ -36,7 +36,7 @@ func on_action_move():
 	var directions_array = Global.DIRECTION_LIST
 	var position_a:Vector2 = Vector2(self.position.x/grid_size,self.position.y/grid_size)
 	var position_b:Vector2
-	var spawn:bool = get_chance(100)
+	var spawn:bool = get_chance(50)
 	directions_array.shuffle()
 	
 	# Get exceptions
@@ -50,7 +50,6 @@ func on_action_move():
 			if NODE_RAYCAST_COLLIDE.is_colliding() == false:
 				var mob_instance = Global.LEVEL.level_mob_spawn_tween("Maggot",position_a,position_b)
 				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_SPAWN
-#				Global.LEVEL.level_queue.append(mob_instance.name)
 				Global.LEVEL.level_queue.insert(Global.LEVEL.level_queue_mob_count+1,mob_instance.name)
 		Global.LEVEL_LAYER_LOGIC.remove_child(self)
 	pass

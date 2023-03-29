@@ -62,7 +62,6 @@ cell_size = Vector2( 8, 8 )
 format = 1
 
 [node name="Fog" type="TileMap" parent="."]
-visible = false
 z_index = 4
 tile_set = ExtResource( 6 )
 cell_size = Vector2( 8, 8 )

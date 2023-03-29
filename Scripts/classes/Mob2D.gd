@@ -180,8 +180,11 @@ func buff_tick():
 				buff.buff_on_action_remove()
 			else: 
 				buff.buff_on_action_tick()
-				yield(buff,"on_action_finished")
+#				yield(buff,"on_action_finished")
 		elif buff.buff_infinite == true:
+			buff.buff_on_action_tick()
+			pass
+		else:
 			pass
 	Global.LEVEL_LAYER_LOGIC.fog_update()
 

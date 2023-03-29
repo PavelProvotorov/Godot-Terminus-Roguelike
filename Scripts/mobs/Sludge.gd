@@ -51,12 +51,7 @@ func on_action_move():
 				var mob_instance
 				mob_instance = Global.LEVEL.level_mob_spawn_tween("Goo",position_a,position_b)
 				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_SPAWN
-#				Global.LEVEL.level_queue.append(mob_instance.name
-				print("-------------------------------")
-				print(Global.LEVEL.moving_entity)
-				print(Global.LEVEL.level_queue)
 				Global.LEVEL.level_queue.insert(Global.LEVEL.level_queue_mob_count+1,mob_instance.name)
-				print(Global.LEVEL.level_queue)
 				break
 			elif spawn == false:
 				break

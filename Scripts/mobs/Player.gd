@@ -483,7 +483,7 @@ func player_to_default():
 #	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true
-	self.stat_health = 99
+	self.stat_health = 10
 	self.stat_ammo = 12
 	self.stat_speed = 1
 	pass
