@@ -64,6 +64,8 @@ onready var LEVEL_DATA = {
 	},
 	1: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 7,
 			"Music": "sfx_level_1"
 		},
@@ -107,6 +109,8 @@ onready var LEVEL_DATA = {
 	},
 	2: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 7,
 			"Music": "sfx_level_1"
 		},
@@ -150,6 +154,8 @@ onready var LEVEL_DATA = {
 	},
 	3: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 7,
 			"Music": "sfx_level_1"
 		},
@@ -193,6 +199,8 @@ onready var LEVEL_DATA = {
 	},
 	4: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 7,
 			"Music": "sfx_level_1"
 		},
@@ -236,6 +244,8 @@ onready var LEVEL_DATA = {
 	},
 	5: {
 		"SETTINGS": {
+			"MinMobCount": 5,
+			"MaxMobCount": 7,
 			"Visibility": 7,
 			"Music": "sfx_level_1"
 		},
@@ -279,6 +289,8 @@ onready var LEVEL_DATA = {
 	},
 	6: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 6,
 			"Music": "sfx_level_2"
 		},
@@ -322,6 +334,8 @@ onready var LEVEL_DATA = {
 	},
 	7: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 6,
 			"Music": "sfx_level_2"
 		},
@@ -366,6 +380,8 @@ onready var LEVEL_DATA = {
 	},
 	8: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 6,
 			"Music": "sfx_level_2"
 		},
@@ -410,6 +426,8 @@ onready var LEVEL_DATA = {
 	},
 	9: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 6,
 			"Music": "sfx_level_2"
 		},
@@ -454,6 +472,8 @@ onready var LEVEL_DATA = {
 	},
 	10: {
 		"SETTINGS": {
+			"MinMobCount": 5,
+			"MaxMobCount": 7,
 			"Visibility": 6,
 			"Music": "sfx_level_2"
 		},
@@ -498,6 +518,8 @@ onready var LEVEL_DATA = {
 	},
 	11: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 5,
 			"Music": "sfx_level_2"
 		},
@@ -541,6 +563,8 @@ onready var LEVEL_DATA = {
 	},
 	12: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 5,
 			"Music": "sfx_level_2"
 		},
@@ -584,6 +608,8 @@ onready var LEVEL_DATA = {
 	},
 	13: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 5,
 			"Music": "sfx_level_2"
 		},
@@ -627,6 +653,8 @@ onready var LEVEL_DATA = {
 	},
 	14: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 5,
 			"Music": "sfx_level_2"
 		},
@@ -670,6 +698,8 @@ onready var LEVEL_DATA = {
 	},
 	15: {
 		"SETTINGS": {
+			"MinMobCount": 5,
+			"MaxMobCount": 7,
 			"Visibility": 5,
 			"Music": "sfx_level_2"
 		},
@@ -713,6 +743,8 @@ onready var LEVEL_DATA = {
 	},
 	16: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 4,
 			"Music": "sfx_level_3"
 		},
@@ -757,6 +789,8 @@ onready var LEVEL_DATA = {
 	},
 	17: {
 		"SETTINGS": {
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
 			"Visibility": 4,
 			"Music": "sfx_level_3"
 		},
@@ -801,6 +835,8 @@ onready var LEVEL_DATA = {
 	},
 	18: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 4,
 			"Music": "sfx_level_3"
 		},
@@ -845,6 +881,8 @@ onready var LEVEL_DATA = {
 	},
 	19: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 4,
 			"Music": "sfx_level_3"
 		},
@@ -889,6 +927,8 @@ onready var LEVEL_DATA = {
 	},
 	20: {
 		"SETTINGS": {
+			"MinMobCount": 5,
+			"MaxMobCount": 7,
 			"Visibility": 4,
 			"Music": "sfx_level_3"
 		},
@@ -933,6 +973,8 @@ onready var LEVEL_DATA = {
 	},
 	21: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 3,
 			"Music": "sfx_level_5"
 		},
@@ -977,6 +1019,8 @@ onready var LEVEL_DATA = {
 	},
 	22: {
 		"SETTINGS": {
+			"MinMobCount": 4,
+			"MaxMobCount": 6,
 			"Visibility": 3,
 			"Music": "sfx_level_5"
 		},
@@ -1021,6 +1065,8 @@ onready var LEVEL_DATA = {
 	},
 	23: {
 		"SETTINGS": {
+			"MinMobCount": 5,
+			"MaxMobCount": 7,
 			"Visibility": 3,
 			"Music": "sfx_level_5"
 		},
@@ -1065,6 +1111,8 @@ onready var LEVEL_DATA = {
 	},
 	24: {
 		"SETTINGS": {
+			"MinMobCount": 5,
+			"MaxMobCount": 7,
 			"Visibility": 3,
 			"Music": "sfx_level_5"
 		},
@@ -1109,6 +1157,8 @@ onready var LEVEL_DATA = {
 	},
 	25: {
 		"SETTINGS": {
+			"MinMobCount": 6,
+			"MaxMobCount": 8,
 			"Visibility": 3,
 			"Music": "sfx_level_5"
 		},

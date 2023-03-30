@@ -1,9 +1,5 @@
 extends Buff2D
 
-# SIGNALS
-#---------------------------------------------------------------------------------------
-signal on_action_finished
-
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
@@ -11,7 +7,6 @@ func _ready():
 	pass
 
 func buff_on_action_add():
-	emit_signal("on_action_finished")
 	pass
 
 func buff_on_action_tick():
@@ -19,7 +14,6 @@ func buff_on_action_tick():
 		buff_owner.stat_speed = 0
 	elif buff_owner.stat_speed == 0:
 		buff_owner.stat_speed = 1
-	emit_signal("on_action_finished")
 	pass
 	
 func buff_on_action_remove():

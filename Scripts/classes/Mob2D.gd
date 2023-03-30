@@ -180,7 +180,6 @@ func buff_tick():
 				buff.buff_on_action_remove()
 			else: 
 				buff.buff_on_action_tick()
-#				yield(buff,"on_action_finished")
 		elif buff.buff_infinite == true:
 			buff.buff_on_action_tick()
 			pass
@@ -194,7 +193,7 @@ func buff_add(buff_name,buff_owner):
 	buff_owner.NODE_BUFFS.add_child(buff_instance)
 	buff_instance.buff_owner = buff_owner
 	buff_instance.buff_on_action_add()
-	yield(buff_instance,"on_action_finished")
+#	yield(buff_instance,"on_action_finished")
 
 func buff_remove(buff_name,buff_owner):
 	buff_owner.NODE_BUFFS.remove_child(buff_name)

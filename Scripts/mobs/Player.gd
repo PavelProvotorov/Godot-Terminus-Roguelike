@@ -464,14 +464,13 @@ func check_turn():
 	# Disable target animation
 	get_tree().call_group("HOSTILE","disable_target")
 	NODE_ANIMATED_SPRITE.set_animation(ANIMATIONS.MELEE)
-	PLAYER_ACTION_SHOOT = false
-	yield(self.get_idle_frame(),"completed")
 	
 	# Check player turn count
 	turn_count += 1
 	if turn_count >= stat_speed: 
 		Global.game_state_manager(Global.GAME_STATE_LIST.STATE_MOB_TURN)
 	elif turn_count != stat_speed: 
+		PLAYER_ACTION_SHOOT = false
 		PLAYER_ACTION_INPUT = false
 		pass
 
@@ -483,7 +482,7 @@ func player_to_default():
 #	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true
-	self.stat_health = 10
+	self.stat_health = 99
 	self.stat_ammo = 12
 	self.stat_speed = 1
 	pass

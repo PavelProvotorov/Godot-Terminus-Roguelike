@@ -347,7 +347,9 @@ func generator_room_sort_room_vectors(rooms:Array):
 func generator_room_add_mobs():
 	var mob_list = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("MOBS").keys()
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
-	var mob_count  = (round(rand_range(3,6)))
+	var min_mob_count = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["MinMobCount"]
+	var max_mob_count = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["MaxMobCount"]
+	var mob_count  = (round(rand_range(min_mob_count,max_mob_count)))
 	var mobs_spawned:int = 0
 	
 	#Exclude cells, to prevent spawn of mobs around entrance
