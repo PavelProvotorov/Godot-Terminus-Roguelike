@@ -9,7 +9,7 @@ var player_position
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
-	level_load("Level_1")
+	level_load("Level_0")
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL.level_mob_spawn("Player",Global.LEVEL_ENTRANCE)
 	Global.LEVEL.target_entity = Global.NODE_PLAYER

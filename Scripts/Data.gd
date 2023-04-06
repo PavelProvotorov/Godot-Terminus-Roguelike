@@ -43,11 +43,14 @@ onready var DESCRIPTION_DATA = {
 onready var LEVEL_DATA = {
 	0: {
 		"SETTINGS": {
-			"Visibility": 0,
-			"Music": "none"
+			"IsRandom": false,
+			"MinMobCount": 0,
+			"MaxMobCount": 0,
+			"Visibility": 8,
+			"Music": "sfx_level_1"
 		},
 		"LEVELS": {
-			"Level_1": 100
+			"Level_0": 100
 		},
 		"MOBS": {
 		},
@@ -64,6 +67,7 @@ onready var LEVEL_DATA = {
 	},
 	1: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 7,
@@ -73,10 +77,11 @@ onready var LEVEL_DATA = {
 			"Level_1": 100
 		},
 		"MOBS": {
-			"Grunt": 100,
-			"Maggot": 25,
-			"Colony": 0,
-			"Bloater": 0
+			"Templar": 100
+#			"Grunt": 100,
+#			"Maggot": 25,
+#			"Colony": 0,
+#			"Bloater": 0
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -109,6 +114,7 @@ onready var LEVEL_DATA = {
 	},
 	2: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 7,
@@ -154,6 +160,7 @@ onready var LEVEL_DATA = {
 	},
 	3: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 7,
@@ -199,6 +206,7 @@ onready var LEVEL_DATA = {
 	},
 	4: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 7,
@@ -244,6 +252,7 @@ onready var LEVEL_DATA = {
 	},
 	5: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 5,
 			"MaxMobCount": 7,
 			"Visibility": 7,
@@ -289,6 +298,7 @@ onready var LEVEL_DATA = {
 	},
 	6: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 6,
@@ -334,6 +344,7 @@ onready var LEVEL_DATA = {
 	},
 	7: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 6,
@@ -380,6 +391,7 @@ onready var LEVEL_DATA = {
 	},
 	8: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 6,
@@ -426,6 +438,7 @@ onready var LEVEL_DATA = {
 	},
 	9: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 6,
@@ -472,6 +485,7 @@ onready var LEVEL_DATA = {
 	},
 	10: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 5,
 			"MaxMobCount": 7,
 			"Visibility": 6,
@@ -518,6 +532,7 @@ onready var LEVEL_DATA = {
 	},
 	11: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 5,
@@ -563,6 +578,7 @@ onready var LEVEL_DATA = {
 	},
 	12: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 5,
@@ -608,6 +624,7 @@ onready var LEVEL_DATA = {
 	},
 	13: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 5,
@@ -653,6 +670,7 @@ onready var LEVEL_DATA = {
 	},
 	14: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 5,
@@ -698,6 +716,7 @@ onready var LEVEL_DATA = {
 	},
 	15: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 5,
 			"MaxMobCount": 7,
 			"Visibility": 5,
@@ -743,6 +762,7 @@ onready var LEVEL_DATA = {
 	},
 	16: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 4,
@@ -789,6 +809,7 @@ onready var LEVEL_DATA = {
 	},
 	17: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 3,
 			"MaxMobCount": 5,
 			"Visibility": 4,
@@ -835,6 +856,7 @@ onready var LEVEL_DATA = {
 	},
 	18: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 4,
@@ -881,6 +903,7 @@ onready var LEVEL_DATA = {
 	},
 	19: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 4,
@@ -927,6 +950,7 @@ onready var LEVEL_DATA = {
 	},
 	20: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 5,
 			"MaxMobCount": 7,
 			"Visibility": 4,
@@ -973,6 +997,7 @@ onready var LEVEL_DATA = {
 	},
 	21: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 3,
@@ -1019,6 +1044,7 @@ onready var LEVEL_DATA = {
 	},
 	22: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 4,
 			"MaxMobCount": 6,
 			"Visibility": 3,
@@ -1065,6 +1091,7 @@ onready var LEVEL_DATA = {
 	},
 	23: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 5,
 			"MaxMobCount": 7,
 			"Visibility": 3,
@@ -1111,6 +1138,7 @@ onready var LEVEL_DATA = {
 	},
 	24: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 5,
 			"MaxMobCount": 7,
 			"Visibility": 3,
@@ -1157,6 +1185,7 @@ onready var LEVEL_DATA = {
 	},
 	25: {
 		"SETTINGS": {
+			"IsRandom": true,
 			"MinMobCount": 6,
 			"MaxMobCount": 8,
 			"Visibility": 3,
@@ -1198,6 +1227,30 @@ onready var LEVEL_DATA = {
 			},
 			"OTHER": {
 				"BigDan001": 100
+			}
+		},
+	},
+	26: {
+		"SETTINGS": {
+			"IsRandom": false,
+			"MinMobCount": 0,
+			"MaxMobCount": 0,
+			"Visibility": 8,
+			"Music": "sfx_level_5"
+		},
+		"LEVELS": {
+			"Level_6": 100
+		},
+		"MOBS": {
+		},
+		"ITEMS": {
+			"COMMON": {
+			},
+			"CONSUMABLES": {
+			},
+			"WEAPONS": {
+			},
+			"OTHER": {
 			}
 		},
 	},

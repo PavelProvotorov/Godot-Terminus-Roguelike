@@ -14,7 +14,7 @@ var sound_on_death = Sound.sfx_death_1
 # STATS
 #---------------------------------------------------------------------------------------
 var stat_ranged_dmg:int = 1
-var stat_melee_dmg:int = 2
+var stat_melee_dmg:int = 3
 var stat_ambition:int = 1
 var stat_health:int = 4
 var stat_speed:int = 1
@@ -40,28 +40,25 @@ func on_action_move():
 	if distance <= 2 && spawn == true: 
 		spawn = false
 		var spawn_directions = Global.DIRECTION_LIST_8
-		var mob_count = (round(rand_range(1,2))as int)
+		var mobs_spawned:int = 0
+		var mob_count = randi()%3+2
 		for mob in mob_count:
 			var occupied_cells_list = Global.LEVEL_LAYER_LOGIC.util_get_occupied_cells()
 			var cell = spawn_directions[randi() % spawn_directions.size()]
 			var cell_position = cell + (position_a / grid_size)
 			var cell_type = Global.LEVEL_LAYER_LOGIC.get_cellv(cell_position)
 			if cell_type == Global.LEVEL_LAYER_LOGIC.TILESET_BASE.TILE_FLOOR && occupied_cells_list.has(cell_position) == false:
-				var mob_instance = Global.LEVEL.level_mob_spawn_invisible("Templar",cell_position)
-				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
-				mob_instance.stat_melee_dmg = 0
+				var mob_instance
+				mob_instance = Global.LEVEL.level_mob_spawn_tween("Templar",cell_position,cell_position)
+				Global.LEVEL.level_queue.insert(Global.LEVEL.level_queue_mob_count+1,mob_instance.name)
+				mob_instance.AI_state = Global.AI_STATE_LIST.STATE_SPAWN
+				mob_instance.stat_melee_dmg = 1
 				mob_instance.stat_health = 1
 				mob_instance.stat_speed = 1
 				mob_instance.spawn = false
+				mob_instance.visible = true
 				spawn_directions.erase(cell)
 				mob_instance.tween_visibility_enable()
-				if mob_instance.visible == false:
-					mob_instance.visible = true
-					mob_instance.tween_visibility_enable()
-				if mob == mob_count-1:
-					self.tween_visibility_enable()
-					self.position = mob_instance.position
-					mob_instance.position = position_a
 	pass
 
 func on_action_attack():

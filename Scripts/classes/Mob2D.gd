@@ -145,7 +145,7 @@ func tween_spawn_enable():
 	NODE_TWEEN.interpolate_property(NODE_ANIMATED_SPRITE, "scale", Vector2(0,0), Vector2(1,1), 0.5, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 
 func tween_visibility_enable():
-	NODE_TWEEN.interpolate_property(self, "modulate:a", 0.3, 1.0, 0.1, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+	NODE_TWEEN.interpolate_property(self, "modulate:a", 0.3, 1.0, 0.3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 
 func tween_visibility_disable():
 	pass

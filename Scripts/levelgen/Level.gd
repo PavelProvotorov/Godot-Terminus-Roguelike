@@ -4,6 +4,7 @@ var grid_size = Global.grid_size
 var map_height = Global.map_height
 var map_width = Global.map_width
 
+var level_is_random:bool = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["IsRandom"]
 var level_entrance
 var level_queue_mob_count:int
 var level_queue_mob_turn:int
@@ -29,7 +30,6 @@ const DIRECTION_LIST:Array = [
 
 signal mob_manager_completed
 signal mob_manager_action_completed
-
 signal mob_action_completed
 
 # READY
@@ -41,7 +41,15 @@ func _ready():
 	Global.LEVEL_LAYER_BASE = $Base
 	Global.LEVEL_LAYER_WALL = $Wall
 	Global.LEVEL_LAYER_LOGIC = $Logic
-	Global.LEVEL_LAYER_LOGIC.generator_room_prepare()
+	if level_is_random:
+		Global.LEVEL_LAYER_LOGIC.generator_room_prepare()
+		pass
+	else:
+		Global.LEVEL_ENTRANCE = Global.LEVEL_LAYER_LOGIC.get_used_cells_by_id(5)[0]
+		Global.LEVEL_EXIT = Global.LEVEL_LAYER_LOGIC.get_used_cells_by_id(4)[0]
+		print(Global.LEVEL_ENTRANCE)
+		print(Global.LEVEL_EXIT)
+		pass
 	self.z_index = -1
 	level_add_logic()
 	$Logic.astar_build()
@@ -473,6 +481,7 @@ func level_mob_spawn(mob_name,mob_position:Vector2):
 func level_mob_spawn_invisible(mob_name,mob_position:Vector2):
 	var mob_data = load("res://Mobs/%s.tscn" %mob_name)
 	var mob_instance = mob_data.instance()
+	mob_instance.modulate.a = 0.0
 	mob_instance.visible = false
 	Global.LEVEL_LAYER_LOGIC.add_child(mob_instance)
 	mob_instance.set_global_position(Vector2((mob_position.x)*grid_size,(mob_position.y)*grid_size))

@@ -63,7 +63,10 @@ func sound_spawn(sound_parent,sound_name,sound_position:Vector2):
 	sound_instance.play()
 
 func music_spawn(sound_parent,sound_name):
-	var previous_music = Data.LEVEL_DATA[Global.LEVEL_COUNT-1].get("SETTINGS")["Music"]
+	var previous_music
+	if Global.LEVEL_COUNT > 0:
+		previous_music = Data.LEVEL_DATA[Global.LEVEL_COUNT-1].get("SETTINGS")["Music"]
+		pass
 	var next_music = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["Music"]
 	if previous_music != next_music:
 		if Global.CURRENT_MUSIC != null:
