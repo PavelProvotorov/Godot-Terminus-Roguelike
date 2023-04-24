@@ -32,8 +32,6 @@ func on_action_use():
 	pass
 
 func on_action_throw():
-	print(item_last_target)
-	print(item_last_target.NODE_BUFFS.has_node("Slowness"))
 	if item_last_target != null && item_last_target.NODE_BUFFS.has_node("Slowness") == false:
 		item_last_target.buff_add("Slowness",item_last_target)
 	item_remove_from_inventory(item_parent)

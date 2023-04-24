@@ -349,8 +349,7 @@ func generator_room_add_mobs():
 	var free_cells = self.get_used_cells_by_id(TILESET_LOGIC.TILE_FLOOR)
 	var min_mob_count = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["MinMobCount"]
 	var max_mob_count = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["MaxMobCount"]
-#	var mob_count  = (round(rand_range(min_mob_count,max_mob_count)))
-	var mob_count  = 1
+	var mob_count  = (round(rand_range(min_mob_count,max_mob_count)))
 	var mobs_spawned:int = 0
 	
 	#Exclude cells, to prevent spawn of mobs around entrance
@@ -378,7 +377,8 @@ func generator_room_add_items():
 	var common_item_count:int = randi() % 3 + 1
 	var consumables_item_count:int = randi() % 2
 	var weapons_item_count:int = randi() % 2
-	var other_item_count:int = randi() % 2
+#	var other_item_count:int = randi() % 2
+	var other_item_count:int = 0
 	var items_spawned:int = 0
 	
 	# Spawn COMMON items

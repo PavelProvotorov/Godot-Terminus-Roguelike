@@ -47,8 +47,8 @@ func _ready():
 	else:
 		Global.LEVEL_ENTRANCE = Global.LEVEL_LAYER_LOGIC.get_used_cells_by_id(5)[0]
 		Global.LEVEL_EXIT = Global.LEVEL_LAYER_LOGIC.get_used_cells_by_id(4)[0]
-		print(Global.LEVEL_ENTRANCE)
-		print(Global.LEVEL_EXIT)
+#		print(Global.LEVEL_ENTRANCE)
+#		print(Global.LEVEL_EXIT)
 		pass
 	self.z_index = -1
 	level_add_logic()

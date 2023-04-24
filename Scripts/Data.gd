@@ -77,11 +77,10 @@ onready var LEVEL_DATA = {
 			"Level_1": 100
 		},
 		"MOBS": {
-			"Templar": 100
-#			"Grunt": 100,
-#			"Maggot": 25,
-#			"Colony": 0,
-#			"Bloater": 0
+			"Grunt": 100,
+			"Maggot": 25,
+			"Colony": 0,
+			"Bloater": 0
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -108,7 +107,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -154,7 +153,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -200,7 +199,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -246,7 +245,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -292,7 +291,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -338,7 +337,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -385,7 +384,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -432,7 +431,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -479,7 +478,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 0
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -526,7 +525,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 1
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -572,7 +571,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 1
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -618,7 +617,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 1
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -664,7 +663,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 1
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -710,7 +709,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 1
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -756,7 +755,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 5
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -803,7 +802,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 10
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -850,7 +849,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 10
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -897,7 +896,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 10
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -944,7 +943,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 15
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -991,7 +990,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 25
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -1038,7 +1037,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 50
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -1085,7 +1084,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 75
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -1132,7 +1131,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 75
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -1179,7 +1178,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 75
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},
@@ -1226,7 +1225,7 @@ onready var LEVEL_DATA = {
 				"SniperRifle": 75
 			},
 			"OTHER": {
-				"BigDan001": 100
+#				"BigDan001": 100
 			}
 		},
 	},

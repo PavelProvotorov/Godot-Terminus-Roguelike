@@ -44,21 +44,18 @@ tile_data = PoolIntArray( 0, 15, 0, 1, 15, 0, 2, 15, 0, 3, 14, 0, 4, 14, 0, 5, 1
 script = ExtResource( 2 )
 
 [node name="Base" type="TileMap" parent="."]
-visible = false
 z_index = 1
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )
 format = 1
 
 [node name="Deco" type="TileMap" parent="."]
-visible = false
 z_index = 1
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )
 format = 1
 
 [node name="Wall" type="TileMap" parent="."]
-visible = false
 z_index = 1
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )

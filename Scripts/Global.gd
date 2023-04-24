@@ -42,7 +42,7 @@ var LEVEL
 var LEVEL_ENTRANCE
 var LEVEL_EXIT
 
-var LEVEL_COUNT = 1
+var LEVEL_COUNT = 0
 
 #---------------------------------------------------------------------------------------
 var GAME_STATE = GAME_STATE_LIST.STATE_MENU
