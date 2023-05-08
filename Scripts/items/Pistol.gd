@@ -26,7 +26,7 @@ func on_action_pickup():
 	pass
 
 func on_action_shoot():
-	var extra_turn = util_chance(50)
+	var extra_turn = util_chance(35)
 	if extra_turn == true:
 		Global.NODE_PLAYER.spawn_text(">>>",Global.NODE_PLAYER.position/grid_size,Color.white,0.0)
 		Global.NODE_PLAYER.turn_count -= 1

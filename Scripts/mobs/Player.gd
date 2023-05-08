@@ -115,7 +115,7 @@ func _unhandled_key_input(key):
 					if input == INPUT_LIST.UI_LEFT:  action_collision_check(Vector2.LEFT)
 					if input == INPUT_LIST.UI_RIGHT: action_collision_check(Vector2.RIGHT)
 					if input == INPUT_LIST.UI_PICK:  action_interact(Vector2(0,0))
-					if input == INPUT_LIST.UI_READ:  action_read(Vector2(0,0))
+#					if input == INPUT_LIST.UI_READ:  action_read(Vector2(0,0))
 					if input == INPUT_LIST.UI_SKIP:  
 						turn_count = stat_speed
 						check_turn()
@@ -296,12 +296,18 @@ func action_interact(direction):
 	if NODE_RAYCAST_COLLIDE.is_colliding() == false:
 		var cell_player = NODE_MAIN.position
 		var cell = Global.LEVEL_LAYER_LOGIC.get_cellv(Vector2(cell_player.x/grid_size,cell_player.y/grid_size))
-		if cell == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_EXIT:
+		if cell == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_EXIT and Global.LEVEL_COUNT < 26:
 			Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_exit,self.position/grid_size)
 			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PAUSE
 			Global.NODE_MAIN.level_select()
 			return
-		pass
+		elif cell == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_EXIT and Global.LEVEL_COUNT >= 26:
+			Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_exit,self.position/grid_size)
+			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PAUSE
+			Global.NODE_MAIN.level_game_over()
+			pass
+		else:
+			pass
 	elif NODE_RAYCAST_COLLIDE.is_colliding() == true:
 		var collider = NODE_RAYCAST_COLLIDE.get_collider()
 		if collider.get_class() == "StaticBody2D":

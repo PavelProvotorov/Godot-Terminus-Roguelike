@@ -24,23 +24,23 @@ margin_bottom = 72.0
 texture = ExtResource( 5 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 13.0
+margin_left = 18.0
 margin_top = 9.0
-margin_right = 114.0
+margin_right = 109.0
 margin_bottom = 62.0
 
 [node name="Title" type="Label" parent="VBoxContainer"]
-margin_right = 101.0
+margin_right = 91.0
 margin_bottom = 8.0
 custom_fonts/font = SubResource( 1 )
-text = "HORIZON STATION"
+text = ":-<CENTURION>-:"
 align = 1
 valign = 1
 
 [node name="Button1" type="TextureButton" parent="VBoxContainer"]
-margin_left = 25.0
+margin_left = 20.0
 margin_top = 12.0
-margin_right = 76.0
+margin_right = 71.0
 margin_bottom = 23.0
 rect_min_size = Vector2( 51, 11 )
 focus_next = NodePath("../Button2")
@@ -63,9 +63,9 @@ align = 1
 valign = 1
 
 [node name="Button2" type="TextureButton" parent="VBoxContainer"]
-margin_left = 25.0
+margin_left = 20.0
 margin_top = 27.0
-margin_right = 76.0
+margin_right = 71.0
 margin_bottom = 38.0
 rect_min_size = Vector2( 51, 11 )
 focus_next = NodePath("../Button3")
@@ -88,9 +88,9 @@ align = 1
 valign = 1
 
 [node name="Button3" type="TextureButton" parent="VBoxContainer"]
-margin_left = 25.0
+margin_left = 20.0
 margin_top = 42.0
-margin_right = 76.0
+margin_right = 71.0
 margin_bottom = 53.0
 rect_min_size = Vector2( 51, 11 )
 focus_next = NodePath("../Button1")

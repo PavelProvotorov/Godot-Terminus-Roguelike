@@ -47,7 +47,7 @@ onready var LEVEL_DATA = {
 			"MinMobCount": 0,
 			"MaxMobCount": 0,
 			"Visibility": 8,
-			"Music": "sfx_level_1"
+			"Music": "sfx_level_0"
 		},
 		"LEVELS": {
 			"Level_0": 100

@@ -9,7 +9,7 @@ var player_position
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
-	level_load("Level_0")
+	level_load("Level_1")
 	yield(get_tree(),"idle_frame")
 	Global.LEVEL.level_mob_spawn("Player",Global.LEVEL_ENTRANCE)
 	Global.LEVEL.target_entity = Global.NODE_PLAYER
@@ -87,8 +87,10 @@ func level_game_over():
 	Global.LEVEL_COUNT = 1
 	
 	#Remove the current music
-	Global.CURRENT_MUSIC.music_fade_out()
-	Global.CURRENT_MUSIC = null
+	if Global.CURRENT_MUSIC != null:
+		Global.CURRENT_MUSIC.music_fade_out()
+		Global.CURRENT_MUSIC = null
+	pass
 	
 	#Delete current player instance
 	Global.NODE_PLAYER.queue_free()
