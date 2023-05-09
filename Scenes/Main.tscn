@@ -135,7 +135,6 @@ margin_bottom = 72.0
 
 [node name="GUI_LAYER_MAIN" type="CanvasLayer" parent="GUI"]
 layer = 2
-visible = false
 
 [node name="UI_MAIN" type="TextureRect" parent="GUI/GUI_LAYER_MAIN"]
 margin_right = 128.0
@@ -240,9 +239,9 @@ columns = 6
 script = ExtResource( 6 )
 
 [node name="UI_WEAPON" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
-margin_left = 29.0
+margin_left = 59.0
 margin_top = 64.0
-margin_right = 39.0
+margin_right = 69.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 10, 8 )
 script = ExtResource( 11 )
