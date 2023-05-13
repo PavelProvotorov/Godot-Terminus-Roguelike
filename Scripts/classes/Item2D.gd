@@ -21,6 +21,7 @@ func item_remove(parent):
 	pass
 
 func item_remove_from_inventory(parent):
+	Global.score_items += 1
 	parent.remove_child(self)
 	parent.queue_free()
 	pass
@@ -33,11 +34,33 @@ func item_add_to_inventory(item):
 		Global.NODE_UI_INVENTORY.add_child(item_slot_instance)
 		
 		# ADD ITEM TO SLOT
-#		item.NODE_NAME.visible = true
 		item.item_parent = item_slot_instance
 		item.position = Vector2(0,-1)
 		Global.LEVEL_LAYER_LOGIC.remove_child(item)
 		item_slot_instance.add_child(item)
+		
+	elif Global.NODE_UI_INVENTORY.get_child_count() == Global.NODE_UI_INVENTORY.item_slots_max:
+		var item_to_drop = Global.NODE_UI_INVENTORY.get_child(0)
+		item_to_drop = item_to_drop.get_child(0)
+		
+		#DROP FIRST ITEM IN INVENTORY
+		item_to_drop.position = item.position
+		item_to_drop.item_parent.remove_child(item_to_drop)
+		Global.NODE_UI_INVENTORY.remove_child(item_to_drop.item_parent)
+		item_to_drop.item_parent.queue_free()
+		Global.LEVEL_LAYER_LOGIC.add_child(item_to_drop)
+		
+		# ADD NEW ITEM SLOT
+		var item_slot_data = load("res://Scenes/ItemSlot.tscn")
+		var item_slot_instance = item_slot_data.instance()
+		Global.NODE_UI_INVENTORY.add_child(item_slot_instance)
+		
+		# ADD ITEM TO SLOT
+		item.item_parent = item_slot_instance
+		item.position = Vector2(0,-1)
+		Global.LEVEL_LAYER_LOGIC.remove_child(item)
+		item_slot_instance.add_child(item)
+		pass
 	else: 
 		pass
 
@@ -119,6 +142,10 @@ func item_action_add_ammo(count,item):
 	item.ammo_count = 0
 #	Global.NODE_PLAYER.spawn_text(count,Global.NODE_PLAYER.position/grid_size,Color.gold,0.0)
 #	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_pickup,self.position/grid_size)
+
+func weapon_calculate_final_damage(distance):
+	var final_damage:int = 0
+	return final_damage
 
 func util_chance(percentage):
 	randomize()

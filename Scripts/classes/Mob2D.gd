@@ -43,7 +43,14 @@ func calculate_melee_damage(is_attacker,is_target):
 		return false
 	else:
 		is_target.stat_health -= is_attacker.stat_melee_dmg
+		if is_target != Global.NODE_PLAYER:
+			Global.score_damage_dealt += is_attacker.stat_melee_dmg
+			pass
+		if is_target == Global.NODE_PLAYER:
+			Global.score_damage_received += is_attacker.stat_melee_dmg
+			pass
 		if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
+			Global.score_mobs += 1
 			Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
 			spawn_text(is_attacker.stat_melee_dmg,is_target.position/grid_size,Color.lightcoral,0.0)
 		elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
@@ -61,7 +68,14 @@ func calculate_ranged_damage(is_attacker,is_target,attacker_ranged_damage):
 		return false
 	else:
 		is_target.stat_health -= attacker_ranged_damage
+		if is_target != Global.NODE_PLAYER:
+			Global.score_damage_dealt += attacker_ranged_damage
+			pass
+		if is_target == Global.NODE_PLAYER:
+			Global.score_damage_received += attacker_ranged_damage
+			pass
 		if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
+			Global.score_mobs += 1
 			Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
 			spawn_text(attacker_ranged_damage,is_target.position/grid_size,Color.lightcoral,0.0)
 		elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
@@ -79,7 +93,14 @@ func calculate_other_damage(is_attacker_damage,is_target):
 		return false
 	else:
 		is_target.stat_health -= is_attacker_damage
+		if is_target != Global.NODE_PLAYER:
+			Global.score_damage_dealt += is_attacker_damage
+			pass
+		if is_target == Global.NODE_PLAYER:
+			Global.score_damage_received += is_attacker_damage
+			pass
 		if is_target.stat_health <= 0 and is_target != Global.NODE_PLAYER:
+			Global.score_mobs += 1
 			Global.LEVEL_LAYER_LOGIC.remove_child(is_target)
 			spawn_text(is_attacker_damage,is_target.position/grid_size,Color.lightcoral,0.0)
 		elif is_target.stat_health <= 0 and is_target == Global.NODE_PLAYER:
@@ -108,7 +129,7 @@ func animation_change(animation_type:String,is_playing:bool,is_random:bool):
 func action_move_notween(start,finish):
 	self.position = finish
 	NODE_TWEEN.start()
-#	yield(NODE_TWEEN,"tween_completed")
+	yield(NODE_TWEEN,"tween_completed")
 #	NODE_TWEEN.emit_signal("tween_all_completed")
 	pass
 

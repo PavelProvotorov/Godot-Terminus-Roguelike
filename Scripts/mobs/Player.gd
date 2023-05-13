@@ -98,7 +98,6 @@ func ui_update():
 	Global.UI_AMMO.set_text(self.stat_ammo as String)
 	Global.UI_HEALTH.set_text(self.stat_health as String)
 	Global.UI_LEVEL.set_text(Global.LEVEL_COUNT as String)
-	Global.UI_TURN.set_text(self.stat_speed as String)
 
 func _unhandled_key_input(key):
 #	if Global.GAME_STATE == Global.GAME_STATE_LIST.STATE_NONE:
@@ -304,7 +303,8 @@ func action_interact(direction):
 		elif cell == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_EXIT and Global.LEVEL_COUNT >= 26:
 			Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_exit,self.position/grid_size)
 			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PAUSE
-			Global.NODE_MAIN.level_game_over()
+			
+			Global.NODE_MAIN.level_game_completed()
 			pass
 		else:
 			pass
@@ -348,6 +348,7 @@ func action_move(direction):
 	
 	Sound.sound_spawn(Global.NODE_SOUNDS,sound_on_move,self.position/grid_size)
 	NODE_MAIN.action_move_tween(cellA,cellB)
+	Global.score_turns += 1
 	yield(self.NODE_TWEEN,"tween_all_completed")
 	emit_signal("player_movement_completed")
 
@@ -388,6 +389,9 @@ func action_shoot(direction,shoot_count):
 		NODE_RAYCAST_COLLIDE.force_raycast_update()
 		if NODE_RAYCAST_COLLIDE.is_colliding() == true :
 			var collider = NODE_RAYCAST_COLLIDE.get_collider()
+			var position_a = self.position/grid_size
+			var position_b = collider.position/grid_size
+			var distance = (round(position_a.distance_to(position_b)))
 			if collider.get_class() == "KinematicBody2D":
 				if collider.is_in_group(Global.GROUPS.HOSTILE) == true && NODE_MAIN.stat_ammo > 0: 
 					var cellA = NODE_MAIN.position
@@ -399,8 +403,9 @@ func action_shoot(direction,shoot_count):
 					
 					NODE_MAIN.z_index += 1
 					NODE_MAIN.stat_ammo -= 1
+					Global.score_shots += 1
 					Sound.sound_spawn(Global.NODE_SOUNDS,equiped_weapon.sound_on_ranged,self.position/grid_size)
-					NODE_MAIN.calculate_ranged_damage(self,collider,equiped_weapon.stat_ranged_dmg)
+					NODE_MAIN.calculate_ranged_damage(self,collider,equiped_weapon.weapon_calculate_final_damage(distance))
 					action_shoot_tween(cellA,get_negative_vector(cellA,cellB))
 					yield(self.NODE_TWEEN,"tween_all_completed")
 					collider.AI_state = Global.AI_STATE_LIST.STATE_ENGAGE
@@ -483,11 +488,18 @@ func check_turn():
 func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
 #	self.equiped_weapon = Data.pistol.instance()
-	self.equiped_weapon = Data.shotgun.instance()
+#	self.equiped_weapon = Data.shotgun.instance()
+	self.equiped_weapon = Data.revolver.instance()
 #	self.equiped_weapon = Data.tactical_shotgun.instance()
 #	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true
+	Global.score_shots = 0
+	Global.score_turns = 0
+	Global.score_damage_received = 0
+	Global.score_damage_dealt = 0
+	Global.score_items = 0
+	Global.score_mobs = 0
 	self.stat_health = 10
 	self.stat_ammo = 12
 	self.stat_speed = 1

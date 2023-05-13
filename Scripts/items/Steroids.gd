@@ -21,6 +21,7 @@ func on_action_pickup():
 	pass
 
 func on_action_use():
+	Global.NODE_PLAYER.stat_health += 1
 	Global.NODE_PLAYER.buff_add("DamageUp",Global.NODE_PLAYER)
 #	Global.NODE_PLAYER.calculate_melee_damage(self,Global.NODE_PLAYER)
 	Global.NODE_PLAYER.spawn_text("Damage Up",Global.NODE_PLAYER.position/grid_size,Color.white,0.2)

@@ -1,13 +1,44 @@
 extends CenterContainer
 
 onready var grid_size = Global.grid_size
-onready var current_button = $VBoxContainer/Button1
+onready var current_button = $MenuContainer/Button1
 onready var NODE_BACKGROUND = $Background
-onready var NODE_VBOX_CONTAINER = $VBoxContainer
+onready var NODE_MENU_CONTAINER = $MenuContainer
+onready var NODE_ABOUT_CONTAINER = $AboutContainer
+onready var NODE_STAT_CONTAINER = $StatContainer
 
 func _ready():
 	Global.NODE_MENU = self
 	current_button.grab_focus()
+
+func _input(event):
+	if event is InputEventKey:
+		if NODE_ABOUT_CONTAINER.visible == true or NODE_STAT_CONTAINER.visible == true:
+			if Input.is_action_just_pressed("ui_space",true):
+				Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_menu_move,Vector2(7,4))
+				#Fade in screen
+				Global.NODE_GUI_TRANSITION.transition_in(1)
+
+				NODE_MENU_CONTAINER.visible = true
+				NODE_ABOUT_CONTAINER.visible = false
+				NODE_STAT_CONTAINER.visible = false
+
+				#Fade out screen
+				Global.NODE_GUI_TRANSITION.transition_out(1)
+				current_button.grab_focus()
+				pass
+
+func fill_stat_container():
+	var content_node = $StatContainer/Content
+	content_node.text = "Moves Done: {turns}\nDamage Dealt: {dealt}\nDamage Taken: {received}\nMobs Killed: {mobs}\nShots Fired: {shots}\nItems Used: {items}".format([
+		["turns",Global.score_turns],
+		["dealt",Global.score_damage_dealt],
+		["received",Global.score_damage_received],
+		["mobs",Global.score_mobs],
+		["shots",Global.score_shots],
+		["items",Global.score_items]
+		])
+	pass
 
 # START BUTTON PRESSED
 func _on_Button1_pressed():
@@ -17,7 +48,7 @@ func _on_Button1_pressed():
 	Global.NODE_GUI_TRANSITION.transition_in(1)
 	
 	NODE_BACKGROUND.visible = false
-	NODE_VBOX_CONTAINER.visible = false
+	NODE_MENU_CONTAINER.visible = false
 	Global.NODE_GUI_LAYER_MAIN.visible = true
 	
 	#Fade out screen
@@ -27,8 +58,20 @@ func _on_Button1_pressed():
 	Global.game_state_manager(Global.GAME_STATE_LIST.STATE_PLAYER_TURN)
 	pass
 
+func _on_Button3_pressed():
+	#Fade in screen
+	current_button = $MenuContainer/Button3
+	
+	Global.NODE_GUI_TRANSITION.transition_in(1)
+	
+	NODE_MENU_CONTAINER.visible = false
+	NODE_ABOUT_CONTAINER.visible = true
+	
+	#Fade out screen
+	Global.NODE_GUI_TRANSITION.transition_out(1)
+	pass
+
 # PLAY SOUND ON BUTTON CHANGE
 func _on_Button_focus_exited():
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_menu_move,Vector2(7,4))
 	pass 
-

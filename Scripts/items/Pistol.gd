@@ -33,3 +33,7 @@ func on_action_shoot():
 	else:
 		pass
 	pass
+
+func weapon_calculate_final_damage(distance):
+	var final_damage:int = stat_ranged_dmg
+	return final_damage

@@ -15,11 +15,9 @@ onready var NODE_GUI_LAYER_MAIN = get_node("/root/Main/GUI/GUI_LAYER_MAIN")
 onready var NODE_UI_TEXT = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT")
 onready var NODE_UI_INVENTORY = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_INVENTORY")
 onready var NODE_UI_WEAPON = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_WEAPON")
-onready var NODE_UI_ARMOR = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_ARMOR")
 onready var UI_AMMO = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_AMMO")
 onready var UI_HEALTH = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_HEALTH")
 onready var UI_LEVEL = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_LEVEL")
-onready var UI_TURN = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_MAIN/UI_TURN")
 onready var NODE_UI_TEXTLOG = get_node("/root/Main/GUI/GUI_LAYER_MAIN/UI_TEXT/UI_TEXTLOG")
 onready var NODE_MAIN = get_node("/root/Main")
 
@@ -99,6 +97,13 @@ enum GAME_STATE_LIST {
 	STATE_PAUSE,
 	STATE_NONE
 }
+
+var score_mobs:int = 0
+var score_shots:int = 0
+var score_turns:int = 0
+var score_items:int = 0
+var score_damage_received:int = 0
+var score_damage_dealt:int = 0
 
 var gameTargetNode
 var gameMovingNode

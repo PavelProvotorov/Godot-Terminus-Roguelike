@@ -25,3 +25,6 @@ func on_action_pickup():
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
 	pass
 
+func weapon_calculate_final_damage(distance):
+	var final_damage:int = stat_ranged_dmg
+	return final_damage

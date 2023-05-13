@@ -113,7 +113,50 @@ func level_game_over():
 	
 	Global.NODE_MENU.current_button.grab_focus()
 	Global.NODE_MENU.NODE_BACKGROUND.visible = true
-	Global.NODE_MENU.NODE_VBOX_CONTAINER.visible = true
+	Global.NODE_MENU.NODE_MENU_CONTAINER.visible = true
+	Global.NODE_GUI_LAYER_MAIN.visible = false
+	yield(self.get_idle_frame(),"completed")
+	
+	#Fade out screen
+	Global.NODE_GUI_TRANSITION.transition_out(1)
+	yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
+	yield(self.get_idle_frame(),"completed")
+	
+func level_game_completed():
+	#Reset level counter
+	Global.LEVEL_COUNT = 1
+	
+	#Remove the current music
+	if Global.CURRENT_MUSIC != null:
+		Global.CURRENT_MUSIC.music_fade_out()
+		Global.CURRENT_MUSIC = null
+	pass
+	
+	#Update stats
+	Global.NODE_MENU.fill_stat_container()
+	
+	#Fade in screen
+	Global.NODE_GUI_TRANSITION.transition_in(1)
+	yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
+	yield(self.get_idle_frame(),"completed")
+	
+	#Delete current player instance
+	Global.NODE_PLAYER.queue_free()
+	yield(self.get_idle_frame(),"completed")
+
+	#Add new player instance
+	Global.NODE_PLAYER = Global.LEVEL.level_mob_spawn("Player",Global.LEVEL_ENTRANCE)
+	Global.LEVEL.target_entity = Global.NODE_PLAYER
+	Global.NODE_PLAYER.player_to_default()
+	yield(self.get_idle_frame(),"completed")
+	
+	#Switch player to new Level
+	Global.NODE_MAIN.level_switch_player(Global.LEVEL,"Level_1")
+	yield(self.get_idle_frame(),"completed")
+	
+	Global.NODE_MENU.current_button.grab_focus()
+	Global.NODE_MENU.NODE_BACKGROUND.visible = true
+	Global.NODE_MENU.NODE_STAT_CONTAINER.visible = true
 	Global.NODE_GUI_LAYER_MAIN.visible = false
 	yield(self.get_idle_frame(),"completed")
 	

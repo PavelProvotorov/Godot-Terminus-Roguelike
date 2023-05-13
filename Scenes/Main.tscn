@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Sounds/sfx_type.mp3" type="AudioStream" id=1]
 [ext_resource path="res://Resources/fonts/FONT_UpheavalPro.tres" type="DynamicFont" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://Assets/ui_text.png" type="Texture" id=8]
 [ext_resource path="res://Scripts/nodes/Main.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/Weapon.gd" type="Script" id=11]
-[ext_resource path="res://Scripts/Armor.gd" type="Script" id=12]
 [ext_resource path="res://Scenes/ItemSlot.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/Menu.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scripts/Transition.gd" type="Script" id=16]
@@ -135,6 +134,7 @@ margin_bottom = 72.0
 
 [node name="GUI_LAYER_MAIN" type="CanvasLayer" parent="GUI"]
 layer = 2
+visible = false
 
 [node name="UI_MAIN" type="TextureRect" parent="GUI/GUI_LAYER_MAIN"]
 margin_right = 128.0
@@ -146,20 +146,6 @@ margin_left = 40.0
 margin_right = 56.0
 margin_bottom = 8.0
 rect_min_size = Vector2( 8, 8 )
-custom_fonts/font = ExtResource( 2 )
-text = "0"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-
-[node name="UI_SHIELD" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
-visible = false
-margin_left = 32.0
-margin_top = 128.0
-margin_right = 64.0
-margin_bottom = 144.0
-rect_min_size = Vector2( 16, 16 )
 custom_fonts/font = ExtResource( 2 )
 text = "0"
 align = 1
@@ -180,25 +166,13 @@ autowrap = true
 clip_text = true
 
 [node name="UI_LEVEL" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
+visible = false
 margin_left = 48.0
 margin_right = 80.0
 margin_bottom = 8.0
 rect_min_size = Vector2( 8, 8 )
 custom_colors/font_color = Color( 0.160784, 0.160784, 0.160784, 1 )
 custom_fonts/font = SubResource( 4 )
-text = "0"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-
-[node name="UI_TURN" type="Label" parent="GUI/GUI_LAYER_MAIN/UI_MAIN"]
-visible = false
-margin_top = 48.0
-margin_right = 32.0
-margin_bottom = 64.0
-rect_min_size = Vector2( 16, 16 )
-custom_fonts/font = ExtResource( 2 )
 text = "0"
 align = 1
 valign = 1
@@ -239,23 +213,13 @@ columns = 6
 script = ExtResource( 6 )
 
 [node name="UI_WEAPON" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
-margin_left = 59.0
+margin_left = 29.0
 margin_top = 64.0
-margin_right = 69.0
+margin_right = 39.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 10, 8 )
 script = ExtResource( 11 )
 
 [node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_WEAPON" instance=ExtResource( 13 )]
-
-[node name="UI_ARMOR" type="GridContainer" parent="GUI/GUI_LAYER_MAIN"]
-margin_left = 89.0
-margin_top = 64.0
-margin_right = 99.0
-margin_bottom = 72.0
-rect_min_size = Vector2( 10, 8 )
-script = ExtResource( 12 )
-
-[node name="ItemSlot" parent="GUI/GUI_LAYER_MAIN/UI_ARMOR" instance=ExtResource( 13 )]
 
 [node name="Menu" parent="GUI" instance=ExtResource( 15 )]

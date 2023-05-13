@@ -2,7 +2,7 @@ extends Item2D
 
 #var sound_on_ranged = Sound.
 onready var sound_on_ranged = Sound.sfx_shoot_4
-onready var stat_ranged_dmg = 2
+onready var stat_ranged_dmg = 3
 onready var stat_shoot_count = 3
 onready var stat_range = 4
 
@@ -25,3 +25,18 @@ func on_action_pickup():
 	item_action_add_ammo(ammo_count,self)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
 	pass
+
+func weapon_calculate_final_damage(distance):
+	var final_damage:int = stat_ranged_dmg
+	if distance == 1:
+		pass
+	elif distance == 2:
+		pass
+	elif distance == 3:
+		pass
+	elif distance == 4:
+		final_damage -= 1
+		pass
+	else:
+		pass
+	return final_damage

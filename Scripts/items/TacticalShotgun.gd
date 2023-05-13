@@ -24,3 +24,14 @@ func on_action_pickup():
 	item_action_add_ammo(ammo_count,self)
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
 	pass
+
+func weapon_calculate_final_damage(distance):
+	randomize()
+	var final_damage:int = stat_ranged_dmg
+	if distance == 1:
+		final_damage += 1
+	elif distance == 2:
+		final_damage -= randi()%2+0 
+	else:
+		pass
+	return final_damage

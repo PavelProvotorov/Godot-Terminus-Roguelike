@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Menu.gd" type="Script" id=1]
 [ext_resource path="res://Resources/fonts/FONT_UpheavalPro.tres" type="DynamicFont" id=2]
@@ -12,6 +12,14 @@
 size = 12
 font_data = ExtResource( 3 )
 
+[sub_resource type="DynamicFont" id=3]
+size = 8
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 6
+font_data = ExtResource( 3 )
+
 [node name="Menu" type="CenterContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -23,13 +31,13 @@ margin_right = 128.0
 margin_bottom = 72.0
 texture = ExtResource( 5 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MenuContainer" type="VBoxContainer" parent="."]
 margin_left = 18.0
 margin_top = 9.0
 margin_right = 109.0
 margin_bottom = 62.0
 
-[node name="Title" type="Label" parent="VBoxContainer"]
+[node name="Title" type="Label" parent="MenuContainer"]
 margin_right = 91.0
 margin_bottom = 8.0
 custom_fonts/font = SubResource( 1 )
@@ -37,7 +45,7 @@ text = ":-<CENTURION>-:"
 align = 1
 valign = 1
 
-[node name="Button1" type="TextureButton" parent="VBoxContainer"]
+[node name="Button1" type="TextureButton" parent="MenuContainer"]
 margin_left = 20.0
 margin_top = 12.0
 margin_right = 71.0
@@ -53,7 +61,7 @@ texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 7 )
 texture_focused = ExtResource( 6 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Button1"]
+[node name="Label" type="Label" parent="MenuContainer/Button1"]
 margin_right = 51.0
 margin_bottom = 11.0
 rect_min_size = Vector2( 51, 11 )
@@ -62,7 +70,7 @@ text = "Start"
 align = 1
 valign = 1
 
-[node name="Button2" type="TextureButton" parent="VBoxContainer"]
+[node name="Button2" type="TextureButton" parent="MenuContainer"]
 margin_left = 20.0
 margin_top = 27.0
 margin_right = 71.0
@@ -78,7 +86,7 @@ texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 7 )
 texture_focused = ExtResource( 6 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Button2"]
+[node name="Label" type="Label" parent="MenuContainer/Button2"]
 margin_right = 51.0
 margin_bottom = 11.0
 rect_min_size = Vector2( 51, 11 )
@@ -87,7 +95,7 @@ text = "Settings"
 align = 1
 valign = 1
 
-[node name="Button3" type="TextureButton" parent="VBoxContainer"]
+[node name="Button3" type="TextureButton" parent="MenuContainer"]
 margin_left = 20.0
 margin_top = 42.0
 margin_right = 71.0
@@ -102,7 +110,7 @@ texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 7 )
 texture_focused = ExtResource( 6 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Button3"]
+[node name="Label" type="Label" parent="MenuContainer/Button3"]
 margin_right = 51.0
 margin_bottom = 11.0
 rect_min_size = Vector2( 51, 11 )
@@ -111,7 +119,74 @@ text = "About"
 align = 1
 valign = 1
 
-[connection signal="focus_exited" from="VBoxContainer/Button1" to="." method="_on_Button_focus_exited"]
-[connection signal="pressed" from="VBoxContainer/Button1" to="." method="_on_Button1_pressed"]
-[connection signal="focus_exited" from="VBoxContainer/Button2" to="." method="_on_Button_focus_exited"]
-[connection signal="focus_exited" from="VBoxContainer/Button3" to="." method="_on_Button_focus_exited"]
+[node name="AboutContainer" type="VBoxContainer" parent="."]
+visible = false
+margin_left = 8.0
+margin_top = 1.0
+margin_right = 120.0
+margin_bottom = 71.0
+
+[node name="Title" type="Label" parent="AboutContainer"]
+margin_right = 112.0
+margin_bottom = 8.0
+size_flags_stretch_ratio = 0.0
+custom_fonts/font = SubResource( 1 )
+text = "ABOUT:"
+
+[node name="ContentAbout" type="Label" parent="AboutContainer"]
+margin_top = 12.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_min_size = Vector2( 112, 0 )
+custom_fonts/font = SubResource( 3 )
+text = "> Assets: Logodum
+> Coding: Logodum
+> Music: NEYROMANTIK
+> Testing: evelinavely"
+valign = 1
+autowrap = true
+
+[node name="ContentSpecial" type="Label" parent="AboutContainer"]
+margin_top = 45.0
+margin_right = 112.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 112, 0 )
+custom_fonts/font = SubResource( 4 )
+text = "> special thanks goes to my dear soulmate for the constant support and inspiration, you are amazing <3"
+valign = 2
+autowrap = true
+
+[node name="StatContainer" type="VBoxContainer" parent="."]
+visible = false
+margin_left = 8.0
+margin_top = 7.0
+margin_right = 120.0
+margin_bottom = 64.0
+
+[node name="Title" type="Label" parent="StatContainer"]
+margin_right = 112.0
+margin_bottom = 8.0
+size_flags_stretch_ratio = 0.0
+custom_fonts/font = SubResource( 1 )
+text = "MISSION COMPLETE"
+
+[node name="Content" type="Label" parent="StatContainer"]
+margin_top = 12.0
+margin_right = 112.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 112, 0 )
+custom_fonts/font = SubResource( 3 )
+text = "Moves Done: 0
+Damage Taken: 0
+Mobs Killed: 0
+Shots Fired: 0
+Items Used: 0
+"
+valign = 1
+autowrap = true
+
+[connection signal="focus_exited" from="MenuContainer/Button1" to="." method="_on_Button_focus_exited"]
+[connection signal="pressed" from="MenuContainer/Button1" to="." method="_on_Button1_pressed"]
+[connection signal="focus_exited" from="MenuContainer/Button2" to="." method="_on_Button_focus_exited"]
+[connection signal="focus_exited" from="MenuContainer/Button3" to="." method="_on_Button_focus_exited"]
+[connection signal="pressed" from="MenuContainer/Button3" to="." method="_on_Button3_pressed"]

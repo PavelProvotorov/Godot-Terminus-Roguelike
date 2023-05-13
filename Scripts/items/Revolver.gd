@@ -1,17 +1,17 @@
 extends Item2D
 
-onready var sound_on_ranged = Sound.sfx_shoot_3
-onready var stat_ranged_dmg = 4
+onready var sound_on_ranged = Sound.sfx_shoot_0
+onready var stat_ranged_dmg = 3
 onready var stat_shoot_count = 1
-onready var stat_range = 5
+onready var stat_range = 3
 
 # READY
 #---------------------------------------------------------------------------------------
 func _ready():
 	randomize()
-	ammo_count = randi()%1+0 
-	item_name = "Sniper Rifle"
-	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_sniper_rifle") + "\n\n* Damage: %s\n* Range: %s"
+	ammo_count = randi()%2+0 
+	item_name = "Revolver"
+	item_text = "<%s>\n\n" + Data.DESCRIPTION_DATA.get("item_revolver") + "\n\n* Damage: %s\n* Range: %s"
 	item_text = item_text % [item_name,stat_ranged_dmg,stat_range]
 	NODE_NAME.set_text(item_name)
 	pass
@@ -25,21 +25,17 @@ func on_action_pickup():
 	weapon_add_to_inventory(self,Global.NODE_PLAYER.position)
 	pass
 
+func on_action_shoot():
+	var extra_turn = util_chance(25)
+	if extra_turn == true:
+		Global.NODE_PLAYER.spawn_text(">>>",Global.NODE_PLAYER.position/grid_size,Color.white,0.0)
+		Global.NODE_PLAYER.turn_count -= 1
+	else:
+		pass
+	pass
+
 func weapon_calculate_final_damage(distance):
 	randomize()
 	var final_damage:int = stat_ranged_dmg
-	if distance == 1:
-		final_damage = 2
-	elif distance == 2:
-		pass
-	elif distance == 3:
-		pass
-	elif distance == 4:
-		final_damage += 1
-		pass
-	elif distance == 5:
-		final_damage += 2
-		pass
-	else:
-		pass
+	final_damage += randi()%3+0
 	return final_damage

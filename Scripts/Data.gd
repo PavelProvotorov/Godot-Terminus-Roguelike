@@ -2,7 +2,9 @@ extends Node
 
 onready var shotgun = preload("res://Items/Shotgun.tscn")
 onready var tactical_shotgun = preload("res://Items/TacticalShotgun.tscn")
+onready var hunting_rifle = preload("res://Items/HuntingRifle.tscn")
 onready var assault_rifle = preload("res://Items/AssaultRifle.tscn")
+onready var revolver = preload("res://Items/Revolver.tscn")
 onready var pistol = preload("res://Items/Pistol.tscn")
 
 onready var goo = preload("res://Mobs/Goo.tscn")
@@ -26,6 +28,7 @@ onready var DESCRIPTION_DATA = {
 	"item_sniper_rifle": "The sniper rifle is the ultimate weapon for any marksman looking to take down their targets from a safe distance.",
 	"item_tactical_shotgun": "A reliable and versatile military grade close-quarters weapon, perfect for taking down enemies while keeping a safe distance.",
 	"item_pistol": "A sleek and stylish weapon fine-tuned for optimal performance in any situation. Its compact size also makes it easy to maneuver with.",
+	"item_revolver": "",
 	"item_bigdan_001": "",
 	"item_emp_grenade": "The EMP grenade can emit a blinding flash of light and a loud noise, slowing and stunning anyone caught in its blast radius.",
 	"item_frag_grenade": "The fragmentation grenade can create a devastating explosion that sends shrapnel flying in all directions, tearing through armor and flesh with ease.",
@@ -98,6 +101,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 50,
+				"Revolver": 0,
 				"SawnOff": 50,
 				"Shotgun": 50,
 				"SubmachineGun": 50,
@@ -144,6 +148,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 25,
+				"Revolver": 0,
 				"SawnOff": 25,
 				"Shotgun": 45,
 				"SubmachineGun": 45,
@@ -190,6 +195,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 10,
+				"Revolver": 0,
 				"SawnOff": 10,
 				"Shotgun": 40,
 				"SubmachineGun": 40,
@@ -235,7 +241,8 @@ onready var LEVEL_DATA = {
 				"Teleport": 10
 			},
 			"WEAPONS": {
-				"Pistol": 0,
+				"Pistol": 5,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 40,
 				"SubmachineGun": 40,
@@ -282,6 +289,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 40,
 				"SubmachineGun": 40,
@@ -328,6 +336,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 35,
 				"SubmachineGun": 35,
@@ -375,6 +384,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 30,
 				"SubmachineGun": 30,
@@ -422,6 +432,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 25,
 				"SubmachineGun": 25,
@@ -469,6 +480,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 15,
 				"SubmachineGun": 15,
@@ -516,6 +528,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 15,
 				"SubmachineGun": 15,
@@ -562,6 +575,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 5,
 				"SawnOff": 0,
 				"Shotgun": 10,
 				"SubmachineGun": 10,
@@ -608,6 +622,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 10,
 				"SawnOff": 0,
 				"Shotgun": 10,
 				"SubmachineGun": 10,
@@ -654,6 +669,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 15,
 				"SawnOff": 0,
 				"Shotgun": 10,
 				"SubmachineGun": 10,
@@ -700,6 +716,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 25,
 				"SawnOff": 0,
 				"Shotgun": 5,
 				"SubmachineGun": 5,
@@ -746,6 +763,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 50,
 				"SawnOff": 0,
 				"Shotgun": 5,
 				"SubmachineGun": 5,
@@ -793,6 +811,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 15,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -840,6 +859,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 10,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -887,6 +907,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 5,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -934,6 +955,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -981,6 +1003,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -1028,6 +1051,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -1075,6 +1099,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -1122,6 +1147,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -1169,6 +1195,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
@@ -1216,6 +1243,7 @@ onready var LEVEL_DATA = {
 			},
 			"WEAPONS": {
 				"Pistol": 0,
+				"Revolver": 0,
 				"SawnOff": 0,
 				"Shotgun": 0,
 				"SubmachineGun": 0,
