@@ -488,8 +488,8 @@ func check_turn():
 func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
 #	self.equiped_weapon = Data.pistol.instance()
-#	self.equiped_weapon = Data.shotgun.instance()
-	self.equiped_weapon = Data.revolver.instance()
+	self.equiped_weapon = Data.shotgun.instance()
+#	self.equiped_weapon = Data.revolver.instance()
 #	self.equiped_weapon = Data.tactical_shotgun.instance()
 #	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)

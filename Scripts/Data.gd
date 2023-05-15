@@ -837,8 +837,8 @@ onready var LEVEL_DATA = {
 			"Level_4": 100
 		},
 		"MOBS": {
-			"GruntInfected": 100,
-			"Goo": 75,
+			"GruntInfected": 75,
+			"Goo": 25,
 			"Horror": 25,
 			"Sludge": 0,
 			"MindFlayer": 5
@@ -886,10 +886,10 @@ onready var LEVEL_DATA = {
 		},
 		"MOBS": {
 			"GruntInfected": 75,
-			"Goo": 75,
-			"Horror": 75,
+			"Goo": 25,
+			"Horror": 35,
 			"Sludge": 50,
-			"MindFlayer": 15
+			"MindFlayer": 25
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -934,10 +934,10 @@ onready var LEVEL_DATA = {
 		},
 		"MOBS": {
 			"GruntInfected": 75,
-			"Goo": 75,
-			"Horror": 100,
+			"Goo": 20,
+			"Horror": 45,
 			"Sludge": 75,
-			"MindFlayer": 25
+			"MindFlayer": 50
 		},
 		"ITEMS": {
 			"COMMON": {
@@ -982,10 +982,10 @@ onready var LEVEL_DATA = {
 		},
 		"MOBS": {
 			"GruntInfected": 50,
-			"Goo": 100,
-			"Horror": 100,
-			"Sludge": 100,
-			"MindFlayer": 50
+			"Goo": 15,
+			"Horror": 50,
+			"Sludge": 75,
+			"MindFlayer": 75
 		},
 		"ITEMS": {
 			"COMMON": {

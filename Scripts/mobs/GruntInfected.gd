@@ -33,6 +33,14 @@ func _ready():
 	pass
 
 func on_action_move():
+	var free_cells = get_free_cells_4(Global.NODE_PLAYER)
+	if get_chance(15) == true:
+		free_cells.shuffle()
+		for cell in free_cells:
+			Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_blink,Global.NODE_PLAYER.position/grid_size)
+			self.set_position(cell * grid_size)
+			break
+		pass
 	pass
 
 func on_action_attack():

@@ -33,6 +33,8 @@ func _ready():
 	pass
 
 func on_action_move():
+	if get_chance(25) == true:
+		stat_speed = 2
 	pass
 
 func on_action_attack():

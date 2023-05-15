@@ -220,6 +220,27 @@ func buff_remove(buff_name,buff_owner):
 	buff_owner.NODE_BUFFS.remove_child(buff_name)
 	yield(self.get_idle_frame(),"completed")
 
+func get_free_cells_4(mob):
+	var mob_position = (mob.position/grid_size)
+	var occupied_cells = Global.LEVEL_LAYER_LOGIC.util_get_occupied_cells()
+	var mob_nearby_cells = []
+	var free_cells = []
+	
+	for direction in Global.DIRECTION_LIST:
+		var cell_vector = mob_position + direction
+		var cell_id = Global.LEVEL_LAYER_LOGIC.get_cellv(cell_vector)
+		# Check if tile is either FLOOR, ENTRANCE or EXIT
+		if cell_id == 0 or cell_id == 4 or cell_id == 5:
+			mob_nearby_cells.append(cell_vector)
+			pass
+		pass
+		
+	for cell in mob_nearby_cells:
+		if occupied_cells.has(cell) == false:
+			free_cells.append(cell)
+			
+	return free_cells
+
 func get_raycast_exceptions(raycast,group):
 	var node_to_scan = Global.LEVEL_LAYER_LOGIC
 	var node_to_scan_size:int = node_to_scan.get_child_count()

@@ -16,7 +16,7 @@ var sound_on_death = Sound.sfx_death_1
 var stat_ranged_dmg:int = 2
 var stat_melee_dmg:int = 1
 var stat_ambition:int = 1
-var stat_health:int = 2
+var stat_health:int = 3
 var stat_speed:int = 1
 
 # SIGNALS
@@ -33,6 +33,8 @@ func _ready():
 	pass
 
 func on_action_move():
+	if get_chance(25) == true:
+		stat_speed = 2
 	pass
 
 func on_action_attack():
