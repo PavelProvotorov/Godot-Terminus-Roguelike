@@ -119,6 +119,95 @@ text = "About"
 align = 1
 valign = 1
 
+[node name="SettingsContainer" type="VBoxContainer" parent="."]
+visible = false
+margin_left = 36.0
+margin_top = 9.0
+margin_right = 92.0
+margin_bottom = 62.0
+
+[node name="Title" type="Label" parent="SettingsContainer"]
+margin_right = 56.0
+margin_bottom = 8.0
+custom_fonts/font = SubResource( 1 )
+text = "SETTINGS"
+align = 1
+valign = 1
+
+[node name="ButtonFullScreen" type="TextureButton" parent="SettingsContainer"]
+margin_left = 2.0
+margin_top = 12.0
+margin_right = 53.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 51, 11 )
+focus_next = NodePath("../ButtonResolution")
+focus_previous = NodePath("../ButtonReturn")
+size_flags_horizontal = 4
+size_flags_vertical = 4
+action_mode = 0
+button_mask = 0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 7 )
+texture_focused = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="SettingsContainer/ButtonFullScreen"]
+margin_right = 51.0
+margin_bottom = 11.0
+rect_min_size = Vector2( 51, 11 )
+custom_fonts/font = ExtResource( 2 )
+text = "FULLSCREEN"
+align = 1
+valign = 1
+
+[node name="ButtonResolution" type="TextureButton" parent="SettingsContainer"]
+margin_left = 2.0
+margin_top = 27.0
+margin_right = 53.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 51, 11 )
+focus_next = NodePath("../ButtonReturn")
+focus_previous = NodePath("../ButtonFullScreen")
+size_flags_horizontal = 4
+size_flags_vertical = 4
+action_mode = 0
+button_mask = 0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 7 )
+texture_focused = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="SettingsContainer/ButtonResolution"]
+margin_right = 51.0
+margin_bottom = 11.0
+rect_min_size = Vector2( 51, 11 )
+custom_fonts/font = ExtResource( 2 )
+text = "RESOLUTION"
+align = 1
+valign = 1
+
+[node name="ButtonReturn" type="TextureButton" parent="SettingsContainer"]
+margin_left = 2.0
+margin_top = 42.0
+margin_right = 53.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 51, 11 )
+focus_next = NodePath("../ButtonFullScreen")
+size_flags_horizontal = 4
+size_flags_vertical = 4
+action_mode = 0
+button_mask = 0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 7 )
+texture_focused = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="SettingsContainer/ButtonReturn"]
+margin_right = 51.0
+margin_bottom = 11.0
+rect_min_size = Vector2( 51, 11 )
+custom_fonts/font = ExtResource( 2 )
+text = "RETURN"
+align = 1
+valign = 1
+
 [node name="AboutContainer" type="VBoxContainer" parent="."]
 visible = false
 margin_left = 8.0
@@ -188,5 +277,9 @@ autowrap = true
 [connection signal="focus_exited" from="MenuContainer/Button1" to="." method="_on_Button_focus_exited"]
 [connection signal="pressed" from="MenuContainer/Button1" to="." method="_on_Button1_pressed"]
 [connection signal="focus_exited" from="MenuContainer/Button2" to="." method="_on_Button_focus_exited"]
+[connection signal="pressed" from="MenuContainer/Button2" to="." method="_on_Button2_pressed"]
 [connection signal="focus_exited" from="MenuContainer/Button3" to="." method="_on_Button_focus_exited"]
 [connection signal="pressed" from="MenuContainer/Button3" to="." method="_on_Button3_pressed"]
+[connection signal="pressed" from="SettingsContainer/ButtonFullScreen" to="." method="_on_ButtonFullScreen_pressed"]
+[connection signal="pressed" from="SettingsContainer/ButtonResolution" to="." method="_on_ButtonResolution_pressed"]
+[connection signal="pressed" from="SettingsContainer/ButtonReturn" to="." method="_on_ButtonReturn_pressed"]
