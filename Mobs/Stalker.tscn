@@ -31,7 +31,7 @@ visible = false
 position = Vector2( 4, 4 )
 frames = ExtResource( 3 )
 animation = "IDLE"
-frame = 4
+frame = 3
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

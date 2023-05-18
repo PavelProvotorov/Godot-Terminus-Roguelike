@@ -5,6 +5,7 @@ onready var tactical_shotgun = preload("res://Items/TacticalShotgun.tscn")
 onready var hunting_rifle = preload("res://Items/HuntingRifle.tscn")
 onready var assault_rifle = preload("res://Items/AssaultRifle.tscn")
 onready var revolver = preload("res://Items/Revolver.tscn")
+onready var sawnoff = preload("res://Items/SawnOff.tscn")
 onready var pistol = preload("res://Items/Pistol.tscn")
 
 onready var goo = preload("res://Mobs/Goo.tscn")
@@ -46,25 +47,45 @@ onready var DESCRIPTION_DATA = {
 onready var LEVEL_DATA = {
 	0: {
 		"SETTINGS": {
-			"IsRandom": false,
-			"MinMobCount": 0,
-			"MaxMobCount": 0,
-			"Visibility": 8,
+			"IsRandom": true,
+			"MinMobCount": 3,
+			"MaxMobCount": 5,
+			"Visibility": 7,
 			"Music": "sfx_level_0"
 		},
 		"LEVELS": {
 			"Level_0": 100
 		},
 		"MOBS": {
+			"Grunt": 100
 		},
 		"ITEMS": {
 			"COMMON": {
+				"Ammo": 100,
+				"Medkit": 50
 			},
 			"CONSUMABLES": {
+				"ShieldGenerator": 10,
+				"Adrenalin": 10,
+				"Steroids": 10,
+				"Grenade": 10,
+				"EMPGrenade": 10,
+				"FragGrenade": 10,
+				"Teleport": 10
 			},
 			"WEAPONS": {
+				"Pistol": 50,
+				"Revolver": 50,
+				"SawnOff": 50,
+				"Shotgun": 50,
+				"SubmachineGun": 50,
+				"HuntingRifle": 50,
+				"AssaultRifle": 50,
+				"TacticalShotgun": 50,
+				"SniperRifle": 50
 			},
 			"OTHER": {
+#				"BigDan001": 100
 			}
 		},
 	},

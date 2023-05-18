@@ -487,6 +487,8 @@ func check_turn():
 
 func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
+#	self.equiped_weapon = Data.sawnoff.instance()
+#	self.equiped_weapon = Data.hunting_rifle.instance()
 #	self.equiped_weapon = Data.pistol.instance()
 	self.equiped_weapon = Data.shotgun.instance()
 #	self.equiped_weapon = Data.revolver.instance()

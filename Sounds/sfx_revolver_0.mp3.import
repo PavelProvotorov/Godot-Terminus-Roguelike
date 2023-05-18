@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/sfx_revolver_0.mp3-f9487f1c0dae1d53ced0047d50e5f20f.mp3str"
+
+[deps]
+
+source_file="res://Sounds/sfx_revolver_0.mp3"
+dest_files=[ "res://.import/sfx_revolver_0.mp3-f9487f1c0dae1d53ced0047d50e5f20f.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

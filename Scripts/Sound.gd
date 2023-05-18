@@ -19,6 +19,11 @@ onready var sfx_shoot_3 = preload("res://Sounds/sfx_shoot_3.mp3")
 
 onready var sfx_shoot_4 = preload("res://Sounds/sfx_shoot_4.mp3")
 
+onready var sfx_pistol_0 = preload("res://Sounds/sfx_pistol_0.mp3")
+onready var sfx_revolver_0 = preload("res://Sounds/sfx_revolver_0.mp3")
+onready var sfx_sawnoff_0 = preload("res://Sounds/sfx_sawnoff_0.mp3")
+onready var sfx_rifle_0 = preload("res://Sounds/sfx_rifle_0.mp3")
+
 onready var sfx_hit_0 = preload("res://Sounds/sfx_hit_0.mp3")
 onready var sfx_punch_0 = preload("res://Sounds/sfx_punch_0.mp3")
 onready var sfx_noammo = preload("res://Sounds/sfx_noammo.mp3")
@@ -30,6 +35,7 @@ onready var sfx_death_4 = preload("res://Sounds/sfx_death_4.mp3")
 onready var sfx_explosion_0 = preload("res://Sounds/sfx_explosion_0.mp3")
 onready var sfx_teleport = preload("res://Sounds/sfx_teleport.mp3")
 onready var sfx_menu_move = preload("res://Sounds/sfx_menu_move.mp3")
+onready var sfx_mob_appear = preload("res://Sounds/sfx_mob_appear.mp3")
 
 # SIGNALS
 #---------------------------------------------------------------------------------------

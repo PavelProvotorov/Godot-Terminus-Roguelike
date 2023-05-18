@@ -59,6 +59,7 @@ func on_action_move():
 				mob_instance.visible = true
 				spawn_directions.erase(cell)
 				mob_instance.tween_visibility_enable()
+		Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_mob_appear,Global.NODE_PLAYER.position/grid_size)
 	pass
 
 func on_action_attack():

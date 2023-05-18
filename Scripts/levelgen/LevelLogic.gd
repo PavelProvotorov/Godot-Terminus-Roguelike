@@ -350,7 +350,6 @@ func generator_room_add_mobs():
 	var min_mob_count = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["MinMobCount"]
 	var max_mob_count = Data.LEVEL_DATA[Global.LEVEL_COUNT].get("SETTINGS")["MaxMobCount"]
 	var mob_count  = (round(rand_range(min_mob_count,max_mob_count)))
-#	mob_count  = 1
 	var mobs_spawned:int = 0
 	
 	#Exclude cells, to prevent spawn of mobs around entrance
@@ -379,7 +378,7 @@ func generator_room_add_items():
 	var consumables_item_count:int = randi() % 2
 	var weapons_item_count:int = randi() % 2
 #	var other_item_count:int = randi() % 2
-#	weapons_item_count = 5
+	weapons_item_count = 10
 #	consumables_item_count = 8
 	var other_item_count:int = 0
 	var items_spawned:int = 0
