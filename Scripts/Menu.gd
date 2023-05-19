@@ -13,9 +13,10 @@ func _ready():
 	current_button.grab_focus()
 
 func _input(event):
-	if event is InputEventKey:
+	if event is InputEventKey and NODE_MENU_CONTAINER.visible == false:
 		if NODE_ABOUT_CONTAINER.visible or NODE_STAT_CONTAINER.visible:
 			if Input.is_action_just_pressed("ui_accept",true):
+				current_button = $MenuContainer/Button3
 				#Fade in screen
 				Global.NODE_GUI_TRANSITION.transition_in(1)
 
@@ -27,6 +28,7 @@ func _input(event):
 				#Fade out screen
 				Global.NODE_GUI_TRANSITION.transition_out(5)
 				yield(Global.NODE_GUI_TRANSITION.NODE_ANIMATION_PLAYER,"animation_finished")
+				Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_menu_move,Vector2(7,4))
 				current_button.grab_focus()
 				pass
 
@@ -45,6 +47,8 @@ func fill_stat_container():
 # START BUTTON PRESSED
 func _on_Button1_pressed():
 	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_menu_move,Global.NODE_PLAYER.position/grid_size)
+	current_button = $MenuContainer/Button3
+	current_button.grab_focus()
 	
 	#Fade in screen
 	Global.NODE_GUI_TRANSITION.transition_in(1)
@@ -94,7 +98,6 @@ func _on_Button3_pressed():
 
 func _on_ButtonReturn_pressed():
 	#Fade in screen
-	Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_menu_move,Vector2(7,4))
 	current_button = $MenuContainer/Button2
 	
 	Global.NODE_GUI_TRANSITION.transition_in(1)

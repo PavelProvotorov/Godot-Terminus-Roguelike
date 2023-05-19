@@ -21,8 +21,11 @@ onready var sfx_shoot_4 = preload("res://Sounds/sfx_shoot_4.mp3")
 
 onready var sfx_pistol_0 = preload("res://Sounds/sfx_pistol_0.mp3")
 onready var sfx_revolver_0 = preload("res://Sounds/sfx_revolver_0.mp3")
+onready var sfx_assault_0 = preload("res://Sounds/sfx_assault_0.mp3")
 onready var sfx_sawnoff_0 = preload("res://Sounds/sfx_sawnoff_0.mp3")
 onready var sfx_rifle_0 = preload("res://Sounds/sfx_rifle_0.mp3")
+
+onready var sfx_final_cluster = preload("res://Sounds/sfx_final_cluster.mp3")
 
 onready var sfx_hit_0 = preload("res://Sounds/sfx_hit_0.mp3")
 onready var sfx_punch_0 = preload("res://Sounds/sfx_punch_0.mp3")

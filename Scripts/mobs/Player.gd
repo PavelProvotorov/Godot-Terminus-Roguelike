@@ -301,7 +301,7 @@ func action_interact(direction):
 			Global.NODE_MAIN.level_select()
 			return
 		elif cell == Global.LEVEL_LAYER_LOGIC.TILESET_LOGIC.TILE_EXIT and Global.LEVEL_COUNT >= 26:
-			Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_exit,self.position/grid_size)
+			Sound.sound_spawn(Global.NODE_SOUNDS,Sound.sfx_final_cluster,self.position/grid_size)
 			Global.GAME_STATE = Global.GAME_STATE_LIST.STATE_PAUSE
 			
 			Global.NODE_MAIN.level_game_completed()
@@ -487,13 +487,7 @@ func check_turn():
 
 func player_to_default():
 	Global.NODE_UI_INVENTORY.clear_inventory()
-#	self.equiped_weapon = Data.sawnoff.instance()
-#	self.equiped_weapon = Data.hunting_rifle.instance()
-#	self.equiped_weapon = Data.pistol.instance()
 	self.equiped_weapon = Data.shotgun.instance()
-#	self.equiped_weapon = Data.revolver.instance()
-#	self.equiped_weapon = Data.tactical_shotgun.instance()
-#	self.equiped_weapon = Data.assault_rifle.instance()
 	self.equiped_weapon.weapon_replace_in_inventory(equiped_weapon)
 	self.NODE_ANIMATED_SPRITE.visible = true
 	Global.score_shots = 0

@@ -1,6 +1,6 @@
 extends Item2D
 
-onready var sound_on_ranged = Sound.sfx_shoot_2
+onready var sound_on_ranged = Sound.sfx_assault_0
 onready var stat_ranged_dmg = 2
 onready var stat_shoot_count = 2
 onready var stat_range = 3

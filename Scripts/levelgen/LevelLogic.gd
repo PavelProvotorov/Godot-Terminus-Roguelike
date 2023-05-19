@@ -378,7 +378,7 @@ func generator_room_add_items():
 	var consumables_item_count:int = randi() % 2
 	var weapons_item_count:int = randi() % 2
 #	var other_item_count:int = randi() % 2
-	weapons_item_count = 10
+#	weapons_item_count = 10
 #	consumables_item_count = 8
 	var other_item_count:int = 0
 	var items_spawned:int = 0

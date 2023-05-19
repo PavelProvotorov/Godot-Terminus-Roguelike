@@ -32,23 +32,23 @@ margin_bottom = 72.0
 texture = ExtResource( 5 )
 
 [node name="MenuContainer" type="VBoxContainer" parent="."]
-margin_left = 18.0
+margin_left = 21.0
 margin_top = 9.0
-margin_right = 109.0
+margin_right = 106.0
 margin_bottom = 62.0
 
 [node name="Title" type="Label" parent="MenuContainer"]
-margin_right = 91.0
+margin_right = 85.0
 margin_bottom = 8.0
 custom_fonts/font = SubResource( 1 )
-text = ":-<CENTURION>-:"
+text = ":-<TERMINUS>-:"
 align = 1
 valign = 1
 
 [node name="Button1" type="TextureButton" parent="MenuContainer"]
-margin_left = 20.0
+margin_left = 17.0
 margin_top = 12.0
-margin_right = 71.0
+margin_right = 68.0
 margin_bottom = 23.0
 rect_min_size = Vector2( 51, 11 )
 focus_next = NodePath("../Button2")
@@ -71,9 +71,9 @@ align = 1
 valign = 1
 
 [node name="Button2" type="TextureButton" parent="MenuContainer"]
-margin_left = 20.0
+margin_left = 17.0
 margin_top = 27.0
-margin_right = 71.0
+margin_right = 68.0
 margin_bottom = 38.0
 rect_min_size = Vector2( 51, 11 )
 focus_next = NodePath("../Button3")
@@ -96,9 +96,9 @@ align = 1
 valign = 1
 
 [node name="Button3" type="TextureButton" parent="MenuContainer"]
-margin_left = 20.0
+margin_left = 17.0
 margin_top = 42.0
-margin_right = 71.0
+margin_right = 68.0
 margin_bottom = 53.0
 rect_min_size = Vector2( 51, 11 )
 focus_next = NodePath("../Button1")
@@ -247,21 +247,21 @@ autowrap = true
 
 [node name="StatContainer" type="VBoxContainer" parent="."]
 visible = false
-margin_left = 8.0
+margin_left = 2.0
 margin_top = 7.0
-margin_right = 120.0
+margin_right = 125.0
 margin_bottom = 64.0
 
 [node name="Title" type="Label" parent="StatContainer"]
-margin_right = 112.0
+margin_right = 123.0
 margin_bottom = 8.0
 size_flags_stretch_ratio = 0.0
 custom_fonts/font = SubResource( 1 )
-text = "MISSION COMPLETE"
+text = "STATION TERMINATED"
 
 [node name="Content" type="Label" parent="StatContainer"]
 margin_top = 12.0
-margin_right = 112.0
+margin_right = 123.0
 margin_bottom = 57.0
 rect_min_size = Vector2( 112, 0 )
 custom_fonts/font = SubResource( 3 )
@@ -280,6 +280,9 @@ autowrap = true
 [connection signal="pressed" from="MenuContainer/Button2" to="." method="_on_Button2_pressed"]
 [connection signal="focus_exited" from="MenuContainer/Button3" to="." method="_on_Button_focus_exited"]
 [connection signal="pressed" from="MenuContainer/Button3" to="." method="_on_Button3_pressed"]
+[connection signal="focus_exited" from="SettingsContainer/ButtonFullScreen" to="." method="_on_Button_focus_exited"]
 [connection signal="pressed" from="SettingsContainer/ButtonFullScreen" to="." method="_on_ButtonFullScreen_pressed"]
+[connection signal="focus_exited" from="SettingsContainer/ButtonResolution" to="." method="_on_Button_focus_exited"]
 [connection signal="pressed" from="SettingsContainer/ButtonResolution" to="." method="_on_ButtonResolution_pressed"]
+[connection signal="focus_exited" from="SettingsContainer/ButtonReturn" to="." method="_on_Button_focus_exited"]
 [connection signal="pressed" from="SettingsContainer/ButtonReturn" to="." method="_on_ButtonReturn_pressed"]
