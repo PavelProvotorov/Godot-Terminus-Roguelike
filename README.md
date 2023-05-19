@@ -1,4 +1,4 @@
-# Centurion Roguelike
+# Terminus Roguelike
 Simple short sessioned coffeebreak roguelike game with pixel-art graphics and turn based combat. Built in [Godot Engine](https://godotengine.org/) and written in [GDScript](https://docs.godotengine.org/en/stable/index.html).
 
 # Controls
