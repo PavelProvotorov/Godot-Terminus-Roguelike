@@ -1,11 +1,11 @@
 # Terminus Roguelike
-Terminus is a short-session coffee break roguelike game with pixel-art graphics and turn-based combat. Ascend into the depths, while fighting through hordes of alien creatures, both in melee and range combat. 
+Terminus is a short-session [coffee break roguelike](https://www.roguebasin.com/index.php/Category:Coffeebreak_roguelikes) game with pixel-art graphics and turn-based combat. Ascend into the depths, while fighting through hordes of alien creatures, both in melee and range combat. 
 <br>
 
 Built in [Godot Engine](https://godotengine.org/) and written in [GDScript](https://docs.godotengine.org/en/stable/index.html).
 
 # Features
-- Music by Lilux / Neyromantik
+- Music by [Lilux / Neyromantik](https://youtube.com/@korobpog)
 - Simple yet charming pixel art graphics
 - Gameplay sessions of 10-15 minutes, ideal for a break
 - A total of 25 randomly generated levels to explore
