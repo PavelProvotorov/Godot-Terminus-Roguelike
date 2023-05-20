@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sfx_blink.ogg-9f05b22d9fed61215d58cb4b7f659399.oggstr"
+
+[deps]
+
+source_file="res://Sounds/sfx_blink.ogg"
+dest_files=[ "res://.import/sfx_blink.ogg-9f05b22d9fed61215d58cb4b7f659399.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

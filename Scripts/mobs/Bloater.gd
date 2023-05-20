@@ -8,7 +8,7 @@ var AI_class = Global.AI_CLASS_LIST.CLASS_MELEE
 var stat_ranged_dmg:int = 1
 var stat_melee_dmg:int = 2
 var stat_ambition:int = 3
-var stat_health:int = 6
+var stat_health:int = 5
 var stat_speed:int = 1
 
 # SIGNALS

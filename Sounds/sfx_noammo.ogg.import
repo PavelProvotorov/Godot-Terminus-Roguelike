@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sfx_noammo.ogg-425b135befb806cc69ccd6baea51d7f0.oggstr"
+
+[deps]
+
+source_file="res://Sounds/sfx_noammo.ogg"
+dest_files=[ "res://.import/sfx_noammo.ogg-425b135befb806cc69ccd6baea51d7f0.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

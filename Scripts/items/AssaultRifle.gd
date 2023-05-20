@@ -27,6 +27,7 @@ func on_action_pickup():
 
 func weapon_calculate_final_damage(distance):
 	var final_damage:int = stat_ranged_dmg
+	final_damage += randi()%2+0 
 	if distance == 1:
 		pass
 	elif distance == 2:

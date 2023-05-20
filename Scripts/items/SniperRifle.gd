@@ -29,7 +29,7 @@ func weapon_calculate_final_damage(distance):
 	randomize()
 	var final_damage:int = stat_ranged_dmg
 	if distance == 1:
-		final_damage = 2
+		final_damage -= randi()%2+0 
 	elif distance == 2:
 		pass
 	elif distance == 3:

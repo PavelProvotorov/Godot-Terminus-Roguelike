@@ -2,6 +2,7 @@ extends Node
 
 onready var shotgun = preload("res://Items/Shotgun.tscn")
 onready var tactical_shotgun = preload("res://Items/TacticalShotgun.tscn")
+onready var submachine_gun = preload("res://Items/SubmachineGun.tscn")
 onready var hunting_rifle = preload("res://Items/HuntingRifle.tscn")
 onready var assault_rifle = preload("res://Items/AssaultRifle.tscn")
 onready var revolver = preload("res://Items/Revolver.tscn")
