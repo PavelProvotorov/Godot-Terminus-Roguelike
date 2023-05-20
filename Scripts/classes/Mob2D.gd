@@ -25,10 +25,12 @@ const ANIMATIONS= {
 # CONDITION FLAGS
 var is_vulnerable:bool = true
 
-# SIGNALS
+# SOUNDS
 #---------------------------------------------------------------------------------------
-signal mob_action_completed
-signal mob_action_all_completed
+var sound_on_move = Sound.sfx_move
+var sound_on_hit = Sound.sfx_hit_0
+var sound_on_melee = Sound.sfx_punch_0
+var sound_on_ranged = Sound.sfx_spit
 
 # READY
 #---------------------------------------------------------------------------------------
