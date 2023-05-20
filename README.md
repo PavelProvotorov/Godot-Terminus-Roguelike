@@ -22,7 +22,7 @@ Built in [Godot Engine](https://godotengine.org/) and written in [GDScript](http
 # Other
 Godot Version: 3.5.2
 <br>
-Itch.io: N/A
+Itch.io: https://logodum.itch.io/terminus-roguelike
 
 # Screenshots
 ![4](https://github.com/PavelProvotorov/Godot-Terminus-Roguelike/assets/15616120/9225830f-67c0-4a50-8ca3-aff72236c100)
