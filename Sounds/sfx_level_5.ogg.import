@@ -11,5 +11,5 @@ dest_files=[ "res://.import/sfx_level_5.ogg-13e00359584ff3eb9a2f0a5d18228209.ogg
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
