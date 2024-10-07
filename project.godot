@@ -8,31 +8,9 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Node2D",
-"class": "Buff2D",
-"language": "GDScript",
-"path": "res://Scripts/classes/Buffs2D.gd"
-}, {
-"base": "StaticBody2D",
-"class": "Item2D",
-"language": "GDScript",
-"path": "res://Scripts/classes/Item2D.gd"
-}, {
-"base": "KinematicBody2D",
-"class": "Mob2D",
-"language": "GDScript",
-"path": "res://Scripts/classes/Mob2D.gd"
-} ]
-_global_script_class_icons={
-"Buff2D": "",
-"Item2D": "",
-"Mob2D": ""
-}
-
 [application]
 
-config/name="Terminus"
+config/name="Terminus (v2.0 Dev)"
 run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
