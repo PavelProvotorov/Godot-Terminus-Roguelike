@@ -14,7 +14,8 @@ onready var TILES_LOGIC = {
 	EMPTY = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_EMPTY"),
 	FLOOR = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_FLOOR"),
 	WALL = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_WALL"),
-	DOOR = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_DOOR")
+	DOOR = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_DOOR"),
+	OBJECT = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_OBJECT")
 	}
 
 onready var DIRECTIONS = [
@@ -102,7 +103,7 @@ func generator_clear_dead_ends(tilemap:TileMap, ids:Array, check_tile:int, set_t
 		var cells = tilemap_get_cells_in_array(tilemap, ids)
 
 		for cell in cells:
-			var count = util_count_nearby_tile_4(cell.x, cell.y, check_tile)
+			var count = util_count_nearby_tiles_4(cell, [check_tile])
 			if count >= 3:
 				tilemap.set_cellv(cell, set_tile)
 				completed = false
@@ -135,7 +136,7 @@ func generator_get_room_walls(tilemap: TileMap, tiles:Array) -> Array:
 		for y in range(0, MAP_HEIGHT):
 			
 			var cell = Vector2(x, y)
-			if tilemap.get_cellv(cell) in tiles and !visited.has(cell) and util_count_nearby_tile_4(cell.x, cell.y, TILES_LOGIC.EMPTY) >= 2:
+			if tilemap.get_cellv(cell) in tiles and !visited.has(cell) and util_count_nearby_tiles_4(cell, [TILES_LOGIC.EMPTY]) >= 2:
 				var wall = generator_wall_flood_fill(tilemap, tiles, cell, visited)
 				if wall.size() > 0:
 					walls.append(wall)
@@ -150,13 +151,13 @@ func generator_wall_flood_fill(tilemap:TileMap, tiles:Array, start_cell:Vector2,
 		
 		if !visited.has(cell) and tilemap.get_cellv(cell) in tiles:
 			visited.append(cell)
-			if util_count_nearby_tile_4(cell.x, cell.y, TILES_LOGIC.EMPTY) >= 2:
+			if util_count_nearby_tiles_4(cell, [TILES_LOGIC.EMPTY]) >= 2:
 				wall.append(cell)
 			
 			for direction in DIRECTIONS:
 				var neighbor = cell + direction
 				if !visited.has(neighbor) and tilemap.get_cellv(neighbor) in tiles:
-					if util_count_nearby_tile_4(neighbor.x, neighbor.y, TILES_LOGIC.EMPTY) >= 2:
+					if util_count_nearby_tiles_4(neighbor, [TILES_LOGIC.EMPTY]) >= 2:
 						stack.append(neighbor)
 	return wall
 
@@ -164,8 +165,7 @@ func generator_room_apply_padding(room:Array) -> Array:
 	var result = []
 	for cell in room:
 		var count = 0
-		count += util_count_nearby_tile_4(cell.x, cell.y, TILES_LOGIC.WALL)
-		count += util_count_nearby_tile_4(cell.x, cell.y, TILES_LOGIC.DOOR)
+		count += util_count_nearby_tiles_4(cell, [TILES_LOGIC.WALL, TILES_LOGIC.DOOR])
 		if count == 0:
 			result.append(cell)
 			
@@ -219,7 +219,7 @@ func generator_get_one_way_rooms(rooms:Array) -> Array:
 		door_list = []
 		
 		for cell in room:
-			door_list.append_array(util_get_nearby_tile_4(cell.x, cell.y, TILES_LOGIC.DOOR))
+			door_list.append_array(util_get_nearby_tiles_4(cell, [TILES_LOGIC.DOOR]))
 		
 		if door_list.size() == 1:
 			var duplicate = room.duplicate(true)
@@ -238,35 +238,49 @@ func generator_clear_level() -> void:
 			TILEMAP_LOGIC.set_cell(width, height, TILES_LOGIC.EMPTY)
 	pass
 
-func furnisher_find_free_space(cells: Array, object_size: Vector2) -> Array:
+func furnisher_place_object() -> void:
+	pass
+
+func furnisher_get_free_space(cells:Array, object_size:Vector2) -> Array:
 	var result = []
 	for cell in cells:
 		if furnisher_space_is_free(cells, cell, object_size):
 			result.append(cell)
 	return result
 
-func furnisher_space_is_free(cells: Array, cell: Vector2, object_size: Vector2) -> bool:
+func furnisher_space_is_free(cells:Array, cell:Vector2, object_size:Vector2) -> bool:
 	for x in range(object_size.x):
 		for y in range(object_size.y):
 			var check_cell = cell + Vector2(x, y)
 			if !cells.has(check_cell):
 				return false
 	return true
+
+func furnisher_get_cells(tilemap:TileMap, tiles:Array) -> Array:
+	var result_cells = []
+	var check_cells = TILEMAP_LOGIC.get_used_cells_by_id(TILES_LOGIC.EMPTY)
+	for cell in check_cells:
+		var count = 0
+		count += util_count_nearby_tiles_4(cell, [TILES_LOGIC.WALL, TILES_LOGIC.DOOR])
+		if count == 0:
+			result_cells.append(cell)
+			
+	return result_cells
 	
-func util_count_nearby_tile_4(x:int, y:int, tile_id:int) -> int:
+func util_count_nearby_tiles_4(cell:Vector2, tiles:Array) -> int:
 	var count:int = 0
-	if TILEMAP_LOGIC.get_cell(x, y-1)   == tile_id:  count += 1
-	if TILEMAP_LOGIC.get_cell(x, y+1)   == tile_id:  count += 1
-	if TILEMAP_LOGIC.get_cell(x-1, y)   == tile_id:  count += 1
-	if TILEMAP_LOGIC.get_cell(x+1, y)   == tile_id:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y-1) in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y+1) in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y) in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y) in tiles:  count += 1
 	return count
 
-func util_get_nearby_tile_4(x:int, y:int, tile_id:int) -> Array:
+func util_get_nearby_tiles_4(cell:Vector2, tiles:Array) -> Array:
 	var list:Array = []
-	if TILEMAP_LOGIC.get_cell(x, y-1)   == tile_id:  list.append(Vector2(x, y-1))
-	if TILEMAP_LOGIC.get_cell(x, y+1)   == tile_id:  list.append(Vector2(x, y+1))
-	if TILEMAP_LOGIC.get_cell(x-1, y)   == tile_id:  list.append(Vector2(x-1, y))
-	if TILEMAP_LOGIC.get_cell(x+1, y)   == tile_id:  list.append(Vector2(x+1, y))
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y-1) in tiles:  list.append(Vector2(cell.x, cell.y-1))
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y+1) in tiles:  list.append(Vector2(cell.x, cell.y+1))
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y) in tiles:  list.append(Vector2(cell.x-1, cell.y))
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y) in tiles:  list.append(Vector2(cell.x+1, cell.y))
 	return list
 
 func tilemap_get_cells_in_array(tilemap:TileMap, ids:Array) -> Array:
