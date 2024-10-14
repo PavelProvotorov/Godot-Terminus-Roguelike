@@ -15,7 +15,9 @@ onready var TILES_LOGIC = {
 	FLOOR = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_FLOOR"),
 	WALL = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_WALL"),
 	DOOR = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_DOOR"),
-	OBJECT = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_OBJECT")
+	OBJECT = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_OBJECT"),
+	ENTRANCE = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_ENTRANCE"),
+	EXIT = TILEMAP_LOGIC.tile_set.find_tile_by_name("TILE_EXIT")
 	}
 
 onready var DIRECTIONS = [
@@ -40,9 +42,12 @@ func generator_start():
 	randomize()
 	generator_clear_level()
 	generator_room_subdivide(1, 1, MAP_WIDTH - 2, MAP_HEIGHT - 2)
-	generator_clear_dead_ends(TILEMAP_LOGIC, [TILES_LOGIC.DOOR, TILES_LOGIC.WALL], TILES_LOGIC.EMPTY, TILES_LOGIC.EMPTY)
-	generator_fill_one_way_rooms(TILEMAP_LOGIC, TILES_LOGIC.EMPTY, TILES_LOGIC.WALL)
+	generator_clear_dead_ends(TILEMAP_LOGIC, [TILES_LOGIC.DOOR, TILES_LOGIC.WALL], TILES_LOGIC.FLOOR, TILES_LOGIC.FLOOR)
+	generator_fill_one_way_rooms(TILEMAP_LOGIC, TILES_LOGIC.FLOOR, TILES_LOGIC.WALL)
 	generator_remove_room_walls(TILEMAP_LOGIC, [TILES_LOGIC.WALL, TILES_LOGIC.DOOR])
+	furnisher_place_object(TILEMAP_LOGIC, Vector2(2, 2))
+	furnisher_place_object(TILEMAP_LOGIC, Vector2(1, 1))
+	generator_add_passages(TILEMAP_LOGIC)
 	debug_print_rooms()
 
 func generator_room_subdivide(x1, y1, x2, y2):
@@ -75,8 +80,8 @@ func generator_room_subdivide_width(x1, y1, x2, y2):
 	TILEMAP_LOGIC.set_cell(x, doory, TILES_LOGIC.DOOR)
 
 	# Account for walls placed deeper into recursion.
-	TILEMAP_LOGIC.set_cell(x-1, doory, TILES_LOGIC.EMPTY)
-	TILEMAP_LOGIC.set_cell(x+1, doory, TILES_LOGIC.EMPTY)
+	TILEMAP_LOGIC.set_cell(x-1, doory, TILES_LOGIC.FLOOR)
+	TILEMAP_LOGIC.set_cell(x+1, doory, TILES_LOGIC.FLOOR)
 
 func generator_room_subdivide_height(x1, y1, x2, y2):
 	randomize()
@@ -92,8 +97,8 @@ func generator_room_subdivide_height(x1, y1, x2, y2):
 	TILEMAP_LOGIC.set_cell(doorx, y, TILES_LOGIC.DOOR)
 	
 	# Account for walls placed deeper into recursion.
-	TILEMAP_LOGIC.set_cell(doorx, y-1, TILES_LOGIC.EMPTY)
-	TILEMAP_LOGIC.set_cell(doorx, y+1, TILES_LOGIC.EMPTY)
+	TILEMAP_LOGIC.set_cell(doorx, y-1, TILES_LOGIC.FLOOR)
+	TILEMAP_LOGIC.set_cell(doorx, y+1, TILES_LOGIC.FLOOR)
 
 func generator_clear_dead_ends(tilemap:TileMap, ids:Array, check_tile:int, set_tile:int):
 	var completed = false
@@ -123,9 +128,9 @@ func generator_remove_room_walls(tilemap:TileMap, tiles:Array) -> void:
 			walls.erase(wall)
 	
 	for cell in cells:
-		tilemap.set_cellv(cell, TILES_LOGIC.EMPTY)
+		tilemap.set_cellv(cell, TILES_LOGIC.FLOOR)
 	
-	generator_clear_dead_ends(TILEMAP_LOGIC, [TILES_LOGIC.DOOR, TILES_LOGIC.WALL], TILES_LOGIC.EMPTY, TILES_LOGIC.EMPTY)
+	generator_clear_dead_ends(TILEMAP_LOGIC, [TILES_LOGIC.DOOR, TILES_LOGIC.WALL], TILES_LOGIC.FLOOR, TILES_LOGIC.FLOOR)
 	pass
 
 func generator_get_room_walls(tilemap: TileMap, tiles:Array) -> Array:
@@ -136,7 +141,7 @@ func generator_get_room_walls(tilemap: TileMap, tiles:Array) -> Array:
 		for y in range(0, MAP_HEIGHT):
 			
 			var cell = Vector2(x, y)
-			if tilemap.get_cellv(cell) in tiles and !visited.has(cell) and util_count_nearby_tiles_4(cell, [TILES_LOGIC.EMPTY]) >= 2:
+			if tilemap.get_cellv(cell) in tiles and !visited.has(cell) and util_count_nearby_tiles_4(cell, [TILES_LOGIC.FLOOR]) >= 2:
 				var wall = generator_wall_flood_fill(tilemap, tiles, cell, visited)
 				if wall.size() > 0:
 					walls.append(wall)
@@ -151,13 +156,13 @@ func generator_wall_flood_fill(tilemap:TileMap, tiles:Array, start_cell:Vector2,
 		
 		if !visited.has(cell) and tilemap.get_cellv(cell) in tiles:
 			visited.append(cell)
-			if util_count_nearby_tiles_4(cell, [TILES_LOGIC.EMPTY]) >= 2:
+			if util_count_nearby_tiles_4(cell, [TILES_LOGIC.FLOOR]) >= 2:
 				wall.append(cell)
 			
 			for direction in DIRECTIONS:
 				var neighbor = cell + direction
 				if !visited.has(neighbor) and tilemap.get_cellv(neighbor) in tiles:
-					if util_count_nearby_tiles_4(neighbor, [TILES_LOGIC.EMPTY]) >= 2:
+					if util_count_nearby_tiles_4(neighbor, [TILES_LOGIC.FLOOR]) >= 2:
 						stack.append(neighbor)
 	return wall
 
@@ -184,6 +189,38 @@ func generator_get_rooms(tilemap: TileMap, tile:int):
 				if room.size() > 0:
 					rooms.append(room)
 	return rooms
+
+func generator_add_passages(tilemap:TileMap) -> void:
+	randomize()
+	var exit:Vector2
+	var entrance:Vector2
+	var cells = tilemap.get_used_cells_by_id(TILES_LOGIC.FLOOR)
+	
+	cells.shuffle()
+	entrance = cells.pick_random()
+	generator_add_entrance(tilemap, entrance)
+	
+	for cell in cells:
+		exit = cell
+		if cell.distance_to(entrance) >= 8:
+			break
+			
+	generator_add_exit(tilemap, exit)
+	pass
+
+func generator_add_entrance(tilemap:TileMap, cell:Vector2) -> void:
+	tilemap.set_cellv(cell, TILES_LOGIC.ENTRANCE)
+	pass
+
+func generator_add_exit(tilemap:TileMap, cell:Vector2)  -> void:
+	tilemap.set_cellv(cell, TILES_LOGIC.EXIT)
+	pass
+
+func generator_get_entrance() -> Vector2:
+	return TILEMAP_LOGIC.get_used_cells_by_id(TILES_LOGIC.ENTRANCE)[0]
+
+func generator_get_exit() -> Vector2:
+	return TILEMAP_LOGIC.get_used_cells_by_id(TILES_LOGIC.EXIT)[0]
 
 func generator_room_flood_fill(tilemap:TileMap, tile:int, start_cell:Vector2, visited:Array):
 	var room = []
@@ -235,33 +272,44 @@ func generator_clear_level() -> void:
 	
 	for width in range(int(rect_start.x), int(rect_end.x) + 1):
 		for height in range(int(rect_start.y), int(rect_end.y) + 1):
-			TILEMAP_LOGIC.set_cell(width, height, TILES_LOGIC.EMPTY)
+			TILEMAP_LOGIC.set_cell(width, height, TILES_LOGIC.FLOOR)
 	pass
 
-func furnisher_place_object() -> void:
-	pass
+func furnisher_place_object(tilemap:TileMap, size:Vector2) -> void:
+	randomize()
+	var cells = furnisher_get_free_space(tilemap, size)
+	if cells.size() != 0:
+		cells.shuffle()
+		var cell = cells.pick_random()
+		for x in range(size.x):
+			for y in range(size.y):
+				tilemap.set_cell(cell.x + x, cell.y + y, TILES_LOGIC.OBJECT)
 
-func furnisher_get_free_space(cells:Array, object_size:Vector2) -> Array:
+func furnisher_get_free_space(tilemap:TileMap, size:Vector2) -> Array:
 	var result = []
+	var cells = furnisher_get_cells(tilemap)
 	for cell in cells:
-		if furnisher_space_is_free(cells, cell, object_size):
+		if furnisher_space_is_free(cells, cell, size):
 			result.append(cell)
 	return result
 
-func furnisher_space_is_free(cells:Array, cell:Vector2, object_size:Vector2) -> bool:
-	for x in range(object_size.x):
-		for y in range(object_size.y):
+func furnisher_space_is_free(cells:Array, cell:Vector2, size:Vector2) -> bool:
+	for x in range(size.x):
+		for y in range(size.y):
 			var check_cell = cell + Vector2(x, y)
 			if !cells.has(check_cell):
 				return false
 	return true
 
-func furnisher_get_cells(tilemap:TileMap, tiles:Array) -> Array:
+func furnisher_get_cells(tilemap:TileMap) -> Array:
 	var result_cells = []
-	var check_cells = TILEMAP_LOGIC.get_used_cells_by_id(TILES_LOGIC.EMPTY)
+	var check_cells = tilemap.get_used_cells_by_id(TILES_LOGIC.FLOOR)
 	for cell in check_cells:
-		var count = 0
-		count += util_count_nearby_tiles_4(cell, [TILES_LOGIC.WALL, TILES_LOGIC.DOOR])
+		var count = util_count_nearby_tiles_8(cell, [
+			TILES_LOGIC.WALL, 
+			TILES_LOGIC.DOOR, 
+			TILES_LOGIC.OBJECT
+		])
 		if count == 0:
 			result_cells.append(cell)
 			
@@ -283,6 +331,30 @@ func util_get_nearby_tiles_4(cell:Vector2, tiles:Array) -> Array:
 	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y) in tiles:  list.append(Vector2(cell.x+1, cell.y))
 	return list
 
+func util_count_nearby_tiles_8(cell:Vector2, tiles:Array) -> int:
+	var count:int = 0
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y-1)   in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y+1)   in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y)   in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y)   in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y+1) in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y-1) in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y+1) in tiles:  count += 1
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y-1) in tiles:  count += 1
+	return count
+
+func util_get_nearby_tiles_8(cell:Vector2, tiles:Array) -> Array:
+	var list:Array = []
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y-1)   in tiles:  list.append(Vector2(cell.x, cell.y-1))
+	if TILEMAP_LOGIC.get_cell(cell.x, cell.y+1)   in tiles:  list.append(Vector2(cell.x, cell.y+1))
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y)   in tiles:  list.append(Vector2(cell.x-1, cell.y))
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y)   in tiles:  list.append(Vector2(cell.x+1, cell.y))
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y+1) in tiles:  list.append(Vector2(cell.x+1, cell.y+1))
+	if TILEMAP_LOGIC.get_cell(cell.x+1, cell.y-1) in tiles:  list.append(Vector2(cell.x+1, cell.y-1))
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y+1) in tiles:  list.append(Vector2(cell.x-1, cell.y+1))
+	if TILEMAP_LOGIC.get_cell(cell.x-1, cell.y-1) in tiles:  list.append(Vector2(cell.x-1, cell.y-1))
+	return list
+
 func tilemap_get_cells_in_array(tilemap:TileMap, ids:Array) -> Array:
 	var cells = []
 	for id in ids:
@@ -291,7 +363,7 @@ func tilemap_get_cells_in_array(tilemap:TileMap, ids:Array) -> Array:
 
 func debug_print_rooms() -> void:
 	print("---------------------")
-	var rooms = generator_get_rooms(TILEMAP_LOGIC, TILES_LOGIC.EMPTY)
+	var rooms = generator_get_rooms(TILEMAP_LOGIC, TILES_LOGIC.FLOOR)
 	for room in rooms.size():
 		print(room, ": ", rooms[room])
 	pass 
