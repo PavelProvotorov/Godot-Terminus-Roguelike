@@ -45,6 +45,11 @@ _global_script_classes=[ {
 "path": "res://scripts/level_shadowcasting.gd"
 }, {
 "base": "Node",
+"class": "SpriteAnimations2D",
+"language": "GDScript",
+"path": "res://scripts/sprite_animations.gd"
+}, {
+"base": "Node",
 "class": "State",
 "language": "GDScript",
 "path": "res://scripts/states/state.gd"
@@ -57,7 +62,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "TweenAnimation2D",
 "language": "GDScript",
-"path": "res://scripts/animation.gd"
+"path": "res://scripts/tween_animations.gd"
 } ]
 _global_script_class_icons={
 "Decorator2D": "",
@@ -67,6 +72,7 @@ _global_script_class_icons={
 "PathFinding2D": "",
 "Queue": "",
 "ShadowCasting2D": "",
+"SpriteAnimations2D": "",
 "State": "",
 "StateMachine": "",
 "TweenAnimation2D": ""

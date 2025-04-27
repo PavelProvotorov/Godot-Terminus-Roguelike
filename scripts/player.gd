@@ -36,8 +36,7 @@ func set_camera_limits() -> void:
 	_camera.limit_top = ((rect.position.y) * grid_size)
 	_camera.limit_bottom = ((rect.end.y) * grid_size)
 	
-func check_targets_in_range() -> Array:
-	var enemies: Array = []
+func check_targets_in_range() -> void:
 	for direction in DIRECTIONS:
 		_raycast.cast_to = (direction * attack_range) * grid_size
 		_raycast.force_raycast_update()
@@ -45,8 +44,7 @@ func check_targets_in_range() -> Array:
 		if _raycast.is_colliding():
 			var collider = _raycast.get_collider()
 			if collider.is_in_group("ENEMY"):
-				enemies.append(collider)
-	return enemies
+				collider.add_target_animation()
 	
 func shoot_in_direction(direction: Vector2) -> bool:
 	_raycast.cast_to = (direction * attack_range)
@@ -103,25 +101,23 @@ func handle_idle(data:Dictionary) -> void:
 	Events.emit_signal("end_turn", self)
 
 func handle_movement(data:Dictionary) -> void:
-#	_state_machine.change_state('ACTIVE')
 	var start = data.start
 	var finish = data.finish
-	_animation.animation_move_to(finish, self, 'position')
+	_tween_animations.animation_move_to(finish, self, 'position')
 
 func handle_melee_attack(data:Dictionary) -> void:
-#	_state_machine.change_state('ACTIVE')
 	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
-	_animation.animation_melee(Vector2.ZERO, (finish-start), _sprite, 'offset')
+	_tween_animations.animation_melee(start, finish, self, 'position')
 
 func handle_ranged_attack(data:Dictionary) -> void:
-#	_state_machine.change_state('ACTIVE')
 	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
 	set_sprite_direction(start, finish)
-	_animation.animation_ranged(Vector2.ZERO, -(finish - start)/2, _sprite, 'offset')
+	get_tree().call_group("ENEMY", "remove_target_animation")
+	_tween_animations.animation_ranged(start, start - ((finish - start) / 2), self, 'position')
 	
 func _on_level_generation_complete(entrance:Vector2) -> void:
 	self.position = entrance

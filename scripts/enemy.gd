@@ -64,6 +64,12 @@ func target_is_blocked(self_pos: Vector2, target_pos: Vector2) -> bool:
 			return false
 	return true
 	
+func add_target_animation() -> void:
+	_sprite_animations.add_animation("target")
+	
+func remove_target_animation() -> void:
+	_sprite_animations.remove_animation("target")
+	
 func set_random_frame() -> void:
 	randomize()
 	_sprite.set_frame(rand_range(0,_sprite.get_sprite_frames().get_frame_count("IDLE")))

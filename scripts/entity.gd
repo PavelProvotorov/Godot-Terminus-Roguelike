@@ -2,12 +2,13 @@ extends KinematicBody2D
 class_name Entity2D
 
 onready var _level = get_tree().get_first_node_in_group("LEVEL")
-onready var _animation = TweenAnimation2D.new(self)
+onready var _tween_animations = TweenAnimation2D.new(self)
+onready var _sprite_animations = SpriteAnimations2D.new(self)
 onready var _sprite = $AnimatedSprite
 
 const grid_size:int = 8
-var attack_range:int = 1
-var damage:int = 1
+var attack_range:int = 0
+var damage:int = 0
 
 func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	var direction = (finish - start)/grid_size
@@ -30,21 +31,21 @@ func handle_movement(data:Dictionary) -> void:
 		self.position = finish
 		Events.emit_signal("end_turn", self)
 	else:
-		_animation.animation_move_to(finish, self, 'position')
+		_tween_animations.animation_move_to(finish, self, 'position')
 
 func handle_melee_attack(data:Dictionary) -> void:
 	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
 	set_sprite_direction(start, finish)
-	_animation.animation_melee(Vector2.ZERO, (finish-start), _sprite, 'offset')
+	_tween_animations.animation_melee(start, finish, self, 'position')
 
 func handle_ranged_attack(data:Dictionary) -> void:
 	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
 	set_sprite_direction(start, finish)
-	_animation.animation_ranged(Vector2.ZERO, -(finish - start)/2, _sprite, 'offset')
+	_tween_animations.animation_ranged(start, start - ((finish - start) / 2), self, 'position')
 
 func _on_animation_move_finished(tween:SceneTreeTween) -> void:
 	if tween.is_running(): printerr("Move tween animation not complete")

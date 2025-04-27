@@ -34,7 +34,6 @@ func _init(tilemap:TileMap):
 	generator_generate_level()
 
 func generator_generate_level() -> void:
-#	randomize()
 	generator_clear_level()
 	generator_room_subdivide(2, 2, MAP_WIDTH - 1, MAP_HEIGHT - 1)
 	generator_clear_dead_ends([TILES.DOOR, TILES.WALL], TILES.FLOOR, TILES.FLOOR)
@@ -45,7 +44,6 @@ func generator_generate_level() -> void:
 	generator_add_passages()
 
 func generator_room_subdivide(x1, y1, x2, y2):
-#	randomize()
 	var w = x2 - x1 + 1
 	var h = y2 - y1 + 1
 	
@@ -62,7 +60,6 @@ func generator_room_subdivide(x1, y1, x2, y2):
 			generator_room_subdivide_width(x1, y1, x2, y2)
 
 func generator_room_subdivide_width(x1, y1, x2, y2):
-#	randomize()
 	var x = rand_range(x1 + MIN_ROOM_SIZE, x2 - MIN_ROOM_SIZE)
 
 	for y in range(y1, y2 + 1):
@@ -83,7 +80,6 @@ func generator_room_subdivide_width(x1, y1, x2, y2):
 	_tilemap.set_cell(x+1, doory, TILES.FLOOR)
 
 func generator_room_subdivide_height(x1, y1, x2, y2):
-#	randomize()
 	var y = rand_range(y1 + MIN_ROOM_SIZE, y2 - MIN_ROOM_SIZE)
 
 	for x in range(x1, x2 + 1):
@@ -119,7 +115,6 @@ func generator_clear_dead_ends(ids:Array, check_tile:int, set_tile:int):
 	pass
 
 func generator_remove_room_walls(tiles:Array) -> void:
-#	randomize()
 	var walls:Array = generator_get_room_walls(tiles)
 	walls.shuffle()
 	
@@ -210,7 +205,6 @@ func generator_get_rooms(tile:int):
 	return rooms
 
 func generator_add_passages() -> void:
-#	randomize()
 	var exit:Vector2
 	var entrance:Vector2
 	var cells = _tilemap.get_used_cells_by_id(TILES.FLOOR)

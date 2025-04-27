@@ -32,6 +32,7 @@ func _input(event):
 func _on_state_changed(state: String) -> void:
 	if state == self.name.to_upper():
 		self.set_process_input(true)
+		get_tree().call_group("ENEMY", "remove_target_animation")
 		_player.set_idle_animation()
 	else:
 		self.set_process_input(false)
