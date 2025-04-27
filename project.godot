@@ -45,6 +45,16 @@ _global_script_classes=[ {
 "path": "res://scripts/level_shadowcasting.gd"
 }, {
 "base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://scripts/states/state.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://scripts/states/state_machine.gd"
+}, {
+"base": "Node",
 "class": "TweenAnimation2D",
 "language": "GDScript",
 "path": "res://scripts/animation.gd"
@@ -57,6 +67,8 @@ _global_script_class_icons={
 "PathFinding2D": "",
 "Queue": "",
 "ShadowCasting2D": "",
+"State": "",
+"StateMachine": "",
 "TweenAnimation2D": ""
 }
 
@@ -72,11 +84,12 @@ Events="*res://scripts/events.gd"
 
 [display]
 
-window/size/width=256
-window/size/height=144
+window/size/width=160
+window/size/height=120
 window/size/resizable=false
-window/size/test_width=1280
-window/size/test_height=720
+window/size/test_width=640
+window/size/test_height=480
+window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 

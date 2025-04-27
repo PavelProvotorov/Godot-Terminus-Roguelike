@@ -43,7 +43,7 @@ func _ready():
 	add_enemies()
 	
 func _process(delta):
-	if Input.is_action_just_pressed("ui_space"):
+	if Input.is_action_just_pressed("ui_read"):
 		generate_level()
 	pass
 

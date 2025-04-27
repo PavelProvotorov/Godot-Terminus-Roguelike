@@ -1,36 +1,33 @@
 extends Entity2D
 
+onready var _state_machine = $States
 onready var _raycast = $RayCast2D
 onready var _camera = $Camera2D
 
-const visibility = 5
+const visibility = 4
+const DIRECTIONS = [
+	Vector2.UP,
+	Vector2.DOWN,
+	Vector2.LEFT,
+	Vector2.RIGHT
+]
+const ANIMATION = {
+	IDLE = 'IDLE',
+	RANGED = 'RANGED'
+}
 enum STATE {
 	IDLE,
-	ACTIVE
+	ACTIVE,
+	RANGED,
+	MELEE,
+	THROW
 }
-var current_state = STATE.IDLE
 
 func _ready():
+	attack_range = 2
+	damage = 2
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
-
-func _input(event):
-	match current_state:
-		STATE.IDLE:
-			if Input.is_action_just_pressed("ui_skip"):
-				handle_idle({})
-			if Input.is_action_just_pressed("ui_up"):
-				check_move_direction(Vector2.UP * grid_size)
-			if Input.is_action_just_pressed("ui_down"):
-				check_move_direction(Vector2.DOWN * grid_size)
-			if Input.is_action_just_pressed("ui_left"): 
-				_sprite.flip_h = true
-				check_move_direction(Vector2.LEFT * grid_size)
-			if Input.is_action_just_pressed("ui_right"): 
-				_sprite.flip_h = false
-				check_move_direction(Vector2.RIGHT * grid_size)
-		_:
-			pass
-	pass
+	set_camera_limits()
 
 func set_camera_limits() -> void:
 	var rect = _level.level_rect
@@ -38,8 +35,34 @@ func set_camera_limits() -> void:
 	_camera.limit_right = ((rect.end.x) * grid_size)
 	_camera.limit_top = ((rect.position.y) * grid_size)
 	_camera.limit_bottom = ((rect.end.y) * grid_size)
+	
+func check_targets_in_range() -> Array:
+	var enemies: Array = []
+	for direction in DIRECTIONS:
+		_raycast.cast_to = (direction * attack_range) * grid_size
+		_raycast.force_raycast_update()
+		
+		if _raycast.is_colliding():
+			var collider = _raycast.get_collider()
+			if collider.is_in_group("ENEMY"):
+				enemies.append(collider)
+	return enemies
+	
+func shoot_in_direction(direction: Vector2) -> bool:
+	_raycast.cast_to = (direction * attack_range)
+	_raycast.force_raycast_update()
+	
+	if _raycast.is_colliding():
+		var collider = _raycast.get_collider()
+		if collider.is_in_group("ENEMY"):
+			handle_ranged_attack({
+				"start": self.position,
+				"finish": (self.position - (-direction))
+			})
+			return true
+	return false
 
-func check_move_direction(pos:Vector2) -> void:
+func check_move_direction(pos: Vector2) -> bool:
 	_raycast.cast_to = pos
 	_raycast.force_raycast_update()
 	
@@ -52,11 +75,20 @@ func check_move_direction(pos:Vector2) -> void:
 				"start": self.position, 
 				"finish": collider.position,
 			})
+			return true
 	else:
 		handle_movement({
 			"start": self.position, 
-			"finish": pos,
+			"finish": self.position + pos,
 		})
+		return true
+	return false
+
+func set_idle_animation() -> void:
+	_sprite.set_animation(ANIMATION.IDLE)
+
+func set_ranged_animation() -> void:
+	_sprite.set_animation(ANIMATION.RANGED)
 
 func process_tilemap_collision(pos:Vector2) -> void:
 	print(_level.get_tile_position_name(pos))
@@ -67,29 +99,29 @@ func process_tilemap_collision(pos:Vector2) -> void:
 			pass
 
 func handle_idle(data:Dictionary) -> void:
-	current_state = STATE.ACTIVE
 	Events.emit_signal("player_moved", self.position, visibility)
 	Events.emit_signal("end_turn", self)
 
 func handle_movement(data:Dictionary) -> void:
-	current_state = STATE.ACTIVE
+#	_state_machine.change_state('ACTIVE')
 	var start = data.start
 	var finish = data.finish
-	_animation.animation_move_to((self.position + finish), self, 'position')
+	_animation.animation_move_to(finish, self, 'position')
 
 func handle_melee_attack(data:Dictionary) -> void:
-	current_state = STATE.ACTIVE
+#	_state_machine.change_state('ACTIVE')
 	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
-	_animation.animation_melee(start, finish, self, 'position')
+	_animation.animation_melee(Vector2.ZERO, (finish-start), _sprite, 'offset')
 
 func handle_ranged_attack(data:Dictionary) -> void:
-	current_state = STATE.ACTIVE
+#	_state_machine.change_state('ACTIVE')
 	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
-	_animation.animation_ranged(self.position, self.position - (finish/2), self, 'position')
+	set_sprite_direction(start, finish)
+	_animation.animation_ranged(Vector2.ZERO, -(finish - start)/2, _sprite, 'offset')
 	
 func _on_level_generation_complete(entrance:Vector2) -> void:
 	self.position = entrance
@@ -114,4 +146,4 @@ func _on_animation_melee_finihsed(tween:SceneTreeTween) -> void:
 	Events.emit_signal("end_turn", self)
 
 func _on_start_turn() -> void:
-	current_state = STATE.IDLE
+	_state_machine.change_state('IDLE')

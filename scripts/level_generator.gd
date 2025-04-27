@@ -18,6 +18,7 @@ var TILES
 var _tilemap
 
 func _init(tilemap:TileMap):
+	randomize()
 	self._tilemap = tilemap
 	self.MAP_WIDTH = tilemap.get_used_rect().size.x
 	self.MAP_HEIGHT = tilemap.get_used_rect().size.y
@@ -33,9 +34,9 @@ func _init(tilemap:TileMap):
 	generator_generate_level()
 
 func generator_generate_level() -> void:
-	randomize()
+#	randomize()
 	generator_clear_level()
-	generator_room_subdivide(1, 1, MAP_WIDTH - 2, MAP_HEIGHT - 2)
+	generator_room_subdivide(2, 2, MAP_WIDTH - 1, MAP_HEIGHT - 1)
 	generator_clear_dead_ends([TILES.DOOR, TILES.WALL], TILES.FLOOR, TILES.FLOOR)
 	generator_fill_one_way_rooms(TILES.FLOOR, TILES.WALL)
 	generator_remove_room_walls([TILES.WALL, TILES.DOOR])
@@ -44,11 +45,12 @@ func generator_generate_level() -> void:
 	generator_add_passages()
 
 func generator_room_subdivide(x1, y1, x2, y2):
-	randomize()
+#	randomize()
 	var w = x2 - x1 + 1
 	var h = y2 - y1 + 1
 	
-	if randf() < 0.5:
+	var split_horizontal = randf() < 0.5
+	if split_horizontal:
 		if w >= MIN_SPLIT_SIZE:
 			generator_room_subdivide_width(x1, y1, x2, y2)
 		elif h >= MIN_SPLIT_SIZE:
@@ -60,14 +62,18 @@ func generator_room_subdivide(x1, y1, x2, y2):
 			generator_room_subdivide_width(x1, y1, x2, y2)
 
 func generator_room_subdivide_width(x1, y1, x2, y2):
-	randomize()
+#	randomize()
 	var x = rand_range(x1 + MIN_ROOM_SIZE, x2 - MIN_ROOM_SIZE)
 
 	for y in range(y1, y2 + 1):
 		_tilemap.set_cell(x, y, TILES.WALL)
 
-	generator_room_subdivide(x1, y1, x - 1, y2)
-	generator_room_subdivide(x + 1, y1, x2, y2)
+	if randf() < 0.5:
+		generator_room_subdivide(x1, y1, x - 1, y2)
+		generator_room_subdivide(x + 1, y1, x2, y2)
+	else:
+		generator_room_subdivide(x + 1, y1, x2, y2)
+		generator_room_subdivide(x1, y1, x - 1, y2)
 
 	var doory = rand_range(y1 + 1, y2 - 1)
 	_tilemap.set_cell(x, doory, TILES.DOOR)
@@ -77,14 +83,18 @@ func generator_room_subdivide_width(x1, y1, x2, y2):
 	_tilemap.set_cell(x+1, doory, TILES.FLOOR)
 
 func generator_room_subdivide_height(x1, y1, x2, y2):
-	randomize()
+#	randomize()
 	var y = rand_range(y1 + MIN_ROOM_SIZE, y2 - MIN_ROOM_SIZE)
 
 	for x in range(x1, x2 + 1):
 		_tilemap.set_cell(x, y, TILES.WALL)
 
-	generator_room_subdivide(x1, y1, x2, y - 1)
-	generator_room_subdivide(x1, y + 1, x2, y2)
+	if randf() < 0.5:
+		generator_room_subdivide(x1, y1, x2, y - 1)
+		generator_room_subdivide(x1, y + 1, x2, y2)
+	else:
+		generator_room_subdivide(x1, y + 1, x2, y2)
+		generator_room_subdivide(x1, y1, x2, y - 1)
 
 	var doorx = rand_range(x1 + 1, x2 - 1)
 	_tilemap.set_cell(doorx, y, TILES.DOOR)
@@ -109,12 +119,12 @@ func generator_clear_dead_ends(ids:Array, check_tile:int, set_tile:int):
 	pass
 
 func generator_remove_room_walls(tiles:Array) -> void:
-	randomize()
+#	randomize()
 	var walls:Array = generator_get_room_walls(tiles)
 	walls.shuffle()
 	
 	var cells = []
-	for i in (randi() % 5 + 1):
+	for i in (randi() % 3 + 1):
 		if walls.size() > 3:
 			var wall = walls.pick_random()
 			cells.append_array(wall)
@@ -200,7 +210,7 @@ func generator_get_rooms(tile:int):
 	return rooms
 
 func generator_add_passages() -> void:
-	randomize()
+#	randomize()
 	var exit:Vector2
 	var entrance:Vector2
 	var cells = _tilemap.get_used_cells_by_id(TILES.FLOOR)
@@ -292,7 +302,7 @@ func generator_clear_level() -> void:
 	pass
 
 func furnisher_place_object(size:Vector2, max_count:int) -> Array:
-	randomize()
+#	randomize()
 	var result = []
 	
 	for i in (randi() % max_count):

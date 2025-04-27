@@ -4,15 +4,10 @@ class_name Entity2D
 onready var _level = get_tree().get_first_node_in_group("LEVEL")
 onready var _animation = TweenAnimation2D.new(self)
 onready var _sprite = $AnimatedSprite
-onready var target = get_tree().get_first_node_in_group("PLAYER")
 
 const grid_size:int = 8
 var attack_range:int = 1
 var damage:int = 1
-
-func target_in_sight(self_pos: Vector2, target_pos: Vector2) -> bool:
-	var direction = self_pos - target_pos
-	return direction.x == 0 or direction.y == 0
 
 func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	var direction = (finish - start)/grid_size

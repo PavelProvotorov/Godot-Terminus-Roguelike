@@ -1,7 +1,12 @@
 extends Entity2D
 class_name Enemy2D
 
-var BEHAVIOUR_TYPE = {
+onready var _raycast = $RayCast2D
+onready var target = get_tree().get_first_node_in_group("PLAYER")
+onready var behaviours:Array = []
+onready var path:Array = []
+
+onready var BEHAVIOUR_TYPE = {
 	"IDLE": {
 		"check": funcref(self, "idle_behaviour"),
 		"handle": funcref(self, "handle_idle"),
@@ -29,16 +34,9 @@ var BEHAVIOUR_TYPE = {
 	},
 }
 
-var behaviours = [
-	BEHAVIOUR_TYPE.MELEE,
-	BEHAVIOUR_TYPE.MOVE
-]
-
-var path:Array = []
-
 func _ready():
 	Events.connect("level_fog_updated", self, "_on_level_fog_updated")
-	attack_range = 1
+	set_random_frame()
 
 func _on_level_fog_updated(cells:Array) -> void:
 	if cells.has(self.position / grid_size) && !(self.is_in_group("ACTIVE")):
@@ -48,6 +46,28 @@ func _on_level_fog_updated(cells:Array) -> void:
 func _on_start_turn() -> void:
 	path = (_level.find_path(self.position, target.position))
 	process_behaviours()
+
+func target_in_sight(self_pos: Vector2, target_pos: Vector2) -> bool:
+	var direction = self_pos - target_pos
+	return direction.x == 0 or direction.y == 0
+	
+func target_in_range() -> bool:
+	return ((path.size()-1) <= attack_range)
+	
+func target_is_blocked(self_pos: Vector2, target_pos: Vector2) -> bool:
+	_raycast.cast_to = target_pos - self_pos
+	_raycast.force_raycast_update()
+	
+	if _raycast.is_colliding():
+		var collider = _raycast.get_collider()
+		if collider.is_in_group("PLAYER"):
+			return false
+	return true
+	
+func set_random_frame() -> void:
+	randomize()
+	_sprite.set_frame(rand_range(0,_sprite.get_sprite_frames().get_frame_count("IDLE")))
+	_sprite.flip_h = (randi() % 2)
 	
 func process_behaviours():
 	for behaviour in behaviours:
@@ -86,7 +106,10 @@ func melee_behaviour() -> bool:
 	return false
 
 func ranged_behaviour() -> bool:
-	if (path.size() > 2) and ((path.size()-1) <= attack_range) and target_in_sight(self.position, target.position):
+	if (path.size() > 2) \
+	and target_in_range() \
+	and target_in_sight(self.position, target.position) \
+	and not target_is_blocked(self.position, target.position):
 		print("RANGED")
 		return true
 	return false
