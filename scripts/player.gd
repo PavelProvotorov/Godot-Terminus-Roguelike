@@ -1,16 +1,9 @@
 extends Entity2D
 
 onready var _state_machine = $States
-onready var _raycast = $RayCast2D
 onready var _camera = $Camera2D
 
 const visibility = 4
-const DIRECTIONS = [
-	Vector2.UP,
-	Vector2.DOWN,
-	Vector2.LEFT,
-	Vector2.RIGHT
-]
 const ANIMATION = {
 	IDLE = 'IDLE',
 	RANGED = 'RANGED'
@@ -135,7 +128,7 @@ func _on_animation_ranged_finished(tween:SceneTreeTween) -> void:
 	Events.emit_signal("player_ranged_attack", self.position, visibility)
 	Events.emit_signal("end_turn", self)
 
-func _on_animation_melee_finihsed(tween:SceneTreeTween) -> void:
+func _on_animation_melee_finished(tween:SceneTreeTween) -> void:
 	self.z_index -= 1
 	if tween.is_running(): printerr("Melee tween animation not complete")
 	Events.emit_signal("player_melee_attack", self.position, visibility)
