@@ -91,48 +91,33 @@ func process_tilemap_collision(pos:Vector2) -> void:
 
 func handle_idle(data:Dictionary) -> void:
 	Events.emit_signal("player_moved", self.position, visibility)
-	Events.emit_signal("end_turn", self)
+	end_turn()
 
 func handle_movement(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
-	_tween_animations.animation_move_to(finish, self, 'position')
+	yield(play_move_animation(start, finish), 'completed')
+	Events.emit_signal("player_moved", self.position, visibility)
+	end_turn()
 
 func handle_melee_attack(data:Dictionary) -> void:
-	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
-	_tween_animations.animation_melee(start, finish, self, 'position')
+	yield(play_melee_animation(start, finish), 'completed')
+	end_turn()
 
 func handle_ranged_attack(data:Dictionary) -> void:
-	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
 	set_sprite_direction(start, finish)
 	get_tree().call_group("ENEMY", "remove_target_animation")
-	_tween_animations.animation_ranged(start, start - ((finish - start) / 2), self, 'position')
+	yield(play_ranged_animation(start, finish), 'completed')
+	end_turn()
 	
 func _on_level_generation_complete(entrance:Vector2) -> void:
 	self.position = entrance
 	_camera.reset_smoothing()
 	Events.emit_signal("player_moved", self.position, visibility)
-	
-func _on_animation_move_finished(tween:SceneTreeTween) -> void:
-	if tween.is_running(): printerr("Move tween animation not complete")
-	Events.emit_signal("player_moved", self.position, visibility)
-	Events.emit_signal("end_turn", self)
-	
-func _on_animation_ranged_finished(tween:SceneTreeTween) -> void:
-	self.z_index -= 1
-	if tween.is_running(): printerr("Ranged tween animation not complete")
-	Events.emit_signal("player_ranged_attack", self.position, visibility)
-	Events.emit_signal("end_turn", self)
-
-func _on_animation_melee_finished(tween:SceneTreeTween) -> void:
-	self.z_index -= 1
-	if tween.is_running(): printerr("Melee tween animation not complete")
-	Events.emit_signal("player_melee_attack", self.position, visibility)
-	Events.emit_signal("end_turn", self)
 
 func _on_start_turn() -> void:
 	_state_machine.change_state('IDLE')

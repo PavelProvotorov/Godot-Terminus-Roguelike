@@ -51,3 +51,23 @@ func get_nearby_free_cells() -> Array:
 
 func is_path_hidden(start:Vector2, finish:Vector2) -> bool:
 	return _level.is_fog_cell(start) && _level.is_fog_cell(finish)
+	
+func play_move_animation(start:Vector2, finish:Vector2) -> void:
+	self.z_index += 1
+	yield(_tween_animations.animation_move_to(finish, self, 'position'), 'completed')
+	self.z_index -= 1
+
+func play_melee_animation(start:Vector2, finish:Vector2) -> void:
+	self.z_index += 1
+	yield(_tween_animations.animation_melee(start, finish, self, 'position'), 'completed')
+	self.z_index -= 1
+
+func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
+	self.z_index += 1
+	var half = start - ((finish - start) / 2)
+	yield(_tween_animations.animation_ranged(start, half, self, 'position'), 'completed')
+	self.z_index -= 1
+	
+func end_turn():
+	print("ENDING TURN")
+	Events.emit_signal("end_turn", self)

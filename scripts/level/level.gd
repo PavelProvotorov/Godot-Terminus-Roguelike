@@ -2,6 +2,7 @@ extends Node2D
 
 onready var debug_label = preload("res://scenes/DebugLabel.tscn")
 onready var debug_player = preload("res://mobs/Player.tscn")
+onready var debug_maggot = preload("res://mobs/Maggot.tscn")
 onready var debug_grunt = preload("res://mobs/Grunt.tscn")
 
 onready var _tree:SceneTree = get_tree()
@@ -30,14 +31,22 @@ var _pathfinding:PathFinding2D
 var _generator:Generator2D
 var _decorator:Decorator2D
 
+var point_radius = 3
+var scale_multiplier = 8
+var offset = Vector2(4,4)
+var enabled_point_color = Color('00ff00')
+var disabled_point_color = Color('ff0000')
+var line_color = Color('0000ff')
+var line_width = 1
+
 func _ready():
 	randomize()
+	Events.connect("enemy_spawned", self, "_on_enemy_spawned")
 	Events.connect("enemy_moved", self, "_on_enemy_moved")
 	Events.connect("player_moved", self, "_on_player_moved")
 	Events.connect("level_door_open", self, "_on_level_door_open")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
-	debug_add_cell_positions(_tilemap_logic.get_used_cells())
 	add_player()
 	generate_level()
 	add_enemies()
@@ -46,6 +55,18 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
 		generate_level()
 	pass
+	
+func _draw():
+	for point in _pathfinding._astar.get_points():
+		
+		for other in _pathfinding._astar.get_point_connections(point):
+			draw_line(_point_pos(point), _point_pos(other), line_color, line_width)
+			
+		var point_color = disabled_point_color if _pathfinding._astar.is_point_disabled(point) else enabled_point_color
+		draw_circle(_point_pos(point), point_radius, point_color)
+
+func _point_pos(id):
+	return offset + _pathfinding._astar.get_point_position(id) * scale_multiplier
 
 func generate_level():
 	_generator = Generator2D.new(
@@ -107,6 +128,13 @@ func add_enemies():
 		var enemy = debug_grunt.instance()
 		enemy.set_position(_tilemap_logic.map_to_world(cell))
 		_tilemap_logic.add_child(enemy)
+		_pathfinding.disable_points([
+			_tilemap_logic.world_to_map(cell * 8)
+		])
+		
+func spawn_enemy(pos:Vector2, enemy:KinematicBody2D) -> void:
+	enemy.set_position(_tilemap_logic.map_to_world(pos))
+	_tilemap_logic.add_child(enemy)
 
 func get_tile_position_name(pos:Vector2) -> String:
 	var pos_tilemap = _tilemap_logic.world_to_map(pos)
@@ -149,21 +177,15 @@ func _on_enemy_moved(prev_pos:Vector2, new_pos:Vector2) -> void:
 	_pathfinding.enable_points([
 		_tilemap_logic.world_to_map(prev_pos)
 	])
+	update()
+	
+func _on_enemy_spawned(pos:Vector2) -> void:
+	_pathfinding.disable_points([
+		_tilemap_logic.world_to_map(pos)
+	])
+	update()
 
 func _on_end_turn(node:Node) -> void:
 	print("----------------------------------")
 	print("Turn Ended By: ", node)
 	_queue.process(_tree, node)
-
-func debug_print_rooms() -> void:
-	print("---------------------")
-	var rooms = _generator.generator_get_rooms(TILES.FLOOR)
-	for room in rooms.size():
-		print(room, ": ", rooms[room])
-
-func debug_add_cell_positions(cells:PoolVector2Array) -> void:
-	for cell in cells:
-		var label = debug_label.instance()
-		label.text = str(cell)
-		label.set_position(_tilemap_debug.map_to_world(cell))
-		_tilemap_debug.add_child(label)

@@ -148,7 +148,7 @@ func idle_behaviour() -> bool:
 	return false
 
 func handle_idle(data:Dictionary) -> void:
-	Events.emit_signal("end_turn", self)
+	end_turn()
 
 func handle_movement(data:Dictionary) -> void:
 	var start = data.start
@@ -158,41 +158,33 @@ func handle_movement(data:Dictionary) -> void:
 	
 	if is_path_hidden(start / grid_size, finish / grid_size):
 		self.position = finish
-		Events.emit_signal("end_turn", self)
 	else:
-		_tween_animations.animation_move_to(finish, self, 'position')
+		yield(play_move_animation(start, finish), 'completed')
+	
+	end_turn()
 
 func handle_melee_attack(data:Dictionary) -> void:
-	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
 	set_sprite_direction(start, finish)
-	_tween_animations.animation_melee(start, finish, self, 'position')
+	yield(play_melee_animation(start, finish), 'completed')
+	end_turn()
 
 func handle_ranged_attack(data:Dictionary) -> void:
-	self.z_index += 1
 	var start = data.start
 	var finish = data.finish
 	set_sprite_direction(start, finish)
-	_tween_animations.animation_ranged(start, start - ((finish - start) / 2), self, 'position')
-	
+	yield(play_ranged_animation(start, finish), 'completed')
+	end_turn()
+
 func handle_spawning(data:Dictionary) -> void:
-	Events.emit_signal("end_turn", self)
-
-func _on_animation_move_finished(tween:SceneTreeTween) -> void:
-	if tween.is_running(): printerr("Move tween animation not complete")
-	Events.emit_signal("end_turn", self)
+	for cell in nearby_free_cells:
+		var instance = _level.debug_maggot.instance()
+		_level.spawn_enemy(position / grid_size, instance)
+		Events.emit_signal("enemy_spawned", cell * grid_size)
+		yield(instance.play_move_animation(Vector2.ZERO, cell * grid_size), 'completed')
+	end_turn()
 	
-func _on_animation_ranged_finished(tween:SceneTreeTween) -> void:
-	self.z_index -= 1
-	if tween.is_running(): printerr("Ranged tween animation not complete")
-	Events.emit_signal("end_turn", self)
-
-func _on_animation_melee_finished(tween:SceneTreeTween) -> void:
-	self.z_index -= 1
-	if tween.is_running(): printerr("Melee tween animation not complete")
-	Events.emit_signal("end_turn", self)
-
 func _on_level_fog_updated(cells:Array) -> void:
 	if cells.has(self.position / grid_size) && !(self.is_in_group("ACTIVE")):
 		self.add_to_group("ACTIVE")
