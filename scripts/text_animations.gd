@@ -1,0 +1,32 @@
+extends Node
+class_name TextAnimations2D
+
+const tween_speed:int = 2
+const damage_color:Color = Color.lightcoral
+const critical_color:Color = Color.crimson
+const float_vector:Vector2 = Vector2(0, -10)
+const grid_size = 8
+var parent
+
+func _init(parent:Node) -> void:
+	self.parent = parent
+	
+func display_damage_number(value:int, pos:Vector2, critical:bool = false):
+	var instance = Resources.text_label.instance()
+	var label = instance.get_node('Label')
+	if critical: 
+		label.set("custom_colors/font_color", critical_color)
+	else:
+		label.set("custom_colors/font_color", damage_color)
+	label.set_position(pos + Vector2(0, -4))
+	label.text = str(value)
+	parent.add_child(instance)
+	yield(animation_float_up(float_vector, instance, label), 'completed')
+	instance.queue_free()
+
+func animation_float_up(pos:Vector2, target:Node, label) -> void:
+	var tween:SceneTreeTween = target.create_tween()
+	tween.tween_property(target, "position", pos, 1.0/tween_speed).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(label, "rect_scale", Vector2(0.7, 0.7), 0.2).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
+	tween.tween_property(label, "rect_scale", Vector2(0.3, 0.3), 0.2).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
+	yield(tween, 'finished')

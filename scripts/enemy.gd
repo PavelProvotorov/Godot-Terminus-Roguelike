@@ -72,7 +72,7 @@ func set_random_frame() -> void:
 	_sprite.set_frame(rand_range(0,_sprite.get_sprite_frames().get_frame_count("IDLE")))
 	_sprite.flip_h = (randi() % 2)
 	
-func process_behaviours():
+func process_behaviours() -> void:
 	for behaviour in behaviours:
 		var check = behaviour.get("check")
 		if check.call_func():
@@ -82,18 +82,20 @@ func process_behaviours():
 			handle.call_funcv([data])
 			return
 	print("SKIP")
-	Events.emit_signal("end_turn", self)
+	end_turn()
 
 func get_melee_data() -> Dictionary:
 	return {
 		"start": self.position,
 		"finish": path[1] * grid_size,
+		"target": target
 	}
 
 func get_ranged_data() -> Dictionary:
 	return {
 		"start": self.position,
 		"finish": path[1] * grid_size,
+		"target": target
 	}
 
 func get_movement_data() -> Dictionary:
@@ -135,7 +137,6 @@ func ambush_behaviour() -> bool:
 	return false
 	
 func spawner_behaviour() -> bool:
-	nearby_free_cells = self.get_nearby_free_cells()
 	if nearby_free_cells.size() >= 1:
 		print("SPAWNER")
 		return true
@@ -166,23 +167,22 @@ func handle_movement(data:Dictionary) -> void:
 func handle_melee_attack(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
+	var target = data.target
 	set_sprite_direction(start, finish)
+	target.receive_damage(damage)
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
 func handle_ranged_attack(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
+	var target = data.target
 	set_sprite_direction(start, finish)
+	target.receive_damage(damage)
 	yield(play_ranged_animation(start, finish), 'completed')
 	end_turn()
 
 func handle_spawning(data:Dictionary) -> void:
-	for cell in nearby_free_cells:
-		var instance = _level.debug_maggot.instance()
-		_level.spawn_enemy(position / grid_size, instance)
-		Events.emit_signal("enemy_spawned", cell * grid_size)
-		yield(instance.play_move_animation(Vector2.ZERO, cell * grid_size), 'completed')
 	end_turn()
 	
 func _on_level_fog_updated(cells:Array) -> void:
@@ -192,4 +192,5 @@ func _on_level_fog_updated(cells:Array) -> void:
 
 func _on_start_turn() -> void:
 	path = (_level.find_path(self.position, target.position))
+	if behaviours.has(BEHAVIOUR_TYPE.SPAWNER): nearby_free_cells = get_nearby_free_cells()
 	process_behaviours()

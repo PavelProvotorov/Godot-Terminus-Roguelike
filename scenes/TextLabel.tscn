@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://resources/fonts/TeenyTinyPixls.tres" type="DynamicFont" id=1]
+
+[node name="TextLabel" type="Node2D"]
+z_index = 5
+
+[node name="Label" type="Label" parent="."]
+margin_right = 8.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 8, 8 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+valign = 1

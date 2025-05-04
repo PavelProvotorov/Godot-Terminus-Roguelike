@@ -17,8 +17,9 @@ enum STATE {
 }
 
 func _ready():
+	health = 100
 	attack_range = 2
-	damage = 2
+	damage = 1
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
 
@@ -48,7 +49,8 @@ func shoot_in_direction(direction: Vector2) -> bool:
 		if collider.is_in_group("ENEMY"):
 			handle_ranged_attack({
 				"start": self.position,
-				"finish": (self.position - (-direction))
+				"finish": (self.position - (-direction)),
+				"target": collider
 			})
 			return true
 	return false
@@ -65,6 +67,7 @@ func check_move_direction(pos: Vector2) -> bool:
 			handle_melee_attack({
 				"start": self.position, 
 				"finish": collider.position,
+				"target": collider
 			})
 			return true
 	else:
@@ -103,14 +106,18 @@ func handle_movement(data:Dictionary) -> void:
 func handle_melee_attack(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
+	var target = data.target
+	target.receive_damage(damage)
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
 func handle_ranged_attack(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
+	var target = data.target
 	set_sprite_direction(start, finish)
 	get_tree().call_group("ENEMY", "remove_target_animation")
+	target.receive_damage(damage)
 	yield(play_ranged_animation(start, finish), 'completed')
 	end_turn()
 	

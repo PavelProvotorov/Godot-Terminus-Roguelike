@@ -60,6 +60,11 @@ _global_script_classes=[ {
 "path": "res://scripts/states/state_machine.gd"
 }, {
 "base": "Node",
+"class": "TextAnimations2D",
+"language": "GDScript",
+"path": "res://scripts/text_animations.gd"
+}, {
+"base": "Node",
 "class": "TweenAnimation2D",
 "language": "GDScript",
 "path": "res://scripts/tween_animations.gd"
@@ -75,6 +80,7 @@ _global_script_class_icons={
 "SpriteAnimations2D": "",
 "State": "",
 "StateMachine": "",
+"TextAnimations2D": "",
 "TweenAnimation2D": ""
 }
 
@@ -87,6 +93,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Events="*res://scripts/events.gd"
+Resources="*res://scripts/resources.gd"
 
 [display]
 

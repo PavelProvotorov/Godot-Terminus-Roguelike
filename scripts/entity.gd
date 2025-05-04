@@ -2,8 +2,10 @@ extends KinematicBody2D
 class_name Entity2D
 
 onready var _level = get_tree().get_first_node_in_group("LEVEL")
+onready var _text_animations = TextAnimations2D.new(_level)
 onready var _tween_animations = TweenAnimation2D.new(self)
 onready var _sprite_animations = SpriteAnimations2D.new(self)
+onready var _hit_flash = $HitFlashAnimation
 onready var _sprite = $AnimatedSprite
 onready var _raycast = $RayCast2D
 
@@ -17,6 +19,7 @@ const DIRECTIONS = [
 const grid_size:int = 8
 var attack_range:int = 0
 var damage:int = 0
+var health:int = 1
 
 func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	var direction = (finish - start)/grid_size
@@ -52,6 +55,11 @@ func get_nearby_free_cells() -> Array:
 func is_path_hidden(start:Vector2, finish:Vector2) -> bool:
 	return _level.is_fog_cell(start) && _level.is_fog_cell(finish)
 	
+func play_hit_animation() -> void:
+	_hit_flash.play("RESET")
+	_hit_flash.advance(0)
+	_hit_flash.play('hit')
+	
 func play_move_animation(start:Vector2, finish:Vector2) -> void:
 	self.z_index += 1
 	yield(_tween_animations.animation_move_to(finish, self, 'position'), 'completed')
@@ -67,6 +75,19 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 	var half = start - ((finish - start) / 2)
 	yield(_tween_animations.animation_ranged(start, half, self, 'position'), 'completed')
 	self.z_index -= 1
+	
+func receive_damage(damage:int) -> void:
+	play_hit_animation()
+	health -= damage
+	if health <= 0:
+		_text_animations.display_damage_number(damage, position, true)
+		process_death()
+	else:
+		_text_animations.display_damage_number(damage, position, false)
+
+func process_death() -> void:
+	Events.emit_signal("enemy_died", self, self.position)
+	self.queue_free()
 	
 func end_turn():
 	print("ENDING TURN")

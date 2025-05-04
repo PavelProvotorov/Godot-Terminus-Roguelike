@@ -1,10 +1,5 @@
 extends Node2D
 
-onready var debug_label = preload("res://scenes/DebugLabel.tscn")
-onready var debug_player = preload("res://mobs/Player.tscn")
-onready var debug_maggot = preload("res://mobs/Maggot.tscn")
-onready var debug_grunt = preload("res://mobs/Grunt.tscn")
-
 onready var _tree:SceneTree = get_tree()
 onready var _tilemap_logic:TileMap = $Logic
 onready var _tilemap_debug:TileMap = $Debug
@@ -25,7 +20,7 @@ onready var TILES = {
 	FOG = _tilemap_fog.tile_set.find_tile_by_name("TILE_FOG")
 	}
 
-onready var _queue:Queue = Queue.new()
+onready var _queue:Queue
 var _shadowcasting:ShadowCasting2D
 var _pathfinding:PathFinding2D
 var _generator:Generator2D
@@ -41,6 +36,7 @@ var line_width = 1
 
 func _ready():
 	randomize()
+	Events.connect("enemy_died", self, "_on_enemy_death")
 	Events.connect("enemy_spawned", self, "_on_enemy_spawned")
 	Events.connect("enemy_moved", self, "_on_enemy_moved")
 	Events.connect("player_moved", self, "_on_player_moved")
@@ -109,13 +105,18 @@ func generate_level():
 		TILES.FOG
 	)
 	
+	_queue = Queue.new(
+		_tilemap_logic,
+		_tree
+	)
+	
 	Events.emit_signal(
 		"level_generation_complete", 
 		_tilemap_logic.map_to_world(_generator.generator_get_entrance())
 	)
 
 func add_player():
-	var player = debug_player.instance()
+	var player = Resources.debug_player.instance()
 	player.set_position(Vector2(0, 0))
 	_tilemap_logic.add_child(player)
 
@@ -125,7 +126,7 @@ func add_enemies():
 		var cell = free_cells.pick_random()
 		free_cells.erase(cell)
 		
-		var enemy = debug_grunt.instance()
+		var enemy = Resources.debug_grunt.instance()
 		enemy.set_position(_tilemap_logic.map_to_world(cell))
 		_tilemap_logic.add_child(enemy)
 		_pathfinding.disable_points([
@@ -181,6 +182,12 @@ func _on_enemy_moved(prev_pos:Vector2, new_pos:Vector2) -> void:
 	
 func _on_enemy_spawned(pos:Vector2) -> void:
 	_pathfinding.disable_points([
+		_tilemap_logic.world_to_map(pos)
+	])
+	update()
+
+func _on_enemy_death(node:Node2D, pos:Vector2) -> void:
+	_pathfinding.enable_points([
 		_tilemap_logic.world_to_map(pos)
 	])
 	update()

@@ -1,25 +1,19 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://resources/animations/animation_grunt.tres" type="SpriteFrames" id=1]
-[ext_resource path="res://scripts/mobs/grunt.gd" type="Script" id=2]
+[ext_resource path="res://resources/animations/animation_colony.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://scripts/mobs/colony.gd" type="Script" id=2]
 [ext_resource path="res://resources/shaders/shader_hit_flash.tres" type="Shader" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 4 )
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
 shader = ExtResource( 3 )
 shader_param/hit_flash_color = Plane( 1, 1, 1, 1 )
-shader_param/hit_flash_enabled = null
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4, 4 )
-
-[sub_resource type="ShaderMaterial" id=3]
-resource_local_to_scene = true
-shader = ExtResource( 3 )
-shader_param/hit_flash_color = Plane( 1, 1, 1, 1 )
 shader_param/hit_flash_enabled = false
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:material:shader_param/hit_flash_enabled")
@@ -34,7 +28,7 @@ tracks/0/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "hit"
 length = 0.2
 tracks/0/type = "value"
@@ -50,8 +44,7 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[node name="Grunt" type="KinematicBody2D" groups=["ENEMY"]]
-material = SubResource( 2 )
+[node name="Colony" type="KinematicBody2D" groups=["ENEMY"]]
 z_index = 4
 script = ExtResource( 2 )
 
@@ -60,7 +53,7 @@ position = Vector2( 4, 4 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-material = SubResource( 3 )
+material = SubResource( 2 )
 frames = ExtResource( 1 )
 animation = "IDLE"
 playing = true
@@ -71,5 +64,5 @@ position = Vector2( 4, 4 )
 cast_to = Vector2( 0, 8 )
 
 [node name="HitFlashAnimation" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 4 )
-anims/hit = SubResource( 5 )
+anims/RESET = SubResource( 3 )
+anims/hit = SubResource( 4 )

@@ -1,5 +1,6 @@
 extends Node
 
+signal enemy_died(node, pos)
 signal enemy_spawned(pos)
 signal enemy_moved(prev_pos, new_pos)
 signal player_moved(pos, distance)
