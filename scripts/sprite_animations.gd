@@ -5,9 +5,9 @@ var animation_target = preload("res://resources/animations/AnimationTarget.tscn"
 var animation_shield = preload("res://resources/animations/AnimationShield.tscn")
 var ANIMATIONS: Dictionary = {}
 var storage: Dictionary = {}
-var parent: KinematicBody2D
+var parent
 
-func _init(parent: KinematicBody2D) -> void:
+func _init(parent) -> void:
 	self.parent = parent
 	
 	ANIMATIONS = {

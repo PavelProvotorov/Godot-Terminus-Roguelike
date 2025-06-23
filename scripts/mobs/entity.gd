@@ -17,8 +17,9 @@ const DIRECTIONS = [
 ]
 
 const grid_size:int = 8
-var attack_range:int = 0
-var damage:int = 0
+var attack_range:int = 1
+var melee_damage:int = 1
+var ranged_damage:int = 1
 var health:int = 1
 
 func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
@@ -81,12 +82,13 @@ func receive_damage(damage:int) -> void:
 	health -= damage
 	if health <= 0:
 		_text_animations.display_damage_number(damage, position, true)
-		process_death()
+		handle_death()
 	else:
 		_text_animations.display_damage_number(damage, position, false)
 
-func process_death() -> void:
-	Events.emit_signal("enemy_died", self, self.position)
+func handle_death() -> void:
+	play_hit_animation()
+	_level.set_pathfinding_points([], [self.position / grid_size])
 	self.queue_free()
 	
 func end_turn():

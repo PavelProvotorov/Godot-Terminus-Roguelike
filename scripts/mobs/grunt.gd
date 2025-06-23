@@ -8,4 +8,4 @@ func _ready():
 	]
 	attack_range = 2
 	health = 3
-	damage = 1
+	melee_damage = 1

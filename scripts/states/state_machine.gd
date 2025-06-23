@@ -5,7 +5,8 @@ const STATE = {
 	IDLE = 'IDLE',
 	ACTIVE = 'ACTIVE',
 	RANGED = 'RANGED',
-	THROW = 'THROW'
+	THROW = 'THROW',
+	INVENTORY = 'INVENTORY'
 }
 onready var current_state = STATE.IDLE
 

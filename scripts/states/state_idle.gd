@@ -26,8 +26,14 @@ func _input(event):
 			_player._sprite.flip_h = false
 			var action = _player.check_move_direction(Vector2.RIGHT * GRID_SIZE)
 			if !action: _state_machine.change_state('IDLE')
+		if Input.is_action_just_pressed("ui_pickup"):
+			_state_machine.change_state('ACTIVE')
+			var action = _player.handle_item_pickup()
+			if !action: _state_machine.change_state('IDLE')
 		if Input.is_action_just_pressed("ui_space"):
 			_state_machine.change_state('RANGED')
+		if Input.is_action_just_pressed("ui_inventory"):
+			_state_machine.change_state('INVENTORY')
 
 func _on_state_changed(state: String) -> void:
 	if state == self.name.to_upper():

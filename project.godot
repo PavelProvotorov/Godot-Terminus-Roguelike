@@ -17,17 +17,27 @@ _global_script_classes=[ {
 "base": "Entity2D",
 "class": "Enemy2D",
 "language": "GDScript",
-"path": "res://scripts/enemy.gd"
+"path": "res://scripts/mobs/enemy.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Entity2D",
 "language": "GDScript",
-"path": "res://scripts/entity.gd"
+"path": "res://scripts/mobs/entity.gd"
 }, {
 "base": "Node",
 "class": "Generator2D",
 "language": "GDScript",
 "path": "res://scripts/level/level_generator.gd"
+}, {
+"base": "Control",
+"class": "Inventory",
+"language": "GDScript",
+"path": "res://scripts/inventory.gd"
+}, {
+"base": "Control",
+"class": "Item",
+"language": "GDScript",
+"path": "res://scripts/items/item.gd"
 }, {
 "base": "AStar2D",
 "class": "PathFinding2D",
@@ -74,6 +84,8 @@ _global_script_class_icons={
 "Enemy2D": "",
 "Entity2D": "",
 "Generator2D": "",
+"Inventory": "",
+"Item": "",
 "PathFinding2D": "",
 "Queue": "",
 "ShadowCasting2D": "",
@@ -100,8 +112,8 @@ Resources="*res://scripts/resources.gd"
 window/size/width=160
 window/size/height=120
 window/size/resizable=false
-window/size/test_width=640
-window/size/test_height=480
+window/size/test_width=1280
+window/size/test_height=960
 window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
@@ -129,7 +141,7 @@ ui_select={
 "deadzone": 0.5,
 "events": [  ]
 }
-ui_pick={
+ui_pickup={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
@@ -177,6 +189,11 @@ ui_space={
 ui_read={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_inventory={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777218,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

@@ -5,17 +5,20 @@ func _ready():
 		BEHAVIOUR_TYPE.SPAWNER
 	]
 	attack_range = 2
-	damage = 1
+	melee_damage = 1
 
 func handle_spawning(data: Dictionary) -> void:
 	if nearby_free_cells.size() != 0:
 		for cell in nearby_free_cells:
 			var instance = Resources.debug_maggot.instance()
-			instance.add_to_group("ACTIVE")
-			_level.spawn_enemy(position / grid_size, instance)
-			Events.emit_signal("enemy_spawned", cell * grid_size)
-			yield(instance.play_move_animation(Vector2.ZERO, cell * grid_size), 'completed')
-		process_death()
+			yield(minion_spawn_and_move(
+				instance,
+				position,
+				cell * grid_size
+				), 
+			"completed"
+			)
+		handle_death()
 	end_turn()
 
 #func handle_ranged_attack(data:Dictionary) -> void:

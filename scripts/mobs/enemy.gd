@@ -57,7 +57,7 @@ func target_is_blocked(self_pos: Vector2, target_pos: Vector2) -> bool:
 	
 	if _raycast.is_colliding():
 		var collider = _raycast.get_collider()
-		if collider.is_in_group("PLAYER"):
+		if collider == target:
 			return false
 	return true
 	
@@ -154,7 +154,7 @@ func handle_idle(data:Dictionary) -> void:
 func handle_movement(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
-	Events.emit_signal("enemy_moved", start, finish)
+	
 	set_sprite_direction(start, finish)
 	
 	if is_path_hidden(start / grid_size, finish / grid_size):
@@ -162,14 +162,24 @@ func handle_movement(data:Dictionary) -> void:
 	else:
 		yield(play_move_animation(start, finish), 'completed')
 	
+	post_handle_movement({
+		"prev_pos": start / grid_size,
+		"new_pos": finish / grid_size,
+	})
 	end_turn()
+	
+func post_handle_movement(data:Dictionary) -> void:
+	_level.set_pathfinding_points(
+		[data.new_pos],
+		[data.prev_pos]
+	)
 
 func handle_melee_attack(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
 	var target = data.target
 	set_sprite_direction(start, finish)
-	target.receive_damage(damage)
+	target.receive_damage(melee_damage)
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
@@ -178,12 +188,21 @@ func handle_ranged_attack(data:Dictionary) -> void:
 	var finish = data.finish
 	var target = data.target
 	set_sprite_direction(start, finish)
-	target.receive_damage(damage)
+	target.receive_damage(ranged_damage)
 	yield(play_ranged_animation(start, finish), 'completed')
 	end_turn()
 
 func handle_spawning(data:Dictionary) -> void:
 	end_turn()
+	
+func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vector2) -> void:
+	instance.add_to_group("ACTIVE")
+	_level.spawn_enemy(start / grid_size, instance)
+	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
+	post_handle_movement({
+		"prev_pos": start / grid_size,
+		"new_pos": finish / grid_size,
+	})
 	
 func _on_level_fog_updated(cells:Array) -> void:
 	if cells.has(self.position / grid_size) && !(self.is_in_group("ACTIVE")):

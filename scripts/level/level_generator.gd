@@ -296,7 +296,6 @@ func generator_clear_level() -> void:
 	pass
 
 func furnisher_place_object(size:Vector2, max_count:int) -> Array:
-#	randomize()
 	var result = []
 	
 	for i in (randi() % max_count):

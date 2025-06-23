@@ -36,16 +36,11 @@ var line_width = 1
 
 func _ready():
 	randomize()
-	Events.connect("enemy_died", self, "_on_enemy_death")
-	Events.connect("enemy_spawned", self, "_on_enemy_spawned")
-	Events.connect("enemy_moved", self, "_on_enemy_moved")
 	Events.connect("player_moved", self, "_on_player_moved")
-	Events.connect("level_door_open", self, "_on_level_door_open")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
-	add_player()
+	add_player_instance()
 	generate_level()
-	add_enemies()
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
@@ -110,32 +105,84 @@ func generate_level():
 		_tree
 	)
 	
+	populate_level()
+	
 	Events.emit_signal(
 		"level_generation_complete", 
 		_tilemap_logic.map_to_world(_generator.generator_get_entrance())
 	)
 
-func add_player():
+func populate_level():
+	clear_tilemap_children(_tilemap_logic)
+	add_enemies({
+		"Grunt": 75,
+		"Bloater": 25,
+		"Colony": 15
+	}, 1, 1)
+	add_items({
+		"Medkit": 100
+	}, 3, 5)
+
+func add_player_instance() -> void:
 	var player = Resources.debug_player.instance()
 	player.set_position(Vector2(0, 0))
 	_tilemap_logic.add_child(player)
 
-func add_enemies():
-	var free_cells = _tilemap_logic.get_used_cells_by_id(TILES.FLOOR)
-	for idx in range(3):
+func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int) -> void:
+	var free_cells = get_free_cells()
+	var enemy_list_size = enemy_list.size()
+	var enemies_count = rand_range(min_count, max_count)
+	var enemies_added = 0
+	
+	while enemies_added < enemies_count and free_cells.size() > 0:
+		
 		var cell = free_cells.pick_random()
-		free_cells.erase(cell)
+		var enemy = enemy_list.keys()[randi() % enemy_list_size]
+			
+		if get_spawn_chance(enemy_list.get(enemy)):
+			
+			var enemy_res = load("res://mobs/%s.tscn" % enemy)
+			var enemy_instance = enemy_res.instance()
+			
+			spawn_enemy(cell, enemy_instance)
+			free_cells.erase(cell)
+			enemies_added += 1
+
+
+func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
+	var free_cells = get_free_cells()
+	var item_list_size = item_list.size()
+	var items_count = rand_range(min_count, max_count)
+	var items_added = 0
+	
+	while items_added < items_count and free_cells.size() > 0:
 		
-		var enemy = Resources.debug_grunt.instance()
-		enemy.set_position(_tilemap_logic.map_to_world(cell))
-		_tilemap_logic.add_child(enemy)
-		_pathfinding.disable_points([
-			_tilemap_logic.world_to_map(cell * 8)
-		])
-		
+		var cell = free_cells.pick_random()
+		var item = item_list.keys()[randi() % item_list_size]
+			
+		if get_spawn_chance(item_list.get(item)):
+			
+			var item_res = load("res://items/%s.tscn" % item)
+			var item_instance = item_res.instance()
+			
+			spawn_item(cell, item_instance)
+			free_cells.erase(cell)
+			items_added += 1
+	
 func spawn_enemy(pos:Vector2, enemy:KinematicBody2D) -> void:
 	enemy.set_position(_tilemap_logic.map_to_world(pos))
 	_tilemap_logic.add_child(enemy)
+	_pathfinding.disable_points([
+		_tilemap_logic.world_to_map(pos * 8)
+	])
+	update()
+	
+func spawn_item(pos:Vector2, item:Item) -> void:
+	item.set_position(_tilemap_logic.map_to_world(pos))
+	_tilemap_logic.add_child(item)
+
+func get_free_cells() -> Array:
+	return _tilemap_logic.get_used_cells_by_id(TILES.FLOOR)
 
 func get_tile_position_name(pos:Vector2) -> String:
 	var pos_tilemap = _tilemap_logic.world_to_map(pos)
@@ -147,14 +194,16 @@ func tilemap_get_cells_in_array(tilemap:TileMap, ids:Array) -> Array:
 		cells.append_array(tilemap.get_used_cells_by_id(id))
 	return cells
 
-func _on_level_door_open(entity_pos:Vector2, door_pos:Vector2, distance:int) -> void:
+func open_door(entity_pos:Vector2, door_pos:Vector2, distance:int) -> void:
 	var entity_pos_tilemap = _tilemap_logic.world_to_map(entity_pos)
 	var door_pos_tilemap = _tilemap_logic.world_to_map(door_pos)
 	
 	_tilemap_logic.set_cellv(door_pos_tilemap, TILES.FLOOR)
 	_decorator.update_decoration('TILE_DOOR_OPEN', [door_pos_tilemap])
 	_pathfinding.enable_points([door_pos_tilemap])
-	_shadowcasting.update(entity_pos_tilemap, distance)
+	var cells = _shadowcasting.update(entity_pos_tilemap, distance)
+	Events.emit_signal("level_fog_updated", cells)
+	update()
 	
 func find_path(start:Vector2, end:Vector2) -> Array:
 	return _pathfinding.get_path(
@@ -167,32 +216,23 @@ func is_fog_cell(cell:Vector2) -> bool:
 	
 func _on_player_moved(pos:Vector2, distance:int) -> void:
 	var pos_tilemap = _tilemap_logic.world_to_map(pos)
-#	print("Player moved: ", pos_tilemap, " > ", distance)
 	var cells = _shadowcasting.update(pos_tilemap, distance)
 	Events.emit_signal("level_fog_updated", cells)
 
-func _on_enemy_moved(prev_pos:Vector2, new_pos:Vector2) -> void:
-	_pathfinding.disable_points([
-		_tilemap_logic.world_to_map(new_pos)
-	])
-	_pathfinding.enable_points([
-		_tilemap_logic.world_to_map(prev_pos)
-	])
-	update()
-	
-func _on_enemy_spawned(pos:Vector2) -> void:
-	_pathfinding.disable_points([
-		_tilemap_logic.world_to_map(pos)
-	])
-	update()
-
-func _on_enemy_death(node:Node2D, pos:Vector2) -> void:
-	_pathfinding.enable_points([
-		_tilemap_logic.world_to_map(pos)
-	])
+func set_pathfinding_points(to_disable:Array, to_enable:Array) -> void:
+	_pathfinding.disable_points(to_disable)
+	_pathfinding.enable_points(to_enable)
 	update()
 
 func _on_end_turn(node:Node) -> void:
 	print("----------------------------------")
 	print("Turn Ended By: ", node)
 	_queue.process(_tree, node)
+
+func get_spawn_chance(percentage:int) -> bool:
+  return percentage > 0 and randi() % 100 < percentage
+
+func clear_tilemap_children(tilemap:TileMap) -> void:
+	for child in tilemap.get_children():
+		if not child.is_in_group("PLAYER"):
+			child.queue_free()
