@@ -11,6 +11,10 @@ func _input(event):
 			_inventory.switch_selected_item(-1)
 		if Input.is_action_just_pressed("ui_right"): 
 			_inventory.switch_selected_item(1)
+		if Input.is_action_just_pressed("ui_pickup"):
+			_state_machine.change_state('ACTIVE')
+			var action = _inventory.use_selected_item()
+			if !action: _state_machine.change_state('IDLE')
 		if Input.is_action_just_pressed("ui_inventory"):
 			_inventory.reset_state()
 			_state_machine.change_state('IDLE')

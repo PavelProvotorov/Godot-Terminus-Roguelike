@@ -85,6 +85,10 @@ func receive_damage(damage:int) -> void:
 		handle_death()
 	else:
 		_text_animations.display_damage_number(damage, position, false)
+		
+func restore_health(heal:int) -> void:
+	health += heal
+	_text_animations.display_heal_number(heal, position)
 
 func handle_death() -> void:
 	play_hit_animation()

@@ -134,7 +134,7 @@ func handle_item_pickup() -> bool:
 		print(collider)
 		
 		if collider.is_in_group("ITEM"):
-			_inventory.pickup_item(collider.get_parent())
+			_inventory.pickup_item(collider.get_parent(), self)
 			end_turn()
 			return true
 	return false

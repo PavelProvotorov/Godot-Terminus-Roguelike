@@ -4,6 +4,7 @@ class_name TextAnimations2D
 const tween_speed:int = 2
 const damage_color:Color = Color.lightcoral
 const critical_color:Color = Color.crimson
+const heal_color:Color = Color.greenyellow
 const float_vector:Vector2 = Vector2(0, -10)
 const grid_size = 8
 var parent
@@ -18,6 +19,16 @@ func display_damage_number(value:int, pos:Vector2, critical:bool = false):
 		label.set("custom_colors/font_color", critical_color)
 	else:
 		label.set("custom_colors/font_color", damage_color)
+	label.set_position(pos + Vector2(0, -4))
+	label.text = str(value)
+	parent.add_child(instance)
+	yield(animation_float_up(float_vector, instance, label), 'completed')
+	instance.queue_free()
+	
+func display_heal_number(value:int, pos:Vector2) -> void:
+	var instance = Resources.text_label.instance()
+	var label = instance.get_node('Label')
+	label.set("custom_colors/font_color", heal_color)
 	label.set_position(pos + Vector2(0, -4))
 	label.text = str(value)
 	parent.add_child(instance)
