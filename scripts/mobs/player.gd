@@ -5,7 +5,6 @@ onready var _state_machine = $States
 onready var _camera = $Camera2D
 onready var _pickup = $Pickup
 
-const visibility = 4
 const ANIMATION = {
 	IDLE = 'IDLE',
 	RANGED = 'RANGED'
@@ -23,8 +22,11 @@ func _ready():
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
+	visibility = 4
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
+	
+	add_buff('speed')
 
 func set_camera_limits() -> void:
 	var rect = _level.level_rect
@@ -96,14 +98,14 @@ func process_tilemap_collision(pos:Vector2) -> void:
 			pass
 
 func handle_idle(data:Dictionary) -> void:
-	Events.emit_signal("player_moved", self.position, visibility)
+	update_fog()
 	end_turn()
 
 func handle_movement(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
 	yield(play_move_animation(start, finish), 'completed')
-	Events.emit_signal("player_moved", self.position, visibility)
+	update_fog()
 	end_turn()
 
 func handle_melee_attack(data:Dictionary) -> void:
@@ -131,7 +133,6 @@ func handle_item_pickup() -> bool:
 	if _pickup.is_colliding():
 		
 		var collider = _pickup.get_collider()
-		print(collider)
 		
 		if collider.is_in_group("ITEM"):
 			_inventory.pickup_item(collider.get_parent(), self)
@@ -142,7 +143,7 @@ func handle_item_pickup() -> bool:
 func _on_level_generation_complete(entrance:Vector2) -> void:
 	self.position = entrance
 	_camera.reset_smoothing()
-	Events.emit_signal("player_moved", self.position, visibility)
+	update_fog()
 
 func _on_start_turn() -> void:
 	_state_machine.change_state('IDLE')

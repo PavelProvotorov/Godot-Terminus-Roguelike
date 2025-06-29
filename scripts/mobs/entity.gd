@@ -5,6 +5,7 @@ onready var _level = get_tree().get_first_node_in_group("LEVEL")
 onready var _text_animations = TextAnimations2D.new(_level)
 onready var _tween_animations = TweenAnimation2D.new(self)
 onready var _sprite_animations = SpriteAnimations2D.new(self)
+onready var _buff_manager:BuffManager = $BuffManager
 onready var _hit_flash = $HitFlashAnimation
 onready var _sprite = $AnimatedSprite
 onready var _raycast = $RayCast2D
@@ -20,7 +21,13 @@ const grid_size:int = 8
 var attack_range:int = 1
 var melee_damage:int = 1
 var ranged_damage:int = 1
+var visibility:int = 2
 var health:int = 1
+var turn_count:int = 0
+var speed:int = 1
+
+func _ready():
+	add_to_group("ENTITY")
 
 func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	var direction = (finish - start)/grid_size
@@ -79,12 +86,13 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 	
 func receive_damage(damage:int) -> void:
 	play_hit_animation()
-	health -= damage
+	var resisted_damage:int = max(0, _buff_manager.get_resisted_damage(damage))
+	health -= resisted_damage
 	if health <= 0:
-		_text_animations.display_damage_number(damage, position, true)
+		_text_animations.display_damage_number(resisted_damage, position, true)
 		handle_death()
 	else:
-		_text_animations.display_damage_number(damage, position, false)
+		_text_animations.display_damage_number(resisted_damage, position, false)
 		
 func restore_health(heal:int) -> void:
 	health += heal
@@ -95,6 +103,28 @@ func handle_death() -> void:
 	_level.set_pathfinding_points([], [self.position / grid_size])
 	self.queue_free()
 	
-func end_turn():
+func add_buff(buff:String) -> bool:
+	return _buff_manager.add_buff(buff)
+	
+func update_fog() -> void:
+	_level.update_level_fog(self.position, visibility)
+	
+func end_turn() -> bool:
+	print("USED TURN")
+	turn_count += 1
+#	print("Turn count is:", turn_count)
+#	print("Modified speed is: ", _buff_manager.get_modified_speed(speed))
+#	print("Is extra turn valid: ", turn_count <= _buff_manager.get_modified_speed(speed))
+	if  turn_count < _buff_manager.get_modified_speed(speed):
+		print("EXTRA TURN")
+		_on_start_turn()
+		return false
+		
 	print("ENDING TURN")
+	turn_count = 0
+	_buff_manager.tick_buffs()
 	Events.emit_signal("end_turn", self)
+	return true
+
+func _on_start_turn():
+	pass

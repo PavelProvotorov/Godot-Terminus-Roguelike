@@ -8,14 +8,11 @@ var max_item_count:int = 6
 var min_item_count:int = 0
 var selected_item:Item = null
 
-func _ready():
-	pass
-
 func pickup_item(item:Item, owner:Node) -> void:
 	if stored_items.size() < max_item_count:
 		item.get_parent().remove_child(item)
 		item.rect_position = Vector2.ZERO
-		item.set_owner(owner)
+		item.set_item_owner(owner)
 		_grid.add_child(item)
 		stored_items.append(item)
 

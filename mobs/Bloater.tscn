@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/animations/animation_bloater.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://scripts/mobs/bloater.gd" type="Script" id=2]
 [ext_resource path="res://resources/shaders/shader_hit_flash.tres" type="Shader" id=3]
+[ext_resource path="res://scripts/buffs/buff_manager.gd" type="Script" id=4]
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
@@ -73,3 +74,6 @@ cast_to = Vector2( 0, 8 )
 [node name="HitFlashAnimation" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 4 )
 anims/hit = SubResource( 5 )
+
+[node name="BuffManager" type="Node2D" parent="."]
+script = ExtResource( 4 )

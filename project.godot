@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Buff",
+"language": "GDScript",
+"path": "res://scripts/buffs/buff.gd"
+}, {
+"base": "Node2D",
+"class": "BuffManager",
+"language": "GDScript",
+"path": "res://scripts/buffs/buff_manager.gd"
+}, {
 "base": "Node",
 "class": "Decorator2D",
 "language": "GDScript",
@@ -38,6 +48,11 @@ _global_script_classes=[ {
 "class": "Item",
 "language": "GDScript",
 "path": "res://scripts/items/item.gd"
+}, {
+"base": "Node2D",
+"class": "Level",
+"language": "GDScript",
+"path": "res://scripts/level/level.gd"
 }, {
 "base": "AStar2D",
 "class": "PathFinding2D",
@@ -80,12 +95,15 @@ _global_script_classes=[ {
 "path": "res://scripts/tween_animations.gd"
 } ]
 _global_script_class_icons={
+"Buff": "",
+"BuffManager": "",
 "Decorator2D": "",
 "Enemy2D": "",
 "Entity2D": "",
 "Generator2D": "",
 "Inventory": "",
 "Item": "",
+"Level": "",
 "PathFinding2D": "",
 "Queue": "",
 "ShadowCasting2D": "",

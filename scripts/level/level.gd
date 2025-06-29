@@ -1,4 +1,5 @@
 extends Node2D
+class_name Level
 
 onready var _tree:SceneTree = get_tree()
 onready var _tilemap_logic:TileMap = $Logic
@@ -118,9 +119,12 @@ func populate_level():
 		"Grunt": 75,
 		"Bloater": 25,
 		"Colony": 15
-	}, 1, 1)
+	}, 1, 3)
 	add_items({
-		"Medkit": 100
+		"Medkit": 0,
+		"Teleporter": 0,
+		"ShieldGenerator": 0,
+		"Adrenalin": 100,
 	}, 3, 5)
 
 func add_player_instance() -> void:
@@ -129,7 +133,7 @@ func add_player_instance() -> void:
 	_tilemap_logic.add_child(player)
 
 func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int) -> void:
-	var free_cells = get_free_cells()
+	var free_cells = get_floor_cells()
 	var enemy_list_size = enemy_list.size()
 	var enemies_count = rand_range(min_count, max_count)
 	var enemies_added = 0
@@ -150,7 +154,7 @@ func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int) -> void:
 
 
 func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
-	var free_cells = get_free_cells()
+	var free_cells = get_floor_cells()
 	var item_list_size = item_list.size()
 	var items_count = rand_range(min_count, max_count)
 	var items_added = 0
@@ -163,7 +167,7 @@ func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
 		if get_spawn_chance(item_list.get(item)):
 			
 			var item_res = load("res://items/%s.tscn" % item)
-			var item_instance = item_res.instance()
+			var item_instance:Item = item_res.instance()
 			
 			spawn_item(cell, item_instance)
 			free_cells.erase(cell)
@@ -181,8 +185,21 @@ func spawn_item(pos:Vector2, item:Item) -> void:
 	item.set_position(_tilemap_logic.map_to_world(pos))
 	_tilemap_logic.add_child(item)
 
-func get_free_cells() -> Array:
+func get_floor_cells() -> Array:
 	return _tilemap_logic.get_used_cells_by_id(TILES.FLOOR)
+	
+func get_free_cells() -> Array:
+	var floor_cells = get_floor_cells()
+	var entities = get_tree().get_nodes_in_group("ENTITY")
+	var entities_positions = []
+	for entity in entities:
+		entities_positions.append(entity.position / 8)
+	return get_array_difference(floor_cells, entities_positions)
+	
+func get_hidden_free_cells() -> Array:
+	var free_cells = get_free_cells()
+	
+	return []
 
 func get_tile_position_name(pos:Vector2) -> String:
 	var pos_tilemap = _tilemap_logic.world_to_map(pos)
@@ -214,7 +231,7 @@ func find_path(start:Vector2, end:Vector2) -> Array:
 func is_fog_cell(cell:Vector2) -> bool:
 	return _tilemap_fog.get_cellv(cell) == TILES.FOG
 	
-func _on_player_moved(pos:Vector2, distance:int) -> void:
+func update_level_fog(pos:Vector2, distance:int) -> void:
 	var pos_tilemap = _tilemap_logic.world_to_map(pos)
 	var cells = _shadowcasting.update(pos_tilemap, distance)
 	Events.emit_signal("level_fog_updated", cells)
@@ -236,3 +253,10 @@ func clear_tilemap_children(tilemap:TileMap) -> void:
 	for child in tilemap.get_children():
 		if not child.is_in_group("PLAYER"):
 			child.queue_free()
+			
+func get_array_difference(array_1:Array, array_2:Array) -> Array:
+	var output:Array = []
+	for element in array_1:
+		if not (element in array_2):
+			output.append(element)
+	return output
