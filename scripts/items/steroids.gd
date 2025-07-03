@@ -4,7 +4,7 @@ func _ready():
 	set_item_consumable()
 
 func use() -> bool:
-	var buff_added = _owner.add_buff('shield')
+	var buff_added = _owner.add_buff('strength')
 	if buff_added:
 		_owner.end_turn()
 		remove_item()

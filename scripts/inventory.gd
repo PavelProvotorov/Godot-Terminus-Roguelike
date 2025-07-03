@@ -8,6 +8,15 @@ var max_item_count:int = 6
 var min_item_count:int = 0
 var selected_item:Item = null
 
+func _ready():
+	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
+
+func pickup_item_and_use(item:Item, owner:Node) -> bool:
+	item.set_item_owner(owner)
+	if item.use():
+		return true
+	return false
+
 func pickup_item(item:Item, owner:Node) -> void:
 	if stored_items.size() < max_item_count:
 		item.get_parent().remove_child(item)
@@ -55,11 +64,11 @@ func reset_state() -> void:
 func use_selected_item() -> bool:
 	if selected_item != null:
 		if selected_item.use():
-			stored_items.erase(selected_item)
-			selected_item.queue_free()
-			selected_item = null
 			return true
 	return false
 
 func drop_item(item:Item) -> void:
 	stored_items.erase(item)
+	
+func _on_child_exiting_tree(child:Node) -> void:
+	stored_items.erase(child)

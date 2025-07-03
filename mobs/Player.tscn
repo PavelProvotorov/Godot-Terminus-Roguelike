@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://resources/animations/animation_player.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://scripts/mobs/player.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://resources/shaders/shader_hit_flash.tres" type="Shader" id=6]
 [ext_resource path="res://scripts/states/state_inventory.gd" type="Script" id=7]
 [ext_resource path="res://scripts/buffs/buff_manager.gd" type="Script" id=8]
+[ext_resource path="res://scripts/states/state_throw.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
@@ -98,3 +99,6 @@ script = ExtResource( 5 )
 
 [node name="Inventory" type="Node" parent="States"]
 script = ExtResource( 7 )
+
+[node name="Throw" type="Node" parent="States"]
+script = ExtResource( 9 )

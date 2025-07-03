@@ -6,7 +6,8 @@ onready var _text_animations:TextAnimations2D = TextAnimations2D.new(_level)
 
 onready var BUFF_LIST:Dictionary = {
 	'shield': load("res://buffs/BuffShield.tscn"),
-	'speed': load("res://buffs/BuffSpeed.tscn")
+	'speed': load("res://buffs/BuffSpeed.tscn"),
+	'strength': load("res://buffs/BuffStrength.tscn")
 }
 
 func add_buff(buff:String) -> bool:

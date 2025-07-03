@@ -8,8 +8,10 @@ func _ready():
 	melee_damage = 1
 
 func handle_spawning(data: Dictionary) -> void:
-	if nearby_free_cells.size() != 0:
-		for cell in nearby_free_cells:
+	var nearby_cells = get_nearby_cells()
+	
+	if nearby_cells.size() != 0:
+		for cell in nearby_cells:
 			var instance = Resources.debug_maggot.instance()
 			yield(minion_spawn_and_move(
 				instance,

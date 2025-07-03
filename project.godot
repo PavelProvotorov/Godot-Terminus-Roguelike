@@ -59,6 +59,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/level/level_pathfinding.gd"
 }, {
+"base": "Entity2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://scripts/mobs/player.gd"
+}, {
 "base": "Node",
 "class": "Queue",
 "language": "GDScript",
@@ -105,6 +110,7 @@ _global_script_class_icons={
 "Item": "",
 "Level": "",
 "PathFinding2D": "",
+"Player": "",
 "Queue": "",
 "ShadowCasting2D": "",
 "SpriteAnimations2D": "",

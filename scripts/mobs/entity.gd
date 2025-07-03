@@ -25,6 +25,7 @@ var visibility:int = 2
 var health:int = 1
 var turn_count:int = 0
 var speed:int = 1
+var ammo:int = 0
 
 func _ready():
 	add_to_group("ENTITY")
@@ -33,32 +34,17 @@ func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	var direction = (finish - start)/grid_size
 	if direction == Vector2.LEFT: _sprite.flip_h = true
 	if direction == Vector2.RIGHT: _sprite.flip_h = false
-
-func get_nearby_entities() -> Array:
-	var entities: Array = []
-	for direction in DIRECTIONS:
-		_raycast.cast_to = direction * grid_size
-		_raycast.force_raycast_update()
-		
-		if _raycast.is_colliding():
-			var collider = _raycast.get_collider()
-			if collider.is_in_group("ENEMY"):
-				entities.append(collider)
-	return entities
 	
-func get_nearby_free_cells() -> Array:
-	var cells: Array = []
-	var pos: Vector2 = self.position
+func get_nearby_cells() -> Array:
+	var nearby_cells:Array = []
+	var free_cells = _level.get_free_cells() 
 	
 	for direction in DIRECTIONS:
-		var cell_to_check = direction * grid_size
-		_raycast.cast_to = cell_to_check
-		_raycast.force_raycast_update()
-		
-		if not _raycast.is_colliding():
-			cells.append((pos + cell_to_check) / grid_size)
+		var cell = (position / grid_size) + direction
+		if free_cells.has(cell):
+			nearby_cells.append(cell)
 			
-	return cells
+	return nearby_cells
 
 func is_path_hidden(start:Vector2, finish:Vector2) -> bool:
 	return _level.is_fog_cell(start) && _level.is_fog_cell(finish)
@@ -97,6 +83,10 @@ func receive_damage(damage:int) -> void:
 func restore_health(heal:int) -> void:
 	health += heal
 	_text_animations.display_heal_number(heal, position)
+	
+func recharge_ammo(recharge:int) -> void:
+	ammo += recharge
+	_text_animations.display_recharge_number(recharge, position)
 
 func handle_death() -> void:
 	play_hit_animation()
@@ -112,9 +102,7 @@ func update_fog() -> void:
 func end_turn() -> bool:
 	print("USED TURN")
 	turn_count += 1
-#	print("Turn count is:", turn_count)
-#	print("Modified speed is: ", _buff_manager.get_modified_speed(speed))
-#	print("Is extra turn valid: ", turn_count <= _buff_manager.get_modified_speed(speed))
+
 	if  turn_count < _buff_manager.get_modified_speed(speed):
 		print("EXTRA TURN")
 		_on_start_turn()
@@ -125,6 +113,9 @@ func end_turn() -> bool:
 	_buff_manager.tick_buffs()
 	Events.emit_signal("end_turn", self)
 	return true
+
+func get_attack_range():
+	return attack_range
 
 func _on_start_turn():
 	pass

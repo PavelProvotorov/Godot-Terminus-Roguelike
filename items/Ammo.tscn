@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://assets/items/teleporter.png" type="Texture" id=1]
-[ext_resource path="res://scripts/items/teleporter.gd" type="Script" id=2]
+[ext_resource path="res://assets/items/ammo.png" type="Texture" id=1]
+[ext_resource path="res://scripts/items/ammo.gd" type="Script" id=2]
 [ext_resource path="res://resources/shaders/shader_hit_flash.tres" type="Shader" id=3]
 
 [sub_resource type="ShaderMaterial" id=2]
@@ -13,7 +13,7 @@ shader_param/hit_flash_enabled = null
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
 
-[node name="Teleporter" type="Control"]
+[node name="Ammo" type="Control"]
 material = SubResource( 2 )
 anchor_right = 0.05
 anchor_bottom = 0.067

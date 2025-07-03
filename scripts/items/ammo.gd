@@ -1,10 +1,9 @@
 extends Item
 
 func _ready():
-	set_item_consumable()
+	set_item_instant()
 
 func use() -> bool:
-	_owner.restore_health(3)
-	_owner.end_turn()
+	_owner.recharge_ammo(5)
 	remove_item()
 	return true

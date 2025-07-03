@@ -24,10 +24,12 @@ func _input(event):
 		if Input.is_action_just_pressed("ui_space"):
 			_state_machine.change_state('IDLE')
 
-func _on_state_changed(state: String) -> void:
+func _on_state_changed(state:String, data:Dictionary) -> void:
 	if state == self.name.to_upper():
 		self.set_process_input(true)
 		_player.set_ranged_animation()
-		_player.check_targets_in_range()
+		_player.check_targets_in_range(
+			_player.get_attack_range()
+		)
 	else:
 		self.set_process_input(false)

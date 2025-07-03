@@ -8,7 +8,7 @@ const GRID_SIZE = 8
 func _ready():
 	_state_machine.connect("state_changed", self, "_on_state_changed")
 
-func _on_state_changed(state: String) -> void:
+func _on_state_changed(state: String, data: Dictionary) -> void:
 	if state == self.name.to_upper():
 		self.set_process_input(true)
 	else:

@@ -35,7 +35,7 @@ func _input(event):
 		if Input.is_action_just_pressed("ui_inventory"):
 			_state_machine.change_state('INVENTORY')
 
-func _on_state_changed(state: String) -> void:
+func _on_state_changed(state: String, data: Dictionary) -> void:
 	if state == self.name.to_upper():
 		self.set_process_input(true)
 		get_tree().call_group("ENEMY", "remove_target_animation")

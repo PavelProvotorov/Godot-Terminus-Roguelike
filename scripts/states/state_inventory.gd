@@ -15,13 +15,14 @@ func _input(event):
 			_state_machine.change_state('ACTIVE')
 			var action = _inventory.use_selected_item()
 			if !action: 
-				_inventory.reset_state()
 				_state_machine.change_state('IDLE')
+			print("resetting inventory state")
+			_inventory.reset_state()
 		if Input.is_action_just_pressed("ui_inventory"):
 			_inventory.reset_state()
 			_state_machine.change_state('IDLE')
 
-func _on_state_changed(state: String) -> void:
+func _on_state_changed(state:String, data:Dictionary) -> void:
 	if state == self.name.to_upper():
 		self.set_process_input(true)
 		_inventory.reset_state()

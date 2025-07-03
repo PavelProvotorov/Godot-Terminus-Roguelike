@@ -31,7 +31,7 @@ onready var BEHAVIOUR_TYPE = {
 	"SPAWNER": {
 		"check": funcref(self, "spawner_behaviour"),
 		"handle": funcref(self, "handle_spawning"),
-		"data": funcref(self, "get_spawner_data"),
+		"data": {},
 	},
 	"MOVE":{
 		"check": funcref(self, "move_behaviour"),
@@ -103,11 +103,6 @@ func get_movement_data() -> Dictionary:
 		"start": self.position,
 		"finish": path[1] * grid_size,
 	}
-	
-func get_spawner_data() -> Dictionary:
-	return {
-		"cells": nearby_free_cells
-	}
 
 func melee_behaviour() -> bool:
 	if path.size() == 2 and target_in_sight(self.position, target.position):
@@ -137,7 +132,7 @@ func ambush_behaviour() -> bool:
 	return false
 	
 func spawner_behaviour() -> bool:
-	if nearby_free_cells.size() >= 1:
+	if get_nearby_cells().size() >= 1:
 		print("SPAWNER")
 		return true
 	return false
@@ -179,7 +174,7 @@ func handle_melee_attack(data:Dictionary) -> void:
 	var finish = data.finish
 	var target = data.target
 	set_sprite_direction(start, finish)
-	target.receive_damage(melee_damage)
+	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_damage))
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
@@ -211,5 +206,4 @@ func _on_level_fog_updated(cells:Array) -> void:
 
 func _on_start_turn() -> void:
 	path = (_level.find_path(self.position, target.position))
-	if behaviours.has(BEHAVIOUR_TYPE.SPAWNER): nearby_free_cells = get_nearby_free_cells()
 	process_behaviours()

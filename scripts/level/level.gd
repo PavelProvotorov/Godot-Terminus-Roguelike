@@ -116,16 +116,19 @@ func generate_level():
 func populate_level():
 	clear_tilemap_children(_tilemap_logic)
 	add_enemies({
-		"Grunt": 75,
-		"Bloater": 25,
-		"Colony": 15
-	}, 1, 3)
+		"Grunt": 0,
+		"Bloater": 0,
+		"Colony": 100
+	}, 5, 10)
 	add_items({
+		"Ammo": 0,
+		"Grenade": 0,
 		"Medkit": 0,
-		"Teleporter": 0,
+		"Teleporter": 100,
 		"ShieldGenerator": 0,
-		"Adrenalin": 100,
-	}, 3, 5)
+		"Adrenalin": 0,
+		"Steroids": 0,
+	}, 5, 10)
 
 func add_player_instance() -> void:
 	var player = Resources.debug_player.instance()
