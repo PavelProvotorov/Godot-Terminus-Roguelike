@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/maggot.png-bd1af2226a79738caf3a985f35544d29.stex"
+path="res://.import/hydra.png-e8e80eacc15655a990273a9af75aaba3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maggot.png"
-dest_files=[ "res://.import/maggot.png-bd1af2226a79738caf3a985f35544d29.stex" ]
+source_file="res://assets/mobs/hydra.png"
+dest_files=[ "res://.import/hydra.png-e8e80eacc15655a990273a9af75aaba3.stex" ]
 
 [params]
 

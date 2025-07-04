@@ -165,8 +165,8 @@ func handle_movement(data:Dictionary) -> void:
 	
 func post_handle_movement(data:Dictionary) -> void:
 	_level.set_pathfinding_points(
-		[data.new_pos],
-		[data.prev_pos]
+		[data.get('new_pos', Vector2.ZERO)],
+		[data.get('prev_pos', Vector2.ZERO)]
 	)
 
 func handle_melee_attack(data:Dictionary) -> void:
@@ -195,7 +195,7 @@ func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vecto
 	_level.spawn_enemy(start / grid_size, instance)
 	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
 	post_handle_movement({
-		"prev_pos": start / grid_size,
+		"prev_pos": finish / grid_size,
 		"new_pos": finish / grid_size,
 	})
 	

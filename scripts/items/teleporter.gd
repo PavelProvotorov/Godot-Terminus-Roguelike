@@ -8,5 +8,5 @@ func use() -> bool:
 	_owner.position = cells.pick_random() * 8
 	_owner.update_fog()
 	_owner.end_turn()
-#	remove_item()
+	remove_item()
 	return true

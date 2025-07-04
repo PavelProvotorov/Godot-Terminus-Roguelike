@@ -38,8 +38,11 @@ func set_camera_limits() -> void:
 	_camera.limit_bottom = ((rect.end.y) * grid_size)
 	
 func check_targets_in_range(check_range:int) -> void:
+	
+	var visible_range = min(visibility, check_range)
+	
 	for direction in DIRECTIONS:
-		_raycast.cast_to = (direction * check_range) * grid_size
+		_raycast.cast_to = (direction * visible_range) * grid_size
 		_raycast.force_raycast_update()
 		
 		if _raycast.is_colliding():
@@ -48,7 +51,10 @@ func check_targets_in_range(check_range:int) -> void:
 				collider.add_target_animation()
 				
 func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) -> bool:
-	_raycast.cast_to = (direction * throw_range)
+	
+	var visible_range = min(visibility, throw_range)
+	
+	_raycast.cast_to = (direction * visible_range)
 	_raycast.force_raycast_update()
 	
 	if _raycast.is_colliding():
@@ -64,7 +70,10 @@ func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) ->
 	return false
 	
 func shoot_in_direction(direction: Vector2) -> bool:
-	_raycast.cast_to = (direction * attack_range)
+	
+	var visible_range = min(visibility, attack_range)
+	
+	_raycast.cast_to = (direction * visible_range)
 	_raycast.force_raycast_update()
 	
 	if _raycast.is_colliding():

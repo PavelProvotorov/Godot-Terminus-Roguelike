@@ -114,6 +114,9 @@ func end_turn() -> bool:
 	Events.emit_signal("end_turn", self)
 	return true
 
+func get_spawn_chance(percentage:int) -> bool:
+  return percentage > 0 and randi() % 100 < percentage
+
 func get_attack_range():
 	return attack_range
 

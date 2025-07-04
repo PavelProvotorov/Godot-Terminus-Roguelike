@@ -24,6 +24,11 @@ func _input(event):
 
 func _on_state_changed(state:String, data:Dictionary) -> void:
 	if state == self.name.to_upper():
+		
+		if _inventory.is_inventory_empty():
+			_state_machine.change_state('IDLE')
+			return
+		
 		self.set_process_input(true)
 		_inventory.reset_state()
 		_inventory.select_first_item()

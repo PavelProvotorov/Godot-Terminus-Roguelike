@@ -67,6 +67,9 @@ func use_selected_item() -> bool:
 			return true
 	return false
 
+func is_inventory_empty() -> bool:
+	return stored_items.size() <= 0
+
 func drop_item(item:Item) -> void:
 	stored_items.erase(item)
 	

@@ -21,6 +21,11 @@ onready var TILES = {
 	FOG = _tilemap_fog.tile_set.find_tile_by_name("TILE_FOG")
 	}
 
+onready var TILESET = {
+	DECO_1 = load("res://resources/tilesets/tileset_deco_1.tres"),
+	DECO_2 = load("res://resources/tilesets/tileset_deco_2.tres"),
+}
+
 onready var _queue:Queue
 var _shadowcasting:ShadowCasting2D
 var _pathfinding:PathFinding2D
@@ -40,8 +45,11 @@ func _ready():
 	Events.connect("player_moved", self, "_on_player_moved")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
+	set_tileset(TILESET.DECO_2)
+	
 	add_player_instance()
 	generate_level()
+	
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
@@ -59,6 +67,11 @@ func _draw():
 
 func _point_pos(id):
 	return offset + _pathfinding._astar.get_point_position(id) * scale_multiplier
+
+func set_tileset(tileset:TileSet) -> void:
+	_tilemap_decor.set_tileset(tileset)
+	_tilemap_debris.set_tileset(tileset)
+	_tilemap_base.set_tileset(tileset)
 
 func generate_level():
 	_generator = Generator2D.new(
@@ -118,17 +131,23 @@ func populate_level():
 	add_enemies({
 		"Grunt": 0,
 		"Bloater": 0,
-		"Colony": 100
-	}, 5, 10)
+		"Colony": 100,
+		"MindFlayer": 0,
+		"Hydra": 0,
+		"Abomination": 100,
+		"Parasite": 1,
+		"Insect": 1,
+		"Lurker": 1,
+	}, 5, 8)
 	add_items({
-		"Ammo": 0,
-		"Grenade": 0,
-		"Medkit": 0,
-		"Teleporter": 100,
-		"ShieldGenerator": 0,
-		"Adrenalin": 0,
-		"Steroids": 0,
-	}, 5, 10)
+		"Ammo": 5,
+		"Grenade": 5,
+		"Medkit": 5,
+		"Teleporter": 5,
+		"ShieldGenerator": 5,
+		"Adrenalin": 5,
+		"Steroids": 5,
+	}, 3, 5)
 
 func add_player_instance() -> void:
 	var player = Resources.debug_player.instance()
@@ -240,8 +259,8 @@ func update_level_fog(pos:Vector2, distance:int) -> void:
 	Events.emit_signal("level_fog_updated", cells)
 
 func set_pathfinding_points(to_disable:Array, to_enable:Array) -> void:
-	_pathfinding.disable_points(to_disable)
 	_pathfinding.enable_points(to_enable)
+	_pathfinding.disable_points(to_disable)
 	update()
 
 func _on_end_turn(node:Node) -> void:

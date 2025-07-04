@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bloater.png-9ab63d96fd960d77a4689e4a60a684eb.stex"
+path="res://.import/abomination.png-fb3608040430e7b216ba0a0efa312e6e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bloater.png"
-dest_files=[ "res://.import/bloater.png-9ab63d96fd960d77a4689e4a60a684eb.stex" ]
+source_file="res://assets/mobs/abomination.png"
+dest_files=[ "res://.import/abomination.png-fb3608040430e7b216ba0a0efa312e6e.stex" ]
 
 [params]
 

@@ -22,25 +22,3 @@ func handle_spawning(data: Dictionary) -> void:
 			)
 		handle_death()
 	end_turn()
-
-#func handle_ranged_attack(data:Dictionary) -> void:
-#	var start = data.start
-#	var finish = data.finish
-#	var target_pos = target.position
-#	set_sprite_direction(start, finish)
-#	yield(play_ranged_animation(start, finish), 'completed')
-#	Events.emit_signal("enemy_moved", self.position, target_pos)
-#	target.position = self.position
-#	self.position = target_pos
-#	end_turn()
-#
-#func handle_melee_attack(data:Dictionary) -> void:
-#	var start = data.start
-#	var finish = data.finish
-#	var target_pos = target.position
-#	set_sprite_direction(start, finish)
-#	yield(play_ranged_animation(start, finish), 'completed')
-#	Events.emit_signal("enemy_moved", self.position, target_pos)
-#	target.position = self.position
-#	self.position = target_pos
-#	end_turn()
