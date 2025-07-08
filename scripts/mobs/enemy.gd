@@ -6,6 +6,7 @@ onready var behaviours: Array = []
 onready var nearby_free_cells: Array = []
 onready var path: Array = []
 onready var spawn: bool = false
+onready var previous_position: Vector2 = position
 
 onready var BEHAVIOUR_TYPE = {
 	"IDLE": {
@@ -28,6 +29,11 @@ onready var BEHAVIOUR_TYPE = {
 		"handle": funcref(self, "handle_idle"),
 		"data": {},
 	},
+	"WANDER": {
+		"check": funcref(self, "wander_behaviour"),
+		"handle": funcref(self, "handle_wander_behaviour"),
+		"data": {},
+	},
 	"SPAWNER": {
 		"check": funcref(self, "spawner_behaviour"),
 		"handle": funcref(self, "handle_spawning"),
@@ -38,6 +44,10 @@ onready var BEHAVIOUR_TYPE = {
 		"handle": funcref(self, "handle_movement"),
 		"data": funcref(self, "get_movement_data"),
 	},
+}
+
+onready var LIFECYCLE = {
+	TURN_STARTED = funcref(self, "_turn_started_hook")
 }
 
 func _ready():
@@ -83,6 +93,9 @@ func process_behaviours() -> void:
 			return
 	print("SKIP")
 	end_turn()
+
+func call_lifecycle_hook(hook:FuncRef) -> void:
+	if hook is FuncRef: hook.call_func()
 
 func get_melee_data() -> Dictionary:
 	return {
@@ -137,6 +150,12 @@ func spawner_behaviour() -> bool:
 		return true
 	return false
 
+func wander_behaviour() -> bool:
+	if path.size() == 0 and is_in_group("WANDERING"):
+		print("WANDER")
+		return true
+	return false
+
 func idle_behaviour() -> bool:
 	if path.size() == 0:
 		print("IDLE")
@@ -164,6 +183,7 @@ func handle_movement(data:Dictionary) -> void:
 	end_turn()
 	
 func post_handle_movement(data:Dictionary) -> void:
+	previous_position = data.get('prev_pos', position)
 	_level.set_pathfinding_points(
 		[data.get('new_pos', Vector2.ZERO)],
 		[data.get('prev_pos', Vector2.ZERO)]
@@ -186,6 +206,27 @@ func handle_ranged_attack(data:Dictionary) -> void:
 	target.receive_damage(ranged_damage)
 	yield(play_ranged_animation(start, finish), 'completed')
 	end_turn()
+	
+func handle_wander_behaviour(data:Dictionary) -> void:
+	var nearby_cells:Array = get_nearby_cells()
+	nearby_cells.erase(previous_position / grid_size)
+	
+	if nearby_cells.size() > 0:
+		
+		var cell = nearby_cells.pick_random()
+		var start = position / grid_size
+		var finish = cell
+		
+		if is_path_hidden(start, finish):
+			self.position = finish * grid_size
+		else:
+			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
+		
+		post_handle_movement({
+			"prev_pos": start,
+			"new_pos": finish,
+		})
+	end_turn()
 
 func handle_spawning(data:Dictionary) -> void:
 	end_turn()
@@ -200,10 +241,21 @@ func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vecto
 	})
 	
 func _on_level_fog_updated(cells:Array) -> void:
-	if cells.has(self.position / grid_size) && !(self.is_in_group("ACTIVE")):
+	if cells.has(self.position / grid_size) && not (self.is_in_group("ACTIVE")):
 		self.add_to_group("ACTIVE")
-	pass
+	
+	if cells.has(self.position / grid_size) && (self.is_in_group("WANDERING")):
+		self.remove_from_group("WANDERING")
 
 func _on_start_turn() -> void:
 	path = (_level.find_path(self.position, target.position))
+	call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
+	print("Parent tick")
 	process_behaviours()
+	
+func setup():
+	if behaviours.has(BEHAVIOUR_TYPE.WANDER): add_to_group("WANDERING")
+
+
+func is_active():
+	return is_in_group('ACTIVE')

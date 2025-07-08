@@ -9,6 +9,7 @@ func _init(parent:KinematicBody2D) -> void:
 
 func animation_move_to(pos:Vector2, target:Node, property:String) -> void:
 	var tween:SceneTreeTween = parent.create_tween()
+	print("Tween details: ", pos, target, property)
 	tween.tween_property(target, property, pos, 1.0/tween_speed).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	yield(tween, "finished")
 

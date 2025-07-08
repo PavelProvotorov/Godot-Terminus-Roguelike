@@ -56,6 +56,7 @@ func play_hit_animation() -> void:
 	
 func play_move_animation(start:Vector2, finish:Vector2) -> void:
 	self.z_index += 1
+	print("Play move animation props: ", start, finish)
 	yield(_tween_animations.animation_move_to(finish, self, 'position'), 'completed')
 	self.z_index -= 1
 

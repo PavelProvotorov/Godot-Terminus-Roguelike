@@ -131,13 +131,15 @@ func populate_level():
 	add_enemies({
 		"Grunt": 0,
 		"Bloater": 0,
-		"Colony": 100,
+		"Colony": 0,
 		"MindFlayer": 0,
 		"Hydra": 0,
-		"Abomination": 100,
-		"Parasite": 1,
-		"Insect": 1,
-		"Lurker": 1,
+		"Abomination": 0,
+		"Parasite": 0,
+		"Insect": 0,
+		"Lurker": 0,
+		"Behemoth": 0,
+		"Scout": 100,
 	}, 5, 8)
 	add_items({
 		"Ammo": 5,

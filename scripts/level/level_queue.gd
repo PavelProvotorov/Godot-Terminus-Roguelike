@@ -19,7 +19,7 @@ func process(tree:SceneTree, node) -> void:
 		
 	var next_node = queue[0]
 	if _tilemap.has_node(str(next_node)):
-		print("Next turn for: ", next_node)
+		print("CURRENTLY MOVING: ", next_node)
 		next_node._on_start_turn()
 	else:
 		print("Node does not exist: ", next_node)
@@ -27,5 +27,6 @@ func process(tree:SceneTree, node) -> void:
 
 func build(tree:SceneTree) -> void:
 	queue = []
+	queue.append_array(tree.get_nodes_in_group("WANDERING"))
 	queue.append_array(tree.get_nodes_in_group("ACTIVE"))
 	queue.append_array(tree.get_nodes_in_group("PLAYER"))
