@@ -47,14 +47,17 @@ onready var BEHAVIOUR_TYPE = {
 }
 
 onready var LIFECYCLE = {
-	TURN_STARTED = funcref(self, "_turn_started_hook")
+	TURN_STARTED = funcref(self, "_turn_started_hook"),
+	POST_RANGED_ATTACK = funcref(self, "_post_ranged_attack_hook")
 }
 
 func _ready():
 	Events.connect("level_fog_updated", self, "_on_level_fog_updated")
 	set_random_frame()
 
-func target_in_sight(self_pos: Vector2, target_pos: Vector2) -> bool:
+func target_in_sight() -> bool:
+	var self_pos = self.position
+	var target_pos = target.position
 	var direction = self_pos - target_pos
 	return direction.x == 0 or direction.y == 0
 	
@@ -95,7 +98,8 @@ func process_behaviours() -> void:
 	end_turn()
 
 func call_lifecycle_hook(hook:FuncRef) -> void:
-	if hook is FuncRef: hook.call_func()
+	if hook is FuncRef and hook.is_valid(): 
+		hook.call_func()
 
 func get_melee_data() -> Dictionary:
 	return {
@@ -118,7 +122,7 @@ func get_movement_data() -> Dictionary:
 	}
 
 func melee_behaviour() -> bool:
-	if path.size() == 2 and target_in_sight(self.position, target.position):
+	if path.size() == 2 and target_in_sight():
 		print("MELEE")
 		return true
 	return false
@@ -126,7 +130,7 @@ func melee_behaviour() -> bool:
 func ranged_behaviour() -> bool:
 	if (path.size() > 2) \
 	and target_in_range() \
-	and target_in_sight(self.position, target.position) \
+	and target_in_sight() \
 	and not target_is_blocked(self.position, target.position):
 		print("RANGED")
 		return true
@@ -139,7 +143,7 @@ func move_behaviour() -> bool:
 	return false
 
 func ambush_behaviour() -> bool:
-	if path.size() == 3 and !target_in_sight(self.position, target.position):
+	if path.size() == 3 and !target_in_sight():
 		print("AMBUSH")
 		return true
 	return false
@@ -205,6 +209,7 @@ func handle_ranged_attack(data:Dictionary) -> void:
 	set_sprite_direction(start, finish)
 	target.receive_damage(ranged_damage)
 	yield(play_ranged_animation(start, finish), 'completed')
+	call_lifecycle_hook(LIFECYCLE.POST_RANGED_ATTACK)
 	end_turn()
 	
 func handle_wander_behaviour(data:Dictionary) -> void:
@@ -250,12 +255,10 @@ func _on_level_fog_updated(cells:Array) -> void:
 func _on_start_turn() -> void:
 	path = (_level.find_path(self.position, target.position))
 	call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
-	print("Parent tick")
 	process_behaviours()
 	
 func setup():
 	if behaviours.has(BEHAVIOUR_TYPE.WANDER): add_to_group("WANDERING")
-
 
 func is_active():
 	return is_in_group('ACTIVE')

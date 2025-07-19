@@ -1,0 +1,23 @@
+extends Enemy2D
+
+var buff_used = false
+
+func _ready():
+	behaviours = [
+		BEHAVIOUR_TYPE.WANDER,
+		BEHAVIOUR_TYPE.MELEE,
+		BEHAVIOUR_TYPE.MOVE,
+	]
+	attack_range = 1
+	health = 1
+	melee_damage = 0
+	setup()
+
+func _turn_started_hook():
+	
+	if buff_used == true:
+		return
+	
+	if is_active() and path.size() > 0  and target_in_sight():
+		add_buff('speed')
+		buff_used = true

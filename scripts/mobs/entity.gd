@@ -21,6 +21,7 @@ const grid_size:int = 8
 var attack_range:int = 1
 var melee_damage:int = 1
 var ranged_damage:int = 1
+var min_visibility:int = 1
 var visibility:int = 2
 var health:int = 1
 var turn_count:int = 0
@@ -98,7 +99,8 @@ func add_buff(buff:String) -> bool:
 	return _buff_manager.add_buff(buff)
 	
 func update_fog() -> void:
-	_level.update_level_fog(self.position, visibility)
+	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
+	_level.update_level_fog(self.position, max(min_visibility, modified_visibility))
 	
 func end_turn() -> bool:
 	print("USED TURN")

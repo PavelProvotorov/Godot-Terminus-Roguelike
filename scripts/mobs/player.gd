@@ -39,7 +39,11 @@ func set_camera_limits() -> void:
 	
 func check_targets_in_range(check_range:int) -> void:
 	
-	var visible_range = min(visibility, check_range)
+	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
+	var visible_range = min(
+		max(min_visibility, modified_visibility), 
+		check_range
+	)
 	
 	for direction in DIRECTIONS:
 		_raycast.cast_to = (direction * visible_range) * grid_size
@@ -52,7 +56,11 @@ func check_targets_in_range(check_range:int) -> void:
 				
 func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) -> bool:
 	
-	var visible_range = min(visibility, throw_range)
+	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
+	var visible_range = min(
+		max(min_visibility, modified_visibility), 
+		throw_range
+	)
 	
 	_raycast.cast_to = (direction * visible_range)
 	_raycast.force_raycast_update()
@@ -71,7 +79,11 @@ func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) ->
 	
 func shoot_in_direction(direction: Vector2) -> bool:
 	
-	var visible_range = min(visibility, attack_range)
+	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
+	var visible_range = min(
+		max(min_visibility, modified_visibility), 
+		attack_range
+	)
 	
 	_raycast.cast_to = (direction * visible_range)
 	_raycast.force_raycast_update()

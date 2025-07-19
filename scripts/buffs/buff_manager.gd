@@ -7,13 +7,14 @@ onready var _text_animations:TextAnimations2D = TextAnimations2D.new(_level)
 onready var BUFF_LIST:Dictionary = {
 	'shield': load("res://buffs/BuffShield.tscn"),
 	'speed': load("res://buffs/BuffSpeed.tscn"),
-	'strength': load("res://buffs/BuffStrength.tscn")
+	'strength': load("res://buffs/BuffStrength.tscn"),
+	'blindness': load("res://buffs/BuffBlindness.tscn") 
 }
 
 func add_buff(buff:String) -> bool:
 	
 	if is_applied(buff):
-		_text_animations.display_text("<X>", get_parent().position)
+#		_text_animations.display_text("<X>", get_parent().position)
 		return false
 	
 	var resource = BUFF_LIST.get(buff)
@@ -61,6 +62,13 @@ func get_modified_speed(speed:int) -> int:
 		if buff is Buff and buff.is_in_group("SPEED_BUFF"):
 			modified_speed += buff.get_speed_modifier()
 	return modified_speed
+
+func get_modified_visibility(visibility:int) -> int:
+	var modified_visibility = visibility
+	for buff in get_children():
+		if buff is Buff and buff.is_in_group("VISIBILITY_BUFF"):
+			modified_visibility += buff.get_visibility_modifier()
+	return modified_visibility
 	
 func is_applied(buff_name:String) -> bool:
 	for buff in get_children():

@@ -11,17 +11,14 @@ func _ready():
 	melee_damage = 2
 	ranged_damage = 1
 
-func handle_ranged_attack(data:Dictionary) -> void:
-	var start = data.start
-	var finish = data.finish
+func _post_ranged_attack_hook() -> void:
+	var self_pos = self.position
 	var target_pos = target.position
-	set_sprite_direction(start, finish)
-	yield(play_ranged_animation(start, finish), 'completed')
+	
 	target.position = self.position
 	self.position = target_pos
-	target.receive_damage(ranged_damage)
+	
 	post_handle_movement({
-		"prev_pos": start / grid_size,
+		"prev_pos": self_pos / grid_size,
 		"new_pos": target_pos / grid_size,
 	})
-	end_turn()

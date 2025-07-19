@@ -45,7 +45,7 @@ func _ready():
 	Events.connect("player_moved", self, "_on_player_moved")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
-	set_tileset(TILESET.DECO_2)
+	set_tileset(TILESET.DECO_1)
 	
 	add_player_instance()
 	generate_level()
@@ -139,7 +139,10 @@ func populate_level():
 		"Insect": 0,
 		"Lurker": 0,
 		"Behemoth": 0,
-		"Scout": 100,
+		"Scout": 0,
+		"Horror": 0,
+		"Wart": 0,
+		"Infestinator": 100,
 	}, 5, 8)
 	add_items({
 		"Ammo": 5,
