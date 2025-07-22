@@ -48,7 +48,8 @@ onready var BEHAVIOUR_TYPE = {
 
 onready var LIFECYCLE = {
 	TURN_STARTED = funcref(self, "_turn_started_hook"),
-	POST_RANGED_ATTACK = funcref(self, "_post_ranged_attack_hook")
+	POST_RANGED_ATTACK = funcref(self, "_post_ranged_attack_hook"),
+	POST_MELEE_ATTACK = funcref(self, "_post_melee_attack_hook")
 }
 
 func _ready():
@@ -200,6 +201,7 @@ func handle_melee_attack(data:Dictionary) -> void:
 	set_sprite_direction(start, finish)
 	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_damage))
 	yield(play_melee_animation(start, finish), 'completed')
+	call_lifecycle_hook(LIFECYCLE.POST_MELEE_ATTACK)
 	end_turn()
 
 func handle_ranged_attack(data:Dictionary) -> void:
@@ -237,7 +239,7 @@ func handle_spawning(data:Dictionary) -> void:
 	end_turn()
 	
 func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vector2) -> void:
-	instance.add_to_group("ACTIVE")
+	instance.set_active()
 	_level.spawn_enemy(start / grid_size, instance)
 	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
 	post_handle_movement({
@@ -247,7 +249,7 @@ func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vecto
 	
 func _on_level_fog_updated(cells:Array) -> void:
 	if cells.has(self.position / grid_size) && not (self.is_in_group("ACTIVE")):
-		self.add_to_group("ACTIVE")
+		self.set_active()
 	
 	if cells.has(self.position / grid_size) && (self.is_in_group("WANDERING")):
 		self.remove_from_group("WANDERING")
@@ -260,5 +262,8 @@ func _on_start_turn() -> void:
 func setup():
 	if behaviours.has(BEHAVIOUR_TYPE.WANDER): add_to_group("WANDERING")
 
-func is_active():
+func is_active() -> bool:
 	return is_in_group('ACTIVE')
+
+func set_active() -> void:
+	add_to_group('ACTIVE')

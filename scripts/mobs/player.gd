@@ -2,6 +2,7 @@ extends Entity2D
 class_name Player
 
 onready var _inventory = get_tree().get_first_node_in_group("INVENTORY")
+onready var _ranged_weapon:Weapon
 onready var _state_machine = $States
 onready var _camera = $Camera2D
 onready var _pickup = $Pickup
@@ -29,6 +30,7 @@ func _ready():
 	visibility = 4
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
+	_ranged_weapon = Resources.weapon_shotgun.instance()
 
 func set_camera_limits() -> void:
 	var rect = _level.level_rect
@@ -39,11 +41,10 @@ func set_camera_limits() -> void:
 	
 func check_targets_in_range(check_range:int) -> void:
 	
-	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
-	var visible_range = min(
-		max(min_visibility, modified_visibility), 
-		check_range
+	var modified_visibility = _buff_manager.get_modified_visibility(
+		min(visibility, check_range)
 	)
+	var visible_range = max(min_visibility, modified_visibility)
 	
 	for direction in DIRECTIONS:
 		_raycast.cast_to = (direction * visible_range) * grid_size
@@ -56,11 +57,10 @@ func check_targets_in_range(check_range:int) -> void:
 				
 func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) -> bool:
 	
-	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
-	var visible_range = min(
-		max(min_visibility, modified_visibility), 
-		throw_range
+	var modified_visibility = _buff_manager.get_modified_visibility(
+		min(visibility, throw_range)
 	)
+	var visible_range = max(min_visibility, modified_visibility)
 	
 	_raycast.cast_to = (direction * visible_range)
 	_raycast.force_raycast_update()
@@ -79,24 +79,27 @@ func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) ->
 	
 func shoot_in_direction(direction: Vector2) -> bool:
 	
-	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
-	var visible_range = min(
-		max(min_visibility, modified_visibility), 
-		attack_range
+	var modified_visibility = _buff_manager.get_modified_visibility(
+		min(visibility, _ranged_weapon.get_shot_range())
 	)
+	var visible_range = max(min_visibility, modified_visibility)
+	var weapon_shot:bool = false
 	
-	_raycast.cast_to = (direction * visible_range)
-	_raycast.force_raycast_update()
-	
-	if _raycast.is_colliding():
-		var collider = _raycast.get_collider()
-		if collider.is_in_group("ENEMY"):
-			handle_ranged_attack({
-				"start": self.position,
-				"finish": (self.position - (-direction)),
-				"target": collider
-			})
-			return true
+	for idx in _ranged_weapon.get_shot_count():
+		_raycast.cast_to = (direction * visible_range)
+		_raycast.force_raycast_update()
+		
+		if _raycast.is_colliding():
+			var collider = _raycast.get_collider()
+			
+			if collider.is_in_group("ENEMY"):
+				yield(handle_ranged_attack(position, (position - (-direction)), collider), 'completed')
+				weapon_shot = true
+		else: break
+			
+	if weapon_shot:
+		end_turn()
+		return true
 	return false
 
 func check_move_direction(pos: Vector2) -> bool:
@@ -158,15 +161,11 @@ func handle_melee_attack(data:Dictionary) -> void:
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
-func handle_ranged_attack(data:Dictionary) -> void:
-	var start = data.start
-	var finish = data.finish
-	var target = data.target
+func handle_ranged_attack(start:Vector2, finish:Vector2, target:Entity2D) -> GDScriptFunctionState:
 	set_sprite_direction(start, finish)
 	get_tree().call_group("ENEMY", "remove_target_animation")
-	target.receive_damage(ranged_damage)
-	yield(play_ranged_animation(start, finish), 'completed')
-	end_turn()
+	target.receive_damage(_ranged_weapon.get_damage())
+	return yield(play_ranged_animation(start, finish), 'completed')
 
 func handle_throw_attack(data:Dictionary) -> void:
 	var start = data.start
@@ -202,8 +201,18 @@ func throw_state_bind(caller:Node, callback:String, data:Dictionary) -> void:
 	_state_machine.change_state('THROW', data)
 	
 func throw_state_notify(success:bool) -> void:
-	print("Notifying about throw state")
 	emit_signal("throw_successful", success)
+	
+func get_attack_range() -> int:
+	return _ranged_weapon.get_shot_range()
+
+func set_ammo(value:int) -> void:
+	ammo = value
+	Events.emit_signal("player_ammo_changed", value)
+
+func set_health(value:int) -> void:
+	health = value
+	Events.emit_signal("player_health_changed", value)
 
 func _on_level_generation_complete(entrance:Vector2) -> void:
 	self.position = entrance

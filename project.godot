@@ -98,6 +98,11 @@ _global_script_classes=[ {
 "class": "TweenAnimation2D",
 "language": "GDScript",
 "path": "res://scripts/tween_animations.gd"
+}, {
+"base": "Control",
+"class": "Weapon",
+"language": "GDScript",
+"path": "res://scripts/weapons/weapon.gd"
 } ]
 _global_script_class_icons={
 "Buff": "",
@@ -117,7 +122,8 @@ _global_script_class_icons={
 "State": "",
 "StateMachine": "",
 "TextAnimations2D": "",
-"TweenAnimation2D": ""
+"TweenAnimation2D": "",
+"Weapon": ""
 }
 
 [application]

@@ -139,10 +139,11 @@ func populate_level():
 		"Insect": 0,
 		"Lurker": 0,
 		"Behemoth": 0,
-		"Scout": 0,
+		"Scout": 50,
 		"Horror": 0,
 		"Wart": 0,
-		"Infestinator": 100,
+		"Infestinator": 50,
+		"Creep": 0,
 	}, 5, 8)
 	add_items({
 		"Ammo": 5,
@@ -178,7 +179,6 @@ func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int) -> void:
 			spawn_enemy(cell, enemy_instance)
 			free_cells.erase(cell)
 			enemies_added += 1
-
 
 func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
 	var free_cells = get_floor_cells()
@@ -224,9 +224,14 @@ func get_free_cells() -> Array:
 	return get_array_difference(floor_cells, entities_positions)
 	
 func get_hidden_free_cells() -> Array:
-	var free_cells = get_free_cells()
+	var free_cells:Array = get_free_cells()
+	var hidden_cells:Array = []
 	
-	return []
+	for cell in free_cells:
+		var hidden = (_tilemap_fog.get_cellv(cell) == TILES.FOG)
+		if hidden: hidden_cells.append(cell)
+		
+	return hidden_cells
 
 func get_tile_position_name(pos:Vector2) -> String:
 	var pos_tilemap = _tilemap_logic.world_to_map(pos)

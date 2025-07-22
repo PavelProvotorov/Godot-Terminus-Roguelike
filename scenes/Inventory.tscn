@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/inventory.gd" type="Script" id=1]
-[ext_resource path="res://assets/ui_layer.png" type="Texture" id=2]
 
 [sub_resource type="Theme" id=1]
 
@@ -19,8 +18,3 @@ theme = SubResource( 1 )
 custom_constants/vseparation = 8
 custom_constants/hseparation = 8
 columns = 6
-
-[node name="Interface" type="Sprite" parent="."]
-position = Vector2( 80, 60 )
-z_index = -1
-texture = ExtResource( 2 )

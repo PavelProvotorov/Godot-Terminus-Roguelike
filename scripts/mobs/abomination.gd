@@ -16,7 +16,7 @@ func handle_spawning(data: Dictionary) -> void:
 	var nearby_cells = get_nearby_cells()
 	
 	if nearby_cells.size() != 0 \
-		and get_spawn_chance(25) \
+		and get_chance(25) \
 		and spawn_count < max_spawn_count \
 		:
 		spawn_count += 1

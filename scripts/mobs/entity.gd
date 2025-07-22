@@ -23,10 +23,10 @@ var melee_damage:int = 1
 var ranged_damage:int = 1
 var min_visibility:int = 1
 var visibility:int = 2
-var health:int = 1
+var health:int = 1 setget set_health
 var turn_count:int = 0
 var speed:int = 1
-var ammo:int = 0
+var ammo:int = 0 setget set_ammo
 
 func _ready():
 	add_to_group("ENTITY")
@@ -47,6 +47,9 @@ func get_nearby_cells() -> Array:
 			
 	return nearby_cells
 
+func get_hidden_free_cells() -> Array:
+	return _level.get_hidden_free_cells()
+
 func is_path_hidden(start:Vector2, finish:Vector2) -> bool:
 	return _level.is_fog_cell(start) && _level.is_fog_cell(finish)
 	
@@ -57,7 +60,6 @@ func play_hit_animation() -> void:
 	
 func play_move_animation(start:Vector2, finish:Vector2) -> void:
 	self.z_index += 1
-	print("Play move animation props: ", start, finish)
 	yield(_tween_animations.animation_move_to(finish, self, 'position'), 'completed')
 	self.z_index -= 1
 
@@ -75,7 +77,7 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 func receive_damage(damage:int) -> void:
 	play_hit_animation()
 	var resisted_damage:int = max(0, _buff_manager.get_resisted_damage(damage))
-	health -= resisted_damage
+	self.health -= resisted_damage
 	if health <= 0:
 		_text_animations.display_damage_number(resisted_damage, position, true)
 		handle_death()
@@ -83,11 +85,11 @@ func receive_damage(damage:int) -> void:
 		_text_animations.display_damage_number(resisted_damage, position, false)
 		
 func restore_health(heal:int) -> void:
-	health += heal
+	self.health += heal
 	_text_animations.display_heal_number(heal, position)
 	
 func recharge_ammo(recharge:int) -> void:
-	ammo += recharge
+	self.ammo += recharge
 	_text_animations.display_recharge_number(recharge, position)
 
 func handle_death() -> void:
@@ -117,7 +119,7 @@ func end_turn() -> bool:
 	Events.emit_signal("end_turn", self)
 	return true
 
-func get_spawn_chance(percentage:int) -> bool:
+func get_chance(percentage:int) -> bool:
   return percentage > 0 and randi() % 100 < percentage
 
 func get_attack_range():
@@ -125,3 +127,9 @@ func get_attack_range():
 
 func _on_start_turn():
 	pass
+
+func set_ammo(value:int) -> void:
+	ammo = value
+
+func set_health(value:int) -> void:
+	health = value
