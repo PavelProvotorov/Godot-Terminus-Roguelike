@@ -144,9 +144,9 @@ func populate_level():
 		"Wart": 0,
 		"Infestinator": 50,
 		"Creep": 0,
-	}, 5, 8)
+	}, 1, 1)
 	add_items({
-		"Ammo": 5,
+		"Ammo": 100,
 		"Grenade": 5,
 		"Medkit": 5,
 		"Teleporter": 5,
@@ -173,7 +173,7 @@ func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int) -> void:
 			
 		if get_spawn_chance(enemy_list.get(enemy)):
 			
-			var enemy_res = load("res://mobs/%s.tscn" % enemy)
+			var enemy_res = load("res://scenes/mobs/%s.tscn" % enemy)
 			var enemy_instance = enemy_res.instance()
 			
 			spawn_enemy(cell, enemy_instance)
@@ -193,7 +193,7 @@ func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
 			
 		if get_spawn_chance(item_list.get(item)):
 			
-			var item_res = load("res://items/%s.tscn" % item)
+			var item_res = load("res://scenes/items/%s.tscn" % item)
 			var item_instance:Item = item_res.instance()
 			
 			spawn_item(cell, item_instance)

@@ -5,10 +5,10 @@ onready var _level = get_tree().get_first_node_in_group("LEVEL")
 onready var _text_animations:TextAnimations2D = TextAnimations2D.new(_level)
 
 onready var BUFF_LIST:Dictionary = {
-	'shield': load("res://buffs/BuffShield.tscn"),
-	'speed': load("res://buffs/BuffSpeed.tscn"),
-	'strength': load("res://buffs/BuffStrength.tscn"),
-	'blindness': load("res://buffs/BuffBlindness.tscn") 
+	'shield': load("res://scenes/buffs/BuffShield.tscn"),
+	'speed': load("res://scenes/buffs/BuffSpeed.tscn"),
+	'strength': load("res://scenes/buffs/BuffStrength.tscn"),
+	'blindness': load("res://scenes/buffs/BuffBlindness.tscn") 
 }
 
 func add_buff(buff:String) -> bool:

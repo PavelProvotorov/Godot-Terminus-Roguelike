@@ -23,7 +23,8 @@ enum STATE {
 signal throw_successful
 
 func _ready():
-	health = 100
+	self.health = 99
+	self.ammo = 99
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
@@ -86,6 +87,11 @@ func shoot_in_direction(direction: Vector2) -> bool:
 	var weapon_shot:bool = false
 	
 	for idx in _ranged_weapon.get_shot_count():
+		
+		var new_ammo_count = (ammo - _ranged_weapon.ammo_consumption)
+		if new_ammo_count < 0:
+			break
+		
 		_raycast.cast_to = (direction * visible_range)
 		_raycast.force_raycast_update()
 		
@@ -93,9 +99,11 @@ func shoot_in_direction(direction: Vector2) -> bool:
 			var collider = _raycast.get_collider()
 			
 			if collider.is_in_group("ENEMY"):
+				self.ammo = new_ammo_count
 				yield(handle_ranged_attack(position, (position - (-direction)), collider), 'completed')
 				weapon_shot = true
-		else: break
+		else: 
+			break
 			
 	if weapon_shot:
 		end_turn()

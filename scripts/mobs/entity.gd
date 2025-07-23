@@ -22,6 +22,8 @@ var attack_range:int = 1
 var melee_damage:int = 1
 var ranged_damage:int = 1
 var min_visibility:int = 1
+var max_health:int = 100
+var max_ammo:int = 100
 var visibility:int = 2
 var health:int = 1 setget set_health
 var turn_count:int = 0
@@ -84,13 +86,21 @@ func receive_damage(damage:int) -> void:
 	else:
 		_text_animations.display_damage_number(resisted_damage, position, false)
 		
-func restore_health(heal:int) -> void:
-	self.health += heal
-	_text_animations.display_heal_number(heal, position)
+func restore_health(heal:int) -> bool:
+	if (health != max_health):
+		var value = min(heal, max_health - health)
+		self.health += value
+		_text_animations.display_heal_number(value, position)
+		return true
+	return false
 	
-func recharge_ammo(recharge:int) -> void:
-	self.ammo += recharge
-	_text_animations.display_recharge_number(recharge, position)
+func recharge_ammo(recharge:int) -> bool:
+	if (ammo != max_ammo):
+		var value = min(recharge, max_ammo - ammo)
+		self.ammo += value
+		_text_animations.display_recharge_number(value, position)
+		return true
+	return false
 
 func handle_death() -> void:
 	play_hit_animation()
