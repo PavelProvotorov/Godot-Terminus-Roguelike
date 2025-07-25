@@ -48,6 +48,7 @@ onready var BEHAVIOUR_TYPE = {
 
 onready var LIFECYCLE = {
 	TURN_STARTED = funcref(self, "_turn_started_hook"),
+	POST_MOVEMENT = funcref(self, "_post_movement_hook"),
 	POST_RANGED_ATTACK = funcref(self, "_post_ranged_attack_hook"),
 	POST_MELEE_ATTACK = funcref(self, "_post_melee_attack_hook")
 }
@@ -98,9 +99,9 @@ func process_behaviours() -> void:
 	print("SKIP")
 	end_turn()
 
-func call_lifecycle_hook(hook:FuncRef) -> void:
-	if hook is FuncRef and hook.is_valid(): 
-		hook.call_func()
+func call_lifecycle_hook(hook:FuncRef):
+	if hook is FuncRef and hook.is_valid():
+		return hook.call_func()
 
 func get_melee_data() -> Dictionary:
 	return {
@@ -185,6 +186,9 @@ func handle_movement(data:Dictionary) -> void:
 		"prev_pos": start / grid_size,
 		"new_pos": finish / grid_size,
 	})
+	
+	var hook = call_lifecycle_hook(LIFECYCLE.POST_MOVEMENT)
+	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 	
 func post_handle_movement(data:Dictionary) -> void:
@@ -201,7 +205,8 @@ func handle_melee_attack(data:Dictionary) -> void:
 	set_sprite_direction(start, finish)
 	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_damage))
 	yield(play_melee_animation(start, finish), 'completed')
-	call_lifecycle_hook(LIFECYCLE.POST_MELEE_ATTACK)
+	var hook = call_lifecycle_hook(LIFECYCLE.POST_MELEE_ATTACK)
+	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 
 func handle_ranged_attack(data:Dictionary) -> void:
@@ -211,7 +216,8 @@ func handle_ranged_attack(data:Dictionary) -> void:
 	set_sprite_direction(start, finish)
 	target.receive_damage(ranged_damage)
 	yield(play_ranged_animation(start, finish), 'completed')
-	call_lifecycle_hook(LIFECYCLE.POST_RANGED_ATTACK)
+	var hook = call_lifecycle_hook(LIFECYCLE.POST_RANGED_ATTACK)
+	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 	
 func handle_wander_behaviour(data:Dictionary) -> void:
@@ -256,7 +262,8 @@ func _on_level_fog_updated(cells:Array) -> void:
 
 func _on_start_turn() -> void:
 	path = (_level.find_path(self.position, target.position))
-	call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
+	var hook = call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
+	if hook is GDScriptFunctionState: yield(hook, "completed")
 	process_behaviours()
 	
 func setup():
