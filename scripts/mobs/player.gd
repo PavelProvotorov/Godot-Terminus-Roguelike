@@ -3,6 +3,7 @@ class_name Player
 
 onready var _inventory = get_tree().get_first_node_in_group("INVENTORY")
 onready var _ranged_weapon:Weapon
+onready var _move_raycast:RayCast2D = $MoveCast
 onready var _state_machine = $States
 onready var _camera = $Camera2D
 onready var _pickup = $Pickup
@@ -111,11 +112,11 @@ func shoot_in_direction(direction: Vector2) -> bool:
 	return false
 
 func check_move_direction(pos: Vector2) -> bool:
-	_raycast.cast_to = pos
-	_raycast.force_raycast_update()
+	_move_raycast.cast_to = pos
+	_move_raycast.force_raycast_update()
 	
-	if _raycast.is_colliding():
-		var collider = _raycast.get_collider()
+	if _move_raycast.is_colliding():
+		var collider = _move_raycast.get_collider()
 		if collider.is_in_group("LEVEL"):
 			process_tilemap_collision(self.position + pos)
 		elif collider.is_in_group("ENEMY"):

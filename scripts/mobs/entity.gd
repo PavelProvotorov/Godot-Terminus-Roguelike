@@ -5,6 +5,7 @@ onready var _level = get_tree().get_first_node_in_group("LEVEL")
 onready var _text_animations = TextAnimations2D.new(_level)
 onready var _tween_animations = TweenAnimation2D.new(self)
 onready var _sprite_animations = SpriteAnimations2D.new(self)
+onready var _collision_shape:CollisionShape2D = $CollisionShape2D
 onready var _buff_manager:BuffManager = $BuffManager
 onready var _hit_flash = $HitFlashAnimation
 onready var _sprite = $AnimatedSprite
@@ -75,7 +76,10 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 	var half = start - ((finish - start) / 2)
 	yield(_tween_animations.animation_ranged(start, half, self, 'position'), 'completed')
 	self.z_index -= 1
-	
+
+func play_appear_animation() -> GDScriptFunctionState:
+	return yield(_tween_animations.animation_appear(_sprite), 'completed')
+
 func receive_damage(damage:int) -> void:
 	play_hit_animation()
 	var resisted_damage:int = max(0, _buff_manager.get_resisted_damage(damage))

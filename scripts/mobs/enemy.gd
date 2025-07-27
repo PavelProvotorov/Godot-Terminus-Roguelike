@@ -50,7 +50,7 @@ onready var LIFECYCLE = {
 	TURN_STARTED = funcref(self, "_turn_started_hook"),
 	POST_MOVEMENT = funcref(self, "_post_movement_hook"),
 	POST_RANGED_ATTACK = funcref(self, "_post_ranged_attack_hook"),
-	POST_MELEE_ATTACK = funcref(self, "_post_melee_attack_hook")
+	POST_MELEE_ATTACK = funcref(self, "_post_melee_attack_hook"),
 }
 
 func _ready():
@@ -157,7 +157,7 @@ func spawner_behaviour() -> bool:
 	return false
 
 func wander_behaviour() -> bool:
-	if path.size() == 0 and is_in_group("WANDERING"):
+	if is_in_group("WANDERING"):
 		print("WANDER")
 		return true
 	return false
@@ -177,7 +177,7 @@ func handle_movement(data:Dictionary) -> void:
 	
 	set_sprite_direction(start, finish)
 	
-	if is_path_hidden(start / grid_size, finish / grid_size):
+	if is_invisible() or is_path_hidden(start / grid_size, finish / grid_size):
 		self.position = finish
 	else:
 		yield(play_move_animation(start, finish), 'completed')
@@ -230,7 +230,7 @@ func handle_wander_behaviour(data:Dictionary) -> void:
 		var start = position / grid_size
 		var finish = cell
 		
-		if is_path_hidden(start, finish):
+		if is_invisible() or is_path_hidden(start, finish):
 			self.position = finish * grid_size
 		else:
 			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
@@ -268,6 +268,9 @@ func _on_start_turn() -> void:
 	
 func setup():
 	if behaviours.has(BEHAVIOUR_TYPE.WANDER): add_to_group("WANDERING")
+
+func is_invisible() -> bool:
+	return _sprite.modulate.a == 0
 
 func is_active() -> bool:
 	return is_in_group('ACTIVE')

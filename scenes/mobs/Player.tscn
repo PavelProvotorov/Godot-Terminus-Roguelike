@@ -69,6 +69,11 @@ centered = false
 position = Vector2( 4, 4 )
 cast_to = Vector2( 0, 8 )
 
+[node name="MoveCast" type="RayCast2D" parent="."]
+position = Vector2( 4, 4 )
+cast_to = Vector2( 1.36422e-12, 8 )
+collision_mask = 5
+
 [node name="Pickup" type="RayCast2D" parent="."]
 position = Vector2( 4, 4 )
 cast_to = Vector2( 1.36422e-12, 1.36422e-12 )

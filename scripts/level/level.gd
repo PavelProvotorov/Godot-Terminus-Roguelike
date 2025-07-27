@@ -144,7 +144,9 @@ func populate_level():
 		"Wart": 0,
 		"Infestinator": 0,
 		"Creep": 0,
-		"Sludge": 100,
+		"Sludge": 0,
+		"Infected": 0,
+		"Stalker": 100,
 	}, 3, 3)
 	add_items({
 		"Ammo": 100,
