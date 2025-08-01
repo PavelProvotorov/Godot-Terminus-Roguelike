@@ -8,7 +8,8 @@ onready var BUFF_LIST:Dictionary = {
 	'shield': load("res://scenes/buffs/BuffShield.tscn"),
 	'speed': load("res://scenes/buffs/BuffSpeed.tscn"),
 	'strength': load("res://scenes/buffs/BuffStrength.tscn"),
-	'blindness': load("res://scenes/buffs/BuffBlindness.tscn") 
+	'blindness': load("res://scenes/buffs/BuffBlindness.tscn"),
+	'poison': load("res://scenes/buffs/BuffPoison.tscn")
 }
 
 func add_buff(buff:String) -> bool:
@@ -40,7 +41,6 @@ func get_resisted_damage(damage:int) -> int:
 		if buff is Buff and buff.is_in_group("RESISTANCE_BUFF"):
 			resisted_damage += buff.get_resistance_modifier()
 	return resisted_damage
-	
 
 func get_modified_melee_damage(damage:int) -> int:
 	var modified_damage = damage

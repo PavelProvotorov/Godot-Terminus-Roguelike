@@ -139,15 +139,17 @@ func populate_level():
 		"Insect": 0,
 		"Lurker": 0,
 		"Behemoth": 0,
-		"Scout": 0,
 		"Horror": 0,
 		"Wart": 0,
 		"Infestinator": 0,
 		"Creep": 0,
 		"Sludge": 0,
 		"Infected": 0,
-		"Stalker": 100,
-	}, 3, 3)
+		"Stalker": 0,
+		"Scout": 0,
+		"Templar": 100,
+		"Zealot": 0,
+	}, 5, 8)
 	add_items({
 		"Ammo": 100,
 		"Grenade": 5,

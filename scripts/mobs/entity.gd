@@ -127,9 +127,11 @@ func end_turn() -> bool:
 		_on_start_turn()
 		return false
 		
-	print("ENDING TURN")
 	turn_count = 0
+
 	_buff_manager.tick_buffs()
+	
+	print("ENDING TURN")
 	Events.emit_signal("end_turn", self)
 	return true
 
