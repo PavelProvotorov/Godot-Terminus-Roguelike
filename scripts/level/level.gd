@@ -24,6 +24,9 @@ onready var TILES = {
 onready var TILESET = {
 	DECO_1 = load("res://resources/tilesets/tileset_deco_1.tres"),
 	DECO_2 = load("res://resources/tilesets/tileset_deco_2.tres"),
+	DECO_3 = load("res://resources/tilesets/tileset_deco_3.tres"),
+	DECO_4 = load("res://resources/tilesets/tileset_deco_4.tres"),
+	DECO_5 = load("res://resources/tilesets/tileset_deco_5.tres"),
 }
 
 onready var _queue:Queue
@@ -45,7 +48,7 @@ func _ready():
 	Events.connect("player_moved", self, "_on_player_moved")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
-	set_tileset(TILESET.DECO_1)
+	set_tileset(TILESET.DECO_4)
 	
 	add_player_instance()
 	generate_level()
@@ -132,22 +135,22 @@ func populate_level():
 		"Grunt": 0,
 		"Bloater": 0,
 		"Colony": 0,
-		"MindFlayer": 0,
+		"MindFlayer": 100,
 		"Hydra": 0,
 		"Abomination": 0,
 		"Parasite": 0,
 		"Insect": 0,
 		"Lurker": 0,
 		"Behemoth": 0,
-		"Horror": 0,
+		"Horror": 100,
 		"Wart": 0,
 		"Infestinator": 0,
 		"Creep": 0,
-		"Sludge": 0,
-		"Infected": 0,
+		"Sludge": 100,
+		"Infected": 100,
 		"Stalker": 0,
 		"Scout": 0,
-		"Templar": 100,
+		"Templar": 0,
 		"Zealot": 0,
 	}, 5, 8)
 	add_items({
