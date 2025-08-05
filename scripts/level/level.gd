@@ -48,7 +48,7 @@ func _ready():
 	Events.connect("player_moved", self, "_on_player_moved")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
-	set_tileset(TILESET.DECO_4)
+	set_tileset(TILESET.DECO_5)
 	
 	add_player_instance()
 	generate_level()
@@ -135,26 +135,27 @@ func populate_level():
 		"Grunt": 0,
 		"Bloater": 0,
 		"Colony": 0,
-		"MindFlayer": 100,
+		"MindFlayer": 0,
 		"Hydra": 0,
 		"Abomination": 0,
 		"Parasite": 0,
 		"Insect": 0,
 		"Lurker": 0,
 		"Behemoth": 0,
-		"Horror": 100,
+		"Horror": 0,
 		"Wart": 0,
 		"Infestinator": 0,
 		"Creep": 0,
-		"Sludge": 100,
-		"Infected": 100,
-		"Stalker": 0,
-		"Scout": 0,
-		"Templar": 0,
-		"Zealot": 0,
-	}, 5, 8)
+		"Sludge": 0,
+		"Infected": 0,
+		"Stalker": 100,
+		"Scout": 100,
+		"Templar": 100,
+		"Zealot": 100,
+	}, 3, 5)
 	add_items({
-		"Ammo": 100,
+		"Bandage": 100,
+		"Ammo": 5,
 		"Grenade": 5,
 		"Medkit": 5,
 		"Teleporter": 5,

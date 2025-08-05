@@ -1,6 +1,7 @@
 extends Node
 
 onready var text_label = preload("res://scenes/TextLabel.tscn")
+onready var scene_description = preload("res://scenes/Description.tscn")
 onready var debug_label = preload("res://scenes/DebugLabel.tscn")
 onready var debug_vermin = preload("res://scenes/mobs/Vermin.tscn")
 onready var debug_colony = preload("res://scenes/mobs/Colony.tscn")

@@ -24,7 +24,7 @@ enum STATE {
 signal throw_successful
 
 func _ready():
-	self.health = 99
+	self.health = 50
 	self.ammo = 99
 	attack_range = 2
 	melee_damage = 1

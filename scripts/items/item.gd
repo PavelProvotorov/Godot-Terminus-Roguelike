@@ -8,6 +8,7 @@ var _storage:Control
 var _owner:Entity2D
 
 var item_name = ""
+var description = "<Error>: Missing entry for item"
 
 func _ready():
 	add_to_group('ITEM')
@@ -17,7 +18,6 @@ func use() -> bool:
 	return false
 	
 func _on_item_used(success:bool) -> void:
-	print(self, " was used: ", success)
 	if success:
 		remove_item()
 	
@@ -40,6 +40,9 @@ func add_target_animation() -> void:
 	
 func remove_target_animation() -> void:
 	_sprite_animations.remove_animation("target")
+	
+func get_description() -> String:
+	return description
 	
 func remove_item() -> void:
 	queue_free()

@@ -1,6 +1,7 @@
 extends Control
 class_name Inventory
 
+onready var _description = null
 onready var _grid = $GridContainer
 
 var stored_items:Array = []
@@ -46,19 +47,27 @@ func switch_selected_item(index:int) -> void:
 
 	selected_item = stored_items[final_index]
 	selected_item.add_target_animation()
+	set_description()
 
 func select_first_item() -> void:
 	
 	if stored_items.size() > 0:
 		selected_item = stored_items[0]
 		selected_item.add_target_animation()
+		set_description()
 
 func clear_selection() -> void:
 	if selected_item != null:
 		selected_item.remove_target_animation()
 
+func clear_description() -> void:
+	if _description != null:
+		_description.queue_free()
+		_description = null
+
 func reset_state() -> void:
 	clear_selection()
+	clear_description()
 	selected_item = null
 
 func use_selected_item() -> bool:
@@ -72,6 +81,21 @@ func is_inventory_empty() -> bool:
 
 func drop_item(item:Item) -> void:
 	stored_items.erase(item)
+	
+func set_description() -> void:
+	
+	if _description:
+		_description.queue_free()
+		_description = null
+	
+	var instance = Resources.scene_description.instance()
+	
+	_description = instance
+	add_child(instance)
+
+	_description.update_description(
+		selected_item.get_description()
+	)
 	
 func _on_child_exiting_tree(child:Node) -> void:
 	stored_items.erase(child)

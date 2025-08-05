@@ -9,7 +9,8 @@ onready var BUFF_LIST:Dictionary = {
 	'speed': load("res://scenes/buffs/BuffSpeed.tscn"),
 	'strength': load("res://scenes/buffs/BuffStrength.tscn"),
 	'blindness': load("res://scenes/buffs/BuffBlindness.tscn"),
-	'poison': load("res://scenes/buffs/BuffPoison.tscn")
+	'poison': load("res://scenes/buffs/BuffPoison.tscn"),
+	'regeneration': load("res://scenes/buffs/BuffRegeneration.tscn"),
 }
 
 func add_buff(buff:String) -> bool:

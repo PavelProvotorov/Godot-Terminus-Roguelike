@@ -1,6 +1,7 @@
 extends Item
 
 func _ready():
+	description = "<Teleporter>: This high-tech device teleports the user to a random spot in close proximity;"
 	set_item_consumable()
 
 func use() -> bool:

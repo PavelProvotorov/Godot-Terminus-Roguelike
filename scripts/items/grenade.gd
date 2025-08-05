@@ -1,6 +1,7 @@
 extends Item
 
 func _ready():
+	description = "<Grenade>: A standard combat explosive used to deliver high damage in close range;"
 	set_item_consumable()
 
 func use() -> bool:
