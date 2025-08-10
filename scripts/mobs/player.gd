@@ -32,7 +32,8 @@ func _ready():
 	visibility = 4
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
-	_ranged_weapon = Resources.weapon_shotgun.instance()
+	_ranged_weapon = Resources.weapon_hunting_rifle.instance()
+	_ranged_weapon._tree = get_tree()
 
 func set_camera_limits() -> void:
 	var rect = _level.level_rect
@@ -90,6 +91,7 @@ func shoot_in_direction(direction: Vector2) -> bool:
 	for idx in _ranged_weapon.get_shot_count():
 		
 		var new_ammo_count = (ammo - _ranged_weapon.ammo_consumption)
+		
 		if new_ammo_count < 0:
 			break
 		
@@ -99,10 +101,17 @@ func shoot_in_direction(direction: Vector2) -> bool:
 		if _raycast.is_colliding():
 			var collider = _raycast.get_collider()
 			
-			if collider.is_in_group("ENEMY"):
-				self.ammo = new_ammo_count
-				yield(handle_ranged_attack(position, (position - (-direction)), collider), 'completed')
-				weapon_shot = true
+			if not collider.is_in_group("ENEMY"):
+				break
+			
+			var targets  = _ranged_weapon.get_shot_targets(
+				self.position,
+				collider.position
+			)
+			self.ammo = new_ammo_count
+			yield(handle_ranged_attack(position, (position - (-direction)), targets, collider.position), 'completed')
+			weapon_shot = true
+			
 		else: 
 			break
 			
@@ -170,10 +179,21 @@ func handle_melee_attack(data:Dictionary) -> void:
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
-func handle_ranged_attack(start:Vector2, finish:Vector2, target:Entity2D) -> GDScriptFunctionState:
+func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_pos:Vector2) -> GDScriptFunctionState:
 	set_sprite_direction(start, finish)
 	get_tree().call_group("ENEMY", "remove_target_animation")
-	target.receive_damage(_ranged_weapon.get_damage())
+	
+	for target in targets:
+		
+		var target_pos = target.position
+		var distance = self.position.distance_to(impact_pos)/ grid_size
+		
+		if target is Entity2D and target_pos == impact_pos:
+			target.receive_damage(_ranged_weapon.get_damage(distance))
+			
+		if target is Entity2D and target_pos != impact_pos:
+			target.receive_damage(_ranged_weapon.get_offset_damage(distance))
+			
 	return yield(play_ranged_animation(start, finish), 'completed')
 
 func handle_throw_attack(data:Dictionary) -> void:

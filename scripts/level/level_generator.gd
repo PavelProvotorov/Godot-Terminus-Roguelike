@@ -272,11 +272,17 @@ func generator_add_room_arches() -> void:
 			
 			for direction in DIRECTIONS:
 				var cell = door + (direction * 2)
-				var floor_count = util_count_nearby_tiles_8(cell, [TILES.FLOOR])
-				var wall_count = util_count_nearby_tiles_4(cell, [TILES.WALL, TILES.DOOR])
-
-				if floor_count > 4 and floor_count <= 5 and wall_count == 2:
-					_tilemap.set_cellv(cell, TILES.FLOOR)
+				var floor_tiles:Array = util_get_nearby_tiles_4(cell, [TILES.FLOOR])
+				
+				if floor_tiles.size() == 2:
+					var direction_to = floor_tiles[0].direction_to(floor_tiles[1])
+					if is_horizontal(direction_to) or is_vertical(direction_to):
+						_tilemap.set_cellv(cell, TILES.FLOOR)
+#				var floor_count = util_count_nearby_tiles_8(cell, [TILES.FLOOR])
+#				var wall_count = util_count_nearby_tiles_4(cell, [TILES.WALL, TILES.DOOR])
+#
+#				if floor_count > 4 and floor_count <= 5 and wall_count == 2:
+#					_tilemap.set_cellv(cell, TILES.FLOOR)
 		else:
 			break
 
@@ -433,3 +439,9 @@ func util_get_tile_in_directon(cell:Vector2, tiles:Array, direction:Vector2) -> 
 	if _tilemap.get_cellv(pos) in tiles:
 		list.append(pos)
 	return list
+
+func is_horizontal(direction:Vector2) -> bool:
+	return direction in [Vector2.LEFT, Vector2.RIGHT]
+
+func is_vertical(direction:Vector2) -> bool:
+	return direction in [Vector2.UP, Vector2.DOWN]

@@ -134,7 +134,7 @@ func populate_level():
 	add_enemies({
 		"Grunt": 0,
 		"Bloater": 0,
-		"Colony": 0,
+		"Colony": 100,
 		"MindFlayer": 0,
 		"Hydra": 0,
 		"Abomination": 0,
@@ -148,10 +148,10 @@ func populate_level():
 		"Creep": 0,
 		"Sludge": 0,
 		"Infected": 0,
-		"Stalker": 100,
-		"Scout": 100,
-		"Templar": 100,
-		"Zealot": 100,
+		"Stalker": 0,
+		"Scout": 0,
+		"Templar": 0,
+		"Zealot": 0,
 	}, 3, 5)
 	add_items({
 		"Bandage": 100,
