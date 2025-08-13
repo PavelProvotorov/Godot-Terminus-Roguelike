@@ -3,12 +3,16 @@ class_name Item
 
 onready var _sprite_animations = SpriteAnimations2D.new(self)
 onready var _level = get_tree().get_first_node_in_group("LEVEL")
+onready var _utility:Utility = Utility.new()
 onready var _static_body = $StaticBody2D
 var _storage:Control
 var _owner:Entity2D
 
-var item_name = ""
-var description = "<Error>: Missing entry for item"
+var item_name:String = ""
+var description:String = "<Error>: Missing entry for item"
+var throw_damage:int = 0
+var throw_range:int = 0
+var grid_size:int = 8
 
 func _ready():
 	add_to_group('ITEM')
@@ -43,6 +47,27 @@ func remove_target_animation() -> void:
 	
 func get_description() -> String:
 	return description
+	
+func get_throw_range() -> int:
+	return throw_range
+
+func get_throw_damage(distance:int, offset:int) -> int:
+	return throw_damage
+	
+func get_throw_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
+	var targets:Array = [impact_pos]
+	targets.append_array(
+		match_pos_to_target(targets)
+	)
+	return targets
+	
+func match_pos_to_target(positions:Array) -> Array:
+	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
+	var targets:Array = []
+	for entity in entities:
+		if entity.position in positions:
+			targets.append(entity)
+	return targets
 	
 func remove_item() -> void:
 	queue_free()

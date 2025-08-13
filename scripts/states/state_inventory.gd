@@ -7,26 +7,28 @@ func _init():
 
 func _input(event):
 	if _state_machine.is_current_state(self.name):
+		
 		if Input.is_action_just_pressed("ui_left"): 
 			_inventory.switch_selected_item(-1)
+			
 		if Input.is_action_just_pressed("ui_right"): 
 			_inventory.switch_selected_item(1)
+			
 		if Input.is_action_just_pressed("ui_pickup"):
-			_state_machine.change_state('ACTIVE')
+			state_active()
 			var action = _inventory.use_selected_item()
-			if !action: 
-				_state_machine.change_state('IDLE')
-			print("resetting inventory state")
 			_inventory.reset_state()
+			if !action: state_idle()
+			
 		if Input.is_action_just_pressed("ui_inventory"):
 			_inventory.reset_state()
-			_state_machine.change_state('IDLE')
+			state_idle()
 
 func _on_state_changed(state:String, data:Dictionary) -> void:
 	if state == self.name.to_upper():
 		
 		if _inventory.is_inventory_empty():
-			_state_machine.change_state('IDLE')
+			state_idle()
 			return
 		
 		self.set_process_input(true)

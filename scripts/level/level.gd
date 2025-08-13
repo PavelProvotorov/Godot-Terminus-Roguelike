@@ -149,14 +149,15 @@ func populate_level():
 		"Sludge": 0,
 		"Infected": 0,
 		"Stalker": 0,
-		"Scout": 0,
+		"Scout": 100,
 		"Templar": 0,
 		"Zealot": 0,
 	}, 3, 5)
 	add_items({
-		"Bandage": 100,
+		"Bandage": 5,
 		"Ammo": 5,
 		"Grenade": 5,
+		"FragGrenade": 100,
 		"Medkit": 5,
 		"Teleporter": 5,
 		"ShieldGenerator": 5,

@@ -278,11 +278,6 @@ func generator_add_room_arches() -> void:
 					var direction_to = floor_tiles[0].direction_to(floor_tiles[1])
 					if is_horizontal(direction_to) or is_vertical(direction_to):
 						_tilemap.set_cellv(cell, TILES.FLOOR)
-#				var floor_count = util_count_nearby_tiles_8(cell, [TILES.FLOOR])
-#				var wall_count = util_count_nearby_tiles_4(cell, [TILES.WALL, TILES.DOOR])
-#
-#				if floor_count > 4 and floor_count <= 5 and wall_count == 2:
-#					_tilemap.set_cellv(cell, TILES.FLOOR)
 		else:
 			break
 

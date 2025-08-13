@@ -1,8 +1,7 @@
 extends Weapon
 
 func _init():
-	damage = 3
-	offset_damage = 1
+	shot_damage = 3
 	shot_range = 2
 	shot_count = 1
 	ammo_consumption = 1
@@ -26,3 +25,8 @@ func get_shot_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 		]))
 		
 	return targets
+
+func get_shot_damage(distance:int, offset:int) -> int:
+	if offset == 0:
+		return shot_damage
+	return shot_damage - 2

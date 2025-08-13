@@ -13,3 +13,15 @@ func _on_state_changed(state: String, data: Dictionary) -> void:
 		self.set_process_input(true)
 	else:
 		self.set_process_input(false)
+
+func state_idle() -> void:
+	_state_machine.change_state('IDLE')
+	
+func state_active() -> void:
+	_state_machine.change_state('ACTIVE')
+	
+func state_ranged() -> void:
+	_state_machine.change_state('RANGED')
+	
+func state_inventory() -> void:
+	_state_machine.change_state('INVENTORY')

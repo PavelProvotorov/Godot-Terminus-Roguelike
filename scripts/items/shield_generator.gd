@@ -1,7 +1,7 @@
 extends Item
 
 func _ready():
-	description = "<Generator>: A powerful protective device which generates a damage deflecting shield around the user;"
+	description = "<Shield Generator>: A powerful protective device which generates a damage deflecting shield around the user;"
 	set_item_consumable()
 
 func use() -> bool:

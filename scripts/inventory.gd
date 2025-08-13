@@ -18,13 +18,15 @@ func pickup_item_and_use(item:Item, owner:Node) -> bool:
 		return true
 	return false
 
-func pickup_item(item:Item, owner:Node) -> void:
+func pickup_item(item:Item, owner:Node) -> bool:
 	if stored_items.size() < max_item_count:
 		item.get_parent().remove_child(item)
 		item.rect_position = Vector2.ZERO
 		item.set_item_owner(owner)
 		_grid.add_child(item)
 		stored_items.append(item)
+		return true
+	return false
 
 func switch_selected_item(index:int) -> void:
 	

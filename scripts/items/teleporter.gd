@@ -9,4 +9,4 @@ func use() -> bool:
 	_owner.position = cells.pick_random() * 8
 	_owner.update_fog()
 	remove_item()
-	return true
+	return false

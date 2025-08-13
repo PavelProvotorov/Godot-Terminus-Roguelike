@@ -7,6 +7,7 @@ onready var nearby_free_cells: Array = []
 onready var path: Array = []
 onready var spawn: bool = false
 onready var previous_position: Vector2 = position
+onready var _utility:Utility = Utility.new()
 
 onready var BEHAVIOUR_TYPE = {
 	"IDLE": {
@@ -99,10 +100,6 @@ func process_behaviours() -> void:
 	print("SKIP")
 	end_turn()
 
-func call_lifecycle_hook(hook:FuncRef):
-	if hook is FuncRef and hook.is_valid():
-		return hook.call_func()
-
 func get_melee_data() -> Dictionary:
 	return {
 		"start": self.position,
@@ -187,7 +184,7 @@ func handle_movement(data:Dictionary) -> void:
 		"new_pos": finish / grid_size,
 	})
 	
-	var hook = call_lifecycle_hook(LIFECYCLE.POST_MOVEMENT)
+	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_MOVEMENT)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 	
@@ -205,7 +202,7 @@ func handle_melee_attack(data:Dictionary) -> void:
 	set_sprite_direction(start, finish)
 	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_damage))
 	yield(play_melee_animation(start, finish), 'completed')
-	var hook = call_lifecycle_hook(LIFECYCLE.POST_MELEE_ATTACK)
+	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_MELEE_ATTACK)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 
@@ -216,7 +213,7 @@ func handle_ranged_attack(data:Dictionary) -> void:
 	set_sprite_direction(start, finish)
 	target.receive_damage(ranged_damage)
 	yield(play_ranged_animation(start, finish), 'completed')
-	var hook = call_lifecycle_hook(LIFECYCLE.POST_RANGED_ATTACK)
+	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_RANGED_ATTACK)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 	
@@ -262,7 +259,7 @@ func _on_level_fog_updated(cells:Array) -> void:
 
 func _on_start_turn() -> void:
 	path = (_level.find_path(self.position, target.position))
-	var hook = call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
+	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	process_behaviours()
 	

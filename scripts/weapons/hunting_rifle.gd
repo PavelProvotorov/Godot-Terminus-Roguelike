@@ -1,13 +1,12 @@
 extends Weapon
 
 func _init():
-	damage = 2
-	offset_damage = 1
+	shot_damage = 2
 	shot_range = 3
 	shot_count = 1
 	ammo_consumption = 1
 	
-func get_damage(distance:int) -> int:
+func get_shot_damage(distance:int, offset:int) -> int:
 	if distance == shot_range:
-		return damage + 1
-	return damage
+		return shot_damage + 1
+	return shot_damage

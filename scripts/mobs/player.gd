@@ -32,7 +32,7 @@ func _ready():
 	visibility = 4
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
-	_ranged_weapon = Resources.weapon_hunting_rifle.instance()
+	_ranged_weapon = Resources.weapon_shotgun.instance()
 	_ranged_weapon._tree = get_tree()
 
 func set_camera_limits() -> void:
@@ -58,10 +58,10 @@ func check_targets_in_range(check_range:int) -> void:
 			if collider.is_in_group("ENEMY"):
 				collider.add_target_animation()
 				
-func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) -> bool:
+func throw_in_direction(direction:Vector2, item:Item) -> bool:
 	
 	var modified_visibility = _buff_manager.get_modified_visibility(
-		min(visibility, throw_range)
+		min(visibility, item.get_throw_range())
 	)
 	var visible_range = max(min_visibility, modified_visibility)
 	
@@ -70,14 +70,22 @@ func throw_in_direction(direction:Vector2, throw_range:int, throw_damage:int) ->
 	
 	if _raycast.is_colliding():
 		var collider = _raycast.get_collider()
-		if collider.is_in_group("ENEMY"):
-			handle_throw_attack({
-				"start": self.position,
-				"finish": (self.position - (-direction)),
-				"target": collider,
-				"throw_damage": throw_damage
-			})
-			return true
+		
+		if not collider.is_in_group("ENEMY"):
+			return false
+			
+		var targets = item.get_throw_targets(
+			self.position, collider.position
+		)
+			
+		handle_throw_attack(
+			self.position, 
+			(self.position - (-direction)),
+			targets,
+			collider.position,
+			item
+		)
+		return true
 	return false
 	
 func shoot_in_direction(direction: Vector2) -> bool:
@@ -185,24 +193,26 @@ func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_p
 	
 	for target in targets:
 		
-		var target_pos = target.position
-		var distance = self.position.distance_to(impact_pos)/ grid_size
+		var offset = target.position.distance_to(impact_pos) / grid_size
+		var distance = self.position.distance_to(impact_pos) / grid_size
 		
-		if target is Entity2D and target_pos == impact_pos:
-			target.receive_damage(_ranged_weapon.get_damage(distance))
-			
-		if target is Entity2D and target_pos != impact_pos:
-			target.receive_damage(_ranged_weapon.get_offset_damage(distance))
+		if target is Entity2D: 
+			target.receive_damage(_ranged_weapon.get_shot_damage(distance, offset))
 			
 	return yield(play_ranged_animation(start, finish), 'completed')
 
-func handle_throw_attack(data:Dictionary) -> void:
-	var start = data.start
-	var finish = data.finish
-	var target = data.target
+func handle_throw_attack(start:Vector2, finish:Vector2, targets:Array, impact_pos:Vector2, item:Item) -> void:
 	set_sprite_direction(start, finish)
 	get_tree().call_group("ENEMY", "remove_target_animation")
-	target.receive_damage(data.get('throw_damage', 0))
+	
+	for target in targets:
+		
+		var offset = target.position.distance_to(impact_pos) / grid_size
+		var distance = self.position.distance_to(impact_pos) / grid_size
+		
+		if target is Entity2D:
+			target.receive_damage(item.get_throw_damage(distance, offset))
+			
 	yield(play_ranged_animation(start, finish), 'completed')
 	end_turn()
 	
@@ -214,15 +224,18 @@ func handle_item_pickup() -> bool:
 		
 		var collider = _pickup.get_collider()
 		
-		if collider.is_in_group("ITEM") and collider.is_in_group('CONSUMABLE'):
-			_inventory.pickup_item(collider.get_parent(), self)
-			end_turn()
-			return true
+		if not collider.is_in_group("ITEM"):
+			return false
 		
-		if collider.is_in_group("ITEM") and collider.is_in_group('INSTANT'):
-			_inventory.pickup_item_and_use(collider.get_parent(), self)
-			end_turn()
-			return true
+		if collider.is_in_group('CONSUMABLE'):
+			if _inventory.pickup_item(collider.get_parent(), self):
+				end_turn()
+				return true
+		
+		if collider.is_in_group('INSTANT'):
+			if _inventory.pickup_item_and_use(collider.get_parent(), self):
+				return true
+				
 	return false
 	
 func throw_state_bind(caller:Node, callback:String, data:Dictionary) -> void:
