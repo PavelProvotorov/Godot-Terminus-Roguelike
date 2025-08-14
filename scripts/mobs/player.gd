@@ -32,7 +32,7 @@ func _ready():
 	visibility = 4
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
-	_ranged_weapon = Resources.weapon_tactical_shotgun.instance()
+	_ranged_weapon = Resources.weapon_sniper_rifle.instance()
 	_ranged_weapon._tree = get_tree()
 
 func set_camera_limits() -> void:

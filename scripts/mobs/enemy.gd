@@ -30,6 +30,11 @@ onready var BEHAVIOUR_TYPE = {
 		"handle": funcref(self, "handle_idle"),
 		"data": {},
 	},
+	"RALLY": {
+		"check": funcref(self, "rally_behaviour"),
+		"handle": funcref(self, "handle_rally_behaviour"),
+		"data": {},
+	},
 	"WANDER": {
 		"check": funcref(self, "wander_behaviour"),
 		"handle": funcref(self, "handle_wander_behaviour"),
@@ -159,6 +164,12 @@ func wander_behaviour() -> bool:
 		return true
 	return false
 
+func rally_behaviour() -> bool:
+	if path.size() == 0:
+		print("RALLY")
+		return true
+	return false
+
 func idle_behaviour() -> bool:
 	if path.size() == 0:
 		print("IDLE")
@@ -179,21 +190,15 @@ func handle_movement(data:Dictionary) -> void:
 	else:
 		yield(play_move_animation(start, finish), 'completed')
 	
-	post_handle_movement({
-		"prev_pos": start / grid_size,
-		"new_pos": finish / grid_size,
-	})
+	update_pathfinding(start / grid_size, finish / grid_size)
 	
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_MOVEMENT)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 	
-func post_handle_movement(data:Dictionary) -> void:
-	previous_position = data.get('prev_pos', position)
-	_level.set_pathfinding_points(
-		[data.get('new_pos', Vector2.ZERO)],
-		[data.get('prev_pos', Vector2.ZERO)]
-	)
+func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
+	previous_position = prev_pos
+	_level.set_pathfinding_points([new_pos], [prev_pos])
 
 func handle_melee_attack(data:Dictionary) -> void:
 	var start = data.start
@@ -232,10 +237,35 @@ func handle_wander_behaviour(data:Dictionary) -> void:
 		else:
 			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
 		
-		post_handle_movement({
-			"prev_pos": start,
-			"new_pos": finish,
-		})
+		update_pathfinding(start, finish)
+	end_turn()
+
+func handle_rally_behaviour(data:Dictionary) -> void:
+	var nearby_cells:Array = get_nearby_cells()
+	var move_to_cell:Vector2  = self.position / grid_size
+	var shortest_distance:int = round((self.position / grid_size).distance_to(target.position / grid_size))
+	
+	if nearby_cells.size() > 0:
+		
+		for cell in nearby_cells:
+			var distance = cell.distance_to(target.position / grid_size)
+			
+			if distance < shortest_distance:
+				shortest_distance = distance
+				move_to_cell = cell
+		
+		if move_to_cell == self.position / grid_size and shortest_distance > 1:
+			move_to_cell = nearby_cells.pick_random()
+		
+		var start = position / grid_size
+		var finish = move_to_cell
+		
+		if is_invisible() or is_path_hidden(start, finish):
+			self.position = finish * grid_size
+		else:
+			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
+		
+		update_pathfinding(start, finish)
 	end_turn()
 
 func handle_spawning(data:Dictionary) -> void:
@@ -245,10 +275,7 @@ func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vecto
 	instance.set_active()
 	_level.spawn_enemy(start / grid_size, instance)
 	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
-	post_handle_movement({
-		"prev_pos": finish / grid_size,
-		"new_pos": finish / grid_size,
-	})
+	update_pathfinding(finish / grid_size, finish / grid_size)
 	
 func _on_level_fog_updated(cells:Array) -> void:
 	if cells.has(self.position / grid_size) && not (self.is_in_group("ACTIVE")):
@@ -258,6 +285,10 @@ func _on_level_fog_updated(cells:Array) -> void:
 		self.remove_from_group("WANDERING")
 
 func _on_start_turn() -> void:
+	
+	if not _level.node_exists(target):
+		return
+		
 	path = (_level.find_path(self.position, target.position))
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
 	if hook is GDScriptFunctionState: yield(hook, "completed")

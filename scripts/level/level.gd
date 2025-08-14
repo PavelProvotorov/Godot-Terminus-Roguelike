@@ -134,8 +134,8 @@ func populate_level():
 	add_enemies({
 		"Grunt": 0,
 		"Bloater": 0,
-		"Colony": 100,
-		"MindFlayer": 0,
+		"Colony": 0,
+		"MindFlayer": 100,
 		"Hydra": 0,
 		"Abomination": 0,
 		"Parasite": 0,
@@ -149,15 +149,15 @@ func populate_level():
 		"Sludge": 0,
 		"Infected": 0,
 		"Stalker": 0,
-		"Scout": 100,
+		"Scout": 0,
 		"Templar": 0,
 		"Zealot": 0,
-	}, 3, 5)
+	}, 5, 10)
 	add_items({
 		"Bandage": 5,
 		"Ammo": 5,
-		"Grenade": 5,
-		"FragGrenade": 100,
+		"Grenade": 100,
+		"FragGrenade": 5,
 		"Medkit": 5,
 		"Teleporter": 5,
 		"ShieldGenerator": 5,
@@ -287,6 +287,9 @@ func _on_end_turn(node:Node) -> void:
 	print("----------------------------------")
 	print("Turn Ended By: ", node)
 	_queue.process(_tree, node)
+
+func node_exists(node:Node) -> bool:
+	return _tilemap_logic.has_node(str(node))
 
 func get_spawn_chance(percentage:int) -> bool:
   return percentage > 0 and randi() % 100 < percentage

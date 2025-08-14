@@ -55,9 +55,9 @@ func get_throw_damage(distance:int, offset:int) -> int:
 	return throw_damage
 	
 func get_throw_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
-	var targets:Array = [impact_pos]
+	var targets:Array = []
 	targets.append_array(
-		match_pos_to_target(targets)
+		match_pos_to_target([impact_pos])
 	)
 	return targets
 	

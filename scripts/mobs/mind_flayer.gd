@@ -18,7 +18,4 @@ func _post_ranged_attack_hook() -> void:
 	target.position = self.position
 	self.position = target_pos
 	
-	post_handle_movement({
-		"prev_pos": self_pos / grid_size,
-		"new_pos": target_pos / grid_size,
-	})
+	update_pathfinding(self_pos / grid_size, target_pos / grid_size)
