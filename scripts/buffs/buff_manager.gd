@@ -10,6 +10,7 @@ onready var BUFF_LIST:Dictionary = {
 	'strength': load("res://scenes/buffs/BuffStrength.tscn"),
 	'blindness': load("res://scenes/buffs/BuffBlindness.tscn"),
 	'poison': load("res://scenes/buffs/BuffPoison.tscn"),
+	'bleed': load("res://scenes/buffs/BuffBleed.tscn"),
 	'regeneration': load("res://scenes/buffs/BuffRegeneration.tscn"),
 }
 

@@ -25,14 +25,14 @@ signal throw_successful
 
 func _ready():
 	self.health = 50
-	self.ammo = 99
+	self.ammo = 10
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
 	visibility = 4
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
-	_ranged_weapon = Resources.weapon_sawn_off.instance()
+	_ranged_weapon = Resources.weapon_revolver.instance()
 	_ranged_weapon._tree = get_tree()
 
 func set_camera_limits() -> void:
@@ -98,7 +98,7 @@ func shoot_in_direction(direction: Vector2) -> bool:
 	
 	for idx in _ranged_weapon.get_shot_count():
 		
-		var new_ammo_count = (ammo - _ranged_weapon.ammo_consumption)
+		var new_ammo_count = _ranged_weapon.get_ammo_consumption(self.ammo)
 		
 		if new_ammo_count < 0:
 			break

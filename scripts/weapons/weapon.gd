@@ -48,3 +48,6 @@ func get_shot_range() -> int:
 
 func get_shot_damage(distance:int, offset:int) -> int:
 	return shot_damage
+	
+func get_ammo_consumption(ammo:int) -> int:
+	return ammo - ammo_consumption
