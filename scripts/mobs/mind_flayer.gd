@@ -18,4 +18,5 @@ func _post_ranged_attack_hook() -> void:
 	target.position = self.position
 	self.position = target_pos
 	
+	target.update_fog()
 	update_pathfinding(self_pos / grid_size, target_pos / grid_size)

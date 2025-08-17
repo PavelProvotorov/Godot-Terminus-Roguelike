@@ -59,10 +59,17 @@ func reveal(tile : Vector2, quadrant : Quadrant) -> void:
 	mark_visible(result)
 
 func mark_visible(tile : Vector2) -> void:
-	if distance(center, tile) > max_distance:
+	var distance = distance(center, tile)
+	
+	if distance > max_distance:
 		return
-	_tilemap_fog.set_cellv(tile, -1)
+	
 	visible_cells.append(tile)
+	
+	if round(distance(center, tile)) == max_distance:
+		_tilemap_fog.set_cellv(tile, 1)
+	else:
+		_tilemap_fog.set_cellv(tile, -1)
 
 func is_wall(tile, quadrant : Quadrant) -> bool:
 	if not tile: return false

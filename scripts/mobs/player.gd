@@ -169,7 +169,7 @@ func process_tilemap_collision(pos:Vector2) -> void:
 			pass
 
 func handle_idle(data:Dictionary) -> void:
-	update_fog()
+#	update_fog()
 	end_turn()
 
 func handle_movement(data:Dictionary) -> void:
