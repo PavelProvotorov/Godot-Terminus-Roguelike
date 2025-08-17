@@ -11,6 +11,7 @@ onready var debug_creep = preload("res://scenes/mobs/Creep.tscn")
 onready var debug_grunt = preload("res://scenes/mobs/Grunt.tscn")
 onready var debug_goo = preload("res://scenes/mobs/Goo.tscn")
 
+onready var weapon_sawn_off = load("res://scenes/weapons/SawnOff.tscn")
 onready var weapon_shotgun = load("res://scenes/weapons/Shotgun.tscn")
 onready var weapon_tactical_shotgun = load("res://scenes/weapons/TacticalShotgun.tscn")
 onready var weapon_hunting_rifle = load("res://scenes/weapons/HuntingRifle.tscn")

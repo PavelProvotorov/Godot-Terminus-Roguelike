@@ -132,10 +132,10 @@ func generate_level():
 func populate_level():
 	clear_tilemap_children(_tilemap_logic)
 	add_enemies({
-		"Grunt": 0,
+		"Grunt": 100,
 		"Bloater": 0,
-		"Colony": 0,
-		"MindFlayer": 100,
+		"Colony": 100,
+		"MindFlayer": 0,
 		"Hydra": 0,
 		"Abomination": 0,
 		"Parasite": 0,
@@ -143,9 +143,9 @@ func populate_level():
 		"Lurker": 0,
 		"Behemoth": 0,
 		"Horror": 0,
-		"Wart": 0,
-		"Infestinator": 0,
-		"Creep": 0,
+		"Wart": 100,
+		"Infestinator": 100,
+		"Creep": 100,
 		"Sludge": 0,
 		"Infected": 0,
 		"Stalker": 0,

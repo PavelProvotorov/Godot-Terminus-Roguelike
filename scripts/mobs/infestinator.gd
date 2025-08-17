@@ -15,10 +15,10 @@ func _ready():
 func _post_ranged_attack_hook() -> void:
 	if not get_chance(25):
 		return
-		
-	target.add_buff('blindness')
-	target.update_fog()
-	spawn_creep() 
+	
+	if target.add_buff('blindness'):
+		target.update_fog()
+		spawn_creep() 
 
 func _post_melee_attack_hook() -> void:
 	if not get_chance(25):
