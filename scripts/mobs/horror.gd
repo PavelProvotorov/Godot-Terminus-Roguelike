@@ -9,8 +9,8 @@ func _ready():
 		BEHAVIOUR_TYPE.MOVE,
 	]
 	attack_range = 1
-	health = 1
-	melee_damage = 0
+	health = 5
+	melee_damage = 2
 	setup()
 
 func _turn_started_hook():

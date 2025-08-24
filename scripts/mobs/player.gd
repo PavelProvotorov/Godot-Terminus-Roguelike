@@ -2,7 +2,6 @@ extends Entity2D
 class_name Player
 
 onready var _inventory = get_tree().get_first_node_in_group("INVENTORY")
-onready var _ranged_weapon:Weapon
 onready var _move_raycast:RayCast2D = $MoveCast
 onready var _state_machine = $States
 onready var _camera = $Camera2D
@@ -32,8 +31,6 @@ func _ready():
 	visibility = 4
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 	set_camera_limits()
-	_ranged_weapon = Resources.weapon_revolver.instance()
-	_ranged_weapon._tree = get_tree()
 
 func set_camera_limits() -> void:
 	var rect = _level.level_rect
@@ -89,16 +86,16 @@ func throw_in_direction(direction:Vector2, item:Item) -> bool:
 	return false
 	
 func shoot_in_direction(direction: Vector2) -> bool:
-	
+	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
 	var modified_visibility = _buff_manager.get_modified_visibility(
-		min(visibility, _ranged_weapon.get_shot_range())
+		min(visibility, ranged_weapon.get_shot_range())
 	)
 	var visible_range = max(min_visibility, modified_visibility)
 	var weapon_shot:bool = false
 	
-	for idx in _ranged_weapon.get_shot_count():
+	for idx in ranged_weapon.get_shot_count():
 		
-		var new_ammo_count = _ranged_weapon.get_ammo_consumption(self.ammo)
+		var new_ammo_count = ranged_weapon.get_ammo_consumption(self.ammo)
 		
 		if new_ammo_count < 0:
 			break
@@ -112,7 +109,7 @@ func shoot_in_direction(direction: Vector2) -> bool:
 			if not collider.is_in_group("ENEMY"):
 				break
 			
-			var targets  = _ranged_weapon.get_shot_targets(
+			var targets  = ranged_weapon.get_shot_targets(
 				self.position,
 				collider.position
 			)
@@ -169,7 +166,6 @@ func process_tilemap_collision(pos:Vector2) -> void:
 			pass
 
 func handle_idle(data:Dictionary) -> void:
-#	update_fog()
 	end_turn()
 
 func handle_movement(data:Dictionary) -> void:
@@ -188,6 +184,7 @@ func handle_melee_attack(data:Dictionary) -> void:
 	end_turn()
 
 func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_pos:Vector2) -> GDScriptFunctionState:
+	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
 	set_sprite_direction(start, finish)
 	get_tree().call_group("ENEMY", "remove_target_animation")
 	
@@ -197,7 +194,7 @@ func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_p
 		var distance = self.position.distance_to(impact_pos) / grid_size
 		
 		if target is Entity2D: 
-			target.receive_damage(_ranged_weapon.get_shot_damage(distance, offset))
+			target.receive_damage(ranged_weapon.get_shot_damage(distance, offset))
 			
 	return yield(play_ranged_animation(start, finish), 'completed')
 
@@ -223,20 +220,26 @@ func handle_item_pickup() -> bool:
 	if _pickup.is_colliding():
 		
 		var collider = _pickup.get_collider()
+		var parent = collider.get_parent()
 		
-		if not collider.is_in_group("ITEM"):
+		if not parent is Item:
 			return false
-		
-		if collider.is_in_group('CONSUMABLE'):
+
+		if parent is Consumable:
+			if _inventory.pickup_item_and_use(collider.get_parent(), self):
+				return true
+			
+		if parent is Item:
 			if _inventory.pickup_item(collider.get_parent(), self):
 				end_turn()
 				return true
-		
-		if collider.is_in_group('INSTANT'):
-			if _inventory.pickup_item_and_use(collider.get_parent(), self):
-				return true
 				
 	return false
+
+func is_position_occupied() -> bool:
+	_pickup.cast_to = Vector2.ZERO
+	_pickup.force_raycast_update()
+	return _pickup.is_colliding()
 	
 func throw_state_bind(caller:Node, callback:String, data:Dictionary) -> void:
 	connect('throw_successful', caller, callback, [], CONNECT_ONESHOT)
@@ -245,8 +248,9 @@ func throw_state_bind(caller:Node, callback:String, data:Dictionary) -> void:
 func throw_state_notify(success:bool) -> void:
 	emit_signal("throw_successful", success)
 	
-func get_attack_range() -> int:
-	return _ranged_weapon.get_shot_range()
+func get_shot_range() -> int:
+	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
+	return ranged_weapon.get_shot_range()
 
 func set_ammo(value:int) -> void:
 	ammo = value

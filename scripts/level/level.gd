@@ -48,7 +48,7 @@ func _ready():
 	Events.connect("player_moved", self, "_on_player_moved")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
-	set_tileset(TILESET.DECO_5)
+	set_tileset(TILESET.DECO_4)
 	
 	add_player_instance()
 	generate_level()
@@ -132,37 +132,48 @@ func generate_level():
 func populate_level():
 	clear_tilemap_children(_tilemap_logic)
 	add_enemies({
-		"Grunt": 100,
+		"Grunt": 0,
 		"Bloater": 0,
-		"Colony": 100,
-		"MindFlayer": 0,
+		"Colony": 0,
+		"MindFlayer": 100,
 		"Hydra": 0,
 		"Abomination": 0,
 		"Parasite": 0,
 		"Insect": 0,
 		"Lurker": 0,
 		"Behemoth": 0,
-		"Horror": 0,
-		"Wart": 100,
-		"Infestinator": 100,
-		"Creep": 100,
-		"Sludge": 0,
-		"Infected": 0,
+		"Horror": 100,
+		"Wart": 0,
+		"Infestinator": 0,
+		"Creep": 0,
+		"Sludge": 100,
+		"Infected": 100,
 		"Stalker": 0,
 		"Scout": 0,
 		"Templar": 0,
 		"Zealot": 0,
-	}, 5, 10)
+	}, 0, 1)
 	add_items({
 		"Bandage": 5,
-		"Ammo": 5,
-		"Grenade": 100,
+		"Ammo": 100,
+		"Grenade": 5,
 		"FragGrenade": 5,
 		"Medkit": 5,
 		"Teleporter": 5,
 		"ShieldGenerator": 5,
 		"Adrenalin": 5,
-		"Steroids": 5,
+		"Steroids": 5
+	}, 3, 5)
+	app_weapons({
+		"AssaultRifle": 100,
+		"HuntingRifle": 100,
+		"Pistol": 100,
+		"Revolver": 0,
+		"SawnOff": 100,
+		"Shotgun": 100,
+		"SniperRifle": 100,
+		"Submachine": 100,
+		"TacticalShotgun": 100,
 	}, 3, 5)
 
 func add_player_instance() -> void:
@@ -209,6 +220,26 @@ func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
 			spawn_item(cell, item_instance)
 			free_cells.erase(cell)
 			items_added += 1
+
+func app_weapons(weapon_list: Dictionary, min_count:int, max_count:int) -> void:
+	var free_cells = get_floor_cells()
+	var weapon_list_size = weapon_list.size()
+	var weapons_count = rand_range(min_count, max_count)
+	var weapons_added = 0
+	
+	while weapons_added < weapons_count and free_cells.size() > 0:
+		
+		var cell = free_cells.pick_random()
+		var weapon = weapon_list.keys()[randi() % weapon_list_size]
+			
+		if get_spawn_chance(weapon_list.get(weapon)):
+			
+			var weapon_res = load("res://scenes/weapons/%s.tscn" % weapon)
+			var weapon_instance:Weapon = weapon_res.instance()
+			
+			spawn_item(cell, weapon_instance)
+			free_cells.erase(cell)
+			weapons_added += 1
 	
 func spawn_enemy(pos:Vector2, enemy:KinematicBody2D) -> void:
 	enemy.set_position(_tilemap_logic.map_to_world(pos))
@@ -218,7 +249,7 @@ func spawn_enemy(pos:Vector2, enemy:KinematicBody2D) -> void:
 	])
 	update()
 	
-func spawn_item(pos:Vector2, item:Item) -> void:
+func spawn_item(pos:Vector2, item:Control) -> void:
 	item.set_position(_tilemap_logic.map_to_world(pos))
 	_tilemap_logic.add_child(item)
 

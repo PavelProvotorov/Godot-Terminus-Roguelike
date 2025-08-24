@@ -1,19 +1,12 @@
-extends Control
+extends Item
 class_name Weapon
 
-onready var _static_body = $StaticBody2D
-var _utility:Utility = Utility.new()
-var _tree:SceneTree
+onready var _tree:SceneTree = get_tree()
 
 var shot_damage:int = 0
 var shot_range:int = 0
 var shot_count:int = 0
 var ammo_consumption:int = 1
-var grid_size:int = 8
-
-var LIFECYCLE = {
-	SHOT_TARGETS = funcref(self, "_on_get_shot_targets"),
-}
 
 func _ready():
 	add_to_group('WEAPON')

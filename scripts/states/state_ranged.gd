@@ -34,7 +34,7 @@ func _on_state_changed(state:String, data:Dictionary) -> void:
 		self.set_process_input(true)
 		_player.set_ranged_animation()
 		_player.check_targets_in_range(
-			_player.get_attack_range()
+			_player.get_shot_range()
 		)
 	else:
 		self.set_process_input(false)

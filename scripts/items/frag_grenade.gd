@@ -6,10 +6,9 @@ func _init():
 
 func _ready():
 	description = "<Frag Grenade>: A high-level combat explosive designed to inflict maximum damage in large impact area;"
-	set_item_consumable()
 
 func use() -> bool:
-	_owner.throw_state_bind(self, '_on_item_used', {
+	_owner.throw_state_bind(self, '_on_item_thrown', {
 		'throw_item': self
 	})
 	return true

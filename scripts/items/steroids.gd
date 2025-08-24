@@ -1,8 +1,7 @@
 extends Item
 
-func _ready():
+func _init():
 	description = "<Steroids>: A powerful enhancer which temporarily increases strength upon injection;"
-	set_item_consumable()
 
 func use() -> bool:
 	var buff_added = _owner.add_buff('strength')

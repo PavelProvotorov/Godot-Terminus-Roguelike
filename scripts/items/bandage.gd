@@ -1,7 +1,4 @@
-extends Item
-
-func _ready():
-	set_item_instant()
+extends Consumable
 
 func use() -> bool:
 	var buff_added = _owner.add_buff('regeneration')

@@ -20,6 +20,21 @@ func _input(event):
 			_inventory.reset_state()
 			if !action: state_idle()
 			
+		if Input.is_action_just_pressed("ui_skip"):
+			
+			if _player.is_position_occupied():
+				_inventory.reset_state()
+				state_idle()
+				return
+			
+			var action = _inventory.drop_selected_item(_player.position)
+			_inventory.reset_state()
+			
+			if action:
+				_player.end_turn()
+				return
+			state_idle()
+			
 		if Input.is_action_just_pressed("ui_inventory"):
 			_inventory.reset_state()
 			state_idle()

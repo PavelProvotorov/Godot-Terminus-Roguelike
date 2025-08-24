@@ -16,12 +16,11 @@ var grid_size:int = 8
 
 func _ready():
 	add_to_group('ITEM')
-	_static_body.add_to_group('ITEM')
 	
 func use() -> bool:
 	return false
 	
-func _on_item_used(success:bool) -> void:
+func _on_item_thrown(success:bool) -> void:
 	if success:
 		remove_item()
 	
