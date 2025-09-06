@@ -12,7 +12,7 @@ var min_item_count:int = 0
 
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
-	_ranged_weapon_slot.add_child(Resources.weapon_revolver.instance())
+	_ranged_weapon_slot.add_child(Resources.weapon_assault_rifle.instance())
 
 func pickup_item_and_use(item:Item, owner:Node) -> bool:
 	item.set_item_owner(owner)

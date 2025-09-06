@@ -15,8 +15,8 @@ signal state_changed(state, data)
 func change_state(state: String, data:Dictionary = {}) -> void:
 	if STATE.has(state):
 		current_state = state
-		self.emit_signal('state_changed', state.to_upper(), data)
 		print("CHANGED STATE TO: " + state)
+		self.emit_signal('state_changed', state.to_upper(), data)
 	else:
 		current_state = STATE.IDLE
 		self.emit_signal('state_changed', state.to_upper(), data)

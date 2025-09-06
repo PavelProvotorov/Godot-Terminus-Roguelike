@@ -9,6 +9,7 @@ onready var _tilemap_debris:TileMap = $Debris
 onready var _tilemap_base:TileMap = $Base
 onready var _tilemap_fog:TileMap = $Fog
 onready var level_rect = _tilemap_logic.get_used_rect()
+onready var _utility:Utility = Utility.new()
 
 onready var TILES = {
 	EMPTY = _tilemap_logic.tile_set.find_tile_by_name("TILE_EMPTY"),
@@ -48,7 +49,7 @@ func _ready():
 	Events.connect("player_moved", self, "_on_player_moved")
 	Events.connect("end_turn", self, "_on_end_turn")
 	
-	set_tileset(TILESET.DECO_4)
+	set_tileset(TILESET.DECO_3)
 	
 	add_player_instance()
 	generate_level()
@@ -131,66 +132,72 @@ func generate_level():
 
 func populate_level():
 	clear_tilemap_children(_tilemap_logic)
-	add_enemies({
-		"Grunt": 0,
-		"Bloater": 0,
-		"Colony": 0,
-		"MindFlayer": 100,
-		"Hydra": 0,
-		"Abomination": 0,
-		"Parasite": 0,
-		"Insect": 0,
-		"Lurker": 0,
-		"Behemoth": 0,
-		"Horror": 100,
-		"Wart": 0,
-		"Infestinator": 0,
-		"Creep": 0,
-		"Sludge": 100,
-		"Infected": 100,
-		"Stalker": 0,
-		"Scout": 0,
-		"Templar": 0,
-		"Zealot": 0,
-	}, 0, 1)
-	add_items({
-		"Bandage": 5,
-		"Ammo": 100,
-		"Grenade": 5,
-		"FragGrenade": 5,
-		"Medkit": 5,
-		"Teleporter": 5,
-		"ShieldGenerator": 5,
-		"Adrenalin": 5,
-		"Steroids": 5
-	}, 3, 5)
-	app_weapons({
-		"AssaultRifle": 100,
-		"HuntingRifle": 100,
-		"Pistol": 100,
-		"Revolver": 0,
-		"SawnOff": 100,
-		"Shotgun": 100,
-		"SniperRifle": 100,
-		"Submachine": 100,
-		"TacticalShotgun": 100,
-	}, 3, 5)
+	add_entities({
+		'enemies': {
+			"Grunt": 0,
+			"Bloater": 0,
+			"Colony": 0,
+			"MindFlayer": 0,
+			"Hydra": 100,
+			"Abomination": 0,
+			"Parasite": 0,
+			"Insect": 0,
+			"Lurker": 0,
+			"Behemoth": 100,
+			"Horror": 0,
+			"Wart": 100,
+			"Infestinator": 100,
+			"Creep": 0,
+			"Sludge": 0,
+			"Infected": 0,
+			"Stalker": 0,
+			"Scout": 0,
+			"Templar": 0,
+			"Zealot": 0,
+		},
+		'items': {
+			"Bandage": 5,
+			"Ammo": 100,
+			"Grenade": 5,
+			"FragGrenade": 5,
+			"Medkit": 5,
+			"Teleporter": 5,
+			"ShieldGenerator": 5,
+			"Adrenalin": 5,
+			"Steroids": 5
+		},
+		'weapons': {
+			"AssaultRifle": 100,
+			"HuntingRifle": 100,
+			"Pistol": 100,
+			"Revolver": 0,
+			"SawnOff": 100,
+			"Shotgun": 100,
+			"SniperRifle": 100,
+			"Submachine": 100,
+			"TacticalShotgun": 100,
+		}
+	})
 
 func add_player_instance() -> void:
 	var player = Resources.debug_player.instance()
 	player.set_position(Vector2(0, 0))
 	_tilemap_logic.add_child(player)
-
-func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int) -> void:
+	
+func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
-	var enemy_list_size = enemy_list.size()
+	add_enemies(entities.get('enemies', {}), 5, 10, free_cells)
+	add_items(entities.get('items', {}), 3, 5, free_cells)
+	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
+
+func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var enemies_count = rand_range(min_count, max_count)
 	var enemies_added = 0
 	
 	while enemies_added < enemies_count and free_cells.size() > 0:
 		
 		var cell = free_cells.pick_random()
-		var enemy = enemy_list.keys()[randi() % enemy_list_size]
+		var enemy = enemy_list.keys()[randi() % enemy_list.size()]
 			
 		if get_spawn_chance(enemy_list.get(enemy)):
 			
@@ -201,16 +208,14 @@ func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int) -> void:
 			free_cells.erase(cell)
 			enemies_added += 1
 
-func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
-	var free_cells = get_floor_cells()
-	var item_list_size = item_list.size()
+func add_items(item_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var items_count = rand_range(min_count, max_count)
 	var items_added = 0
 	
 	while items_added < items_count and free_cells.size() > 0:
 		
 		var cell = free_cells.pick_random()
-		var item = item_list.keys()[randi() % item_list_size]
+		var item = item_list.keys()[randi() % item_list.size()]
 			
 		if get_spawn_chance(item_list.get(item)):
 			
@@ -221,16 +226,14 @@ func add_items(item_list: Dictionary, min_count:int, max_count:int) -> void:
 			free_cells.erase(cell)
 			items_added += 1
 
-func app_weapons(weapon_list: Dictionary, min_count:int, max_count:int) -> void:
-	var free_cells = get_floor_cells()
-	var weapon_list_size = weapon_list.size()
+func app_weapons(weapon_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var weapons_count = rand_range(min_count, max_count)
 	var weapons_added = 0
 	
 	while weapons_added < weapons_count and free_cells.size() > 0:
 		
 		var cell = free_cells.pick_random()
-		var weapon = weapon_list.keys()[randi() % weapon_list_size]
+		var weapon = weapon_list.keys()[randi() % weapon_list.size()]
 			
 		if get_spawn_chance(weapon_list.get(weapon)):
 			

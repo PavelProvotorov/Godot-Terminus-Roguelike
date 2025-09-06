@@ -23,8 +23,8 @@ enum STATE {
 signal throw_successful
 
 func _ready():
-	self.health = 50
-	self.ammo = 10
+	self.health = 99
+	self.ammo = 2
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
@@ -39,7 +39,8 @@ func set_camera_limits() -> void:
 	_camera.limit_top = ((rect.position.y) * grid_size)
 	_camera.limit_bottom = ((rect.end.y) * grid_size)
 	
-func check_targets_in_range(check_range:int) -> void:
+func mark_targets_in_range(check_range:int) -> bool:
+	var target_marked:bool = false
 	
 	var modified_visibility = _buff_manager.get_modified_visibility(
 		min(visibility, check_range)
@@ -54,7 +55,9 @@ func check_targets_in_range(check_range:int) -> void:
 			var collider = _raycast.get_collider()
 			if collider.is_in_group("ENEMY"):
 				collider.add_target_animation()
-				
+				target_marked = true
+	return target_marked
+
 func throw_in_direction(direction:Vector2, item:Item) -> bool:
 	
 	var modified_visibility = _buff_manager.get_modified_visibility(
@@ -94,10 +97,8 @@ func shoot_in_direction(direction: Vector2) -> bool:
 	var weapon_shot:bool = false
 	
 	for idx in ranged_weapon.get_shot_count():
-		
-		var new_ammo_count = ranged_weapon.get_ammo_consumption(self.ammo)
-		
-		if new_ammo_count < 0:
+
+		if is_ammo_depleted():
 			break
 		
 		_raycast.cast_to = (direction * visible_range)
@@ -113,7 +114,7 @@ func shoot_in_direction(direction: Vector2) -> bool:
 				self.position,
 				collider.position
 			)
-			self.ammo = new_ammo_count
+			self.ammo = ranged_weapon.get_ammo_consumption(self.ammo)
 			yield(handle_ranged_attack(position, (position - (-direction)), targets, collider.position), 'completed')
 			weapon_shot = true
 			
@@ -259,6 +260,16 @@ func set_ammo(value:int) -> void:
 func set_health(value:int) -> void:
 	health = value
 	Events.emit_signal("player_health_changed", value)
+	
+func is_ammo_depleted() -> bool:
+	if self.ammo == 0:
+		return true
+		
+	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
+	if ranged_weapon.get_ammo_consumption(self.ammo) < 0:
+		return true
+	
+	return false
 
 func _on_level_generation_complete(entrance:Vector2) -> void:
 	self.position = entrance

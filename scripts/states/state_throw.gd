@@ -52,10 +52,12 @@ func _on_state_changed(state:String, data:Dictionary) -> void:
 	if state == self.name.to_upper():
 		self.set_process_input(true)
 		set_variables(data)
+		
+		if not _player.mark_targets_in_range(throw_item.get_throw_range()):
+			state_idle()
+			return
+		
 		_player.set_throw_animation()
-		_player.check_targets_in_range(
-			throw_item.get_throw_range()
-		)
 	else:
 		self.set_process_input(false)
 

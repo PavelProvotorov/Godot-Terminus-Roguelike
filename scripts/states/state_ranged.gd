@@ -32,9 +32,15 @@ func _input(event):
 func _on_state_changed(state:String, data:Dictionary) -> void:
 	if state == self.name.to_upper():
 		self.set_process_input(true)
+		
+		if _player.is_ammo_depleted():
+			state_idle()
+			return
+			
+		if not _player.mark_targets_in_range(_player.get_shot_range()):
+			state_idle()
+			return
+		
 		_player.set_ranged_animation()
-		_player.check_targets_in_range(
-			_player.get_shot_range()
-		)
 	else:
 		self.set_process_input(false)

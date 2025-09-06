@@ -2,6 +2,7 @@ extends Node
 class_name ShadowCasting2D
 
 var max_distance:int = 0
+var prev_max_distance:int = 0
 var center:Vector2 = Vector2(0, 0)
 var visible_cells:Array = []
 
@@ -38,6 +39,7 @@ func reset_fog() -> void:
 
 func update(center:Vector2, max_distance:int) -> Array:
 	self.center = center
+	self.prev_max_distance = self.max_distance
 	self.max_distance = max_distance
 	
 	for cell in visible_cells:
@@ -65,8 +67,8 @@ func mark_visible(tile : Vector2) -> void:
 		return
 	
 	visible_cells.append(tile)
-	
-	if round(distance(center, tile)) == max_distance:
+		
+	if prev_max_distance < max_distance and round(distance(center, tile)) == max_distance:
 		_tilemap_fog.set_cellv(tile, 1)
 	else:
 		_tilemap_fog.set_cellv(tile, -1)
