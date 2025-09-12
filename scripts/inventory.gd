@@ -4,7 +4,6 @@ class_name Inventory
 onready var _description = null
 onready var _grid = $GridContainer
 onready var _ranged_weapon_slot = $RangedWeaponSlot
-onready var _level:Level = get_tree().get_first_node_in_group("LEVEL")
 
 var selected_item:Item = null
 var max_item_count:int = 6
@@ -13,7 +12,7 @@ var min_item_count:int = 0
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
 	_ranged_weapon_slot.add_child(Resources.weapon_assault_rifle.instance())
-
+	
 func pickup_item_and_use(item:Item, owner:Node) -> bool:
 	item.set_item_owner(owner)
 	if item.use():
@@ -114,8 +113,11 @@ func equip_ranged_weapon(new_weapon:Weapon) -> void:
 	
 	_ranged_weapon_slot.add_child(new_weapon)
 	_grid.add_child(current_weapon)
+	
+	new_weapon.use()
 
 func drop_selected_item(pos:Vector2) -> bool:
+	var _level:Level = get_tree().get_first_node_in_group("LEVEL")
 	_grid.remove_child(selected_item)
 	_level.add_child(selected_item)
 	selected_item.rect_position = pos

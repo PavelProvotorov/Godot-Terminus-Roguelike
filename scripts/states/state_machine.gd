@@ -8,7 +8,7 @@ const STATE = {
 	THROW = 'THROW',
 	INVENTORY = 'INVENTORY'
 }
-onready var current_state = STATE.IDLE
+onready var current_state = STATE.ACTIVE
 
 signal state_changed(state, data)
 

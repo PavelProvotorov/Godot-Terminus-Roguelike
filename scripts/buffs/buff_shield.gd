@@ -1,4 +1,5 @@
 extends Buff
+class_name BuffShield
 
 func _ready():
 	original_name = 'shield'

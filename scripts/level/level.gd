@@ -23,14 +23,12 @@ onready var TILES = {
 	}
 
 onready var TILESET = {
-	DECO_1 = load("res://resources/tilesets/tileset_deco_1.tres"),
 	DECO_2 = load("res://resources/tilesets/tileset_deco_2.tres"),
 	DECO_3 = load("res://resources/tilesets/tileset_deco_3.tres"),
 	DECO_4 = load("res://resources/tilesets/tileset_deco_4.tres"),
 	DECO_5 = load("res://resources/tilesets/tileset_deco_5.tres"),
 }
 
-onready var _queue:Queue
 var _shadowcasting:ShadowCasting2D
 var _pathfinding:PathFinding2D
 var _generator:Generator2D
@@ -47,13 +45,6 @@ var line_width = 1
 func _ready():
 	randomize()
 	Events.connect("player_moved", self, "_on_player_moved")
-	Events.connect("end_turn", self, "_on_end_turn")
-	
-	set_tileset(TILESET.DECO_3)
-	
-	add_player_instance()
-	generate_level()
-	
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
@@ -118,17 +109,9 @@ func generate_level():
 		TILES.FOG
 	)
 	
-	_queue = Queue.new(
-		_tilemap_logic,
-		_tree
-	)
-	
 	populate_level()
 	
-	Events.emit_signal(
-		"level_generation_complete", 
-		_tilemap_logic.map_to_world(_generator.generator_get_entrance())
-	)
+	Events.emit_signal("level_generation_complete")
 
 func populate_level():
 	clear_tilemap_children(_tilemap_logic)
@@ -143,10 +126,10 @@ func populate_level():
 			"Parasite": 0,
 			"Insect": 0,
 			"Lurker": 0,
-			"Behemoth": 100,
+			"Behemoth": 0,
 			"Horror": 0,
-			"Wart": 100,
-			"Infestinator": 100,
+			"Wart": 0,
+			"Infestinator": 0,
 			"Creep": 0,
 			"Sludge": 0,
 			"Infected": 0,
@@ -162,7 +145,7 @@ func populate_level():
 			"FragGrenade": 5,
 			"Medkit": 5,
 			"Teleporter": 5,
-			"ShieldGenerator": 5,
+			"ShieldGenerator": 100,
 			"Adrenalin": 5,
 			"Steroids": 5
 		},
@@ -186,8 +169,8 @@ func add_player_instance() -> void:
 	
 func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
-	add_enemies(entities.get('enemies', {}), 5, 10, free_cells)
-	add_items(entities.get('items', {}), 3, 5, free_cells)
+	add_enemies(entities.get('enemies', {}), 0, 1, free_cells)
+	add_items(entities.get('items', {}), 5, 15, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
 
 func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
@@ -317,11 +300,6 @@ func set_pathfinding_points(to_disable:Array, to_enable:Array) -> void:
 	_pathfinding.disable_points(to_disable)
 	update()
 
-func _on_end_turn(node:Node) -> void:
-	print("----------------------------------")
-	print("Turn Ended By: ", node)
-	_queue.process(_tree, node)
-
 func node_exists(node:Node) -> bool:
 	return _tilemap_logic.has_node(str(node))
 
@@ -339,3 +317,6 @@ func get_array_difference(array_1:Array, array_2:Array) -> Array:
 		if not (element in array_2):
 			output.append(element)
 	return output
+	
+func get_entrance() -> Vector2:
+	return _tilemap_logic.map_to_world(_generator.generator_get_entrance())

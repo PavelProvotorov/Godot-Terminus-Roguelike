@@ -19,6 +19,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/buffs/buff_manager.gd"
 }, {
+"base": "Buff",
+"class": "BuffShield",
+"language": "GDScript",
+"path": "res://scripts/buffs/buff_shield.gd"
+}, {
 "base": "Item",
 "class": "Consumable",
 "language": "GDScript",
@@ -69,7 +74,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mobs/player.gd"
 }, {
-"base": "Node",
+"base": "TileMap",
 "class": "Queue",
 "language": "GDScript",
 "path": "res://scripts/level/level_queue.gd"
@@ -117,6 +122,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Buff": "",
 "BuffManager": "",
+"BuffShield": "",
 "Consumable": "",
 "Decorator2D": "",
 "Enemy2D": "",
@@ -141,7 +147,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Terminus (v2.0 Dev)"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/Game.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -183,7 +189,7 @@ ui_select={
 "deadzone": 0.5,
 "events": [  ]
 }
-ui_pickup={
+ui_interact={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]

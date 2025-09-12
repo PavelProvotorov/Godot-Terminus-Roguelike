@@ -111,8 +111,8 @@ func handle_death() -> void:
 	_level.set_pathfinding_points([], [self.position / grid_size])
 	self.queue_free()
 	
-func add_buff(buff:String) -> bool:
-	return _buff_manager.add_buff(buff)
+func add_buff(buff:String, self_applied:bool=false) -> bool:
+	return _buff_manager.add_buff(buff, self_applied)
 	
 func update_fog() -> void:
 	var modified_visibility = _buff_manager.get_modified_visibility(visibility)

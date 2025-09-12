@@ -4,7 +4,7 @@ func _ready():
 	description = "<Shield Generator>: A powerful protective device which generates a damage deflecting shield around the user;"
 
 func use() -> bool:
-	var buff_added = _owner.add_buff('shield')
+	var buff_added = _owner.add_buff('shield', true)
 	if buff_added:
 		_owner.end_turn()
 		remove_item()

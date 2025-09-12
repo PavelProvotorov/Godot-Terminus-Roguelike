@@ -11,7 +11,7 @@ func _init():
 func _ready():
 	rng.randomize()
 	
-func get_shot_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
+func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var direction = origin_pos.direction_to(impact_pos)
 	var forward_cell = (impact_pos + (direction * grid_size))
 	var targets:Array = []

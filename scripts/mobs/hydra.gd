@@ -11,3 +11,9 @@ func _ready():
 	melee_damage = 1
 	health = 3
 	speed = 1
+
+func _post_ranged_attack_hook():
+	if get_chance(25): target.add_buff('poison')
+
+func _post_melee_attack_hook():
+	if get_chance(25): target.add_buff('poison')

@@ -10,8 +10,11 @@ var ammo_consumption:int = 1
 
 func _ready():
 	add_to_group('WEAPON')
+
+func use():
+	_owner.end_turn()
 	
-func get_shot_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
+func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var targets:Array = []
 	
 	targets.append_array(

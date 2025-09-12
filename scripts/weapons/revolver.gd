@@ -6,7 +6,7 @@ func _init():
 	shot_count = 1
 	ammo_consumption = 2
 	
-func get_shot_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
+func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var direction = origin_pos.direction_to(impact_pos)
 	var targets:Array = []
 	

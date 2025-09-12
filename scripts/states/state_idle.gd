@@ -32,9 +32,9 @@ func _input(event):
 			var action = _player.check_move_direction(Vector2.RIGHT * GRID_SIZE)
 			if !action: state_idle()
 			
-		if Input.is_action_just_pressed("ui_pickup"):
+		if Input.is_action_just_pressed("ui_interact"):
 			state_active()
-			var action = _player.handle_item_pickup()
+			var action = _player.handle_interaction()
 			if !action: state_idle()
 			
 		if Input.is_action_just_pressed("ui_space"):

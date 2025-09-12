@@ -54,6 +54,7 @@ func _on_state_changed(state:String, data:Dictionary) -> void:
 		set_variables(data)
 		
 		if not _player.mark_targets_in_range(throw_item.get_throw_range()):
+			_player.throw_state_notify(false)
 			state_idle()
 			return
 		

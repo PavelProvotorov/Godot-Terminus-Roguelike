@@ -14,10 +14,13 @@ onready var BUFF_LIST:Dictionary = {
 	'regeneration': load("res://scenes/buffs/BuffRegeneration.tscn"),
 }
 
-func add_buff(buff:String) -> bool:
+func add_buff(buff:String, self_applied:bool) -> bool:
 	
 	if is_applied(buff):
 #		_text_animations.display_text("<X>", get_parent().position)
+		return false
+	
+	if is_shielded() and not self_applied:
 		return false
 	
 	var resource = BUFF_LIST.get(buff)
@@ -77,4 +80,10 @@ func is_applied(buff_name:String) -> bool:
 		if buff is Buff:
 			if buff.original_name == buff_name:
 				return true
+	return false
+	
+func is_shielded() -> bool:
+	for buff in get_children():
+		if buff is BuffShield:
+			return true
 	return false

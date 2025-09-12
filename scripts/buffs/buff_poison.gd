@@ -1,6 +1,6 @@
 extends Buff
 
-var poision_tick:bool = true
+var poision_tick:bool = false
 
 func _ready():
 	original_name = 'poison'
@@ -13,7 +13,4 @@ func _on_buff_tick_hook() -> void:
 		target.receive_damage(1)
 
 func set_poison_tick() -> void:
-	if poision_tick == false: 
-		poision_tick = true
-	else:
-		poision_tick = false
+	poision_tick = not poision_tick

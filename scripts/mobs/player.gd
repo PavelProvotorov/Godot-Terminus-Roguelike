@@ -3,9 +3,9 @@ class_name Player
 
 onready var _inventory = get_tree().get_first_node_in_group("INVENTORY")
 onready var _move_raycast:RayCast2D = $MoveCast
+onready var _interact_raycast = $Pickup
 onready var _state_machine = $States
 onready var _camera = $Camera2D
-onready var _pickup = $Pickup
 
 const ANIMATION = {
 	IDLE = 'IDLE',
@@ -23,14 +23,15 @@ enum STATE {
 signal throw_successful
 
 func _ready():
+	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
+	set_camera_limits()
+	
 	self.health = 99
 	self.ammo = 2
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
 	visibility = 4
-	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
-	set_camera_limits()
 
 func set_camera_limits() -> void:
 	var rect = _level.level_rect
@@ -74,7 +75,7 @@ func throw_in_direction(direction:Vector2, item:Item) -> bool:
 		if not collider.is_in_group("ENEMY"):
 			return false
 			
-		var targets = item.get_throw_targets(
+		var targets = item.get_targets(
 			self.position, collider.position
 		)
 			
@@ -110,7 +111,7 @@ func shoot_in_direction(direction: Vector2) -> bool:
 			if not collider.is_in_group("ENEMY"):
 				break
 			
-			var targets  = ranged_weapon.get_shot_targets(
+			var targets  = ranged_weapon.get_targets(
 				self.position,
 				collider.position
 			)
@@ -214,13 +215,18 @@ func handle_throw_attack(start:Vector2, finish:Vector2, targets:Array, impact_po
 	yield(play_ranged_animation(start, finish), 'completed')
 	end_turn()
 	
-func handle_item_pickup() -> bool:
-	_pickup.cast_to = Vector2.ZERO
-	_pickup.force_raycast_update()
+func handle_interaction() -> bool:
 	
-	if _pickup.is_colliding():
+	if _level.get_tile_position_name(self.position) == "EXIT":
+		_level.generate_level()
+		return true
+	
+	_interact_raycast.cast_to = Vector2.ZERO
+	_interact_raycast.force_raycast_update()
+	
+	if _interact_raycast.is_colliding():
 		
-		var collider = _pickup.get_collider()
+		var collider = _interact_raycast.get_collider()
 		var parent = collider.get_parent()
 		
 		if not parent is Item:
@@ -238,9 +244,9 @@ func handle_item_pickup() -> bool:
 	return false
 
 func is_position_occupied() -> bool:
-	_pickup.cast_to = Vector2.ZERO
-	_pickup.force_raycast_update()
-	return _pickup.is_colliding()
+	_interact_raycast.cast_to = Vector2.ZERO
+	_interact_raycast.force_raycast_update()
+	return _interact_raycast.is_colliding()
 	
 func throw_state_bind(caller:Node, callback:String, data:Dictionary) -> void:
 	connect('throw_successful', caller, callback, [], CONNECT_ONESHOT)
@@ -271,8 +277,8 @@ func is_ammo_depleted() -> bool:
 	
 	return false
 
-func _on_level_generation_complete(entrance:Vector2) -> void:
-	self.position = entrance
+func _on_level_generation_complete() -> void:
+	self.position = _level.get_entrance()
 	_camera.reset_smoothing()
 	update_fog()
 

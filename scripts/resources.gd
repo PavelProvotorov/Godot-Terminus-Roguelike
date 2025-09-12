@@ -20,3 +20,6 @@ onready var weapon_hunting_rifle = load("res://scenes/weapons/HuntingRifle.tscn"
 onready var weapon_assault_rifle = load("res://scenes/weapons/AssaultRifle.tscn")
 onready var weapon_sniper_rifle = load("res://scenes/weapons/SniperRifle.tscn")
 onready var weapon_submachine = load("res://scenes/weapons/Submachine.tscn")
+
+onready var level_scene = load("res://scenes/levels/Level.tscn")
+onready var factory_scene = load("res://scenes/levels/Factory.tscn")

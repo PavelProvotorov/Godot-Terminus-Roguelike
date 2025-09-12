@@ -14,7 +14,7 @@ func _input(event):
 		if Input.is_action_just_pressed("ui_right"): 
 			_inventory.switch_selected_item(1)
 			
-		if Input.is_action_just_pressed("ui_pickup"):
+		if Input.is_action_just_pressed("ui_interact"):
 			state_active()
 			var action = _inventory.use_selected_item()
 			_inventory.reset_state()
