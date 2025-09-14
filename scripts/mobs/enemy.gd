@@ -1,7 +1,7 @@
 extends Entity2D
 class_name Enemy2D
 
-onready var target = get_tree().get_first_node_in_group("PLAYER")
+onready var target = Global.get_player()
 onready var behaviours: Array = []
 onready var nearby_free_cells: Array = []
 onready var path: Array = []
@@ -198,7 +198,7 @@ func handle_movement(data:Dictionary) -> void:
 	
 func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
 	previous_position = prev_pos
-	_level.set_pathfinding_points([new_pos], [prev_pos])
+	self.level.set_pathfinding_points([new_pos], [prev_pos])
 
 func handle_melee_attack(data:Dictionary) -> void:
 	var start = data.start
@@ -273,7 +273,7 @@ func handle_spawning(data:Dictionary) -> void:
 	
 func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vector2) -> void:
 	instance.set_active()
-	_level.spawn_enemy(start / grid_size, instance)
+	self.level.spawn_enemy(start / grid_size, instance)
 	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
 	update_pathfinding(finish / grid_size, finish / grid_size)
 	
@@ -286,10 +286,10 @@ func _on_level_fog_updated(cells:Array) -> void:
 
 func _on_start_turn() -> void:
 	
-	if not _level.node_exists(target):
+	if not self.level.node_exists(target):
 		return
 		
-	path = (_level.find_path(self.position, target.position))
+	path = (self.level.find_path(self.position, target.position))
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	process_behaviours()

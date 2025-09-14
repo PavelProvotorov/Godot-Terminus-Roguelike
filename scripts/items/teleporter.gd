@@ -4,7 +4,7 @@ func _ready():
 	description = "<Teleporter>: This high-tech device teleports the user to a random spot in close proximity;"
 
 func use() -> bool:
-	var cells:Array = _level.get_free_cells()
+	var cells:Array = self.level.get_free_cells()
 	_owner.position = cells.pick_random() * 8
 	_owner.update_fog()
 	remove_item()

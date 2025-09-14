@@ -1,8 +1,7 @@
 extends Node2D
 class_name BuffManager
 
-onready var _level = get_tree().get_first_node_in_group("LEVEL")
-onready var _text_animations:TextAnimations2D = TextAnimations2D.new(_level)
+onready var _text_animations = TextAnimations2D.new()
 
 onready var BUFF_LIST:Dictionary = {
 	'shield': load("res://scenes/buffs/BuffShield.tscn"),

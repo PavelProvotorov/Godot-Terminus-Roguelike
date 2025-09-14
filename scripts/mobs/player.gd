@@ -22,10 +22,10 @@ enum STATE {
 
 signal throw_successful
 
-func _ready():
+func _init():
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
-	set_camera_limits()
-	
+
+func _ready():
 	self.health = 99
 	self.ammo = 2
 	attack_range = 2
@@ -34,7 +34,7 @@ func _ready():
 	visibility = 4
 
 func set_camera_limits() -> void:
-	var rect = _level.level_rect
+	var rect = self.level.level_rect
 	_camera.limit_left = ((rect.position.x) * grid_size)
 	_camera.limit_right = ((rect.end.x) * grid_size)
 	_camera.limit_top = ((rect.position.y) * grid_size)
@@ -160,10 +160,10 @@ func set_throw_animation() -> void:
 	_sprite.set_animation(ANIMATION.THROW)
 
 func process_tilemap_collision(pos:Vector2) -> void:
-	print(_level.get_tile_position_name(pos))
-	match _level.get_tile_position_name(pos):
+	print(self.level.get_tile_position_name(pos))
+	match self.level.get_tile_position_name(pos):
 		"DOOR":
-			_level.open_door(self.position, pos, visibility)
+			self.level.open_door(self.position, pos, visibility)
 		_:
 			pass
 
@@ -217,8 +217,8 @@ func handle_throw_attack(start:Vector2, finish:Vector2, targets:Array, impact_po
 	
 func handle_interaction() -> bool:
 	
-	if _level.get_tile_position_name(self.position) == "EXIT":
-		_level.generate_level()
+	if self.level.get_tile_position_name(self.position) == "EXIT":
+		Events.emit_signal("level_descended")
 		return true
 	
 	_interact_raycast.cast_to = Vector2.ZERO
@@ -277,9 +277,10 @@ func is_ammo_depleted() -> bool:
 	
 	return false
 
-func _on_level_generation_complete() -> void:
-	self.position = _level.get_entrance()
+func _on_level_generation_complete(level:Level) -> void:
+	self.position = level.get_entrance()
 	_camera.reset_smoothing()
+	set_camera_limits()
 	update_fog()
 
 func _on_start_turn() -> void:

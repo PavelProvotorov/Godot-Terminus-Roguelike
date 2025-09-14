@@ -154,6 +154,7 @@ config/icon="res://icon.png"
 
 Events="*res://scripts/events.gd"
 Resources="*res://scripts/resources.gd"
+Global="*res://scripts/global.gd"
 
 [display]
 

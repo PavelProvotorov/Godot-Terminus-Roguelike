@@ -31,5 +31,5 @@ func spawn_creep() -> void:
 	if hidden_cells.size() != 0:
 		var instance = Resources.debug_creep.instance()
 		var spawn_cell = hidden_cells.pick_random()
-		_level.spawn_enemy(spawn_cell, instance)
+		self.level.spawn_enemy(spawn_cell, instance)
 		instance.set_active()

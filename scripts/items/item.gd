@@ -1,8 +1,8 @@
 extends Control
 class_name Item
 
+onready var level setget set_level, get_level
 onready var _sprite_animations = SpriteAnimations2D.new(self)
-onready var _level = get_tree().get_first_node_in_group("LEVEL")
 onready var _utility:Utility = Utility.new()
 onready var _static_body = $StaticBody2D
 var _storage:Control
@@ -38,11 +38,11 @@ func set_item_instant() -> void:
 	add_to_group('INSTANT')
 	_static_body.add_to_group('INSTANT')
 
-func add_target_animation() -> void:
-	_sprite_animations.add_animation("target")
+func add_selected_animation() -> void:
+	_sprite_animations.add_animation("selected")
 	
-func remove_target_animation() -> void:
-	_sprite_animations.remove_animation("target")
+func remove_selected_animation() -> void:
+	_sprite_animations.remove_animation("selected")
 	
 func get_description() -> String:
 	return description
@@ -70,3 +70,9 @@ func match_pos_to_target(positions:Array) -> Array:
 	
 func remove_item() -> void:
 	queue_free()
+
+func set_level(level):
+	return level
+
+func get_level():
+	return Global.get_level()

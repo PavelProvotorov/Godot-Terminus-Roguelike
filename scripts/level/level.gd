@@ -111,17 +111,20 @@ func generate_level():
 	
 	populate_level()
 	
-	Events.emit_signal("level_generation_complete")
+	print("----------------------------------")
+	print("LEVEL GENERATION COMPLETE")
+	Events.emit_signal("level_generation_complete", self)
+	_tilemap_logic.process_queue()
 
 func populate_level():
 	clear_tilemap_children(_tilemap_logic)
 	add_entities({
 		'enemies': {
-			"Grunt": 0,
-			"Bloater": 0,
-			"Colony": 0,
+			"Grunt": 100,
+			"Bloater": 100,
+			"Colony": 20,
 			"MindFlayer": 0,
-			"Hydra": 100,
+			"Hydra": 0,
 			"Abomination": 0,
 			"Parasite": 0,
 			"Insect": 0,
@@ -145,7 +148,7 @@ func populate_level():
 			"FragGrenade": 5,
 			"Medkit": 5,
 			"Teleporter": 5,
-			"ShieldGenerator": 100,
+			"ShieldGenerator": 5,
 			"Adrenalin": 5,
 			"Steroids": 5
 		},
@@ -162,16 +165,17 @@ func populate_level():
 		}
 	})
 
-func add_player_instance() -> void:
-	var player = Resources.debug_player.instance()
+func add_player() -> void:
+	var player = Global.get_player()
 	player.set_position(Vector2(0, 0))
 	_tilemap_logic.add_child(player)
 	
 func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
-	add_enemies(entities.get('enemies', {}), 0, 1, free_cells)
-	add_items(entities.get('items', {}), 5, 15, free_cells)
+	add_enemies(entities.get('enemies', {}), 5, 8, free_cells)
+	add_items(entities.get('items', {}), 3, 5, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
+	add_player()
 
 func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var enemies_count = rand_range(min_count, max_count)

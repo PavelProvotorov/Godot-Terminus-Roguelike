@@ -1,8 +1,8 @@
 extends KinematicBody2D
 class_name Entity2D
 
-onready var _level = get_tree().get_first_node_in_group("LEVEL")
-onready var _text_animations = TextAnimations2D.new(_level)
+onready var level setget set_level, get_level
+onready var _text_animations = TextAnimations2D.new()
 onready var _tween_animations = TweenAnimation2D.new(self)
 onready var _sprite_animations = SpriteAnimations2D.new(self)
 onready var _collision_shape:CollisionShape2D = $CollisionShape2D
@@ -41,7 +41,7 @@ func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	
 func get_nearby_cells() -> Array:
 	var nearby_cells:Array = []
-	var free_cells = _level.get_free_cells() 
+	var free_cells = self.level.get_free_cells() 
 	
 	for direction in DIRECTIONS:
 		var cell = (position / grid_size) + direction
@@ -51,10 +51,10 @@ func get_nearby_cells() -> Array:
 	return nearby_cells
 
 func get_hidden_free_cells() -> Array:
-	return _level.get_hidden_free_cells()
+	return self.level.get_hidden_free_cells()
 
 func is_path_hidden(start:Vector2, finish:Vector2) -> bool:
-	return _level.is_fog_cell(start) && _level.is_fog_cell(finish)
+	return self.level.is_fog_cell(start) && self.level.is_fog_cell(finish)
 	
 func play_hit_animation() -> void:
 	_hit_flash.play("RESET")
@@ -108,7 +108,7 @@ func recharge_ammo(recharge:int) -> bool:
 
 func handle_death() -> void:
 	play_hit_animation()
-	_level.set_pathfinding_points([], [self.position / grid_size])
+	self.level.set_pathfinding_points([], [self.position / grid_size])
 	self.queue_free()
 	
 func add_buff(buff:String, self_applied:bool=false) -> bool:
@@ -116,7 +116,7 @@ func add_buff(buff:String, self_applied:bool=false) -> bool:
 	
 func update_fog() -> void:
 	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
-	_level.update_level_fog(self.position, max(min_visibility, modified_visibility))
+	self.level.update_level_fog(self.position, max(min_visibility, modified_visibility))
 	
 func end_turn() -> bool:
 	print("USED TURN")
@@ -149,3 +149,9 @@ func set_ammo(value:int) -> void:
 
 func set_health(value:int) -> void:
 	health = value
+
+func set_level(level):
+	return level
+
+func get_level():
+	return Global.get_level()

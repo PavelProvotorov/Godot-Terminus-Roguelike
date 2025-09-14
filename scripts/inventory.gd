@@ -1,6 +1,7 @@
 extends Control
 class_name Inventory
 
+onready var level setget set_level, get_level
 onready var _description = null
 onready var _grid = $GridContainer
 onready var _ranged_weapon_slot = $RangedWeaponSlot
@@ -11,7 +12,10 @@ var min_item_count:int = 0
 
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
-	_ranged_weapon_slot.add_child(Resources.weapon_assault_rifle.instance())
+	var weapon_instance:Weapon = Resources.weapon_assault_rifle.instance()
+	weapon_instance.set_item_owner(Global.get_player())
+	_ranged_weapon_slot.add_child(weapon_instance)
+	
 	
 func pickup_item_and_use(item:Item, owner:Node) -> bool:
 	item.set_item_owner(owner)
@@ -48,19 +52,19 @@ func switch_selected_item(index:int) -> void:
 		final_index += size
 
 	selected_item = get_stored_items()[final_index]
-	selected_item.add_target_animation()
+	selected_item.add_selected_animation()
 	set_description()
 
 func select_first_item() -> void:
 	
 	if get_stored_items().size() > 0:
 		selected_item = get_stored_items()[0]
-		selected_item.add_target_animation()
+		selected_item.add_selected_animation()
 		set_description()
 
 func clear_selection() -> void:
 	if selected_item != null:
-		selected_item.remove_target_animation()
+		selected_item.remove_selected_animation()
 
 func clear_description() -> void:
 	if _description != null:
@@ -117,9 +121,8 @@ func equip_ranged_weapon(new_weapon:Weapon) -> void:
 	new_weapon.use()
 
 func drop_selected_item(pos:Vector2) -> bool:
-	var _level:Level = get_tree().get_first_node_in_group("LEVEL")
 	_grid.remove_child(selected_item)
-	_level.add_child(selected_item)
+	self.level.add_child(selected_item)
 	selected_item.rect_position = pos
 	return true
 
@@ -131,3 +134,9 @@ func get_stored_items() -> Array:
 
 func _on_child_exiting_tree(child:Node) -> void:
 	pass
+
+func set_level(level):
+	return level
+
+func get_level():
+	return Global.get_level()
