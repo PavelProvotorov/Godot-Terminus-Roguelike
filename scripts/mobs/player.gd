@@ -27,7 +27,7 @@ func _init():
 
 func _ready():
 	self.health = 99
-	self.ammo = 2
+	self.ammo = 99
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
@@ -235,11 +235,13 @@ func handle_interaction() -> bool:
 		if parent is Consumable:
 			if _inventory.pickup_item_and_use(collider.get_parent(), self):
 				return true
+			return false
 			
 		if parent is Item:
 			if _inventory.pickup_item(collider.get_parent(), self):
 				end_turn()
 				return true
+			return false
 				
 	return false
 

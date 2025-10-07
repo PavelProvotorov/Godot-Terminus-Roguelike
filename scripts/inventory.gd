@@ -55,13 +55,6 @@ func switch_selected_item(index:int) -> void:
 	selected_item.add_selected_animation()
 	set_description()
 
-func select_first_item() -> void:
-	
-	if get_stored_items().size() > 0:
-		selected_item = get_stored_items()[0]
-		selected_item.add_selected_animation()
-		set_description()
-
 func clear_selection() -> void:
 	if selected_item != null:
 		selected_item.remove_selected_animation()
