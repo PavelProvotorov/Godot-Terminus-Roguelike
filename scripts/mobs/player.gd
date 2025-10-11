@@ -2,23 +2,11 @@ extends Entity2D
 class_name Player
 
 onready var _inventory = get_tree().get_first_node_in_group("INVENTORY")
+onready var _composite_animation = $CompositeAnimation
 onready var _move_raycast:RayCast2D = $MoveCast
 onready var _interact_raycast = $Pickup
 onready var _state_machine = $States
 onready var _camera = $Camera2D
-
-const ANIMATION = {
-	IDLE = 'IDLE',
-	RANGED = 'RANGED',
-	THROW = 'THROW'
-}
-enum STATE {
-	IDLE,
-	ACTIVE,
-	RANGED,
-	MELEE,
-	THROW
-}
 
 signal throw_successful
 
@@ -151,13 +139,19 @@ func check_move_direction(pos: Vector2) -> bool:
 	return false
 
 func set_idle_animation() -> void:
-	_sprite.set_animation(ANIMATION.IDLE)
+	_composite_animation.play_idle_animation()
 
 func set_ranged_animation() -> void:
-	_sprite.set_animation(ANIMATION.RANGED)
+	_composite_animation.play_ranged_animation()
 	
 func set_throw_animation() -> void:
-	_sprite.set_animation(ANIMATION.THROW)
+	_composite_animation.play_throw_animation()
+
+func set_inventory_animation() -> void:
+	_composite_animation.play_inventory_animation()
+
+func flip_animation(flip:bool) -> void:
+	_composite_animation.flip_animation(flip)
 
 func process_tilemap_collision(pos:Vector2) -> void:
 	print(self.level.get_tile_position_name(pos))
@@ -187,8 +181,6 @@ func handle_melee_attack(data:Dictionary) -> void:
 
 func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_pos:Vector2) -> GDScriptFunctionState:
 	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
-	set_sprite_direction(start, finish)
-	get_tree().call_group("ENEMY", "remove_target_animation")
 	
 	for target in targets:
 		
@@ -201,8 +193,6 @@ func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_p
 	return yield(play_ranged_animation(start, finish), 'completed')
 
 func handle_throw_attack(start:Vector2, finish:Vector2, targets:Array, impact_pos:Vector2, item:Item) -> void:
-	set_sprite_direction(start, finish)
-	get_tree().call_group("ENEMY", "remove_target_animation")
 	
 	for target in targets:
 		

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/levels/Level.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/factory.gd" type="Script" id=2]
+[ext_resource path="res://scripts/level/factory.gd" type="Script" id=2]
 
 [node name="Factory" type="Node2D"]
 script = ExtResource( 2 )

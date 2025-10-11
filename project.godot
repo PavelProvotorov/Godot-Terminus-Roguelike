@@ -152,9 +152,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Events="*res://scripts/events.gd"
-Resources="*res://scripts/resources.gd"
-Global="*res://scripts/global.gd"
+Events="*res://scripts/singletons/events.gd"
+Resources="*res://scripts/singletons/resources.gd"
+Global="*res://scripts/singletons/global.gd"
 
 [display]
 

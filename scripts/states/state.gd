@@ -2,7 +2,7 @@ extends Node
 class_name State
 
 onready var _state_machine = get_parent()
-onready var _player = get_tree().get_first_node_in_group("PLAYER")
+onready var _player:Player = get_tree().get_first_node_in_group("PLAYER")
 onready var ON_STATE_ENABLED = funcref(self, "_on_state_enabled")
 onready var ON_STATE_DISABLED = funcref(self, "_on_state_disabled")
 const GRID_SIZE = 8

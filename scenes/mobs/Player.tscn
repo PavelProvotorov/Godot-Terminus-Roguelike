@@ -1,6 +1,5 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://resources/animations/animation_player.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://scripts/mobs/player.gd" type="Script" id=2]
 [ext_resource path="res://scripts/states/state_machine.gd" type="Script" id=3]
 [ext_resource path="res://scripts/states/state_idle.gd" type="Script" id=4]
@@ -10,20 +9,182 @@
 [ext_resource path="res://scripts/buffs/buff_manager.gd" type="Script" id=8]
 [ext_resource path="res://scripts/states/state_throw.gd" type="Script" id=9]
 [ext_resource path="res://scripts/states/state_active.gd" type="Script" id=10]
+[ext_resource path="res://scripts/composite_animation.gd" type="Script" id=11]
+[ext_resource path="res://assets/composites/body/player_body_1.png" type="Texture" id=12]
+[ext_resource path="res://assets/composites/head/player_head_1.png" type="Texture" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
 
-[sub_resource type="ShaderMaterial" id=2]
-resource_local_to_scene = true
+[sub_resource type="Animation" id=13]
+resource_name = "IDLE"
+loop = true
+step = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("CompositeAnimation/Head:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CompositeAnimation/Body:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2, 3 ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "INVENTORY"
+loop = true
+step = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("CompositeAnimation/Head:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CompositeAnimation/Body:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "RANGED"
+loop = true
+step = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("CompositeAnimation/Head:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CompositeAnimation/Body:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 4, 5 ]
+}
+
+[sub_resource type="Animation" id=14]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("../CompositeAnimation/Head:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CompositeAnimation/Head:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CompositeAnimation/Body:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "THROW"
+loop = true
+step = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("CompositeAnimation/Head:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CompositeAnimation/Body:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 6, 7 ]
+}
+
+[sub_resource type="ShaderMaterial" id=18]
 shader = ExtResource( 6 )
 shader_param/hit_flash_color = Plane( 1, 1, 1, 1 )
 shader_param/hit_flash_enabled = false
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="ShaderMaterial" id=19]
+shader = ExtResource( 6 )
+shader_param/hit_flash_color = Plane( 1, 1, 1, 1 )
+shader_param/hit_flash_enabled = false
+
+[sub_resource type="Animation" id=11]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedSprite:material:shader_param/hit_flash_enabled")
+tracks/0/path = NodePath("CompositeAnimation/Body:material:shader_param/hit_flash_enabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -34,17 +195,40 @@ tracks/0/keys = {
 "update": 1,
 "values": [ false ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("CompositeAnimation/Head:material:shader_param/hit_flash_enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
-[sub_resource type="Animation" id=4]
-resource_name = "hit"
+[sub_resource type="Animation" id=12]
 length = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedSprite:material:shader_param/hit_flash_enabled")
+tracks/0/path = NodePath("CompositeAnimation/Body:material:shader_param/hit_flash_enabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CompositeAnimation/Head:material:shader_param/hit_flash_enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
@@ -59,12 +243,35 @@ script = ExtResource( 2 )
 position = Vector2( 4, 4 )
 shape = SubResource( 1 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-material = SubResource( 2 )
-frames = ExtResource( 1 )
-animation = "IDLE"
-playing = true
+[node name="CompositeAnimation" type="Node2D" parent="."]
+script = ExtResource( 11 )
+
+[node name="CompositePlayer" type="AnimationPlayer" parent="CompositeAnimation"]
+root_node = NodePath("../..")
+reset_on_save = false
+anims/IDLE = SubResource( 13 )
+anims/INVENTORY = SubResource( 17 )
+anims/RANGED = SubResource( 15 )
+anims/RESET = SubResource( 14 )
+anims/THROW = SubResource( 16 )
+
+[node name="Body" type="Sprite" parent="CompositeAnimation"]
+material = SubResource( 18 )
+texture = ExtResource( 12 )
 centered = false
+hframes = 16
+frame = 2
+
+[node name="Head" type="Sprite" parent="CompositeAnimation"]
+material = SubResource( 19 )
+texture = ExtResource( 13 )
+centered = false
+offset = Vector2( 1.36422e-12, -2 )
+hframes = 16
+
+[node name="HitFlashAnimation" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 11 )
+anims/hit = SubResource( 12 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2( 4, 4 )
@@ -86,10 +293,6 @@ process_mode = 0
 limit_smoothed = true
 smoothing_enabled = true
 smoothing_speed = 10.0
-
-[node name="HitFlashAnimation" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 3 )
-anims/hit = SubResource( 4 )
 
 [node name="BuffManager" type="Node2D" parent="."]
 script = ExtResource( 8 )

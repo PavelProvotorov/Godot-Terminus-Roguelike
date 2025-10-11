@@ -6,6 +6,7 @@ onready var behaviours: Array = []
 onready var nearby_free_cells: Array = []
 onready var path: Array = []
 onready var spawn: bool = false
+onready var _sprite = $AnimatedSprite
 onready var previous_position: Vector2 = position
 onready var _utility:Utility = Utility.new()
 
@@ -81,6 +82,9 @@ func target_is_blocked(self_pos: Vector2, target_pos: Vector2) -> bool:
 		if collider == target:
 			return false
 	return true
+	
+func play_appear_animation() -> GDScriptFunctionState:
+	return yield(_tween_animations.animation_appear(_sprite), 'completed')
 	
 func add_target_animation() -> void:
 	_sprite_animations.add_animation("target")
@@ -293,6 +297,11 @@ func _on_start_turn() -> void:
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	process_behaviours()
+	
+func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
+	var direction = (finish - start)/grid_size
+	if direction == Vector2.LEFT: _sprite.flip_h = true
+	if direction == Vector2.RIGHT: _sprite.flip_h = false
 	
 func setup():
 	if behaviours.has(BEHAVIOUR_TYPE.WANDER): add_to_group("WANDERING")

@@ -17,11 +17,13 @@ func _input(event):
 		
 	if Input.is_action_just_pressed("ui_left"):
 		state_active()
+		_player.flip_animation(true)
 		var action = _player.shoot_in_direction(Vector2.LEFT * GRID_SIZE)
 		if !action: state_idle()
 		
 	if Input.is_action_just_pressed("ui_right"):
 		state_active()
+		_player.flip_animation(false)
 		var action = _player.shoot_in_direction(Vector2.RIGHT * GRID_SIZE)
 		if !action: state_idle()
 		
@@ -38,3 +40,6 @@ func _on_state_enabled(data: Dictionary) -> void:
 		return
 	
 	_player.set_ranged_animation()
+
+func _on_state_disabled(data:Dictionary) -> void:
+	get_tree().call_group("ENEMY", "remove_target_animation") 

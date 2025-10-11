@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scripts/interface.gd" type="Script" id=1]
+[ext_resource path="res://scripts/ui/interface.gd" type="Script" id=1]
 [ext_resource path="res://assets/ui_layer.png" type="Texture" id=2]
 [ext_resource path="res://resources/fonts/TeenyTinyPixls.tres" type="DynamicFont" id=3]
 

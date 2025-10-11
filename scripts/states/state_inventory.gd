@@ -43,7 +43,7 @@ func _on_state_enabled(data: Dictionary) -> void:
 	if _inventory.is_inventory_empty():
 		state_idle()
 		return
-		
+	
 	_inventory.reset_state()
 	_inventory.switch_selected_item(0)
-	_player.set_idle_animation()
+	_player.set_inventory_animation()

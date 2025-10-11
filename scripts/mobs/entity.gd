@@ -8,7 +8,6 @@ onready var _sprite_animations = SpriteAnimations2D.new(self)
 onready var _collision_shape:CollisionShape2D = $CollisionShape2D
 onready var _buff_manager:BuffManager = $BuffManager
 onready var _hit_flash = $HitFlashAnimation
-onready var _sprite = $AnimatedSprite
 onready var _raycast = $RayCast2D
 
 const DIRECTIONS = [
@@ -33,11 +32,6 @@ var ammo:int = 0 setget set_ammo
 
 func _ready():
 	add_to_group("ENTITY")
-
-func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
-	var direction = (finish - start)/grid_size
-	if direction == Vector2.LEFT: _sprite.flip_h = true
-	if direction == Vector2.RIGHT: _sprite.flip_h = false
 	
 func get_nearby_cells() -> Array:
 	var nearby_cells:Array = []
@@ -76,9 +70,6 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 	var half = start - ((finish - start) / 2)
 	yield(_tween_animations.animation_ranged(start, half, self, 'position'), 'completed')
 	self.z_index -= 1
-
-func play_appear_animation() -> GDScriptFunctionState:
-	return yield(_tween_animations.animation_appear(_sprite), 'completed')
 
 func receive_damage(damage:int) -> void:
 	play_hit_animation()

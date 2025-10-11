@@ -20,13 +20,13 @@ func _input(event):
 		
 	if Input.is_action_just_pressed("ui_left"): 
 		state_active()
-		_player._sprite.flip_h = true
+		_player.flip_animation(true)
 		var action = _player.check_move_direction(Vector2.LEFT * GRID_SIZE)
 		if !action: state_idle()
 		
 	if Input.is_action_just_pressed("ui_right"): 
 		state_active()
-		_player._sprite.flip_h = false
+		_player.flip_animation(false)
 		var action = _player.check_move_direction(Vector2.RIGHT * GRID_SIZE)
 		if !action: state_idle()
 		
