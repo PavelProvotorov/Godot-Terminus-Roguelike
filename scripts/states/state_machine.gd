@@ -1,38 +1,31 @@
 extends Node
 class_name StateMachine
 
-const STATE = {
-	IDLE = 'IDLE',
-	ACTIVE = 'ACTIVE',
-	RANGED = 'RANGED',
-	THROW = 'THROW',
-	INVENTORY = 'INVENTORY'
+onready var STATE = {
+	"IDLE": $Idle,
+	"ACTIVE": $Active,
+	"RANGED": $Ranged,
+	"THROW": $Throw,
+	"INVENTORY": $Inventory
 }
-onready var current_state = STATE.ACTIVE
 
-signal state_changed(state, data)
+onready var current_state:State = STATE.ACTIVE
 
-func change_state(state: String, data:Dictionary = {}) -> void:
-	if STATE.has(state):
-		current_state = state
+func change_state(state_name: String, data:Dictionary = {}) -> void:
+	var upper_state_name = state_name.to_upper()
+	
+	if STATE.has(upper_state_name):
 		
-		if state == STATE.ACTIVE:
-			print("CHANGED STATE TO: " + state)
-			return
+		current_state.disable_state(data)
 		
-		for child in get_children():
-			
-			if not child is State:
-				push_error("Non-state child in state machine: " + child)
-				break
-			
-			if child.get_name() == state.to_upper():
-				print("CHANGED STATE TO: " + state)
-				child.enable_state(data)
-				break 
+		print("CHANGED STATE TO: " + upper_state_name)
+		current_state = STATE.get(upper_state_name)
+		
+		current_state.enable_state(data)
+		
 	else:
-		push_error("State does not exist in state machine configuration: " + state)
+		push_error("State does not exist in state machine configuration: " + upper_state_name)
 		change_state(STATE.IDLE, data)
 
-func is_current_state(state: String) -> bool:
-	return current_state == state.to_upper()
+func is_current_state(state: State) -> bool:
+	return current_state == state

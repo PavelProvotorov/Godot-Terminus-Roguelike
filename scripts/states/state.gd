@@ -4,22 +4,30 @@ class_name State
 onready var _state_machine = get_parent()
 onready var _player = get_tree().get_first_node_in_group("PLAYER")
 onready var ON_STATE_ENABLED = funcref(self, "_on_state_enabled")
+onready var ON_STATE_DISABLED = funcref(self, "_on_state_disabled")
 const GRID_SIZE = 8
 
 func _ready():
 	self.set_process_input(false)
+	add_to_group("STATE")
 
 func get_name() -> String:
 	return self.name.to_upper()
 
 func enable_state(data: Dictionary) -> void:
-	if ON_STATE_ENABLED.is_valid(): 
-		ON_STATE_ENABLED.call_func(data)
+	_on_state_enabled(data)
 	
-	if _state_machine.is_current_state(self.name):
+	if _state_machine.is_current_state(self):
 		self.set_process_input(true)
 
+func disable_state(data: Dictionary) -> void:
+	self.set_process_input(false)
+	_on_state_disabled(data)
+
 func _on_state_enabled(data: Dictionary) -> void:
+	pass
+
+func _on_state_disabled(data: Dictionary) -> void:
 	pass
 
 func state_idle() -> void:
