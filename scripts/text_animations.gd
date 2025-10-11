@@ -6,6 +6,7 @@ onready var level setget set_level, get_level
 const tween_speed:int = 2
 const recharge_color:Color = Color.orange
 const damage_color:Color = Color.lightcoral
+const neutral_color:Color = Color.whitesmoke
 const critical_color:Color = Color.crimson
 const heal_color:Color = Color.greenyellow
 const text_color:Color = Color.whitesmoke
@@ -25,8 +26,11 @@ func display_text(value:String, pos:Vector2) -> void:
 func display_damage_number(value:int, pos:Vector2, critical:bool = false):
 	var instance = Resources.text_label.instance()
 	var label = instance.get_node('Label')
-	if critical: 
+	
+	if critical:
 		label.set("custom_colors/font_color", critical_color)
+	elif value == 0:
+		label.set("custom_colors/font_color", neutral_color)
 	else:
 		label.set("custom_colors/font_color", damage_color)
 	label.set_position(pos + get_random_position())

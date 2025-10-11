@@ -134,6 +134,9 @@ func get_attack_range():
 
 func _on_start_turn():
 	pass
+	
+func is_max_health():
+	return health == max_health
 
 func set_ammo(value:int) -> void:
 	ammo = value

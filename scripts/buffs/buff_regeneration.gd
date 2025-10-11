@@ -5,5 +5,4 @@ func _ready():
 	duration = 2
 
 func _on_buff_tick_hook() -> void:
-	print("Regen ticked")
 	target.restore_health(1)
