@@ -9,7 +9,7 @@ var _storage:Control
 var _owner:Entity2D
 
 var item_name:String = ""
-var description:String = "<Error>: Missing entry for item;"
+var description:String = "[color=#%s]<Error>:[/color] Missing entry for item;" %Color.webgray.to_html()
 var throw_damage:int = 0
 var throw_range:int = 0
 var grid_size:int = 8

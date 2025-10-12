@@ -161,6 +161,7 @@ Config="*res://scripts/singletons/config.gd"
 
 window/size/width=160
 window/size/height=120
+window/size/resizable=false
 window/size/test_width=1280
 window/size/test_height=960
 window/dpi/allow_hidpi=true

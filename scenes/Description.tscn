@@ -20,6 +20,9 @@ margin_top = 8.0
 margin_right = 136.0
 margin_bottom = 48.0
 custom_fonts/normal_font = ExtResource( 3 )
+bbcode_enabled = true
+visible_characters = 0
+percent_visible = 0.721
 scroll_active = false
 scroll_following = true
 
