@@ -29,7 +29,8 @@ onready var menu_scene = load("res://scenes/ui/Menu.tscn")
 
 const head_spritesheet: Dictionary = {
 	0: preload("res://assets/composites/head/player_head_0.png"),
-	1: preload("res://assets/composites/head/player_head_1.png")
+	1: preload("res://assets/composites/head/player_head_1.png"),
+	2: preload("res://assets/composites/head/player_head_2.png")
 }
 
 const body_spritesheet: Dictionary = {
