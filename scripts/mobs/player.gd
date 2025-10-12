@@ -122,7 +122,7 @@ func check_move_direction(pos: Vector2) -> bool:
 	if _move_raycast.is_colliding():
 		var collider = _move_raycast.get_collider()
 		if collider.is_in_group("LEVEL"):
-			process_tilemap_collision(self.position + pos)
+			return process_tilemap_collision(self.position + pos)
 		elif collider.is_in_group("ENEMY"):
 			handle_melee_attack({
 				"start": self.position, 
@@ -153,13 +153,15 @@ func set_inventory_animation() -> void:
 func flip_animation(flip:bool) -> void:
 	_composite_animation.flip_animation(flip)
 
-func process_tilemap_collision(pos:Vector2) -> void:
-	print(self.level.get_tile_position_name(pos))
+func process_tilemap_collision(pos:Vector2) -> bool:
+	print('COLISSION WITH: ', self.level.get_tile_position_name(pos))
 	match self.level.get_tile_position_name(pos):
 		"DOOR":
 			self.level.open_door(self.position, pos, visibility)
+			end_turn()
+			return true
 		_:
-			pass
+			return false
 
 func handle_idle(data:Dictionary) -> void:
 	end_turn()

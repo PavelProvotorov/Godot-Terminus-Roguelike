@@ -23,3 +23,16 @@ onready var weapon_submachine = load("res://scenes/weapons/Submachine.tscn")
 
 onready var level_scene = load("res://scenes/levels/Level.tscn")
 onready var factory_scene = load("res://scenes/levels/Factory.tscn")
+
+onready var customise_scene = load("res://scenes/ui/Customise.tscn")
+onready var menu_scene = load("res://scenes/ui/Menu.tscn")
+
+const head_spritesheet: Dictionary = {
+	0: preload("res://assets/composites/head/player_head_0.png"),
+	1: preload("res://assets/composites/head/player_head_1.png")
+}
+
+const body_spritesheet: Dictionary = {
+	0: preload("res://assets/composites/body/player_body_0.png"),
+	1: preload("res://assets/composites/body/player_body_1.png")
+}

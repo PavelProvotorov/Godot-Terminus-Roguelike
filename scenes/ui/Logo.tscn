@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Resources/fonts/TeenyTinyPixls-o2zo.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 10
+font_data = ExtResource( 4 )
+
+[node name="Logo" type="Label"]
+anchor_right = 0.875
+anchor_bottom = 0.267
+margin_bottom = -0.0400023
+rect_min_size = Vector2( 140, 32 )
+custom_fonts/font = SubResource( 1 )
+text = ":-<TERMINUS>-:"
+align = 1
+valign = 1

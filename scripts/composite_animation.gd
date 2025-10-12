@@ -4,23 +4,13 @@ onready var _animation:AnimationPlayer = $CompositePlayer
 onready var _head_sprite:Sprite = $Head
 onready var _body_sprite:Sprite = $Body
 
-const head_spritesheet: Dictionary = {
-	0: preload("res://assets/composites/head/player_head_0.png"),
-	1: preload("res://assets/composites/head/player_head_1.png")
-}
-
-const body_spritesheet: Dictionary = {
-	0: preload("res://assets/composites/body/player_body_0.png"),
-	1: preload("res://assets/composites/body/player_body_1.png")
-}
-
 var head_sheet:int = 0
 var body_sheet:int = 0 
 
 func _ready():
 	_animation.current_animation = 'IDLE'
-	_head_sprite.texture = head_spritesheet.get(1)
-	_body_sprite.texture = body_spritesheet.get(1)
+	_head_sprite.texture = Resources.head_spritesheet.get(Config.get_player_head())
+	_body_sprite.texture = Resources.body_spritesheet.get(Config.get_player_body())
 	
 func play_idle_animation():
 	_animation.current_animation = 'IDLE'
