@@ -1,22 +1,12 @@
 extends Node
-class_name LevelShadowcasting
+class_name ItemShadowcasting
 
 var _shadowcasting:SymmetricShadowcasting2D
-var _tilemap_fog:TileMap
 var visible_cells:Array = []
-
 var max_distance:int = 0
-var prev_max_distance:int = 0
 var center:Vector2 = Vector2.ZERO
 
-const FOG_TILES = {
-	EMPTY = -1,
-	FILLED = 2,
-	REVEAL = 1
-}
-
-func _init(fog_tilemap:TileMap, is_tile_blocking:FuncRef):
-	self._tilemap_fog = fog_tilemap
+func _init(is_tile_blocking:FuncRef):
 	self._shadowcasting = SymmetricShadowcasting2D.new(
 		is_tile_blocking,
 		funcref(self, 'on_tile_visible')
@@ -24,11 +14,7 @@ func _init(fog_tilemap:TileMap, is_tile_blocking:FuncRef):
 	
 func cast(center:Vector2, distance:int) -> Array:
 	self.center = center
-	self.prev_max_distance = self.max_distance
 	self.max_distance = distance
-
-	for cell in visible_cells:
-		_tilemap_fog.set_cellv(cell, FOG_TILES.FILLED)
 		
 	visible_cells.clear()
 	on_tile_visible(center)
@@ -43,8 +29,3 @@ func on_tile_visible(tile:Vector2) -> void:
 		return
 
 	visible_cells.append(tile)
-
-	if prev_max_distance < max_distance and round(center.distance_to(tile)) == max_distance:
-		_tilemap_fog.set_cellv(tile, FOG_TILES.REVEAL)
-	else:
-		_tilemap_fog.set_cellv(tile, FOG_TILES.EMPTY)

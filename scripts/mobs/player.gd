@@ -1,7 +1,7 @@
 extends Entity2D
 class_name Player
 
-onready var _inventory = get_tree().get_first_node_in_group("INVENTORY")
+onready var _inventory:Inventory = get_tree().get_first_node_in_group("INVENTORY")
 onready var _composite_animation = $CompositeAnimation
 onready var _move_raycast:RayCast2D = $MoveCast
 onready var _interact_raycast = $Pickup

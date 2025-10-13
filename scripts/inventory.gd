@@ -12,7 +12,7 @@ var min_item_count:int = 0
 
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
-	var weapon_instance:Weapon = Resources.weapon_assault_rifle.instance()
+	var weapon_instance:Weapon = Resources.weapon_pistol.instance()
 	weapon_instance.set_item_owner(Global.get_player())
 	_ranged_weapon_slot.add_child(weapon_instance)
 	

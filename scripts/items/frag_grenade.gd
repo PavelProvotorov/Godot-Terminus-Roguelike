@@ -16,7 +16,7 @@ func use() -> bool:
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var targets:Array = []
 	
-	targets.append_array(match_pos_to_target([
+	targets.append_array(get_reachable_targets([
 		impact_pos,
 		Vector2(impact_pos.x, impact_pos.y - 8),
 		Vector2(impact_pos.x, impact_pos.y+8),
@@ -26,7 +26,7 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 		Vector2(impact_pos.x+8, impact_pos.y-8),
 		Vector2(impact_pos.x-8, impact_pos.y+8),
 		Vector2(impact_pos.x-8, impact_pos.y-8)
-	]))
+	], impact_pos))
 	
 	return targets
 

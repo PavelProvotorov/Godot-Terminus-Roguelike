@@ -10,9 +10,9 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var direction = origin_pos.direction_to(impact_pos)
 	var targets:Array = []
 	
-	targets.append_array(match_pos_to_target([
+	targets.append_array(get_reachable_targets([
 		impact_pos,
-	]))
+	], impact_pos))
 	
 	bleed_targets(targets)
 	

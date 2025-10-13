@@ -11,18 +11,18 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var targets:Array = []
 	
 	if is_horizontal(direction):
-		targets.append_array(match_pos_to_target([
+		targets.append_array(get_reachable_targets([
 			impact_pos,
 			impact_pos + (Vector2.UP * grid_size),
 			impact_pos + (Vector2.DOWN * grid_size),
-		]))
+		], impact_pos))
 	
 	if is_vertical(direction):
-		targets.append_array(match_pos_to_target([
+		targets.append_array(get_reachable_targets([
 			impact_pos,
 			impact_pos + (Vector2.LEFT * grid_size),
 			impact_pos + (Vector2.RIGHT * grid_size),
-		]))
+		], impact_pos))
 		
 	return targets
 

@@ -16,25 +16,21 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var forward_cell = (impact_pos + (direction * grid_size))
 	var targets:Array = []
 	
-	targets.append_array(match_pos_to_target([
-		
-	]))
-	
 	if is_horizontal(direction):
-		targets.append_array(match_pos_to_target([
+		targets.append_array(get_reachable_targets([
 			impact_pos,
 			forward_cell,
 			forward_cell + (Vector2.UP * grid_size),
 			forward_cell + (Vector2.DOWN * grid_size),
-		]))
+		], impact_pos))
 	
 	if is_vertical(direction):
-		targets.append_array(match_pos_to_target([
+		targets.append_array(get_reachable_targets([
 			impact_pos,
 			forward_cell,
 			forward_cell + (Vector2.LEFT * grid_size),
 			forward_cell + (Vector2.RIGHT * grid_size),
-		]))
+		], impact_pos))
 		
 	return targets
 

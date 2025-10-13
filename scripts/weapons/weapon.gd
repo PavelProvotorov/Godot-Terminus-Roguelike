@@ -16,18 +16,9 @@ func use():
 	
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var targets:Array = []
-	
 	targets.append_array(
-		match_pos_to_target([impact_pos])
+		get_reachable_targets([impact_pos], impact_pos)
 	)
-	return targets
-	
-func match_pos_to_target(positions:Array) -> Array:
-	var entities:Array = _tree.get_nodes_in_group("ENTITY")
-	var targets:Array = []
-	for entity in entities:
-		if entity.position in positions:
-			targets.append(entity)
 	return targets
 	
 func is_horizontal(direction:Vector2) -> bool:

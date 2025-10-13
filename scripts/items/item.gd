@@ -5,6 +5,7 @@ onready var level setget set_level, get_level
 onready var _sprite_animations = SpriteAnimations2D.new(self)
 onready var _utility:Utility = Utility.new()
 onready var _static_body = $StaticBody2D
+const MAX_ITEM_VISIBILITY:int = 5
 var _storage:Control
 var _owner:Entity2D
 
@@ -12,6 +13,7 @@ var item_name:String = ""
 var description:String = "[color=#%s]<Error>:[/color] Missing entry for item;" %Color.webgray.to_html()
 var throw_damage:int = 0
 var throw_range:int = 0
+var visibility:int = 10
 var grid_size:int = 8
 
 func _ready():
@@ -56,15 +58,18 @@ func get_throw_damage(distance:int, offset:int) -> int:
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var targets:Array = []
 	targets.append_array(
-		match_pos_to_target([impact_pos])
+		get_reachable_targets([impact_pos], impact_pos)
 	)
 	return targets
 	
-func match_pos_to_target(positions:Array) -> Array:
+func get_reachable_targets(positions:Array, center:Vector2) -> Array:
+	var shadowcast = ItemShadowcasting.new(funcref(self.level, 'is_tile_blocking'))
+	var reachable_cells = shadowcast.cast(center / grid_size, MAX_ITEM_VISIBILITY)
 	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
 	var targets:Array = []
+	
 	for entity in entities:
-		if entity.position in positions:
+		if (entity.position in positions) and (entity.position / grid_size in reachable_cells):
 			targets.append(entity)
 	return targets
 	

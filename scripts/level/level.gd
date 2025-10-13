@@ -29,7 +29,7 @@ onready var TILESET = {
 	DECO_5 = load("res://resources/tilesets/tileset_deco_5.tres"),
 }
 
-var _shadowcasting:ShadowCasting2D
+var _shadowcasting:LevelShadowcasting
 var _pathfinding:PathFinding2D
 var _generator:Generator2D
 var _decorator:Decorator2D
@@ -101,12 +101,9 @@ func generate_level():
 		"TILE_OBJECT_SMALL": _generator.object_small_cells
 	})
 	
-	_shadowcasting = ShadowCasting2D.new(
-		_tilemap_logic,
+	_shadowcasting = LevelShadowcasting.new(
 		_tilemap_fog,
-		[TILES.WALL, TILES.DOOR],
-		TILES.FLOOR,
-		TILES.FOG
+		funcref(self, 'is_tile_blocking')
 	)
 	
 	populate_level()
@@ -122,7 +119,7 @@ func populate_level():
 		'enemies': {
 			"Grunt": 100,
 			"Bloater": 100,
-			"Colony": 20,
+			"Colony": 100,
 			"MindFlayer": 0,
 			"Hydra": 0,
 			"Abomination": 0,
@@ -143,7 +140,7 @@ func populate_level():
 		},
 		'items': {
 			"Bandage": 5,
-			"Ammo": 100,
+			"Ammo": 50,
 			"Grenade": 5,
 			"FragGrenade": 5,
 			"Medkit": 5,
@@ -156,7 +153,7 @@ func populate_level():
 			"AssaultRifle": 100,
 			"HuntingRifle": 100,
 			"Pistol": 100,
-			"Revolver": 0,
+			"Revolver": 100,
 			"SawnOff": 100,
 			"Shotgun": 100,
 			"SniperRifle": 100,
@@ -172,7 +169,7 @@ func add_player() -> void:
 	
 func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
-	add_enemies(entities.get('enemies', {}), 5, 8, free_cells)
+	add_enemies(entities.get('enemies', {}), 5, 10, free_cells)
 	add_items(entities.get('items', {}), 3, 5, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
 	add_player()
@@ -281,7 +278,7 @@ func open_door(entity_pos:Vector2, door_pos:Vector2, distance:int) -> void:
 	_tilemap_logic.set_cellv(door_pos_tilemap, TILES.FLOOR)
 	_decorator.update_decoration('TILE_DOOR_OPEN', [door_pos_tilemap])
 	_pathfinding.enable_points([door_pos_tilemap])
-	var cells = _shadowcasting.update(entity_pos_tilemap, distance)
+	var cells = _shadowcasting.cast(entity_pos_tilemap, distance)
 	Events.emit_signal("level_fog_updated", cells)
 	update()
 	
@@ -296,7 +293,7 @@ func is_fog_cell(cell:Vector2) -> bool:
 	
 func update_level_fog(pos:Vector2, distance:int) -> void:
 	var pos_tilemap = _tilemap_logic.world_to_map(pos)
-	var cells = _shadowcasting.update(pos_tilemap, distance)
+	var cells = _shadowcasting.cast(pos_tilemap, distance)
 	Events.emit_signal("level_fog_updated", cells)
 
 func set_pathfinding_points(to_disable:Array, to_enable:Array) -> void:
@@ -321,6 +318,13 @@ func get_array_difference(array_1:Array, array_2:Array) -> Array:
 		if not (element in array_2):
 			output.append(element)
 	return output
+
+func is_tile_blocking(cell:Vector2) -> bool:
+	var blocking_tiles = [
+		TILES.WALL,
+		TILES.DOOR
+	]
+	return blocking_tiles.has(_tilemap_logic.get_cellv(cell))
 	
 func get_entrance() -> Vector2:
 	return _tilemap_logic.map_to_world(_generator.generator_get_entrance())
