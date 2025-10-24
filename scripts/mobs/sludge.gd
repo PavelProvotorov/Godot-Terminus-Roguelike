@@ -6,6 +6,7 @@ var spawn_count:int = 0
 func _ready():
 	behaviours = [
 		BEHAVIOUR_TYPE.MELEE,
+		BEHAVIOUR_TYPE.RALLY,
 		BEHAVIOUR_TYPE.MOVE,
 	]
 	attack_range = 1
@@ -16,7 +17,7 @@ func _post_movement_hook() -> void:
 	var nearby_cells = get_nearby_cells()
 	
 	if nearby_cells.size() > 0 \
-		and get_chance(25) \
+		and get_chance(45) \
 		and spawn_count < max_spawn_count \
 		:
 		spawn_count += 1

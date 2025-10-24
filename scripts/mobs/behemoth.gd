@@ -7,6 +7,6 @@ func _ready():
 		BEHAVIOUR_TYPE.MOVE,
 	]
 	attack_range = 1
-	health = 1
-	melee_damage = 0
+	health = 6
+	melee_damage = 3
 	setup()

@@ -2,6 +2,7 @@ extends Node
 
 onready var level:Level
 onready var player:Player
+onready var depth:int = 0
 
 func _init():
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
@@ -11,6 +12,12 @@ func _ready():
 
 func _on_level_generation_complete(level:Level) -> void:
 	set_level(level)
+
+func set_depth(value:int) -> void:
+	depth = value
+
+func get_depth() -> int:
+	return depth
 
 func set_player(player:Player) -> void:
 	self.player = player

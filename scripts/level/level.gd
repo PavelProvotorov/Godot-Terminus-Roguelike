@@ -22,13 +22,6 @@ onready var TILES = {
 	FOG = _tilemap_fog.tile_set.find_tile_by_name("TILE_FOG")
 	}
 
-onready var TILESET = {
-	DECO_2 = load("res://resources/tilesets/tileset_deco_2.tres"),
-	DECO_3 = load("res://resources/tilesets/tileset_deco_3.tres"),
-	DECO_4 = load("res://resources/tilesets/tileset_deco_4.tres"),
-	DECO_5 = load("res://resources/tilesets/tileset_deco_5.tres"),
-}
-
 var _shadowcasting:LevelShadowcasting
 var _pathfinding:PathFinding2D
 var _generator:Generator2D
@@ -114,53 +107,9 @@ func generate_level():
 	_tilemap_logic.process_queue()
 
 func populate_level():
+	var current_depth = Global.get_depth()
 	clear_tilemap_children(_tilemap_logic)
-	add_entities({
-		'enemies': {
-			"Grunt": 100,
-			"Bloater": 100,
-			"Colony": 100,
-			"MindFlayer": 0,
-			"Hydra": 0,
-			"Abomination": 0,
-			"Parasite": 0,
-			"Insect": 0,
-			"Lurker": 0,
-			"Behemoth": 0,
-			"Horror": 0,
-			"Wart": 0,
-			"Infestinator": 0,
-			"Creep": 0,
-			"Sludge": 0,
-			"Infected": 0,
-			"Stalker": 0,
-			"Scout": 0,
-			"Templar": 0,
-			"Zealot": 0,
-		},
-		'items': {
-			"Bandage": 5,
-			"Ammo": 50,
-			"Grenade": 5,
-			"FragGrenade": 5,
-			"Medkit": 5,
-			"Teleporter": 5,
-			"ShieldGenerator": 5,
-			"Adrenalin": 5,
-			"Steroids": 5
-		},
-		'weapons': {
-			"AssaultRifle": 100,
-			"HuntingRifle": 100,
-			"Pistol": 100,
-			"Revolver": 100,
-			"SawnOff": 100,
-			"Shotgun": 100,
-			"SniperRifle": 100,
-			"Submachine": 100,
-			"TacticalShotgun": 100,
-		}
-	})
+	add_entities(Resources.level_configuration.get(current_depth))
 
 func add_player() -> void:
 	var player = Global.get_player()
@@ -169,7 +118,7 @@ func add_player() -> void:
 	
 func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
-	add_enemies(entities.get('enemies', {}), 5, 10, free_cells)
+	add_enemies(entities.get('enemies', {}), 12, 18, free_cells)
 	add_items(entities.get('items', {}), 3, 5, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
 	add_player()
@@ -177,6 +126,9 @@ func add_entities(entities:Dictionary) -> void:
 func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var enemies_count = rand_range(min_count, max_count)
 	var enemies_added = 0
+	
+	if enemy_list.size() <= 0:
+		return
 	
 	while enemies_added < enemies_count and free_cells.size() > 0:
 		
@@ -196,6 +148,9 @@ func add_items(item_list: Dictionary, min_count:int, max_count:int, free_cells:A
 	var items_count = rand_range(min_count, max_count)
 	var items_added = 0
 	
+	if item_list.size() <= 0:
+		return
+	
 	while items_added < items_count and free_cells.size() > 0:
 		
 		var cell = free_cells.pick_random()
@@ -213,6 +168,9 @@ func add_items(item_list: Dictionary, min_count:int, max_count:int, free_cells:A
 func app_weapons(weapon_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var weapons_count = rand_range(min_count, max_count)
 	var weapons_added = 0
+	
+	if weapon_list.size() <= 0:
+		return
 	
 	while weapons_added < weapons_count and free_cells.size() > 0:
 		

@@ -14,8 +14,10 @@ func _init():
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
 
 func _ready():
-	self.health = 99
-	self.ammo = 99
+	self.health = 10
+	self.ammo = 25
+	max_health = 10
+	max_ammo = 25
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2

@@ -1,7 +1,7 @@
 extends Weapon
  
 func _init():
-	shot_damage = 3
+	shot_damage = 5
 	shot_range = 4
 	shot_count = 1
 	ammo_consumption = 2
@@ -19,7 +19,5 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	
 func get_shot_damage(distance:int, offset:int) -> int:
 	if offset > 0:
-		return shot_damage - 1
-	if distance == shot_range and offset == 0:
-		return shot_damage + 1
-	return shot_damage
+		return 2
+	return max(2, shot_damage - (shot_range - distance)) as int
