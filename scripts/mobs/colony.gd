@@ -7,7 +7,7 @@ func _ready():
 	attack_range = 2
 	melee_damage = 1
 
-func handle_spawning(data: Dictionary) -> void:
+func handle_spawning() -> void:
 	var nearby_cells = get_nearby_cells()
 	
 	if nearby_cells.size() != 0:

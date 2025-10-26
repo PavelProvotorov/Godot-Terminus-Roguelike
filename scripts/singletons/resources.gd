@@ -76,6 +76,7 @@ const default_weapons: Dictionary = {
 	"SniperRifle": 100,
 	"Submachine": 100,
 	"TacticalShotgun": 100,
+	"RailGun": 100,
 }
 
 const default_items: Dictionary = {
@@ -93,7 +94,12 @@ const default_items: Dictionary = {
 onready var level_configuration: Dictionary = {
 	0: {
 		'scene': factory_scene,
-		'enemies': default_enemies,
+		'enemies': {
+			"GuardBot": 5,
+			"Grunt": 100,
+			"Bloater": 80,
+			"Colony": 50,
+		},
 		'items': default_items,
 		'weapons': default_weapons,
 	},

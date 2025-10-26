@@ -14,42 +14,47 @@ onready var BEHAVIOUR_TYPE = {
 	"IDLE": {
 		"check": funcref(self, "idle_behaviour"),
 		"handle": funcref(self, "handle_idle"),
-		"data": {},
+		"config": {},
 	},
 	"MELEE": {
 		"check": funcref(self, "melee_behaviour"),
 		"handle": funcref(self, "handle_melee_attack"),
-		"data": funcref(self, "get_melee_data"),
+		"config": {},
 	},
 	"RANGED": {
 		"check": funcref(self, "ranged_behaviour"),
 		"handle": funcref(self, "handle_ranged_attack"),
-		"data": funcref(self, "get_ranged_data"),
+		"config": {},
+	},
+	"FLEE": {
+		"check": funcref(self, "flee_behaviour"),
+		"handle": funcref(self, "handle_flee_behaviour"),
+		"config": funcref(self, "get_flee_behaviour_config"),
 	},
 	"AMBUSH":{
 		"check": funcref(self, "ambush_behaviour"),
 		"handle": funcref(self, "handle_idle"),
-		"data": {},
+		"config": {},
 	},
 	"RALLY": {
 		"check": funcref(self, "rally_behaviour"),
 		"handle": funcref(self, "handle_rally_behaviour"),
-		"data": {},
+		"config": {},
 	},
 	"WANDER": {
 		"check": funcref(self, "wander_behaviour"),
 		"handle": funcref(self, "handle_wander_behaviour"),
-		"data": {},
+		"config": {},
 	},
 	"SPAWNER": {
 		"check": funcref(self, "spawner_behaviour"),
 		"handle": funcref(self, "handle_spawning"),
-		"data": {},
+		"config": {},
 	},
 	"MOVE":{
 		"check": funcref(self, "move_behaviour"),
 		"handle": funcref(self, "handle_movement"),
-		"data": funcref(self, "get_movement_data"),
+		"config": {},
 	},
 }
 
@@ -99,43 +104,52 @@ func set_random_frame() -> void:
 	
 func process_behaviours() -> void:
 	for behaviour in behaviours:
-		var check = behaviour.get("check")
-		if check.call_func():
-			var handle = behaviour.get("handle")
-			var data = behaviour.get("data")
-			if (typeof(data) == TYPE_OBJECT): data = data.call_func()
-			handle.call_funcv([data])
+		var check:FuncRef = behaviour.get("check")
+		var handle = behaviour.get("handle")
+		var config = behaviour.get("config", {})
+		
+		if config is FuncRef:
+			config = config.call_func()
+		
+		if not check.is_valid() or not handle.is_valid():
+			push_error("Invalid funcrefs for behaviour: " + behaviour)
+			continue
+		
+		if check.call_funcv([config]):
+			handle.call_func()
 			return
+			
 	print("SKIP")
 	end_turn()
 
-func get_melee_data() -> Dictionary:
-	return {
-		"start": self.position,
-		"finish": path[1] * grid_size,
-		"target": target
-	}
-
-func get_ranged_data() -> Dictionary:
-	return {
-		"start": self.position,
-		"finish": path[1] * grid_size,
-		"target": target
-	}
-
-func get_movement_data() -> Dictionary:
-	return {
-		"start": self.position,
-		"finish": path[1] * grid_size,
-	}
-
-func melee_behaviour() -> bool:
+func melee_behaviour(config:Dictionary) -> bool:
 	if path.size() == 2 and target_in_sight():
 		print("MELEE")
 		return true
 	return false
+	
+func flee_behaviour(config:Dictionary) -> bool:
+	var health_threshold:int =  config.get("health_threshold", 0)
+	var skip_chance:int = config.get("skip_chance", 0)
+		
+	if get_chance(skip_chance):
+		print("FLEE - SKIP")
+		return false
+	
+	if get_nearby_cells().size() == 0:
+		return false
+	
+	if self.health <= health_threshold:
+		print("FLEE - LOW HEALTH")
+		return true
+	
+	if path.size() == 2 and target_in_sight():
+		print("FLEE")
+		return true
+		
+	return false
 
-func ranged_behaviour() -> bool:
+func ranged_behaviour(config:Dictionary) -> bool:
 	if (path.size() > 2) \
 	and target_in_range() \
 	and target_in_sight() \
@@ -144,48 +158,48 @@ func ranged_behaviour() -> bool:
 		return true
 	return false
 
-func move_behaviour() -> bool:
+func move_behaviour(config:Dictionary) -> bool:
 	if path.size() > 2:
 		print("MOVE")
 		return true
 	return false
 
-func ambush_behaviour() -> bool:
+func ambush_behaviour(config:Dictionary) -> bool:
 	if path.size() == 3 and !target_in_sight():
 		print("AMBUSH")
 		return true
 	return false
 	
-func spawner_behaviour() -> bool:
+func spawner_behaviour(config:Dictionary) -> bool:
 	if get_nearby_cells().size() >= 1:
 		print("SPAWNER")
 		return true
 	return false
 
-func wander_behaviour() -> bool:
+func wander_behaviour(config:Dictionary) -> bool:
 	if is_in_group("WANDERING"):
 		print("WANDER")
 		return true
 	return false
 
-func rally_behaviour() -> bool:
+func rally_behaviour(config:Dictionary) -> bool:
 	if path.size() == 0:
 		print("RALLY")
 		return true
 	return false
 
-func idle_behaviour() -> bool:
+func idle_behaviour(config:Dictionary) -> bool:
 	if path.size() == 0:
 		print("IDLE")
 		return true
 	return false
 
-func handle_idle(data:Dictionary) -> void:
+func handle_idle() -> void:
 	end_turn()
 
-func handle_movement(data:Dictionary) -> void:
-	var start = data.start
-	var finish = data.finish
+func handle_movement() -> void:
+	var start = self.position
+	var finish = path[1] * grid_size
 	
 	set_sprite_direction(start, finish)
 	
@@ -204,10 +218,11 @@ func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
 	previous_position = prev_pos
 	self.level.set_pathfinding_points([new_pos], [prev_pos])
 
-func handle_melee_attack(data:Dictionary) -> void:
-	var start = data.start
-	var finish = data.finish
-	var target = data.target
+func handle_melee_attack() -> void:
+	var start = self.position
+	var finish = path[1] * grid_size
+	var target = self.target
+	
 	set_sprite_direction(start, finish)
 	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_damage))
 	yield(play_melee_animation(start, finish), 'completed')
@@ -215,10 +230,11 @@ func handle_melee_attack(data:Dictionary) -> void:
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 
-func handle_ranged_attack(data:Dictionary) -> void:
-	var start = data.start
-	var finish = data.finish
-	var target = data.target
+func handle_ranged_attack() -> void:
+	var start = self.position
+	var finish = path[1] * grid_size
+	var target = self.target
+	
 	set_sprite_direction(start, finish)
 	target.receive_damage(ranged_damage)
 	yield(play_ranged_animation(start, finish), 'completed')
@@ -226,7 +242,24 @@ func handle_ranged_attack(data:Dictionary) -> void:
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 	
-func handle_wander_behaviour(data:Dictionary) -> void:
+func handle_flee_behaviour() -> void:
+	var nearby_cells:Array = get_nearby_cells()
+	
+	if nearby_cells.size() > 0:
+		
+		var cell = nearby_cells.pick_random()
+		var start = position / grid_size
+		var finish = cell
+		
+		if is_invisible() or is_path_hidden(start, finish):
+			self.position = finish * grid_size
+		else:
+			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
+		
+		update_pathfinding(start, finish)
+	end_turn()
+	
+func handle_wander_behaviour() -> void:
 	var nearby_cells:Array = get_nearby_cells()
 	nearby_cells.erase(previous_position / grid_size)
 	
@@ -244,7 +277,7 @@ func handle_wander_behaviour(data:Dictionary) -> void:
 		update_pathfinding(start, finish)
 	end_turn()
 
-func handle_rally_behaviour(data:Dictionary) -> void:
+func handle_rally_behaviour() -> void:
 	var nearby_cells:Array = get_nearby_cells()
 	var move_to_cell:Vector2  = self.position / grid_size
 	var shortest_distance:int = round((self.position / grid_size).distance_to(target.position / grid_size))
@@ -272,7 +305,7 @@ func handle_rally_behaviour(data:Dictionary) -> void:
 		update_pathfinding(start, finish)
 	end_turn()
 
-func handle_spawning(data:Dictionary) -> void:
+func handle_spawning() -> void:
 	end_turn()
 	
 func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vector2) -> void:
