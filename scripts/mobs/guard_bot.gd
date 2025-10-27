@@ -18,5 +18,6 @@ func _ready():
 func get_flee_behaviour_config() -> Dictionary:
 	return {
 		"health_threshold": 0,
+		"flee_when_close": true,
 		"skip_chance": 25,
 	}

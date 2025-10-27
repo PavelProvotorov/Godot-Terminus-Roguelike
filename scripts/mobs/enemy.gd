@@ -63,6 +63,7 @@ onready var LIFECYCLE = {
 	POST_MOVEMENT = funcref(self, "_post_movement_hook"),
 	POST_RANGED_ATTACK = funcref(self, "_post_ranged_attack_hook"),
 	POST_MELEE_ATTACK = funcref(self, "_post_melee_attack_hook"),
+	POST_FLEE_HOOK = funcref(self, "_post_flee_hook")
 }
 
 func _ready():
@@ -130,6 +131,7 @@ func melee_behaviour(config:Dictionary) -> bool:
 	
 func flee_behaviour(config:Dictionary) -> bool:
 	var health_threshold:int =  config.get("health_threshold", 0)
+	var flee_when_close:int = config.get("flee_when_close", false)
 	var skip_chance:int = config.get("skip_chance", 0)
 		
 	if get_chance(skip_chance):
@@ -143,7 +145,7 @@ func flee_behaviour(config:Dictionary) -> bool:
 		print("FLEE - LOW HEALTH")
 		return true
 	
-	if path.size() == 2 and target_in_sight():
+	if flee_when_close and path.size() == 2 and target_in_sight():
 		print("FLEE")
 		return true
 		
@@ -244,10 +246,17 @@ func handle_ranged_attack() -> void:
 	
 func handle_flee_behaviour() -> void:
 	var nearby_cells:Array = get_nearby_cells()
+	var sorted_cells = nearby_cells
+	sorted_cells.sort_custom(self, "sort_by_distance")
 	
-	if nearby_cells.size() > 0:
+	for cell in sorted_cells:
+		print(cell, cell.distance_to(target.position / grid_size))
 		
-		var cell = nearby_cells.pick_random()
+	print("Using cell: ", sorted_cells[0])
+	
+	if sorted_cells.size() > 0:
+		
+		var cell = sorted_cells[0]
 		var start = position / grid_size
 		var finish = cell
 		
@@ -257,7 +266,16 @@ func handle_flee_behaviour() -> void:
 			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
 		
 		update_pathfinding(start, finish)
+		
+	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_FLEE_HOOK)
+	if hook is GDScriptFunctionState: yield(hook, "completed")
+	
 	end_turn()
+	
+	
+func sort_by_distance(a, b) -> bool:
+	var pos:Vector2 = target.position / grid_size
+	return a.distance_to(pos) > b.distance_to(pos)
 	
 func handle_wander_behaviour() -> void:
 	var nearby_cells:Array = get_nearby_cells()
@@ -347,3 +365,4 @@ func is_active() -> bool:
 
 func set_active() -> void:
 	add_to_group('ACTIVE')
+

@@ -202,12 +202,15 @@ func get_floor_cells() -> Array:
 	return _tilemap_logic.get_used_cells_by_id(TILES.FLOOR)
 	
 func get_free_cells() -> Array:
-	var floor_cells = get_floor_cells()
+	var free_cells = []
+	free_cells.append_array(_tilemap_logic.get_used_cells_by_id(TILES.FLOOR))
+	free_cells.append_array(_tilemap_logic.get_used_cells_by_id(TILES.ENTRANCE))
+	free_cells.append_array(_tilemap_logic.get_used_cells_by_id(TILES.EXIT))
 	var entities = get_tree().get_nodes_in_group("ENTITY")
 	var entities_positions = []
 	for entity in entities:
 		entities_positions.append(entity.position / 8)
-	return get_array_difference(floor_cells, entities_positions)
+	return get_array_difference(free_cells, entities_positions)
 	
 func get_hidden_free_cells() -> Array:
 	var free_cells:Array = get_free_cells()

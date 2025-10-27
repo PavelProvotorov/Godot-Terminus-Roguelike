@@ -2,7 +2,7 @@ extends Node
 
 onready var level:Level
 onready var player:Player
-onready var depth:int = 0
+onready var depth:int = 3
 
 func _init():
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")

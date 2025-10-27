@@ -130,7 +130,7 @@ onready var level_configuration: Dictionary = {
 		'enemies': {
 			"MindFlayer": 50,
 			"Horror": 50,
-			"Sludge": 50,
+			"Sludge": 25,
 			"Infected": 100,
 		},
 		'items': default_items,

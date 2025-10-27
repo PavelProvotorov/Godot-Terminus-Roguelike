@@ -5,13 +5,14 @@ var spawn_count:int = 0
 
 func _ready():
 	behaviours = [
+		BEHAVIOUR_TYPE.FLEE,
 		BEHAVIOUR_TYPE.MELEE,
 		BEHAVIOUR_TYPE.RALLY,
 		BEHAVIOUR_TYPE.MOVE,
 	]
 	attack_range = 1
 	melee_damage = 3
-	health = 6
+	health = 7
 	
 func _post_movement_hook() -> void:
 	var nearby_cells = get_nearby_cells()
@@ -30,3 +31,13 @@ func _post_movement_hook() -> void:
 			), 
 		"completed"
 		)
+
+func _post_flee_hook() -> void:
+	self.add_buff('regeneration', true)
+
+func get_flee_behaviour_config() -> Dictionary:
+	return {
+		"health_threshold": 2,
+		"flee_when_close": false,
+		"skip_chance": 0,
+	}
