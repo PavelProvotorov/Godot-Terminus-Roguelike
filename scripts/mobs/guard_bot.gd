@@ -4,13 +4,14 @@ func _ready():
 	behaviours = [
 		BEHAVIOUR_TYPE.FLEE,
 		BEHAVIOUR_TYPE.AMBUSH,
+		BEHAVIOUR_TYPE.OPEN_DOOR,
 		BEHAVIOUR_TYPE.WANDER,
 		BEHAVIOUR_TYPE.RANGED,
 		BEHAVIOUR_TYPE.MELEE,
 		BEHAVIOUR_TYPE.MOVE,
 	]
 	attack_range = 2
-	health = 3
+	health = 4
 	melee_damage = 1
 	ranged_damage = 1
 	setup()

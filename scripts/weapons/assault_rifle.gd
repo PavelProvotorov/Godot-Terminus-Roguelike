@@ -1,10 +1,10 @@
-extends Weapon
+extends RangedWeapon
 
 func _init():
-	shot_damage = 3
+	damage = 3
 	shot_range = 3
 	shot_count = 2
 	ammo_consumption = 1
 	
-func get_shot_damage(distance:int, offset:int) -> int:
-	return shot_damage
+func get_damage(distance:int, offset:int) -> int:
+	return damage

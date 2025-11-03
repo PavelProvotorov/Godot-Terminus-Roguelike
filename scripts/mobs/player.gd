@@ -12,6 +12,7 @@ signal throw_successful
 
 func _init():
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
+	Events.connect("level_door_opened", self, "_on_level_door_opened")
 
 func _ready():
 	self.health = 10
@@ -159,9 +160,8 @@ func process_tilemap_collision(pos:Vector2) -> bool:
 	print('COLISSION WITH: ', self.level.get_tile_position_name(pos))
 	match self.level.get_tile_position_name(pos):
 		"DOOR":
-			self.level.open_door(self.position, pos, visibility)
-			end_turn()
-			return true
+			self.level.open_door(pos)
+			return false
 		_:
 			return false
 
@@ -176,10 +176,11 @@ func handle_movement(data:Dictionary) -> void:
 	end_turn()
 
 func handle_melee_attack(data:Dictionary) -> void:
+	var melee_weapon:Weapon = _inventory.get_melee_weapon()
 	var start = data.start
 	var finish = data.finish
 	var target = data.target
-	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_damage))
+	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_weapon.get_damage(0, 0)))
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
@@ -192,7 +193,7 @@ func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_p
 		var distance = self.position.distance_to(impact_pos) / grid_size
 		
 		if target is Entity2D: 
-			target.receive_damage(ranged_weapon.get_shot_damage(distance, offset))
+			target.receive_damage(ranged_weapon.get_damage(distance, offset))
 			
 	return yield(play_ranged_animation(start, finish), 'completed')
 
@@ -277,6 +278,10 @@ func _on_level_generation_complete(level:Level) -> void:
 	self.position = level.get_entrance()
 	_camera.reset_smoothing()
 	set_camera_limits()
+	update_fog()
+
+func _on_level_door_opened() -> void:
+	print("Door was opened!")
 	update_fog()
 
 func _on_start_turn() -> void:

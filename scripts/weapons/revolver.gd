@@ -1,7 +1,7 @@
-extends Weapon
+extends RangedWeapon
 
 func _init():
-	shot_damage = 3
+	damage = 3
 	shot_range = 3
 	shot_count = 1
 	ammo_consumption = 2

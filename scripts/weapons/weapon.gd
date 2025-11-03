@@ -3,10 +3,10 @@ class_name Weapon
 
 onready var _tree:SceneTree = get_tree()
 
-var shot_damage:int = 0
+var damage:int = 0
 var shot_range:int = 0
 var shot_count:int = 0
-var ammo_consumption:int = 1
+var ammo_consumption:int = 0
 
 func _ready():
 	add_to_group('WEAPON')
@@ -33,8 +33,8 @@ func get_shot_count() -> int:
 func get_shot_range() -> int:
 	return shot_range
 
-func get_shot_damage(distance:int, offset:int) -> int:
-	return shot_damage
+func get_damage(distance:int, offset:int) -> int:
+	return damage
 	
 func get_ammo_consumption(ammo:int) -> int:
 	return ammo - ammo_consumption

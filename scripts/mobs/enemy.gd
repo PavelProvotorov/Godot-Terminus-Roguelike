@@ -34,7 +34,7 @@ onready var BEHAVIOUR_TYPE = {
 	"AMBUSH":{
 		"check": funcref(self, "ambush_behaviour"),
 		"handle": funcref(self, "handle_idle"),
-		"config": {},
+		"config": funcref(self, "ambush_behaviour_config"),
 	},
 	"RALLY": {
 		"check": funcref(self, "rally_behaviour"),
@@ -44,6 +44,11 @@ onready var BEHAVIOUR_TYPE = {
 	"WANDER": {
 		"check": funcref(self, "wander_behaviour"),
 		"handle": funcref(self, "handle_wander_behaviour"),
+		"config": {},
+	},
+	"OPEN_DOOR": {
+		"check": funcref(self, "open_door_behaviour"),
+		"handle": funcref(self, "handle_open_door_behaviour"),
 		"config": {},
 	},
 	"SPAWNER": {
@@ -107,10 +112,12 @@ func process_behaviours() -> void:
 	for behaviour in behaviours:
 		var check:FuncRef = behaviour.get("check")
 		var handle = behaviour.get("handle")
-		var config = behaviour.get("config", {})
+		var config = behaviour.get("config")
 		
-		if config is FuncRef:
+		if config is FuncRef and config.is_valid():
 			config = config.call_func()
+		else:
+			config = {}
 		
 		if not check.is_valid() or not handle.is_valid():
 			push_error("Invalid funcrefs for behaviour: " + behaviour)
@@ -167,8 +174,26 @@ func move_behaviour(config:Dictionary) -> bool:
 	return false
 
 func ambush_behaviour(config:Dictionary) -> bool:
-	if path.size() == 3 and !target_in_sight():
+	var enemies:Array = enemies_near_target()
+	var close_in:bool = config.get("close_in", false)
+	var pack_size:int = config.get("pack_size", 2)
+	
+	if path.size() != 3:
+		return false
+	
+	if close_in and enemies.size() >= pack_size:
+		print("AMBUSH - PACK")
+		return false
+	
+	if not target_in_sight():
 		print("AMBUSH")
+		return true
+	return false
+	
+func open_door_behaviour(config:Dictionary) -> bool:
+	print("Nearby doors count: ", get_nearby_doors().size())
+	if get_nearby_doors().size() > 0:
+		print("OPEN DOOR")
 		return true
 	return false
 	
@@ -249,11 +274,6 @@ func handle_flee_behaviour() -> void:
 	var sorted_cells = nearby_cells
 	sorted_cells.sort_custom(self, "sort_by_distance")
 	
-	for cell in sorted_cells:
-		print(cell, cell.distance_to(target.position / grid_size))
-		
-	print("Using cell: ", sorted_cells[0])
-	
 	if sorted_cells.size() > 0:
 		
 		var cell = sorted_cells[0]
@@ -272,6 +292,11 @@ func handle_flee_behaviour() -> void:
 	
 	end_turn()
 	
+func handle_open_door_behaviour() -> void:
+	var nearby_doors:Array = get_nearby_doors()
+	var door:Vector2 = nearby_doors.pick_random()
+	self.level.open_door(door)
+	end_turn()
 	
 func sort_by_distance(a, b) -> bool:
 	var pos:Vector2 = target.position / grid_size
@@ -356,6 +381,43 @@ func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	
 func setup():
 	if behaviours.has(BEHAVIOUR_TYPE.WANDER): add_to_group("WANDERING")
+	
+func enemies_near_target() -> Array:
+	var target_pos = target.position
+	var directions:Array = [
+		target_pos + Vector2(0, -1) * grid_size, 
+		target_pos + Vector2(0, 1) * grid_size, 
+		target_pos + Vector2(-1, 0) * grid_size, 
+		target_pos + Vector2(1, 0) * grid_size, 
+		target_pos + Vector2(1, 1) * grid_size, 
+		target_pos + Vector2(1, -1) * grid_size, 
+		target_pos + Vector2(-1, +1) * grid_size, 
+		target_pos + Vector2(-1, -1) * grid_size
+	]
+	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
+	var enemies:Array = []
+	
+	for entity in entities:
+		if (entity.position in directions):
+			enemies.append(entity)
+	return enemies
+
+func get_nearby_doors() -> Array:
+	var doors: Array = self.level.get_door_cells()
+	var nearby_doors: Array = []
+	var directions: Array = [
+		position + (Vector2.UP * grid_size),
+		position + (Vector2.DOWN * grid_size),
+		position + (Vector2.LEFT * grid_size),
+		position + (Vector2.RIGHT * grid_size)
+	]
+	
+	for door in doors:
+		var door_pos = door * grid_size
+		if door_pos in directions:
+			nearby_doors.append(door_pos) 
+	
+	return nearby_doors
 
 func is_invisible() -> bool:
 	return _sprite.modulate.a == 0

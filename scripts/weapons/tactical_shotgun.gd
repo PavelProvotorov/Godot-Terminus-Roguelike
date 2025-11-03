@@ -1,7 +1,7 @@
-extends Weapon
+extends RangedWeapon
 
 func _init():
-	shot_damage = 3
+	damage = 3
 	shot_range = 3
 	shot_count = 1
 	ammo_consumption = 1
@@ -26,9 +26,9 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 		
 	return targets
 
-func get_shot_damage(distance:int, offset:int) -> int:
+func get_damage(distance:int, offset:int) -> int:
 	if offset > 0:
-		return shot_damage - 1
+		return damage - 1
 	if distance == 1 and offset == 0:
-		return shot_damage + 1
-	return shot_damage
+		return damage + 1
+	return damage

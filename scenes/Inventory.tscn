@@ -16,6 +16,13 @@ anchor_right = 0.35
 anchor_bottom = 0.067
 margin_bottom = -0.0400002
 
+[node name="MeleeWeaponSlot" type="GridContainer" parent="."]
+visible = false
+anchor_left = 0.3
+anchor_right = 0.35
+anchor_bottom = 0.067
+margin_bottom = -0.0400002
+
 [node name="GridContainer" type="GridContainer" parent="."]
 anchor_left = 0.35
 anchor_right = 0.65

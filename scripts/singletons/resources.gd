@@ -22,6 +22,9 @@ onready var weapon_sniper_rifle = load("res://scenes/weapons/SniperRifle.tscn")
 onready var weapon_submachine = load("res://scenes/weapons/Submachine.tscn")
 onready var weapon_railgun = load("res://scenes/weapons/Railgun.tscn")
 
+onready var weapon_slicer = load("res://scenes/weapons/Slicer.tscn")
+onready var weapon_tactical_knife = load("res://scenes/weapons/TacticalKnife.tscn")
+
 onready var level_scene = load("res://scenes/levels/Level.tscn")
 onready var factory_scene = load("res://scenes/levels/Factory.tscn")
 onready var location_2 = load("res://scenes/levels/Location2.tscn")
@@ -77,6 +80,8 @@ const default_weapons: Dictionary = {
 	"Submachine": 100,
 	"TacticalShotgun": 100,
 	"RailGun": 100,
+	"TacticalKnife": 0,
+	"Slicer": 100,
 }
 
 const default_items: Dictionary = {
@@ -95,7 +100,7 @@ onready var level_configuration: Dictionary = {
 	0: {
 		'scene': factory_scene,
 		'enemies': {
-			"GuardBot": 5,
+			"GuardBot": 15,
 			"Grunt": 100,
 			"Bloater": 80,
 			"Colony": 50,

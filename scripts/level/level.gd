@@ -28,6 +28,7 @@ var _generator:Generator2D
 var _decorator:Decorator2D
 
 var point_radius = 3
+var grid_size:int = 8
 var scale_multiplier = 8
 var offset = Vector2(4,4)
 var enabled_point_color = Color('00ff00')
@@ -125,7 +126,9 @@ func add_entities(entities:Dictionary) -> void:
 
 func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var enemies_count = rand_range(min_count, max_count)
-	var enemies_added = 0
+	var entrance:Vector2 = get_entrance() / grid_size
+	var safe_distance:int = 4
+	var enemies_added:int = 0
 	
 	if enemy_list.size() <= 0:
 		return
@@ -133,6 +136,11 @@ func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cell
 	while enemies_added < enemies_count and free_cells.size() > 0:
 		
 		var cell = free_cells.pick_random()
+		
+		if cell.distance_to(entrance) < safe_distance:
+			free_cells.erase(cell)
+			continue
+		
 		var enemy = enemy_list.keys()[randi() % enemy_list.size()]
 			
 		if get_spawn_chance(enemy_list.get(enemy)):
@@ -211,6 +219,9 @@ func get_free_cells() -> Array:
 	for entity in entities:
 		entities_positions.append(entity.position / 8)
 	return get_array_difference(free_cells, entities_positions)
+
+func get_door_cells() -> Array:
+	return _tilemap_logic.get_used_cells_by_id(TILES.DOOR)
 	
 func get_hidden_free_cells() -> Array:
 	var free_cells:Array = get_free_cells()
@@ -232,15 +243,13 @@ func tilemap_get_cells_in_array(tilemap:TileMap, ids:Array) -> Array:
 		cells.append_array(tilemap.get_used_cells_by_id(id))
 	return cells
 
-func open_door(entity_pos:Vector2, door_pos:Vector2, distance:int) -> void:
-	var entity_pos_tilemap = _tilemap_logic.world_to_map(entity_pos)
+func open_door(door_pos:Vector2) -> void:
 	var door_pos_tilemap = _tilemap_logic.world_to_map(door_pos)
 	
 	_tilemap_logic.set_cellv(door_pos_tilemap, TILES.FLOOR)
 	_decorator.update_decoration('TILE_DOOR_OPEN', [door_pos_tilemap])
 	_pathfinding.enable_points([door_pos_tilemap])
-	var cells = _shadowcasting.cast(entity_pos_tilemap, distance)
-	Events.emit_signal("level_fog_updated", cells)
+	Events.emit_signal("level_door_opened")
 	update()
 	
 func find_path(start:Vector2, end:Vector2) -> Array:

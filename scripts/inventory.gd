@@ -5,6 +5,7 @@ onready var level setget set_level, get_level
 onready var _description = null
 onready var _grid = $GridContainer
 onready var _ranged_weapon_slot = $RangedWeaponSlot
+onready var _melee_weapon_slot = $MeleeWeaponSlot
 
 var selected_item:Item = null
 var max_item_count:int = 6
@@ -12,9 +13,12 @@ var min_item_count:int = 0
 
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
-	var weapon_instance:Weapon = Resources.weapon_assault_rifle.instance()
-	weapon_instance.set_item_owner(Global.get_player())
-	_ranged_weapon_slot.add_child(weapon_instance)
+	var ranged_weapon_instance:RangedWeapon = Resources.weapon_assault_rifle.instance()
+	var melee_weapon_instance:MeleeWeapon = Resources.weapon_tactical_knife.instance()
+	ranged_weapon_instance.set_item_owner(Global.get_player())
+	melee_weapon_instance.set_item_owner(Global.get_player())
+	_ranged_weapon_slot.add_child(ranged_weapon_instance)
+	_melee_weapon_slot.add_child(melee_weapon_instance)
 	
 	
 func pickup_item_and_use(item:Item, owner:Node) -> bool:
@@ -74,8 +78,12 @@ func use_selected_item() -> bool:
 	if selected_item == null:
 		return false
 	
-	if selected_item is Weapon:
+	if selected_item is RangedWeapon:
 		equip_ranged_weapon(selected_item)
+		return false
+		
+	if selected_item is MeleeWeapon:
+		equip_melee_weapon(selected_item)
 		return false
 	
 	if selected_item is Item:
@@ -112,6 +120,17 @@ func equip_ranged_weapon(new_weapon:Weapon) -> void:
 	_grid.add_child(current_weapon)
 	
 	new_weapon.use()
+	
+func equip_melee_weapon(new_weapon:Weapon) -> void:
+	var current_weapon = get_melee_weapon()
+	
+	_melee_weapon_slot.remove_child(current_weapon)
+	_grid.remove_child(new_weapon)
+	
+	_melee_weapon_slot.add_child(new_weapon)
+	_grid.add_child(current_weapon)
+	
+	new_weapon.use()
 
 func drop_selected_item(pos:Vector2) -> bool:
 	_grid.remove_child(selected_item)
@@ -121,6 +140,9 @@ func drop_selected_item(pos:Vector2) -> bool:
 
 func get_ranged_weapon() -> Weapon:
 	return _ranged_weapon_slot.get_child(0)
+	
+func get_melee_weapon() -> Weapon:
+	return _melee_weapon_slot.get_child(0)
 
 func get_stored_items() -> Array:
 	return _grid.get_children()

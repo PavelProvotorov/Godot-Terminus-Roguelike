@@ -10,3 +10,8 @@ func _ready():
 	melee_damage = 2
 	health = 4
 	speed = 1
+
+func ambush_behaviour_config() -> Dictionary: 
+	return {
+		"close_in": true
+	}

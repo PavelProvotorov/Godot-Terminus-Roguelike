@@ -1,9 +1,9 @@
-extends Weapon
+extends RangedWeapon
 
 var rng = RandomNumberGenerator.new()
 
 func _init():
-	shot_damage = 4
+	damage = 4
 	shot_range = 1
 	shot_count = 1
 	ammo_consumption = 1
@@ -34,7 +34,7 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 		
 	return targets
 
-func get_shot_damage(distance:int, offset:int) -> int:
+func get_damage(distance:int, offset:int) -> int:
 	if offset == 0:
-		return rng.randi_range(3, shot_damage)
+		return rng.randi_range(3, damage)
 	return rng.randi_range(1, 2)

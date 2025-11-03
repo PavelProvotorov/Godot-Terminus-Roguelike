@@ -273,8 +273,9 @@ func generator_add_room_arches() -> void:
 			for direction in DIRECTIONS:
 				var cell = door + (direction * 2)
 				var floor_tiles:Array = util_get_nearby_tiles_4(cell, [TILES.FLOOR])
+				var door_tiles:Array = util_get_nearby_tiles_4(cell, [TILES.DOOR])
 				
-				if floor_tiles.size() == 2:
+				if floor_tiles.size() == 2 and door_tiles.size() == 0:
 					var direction_to = floor_tiles[0].direction_to(floor_tiles[1])
 					if is_horizontal(direction_to) or is_vertical(direction_to):
 						_tilemap.set_cellv(cell, TILES.FLOOR)
@@ -337,6 +338,9 @@ func generator_clear_level() -> void:
 
 func furnisher_place_object(size:Vector2, max_count:int) -> Array:
 	var result = []
+	
+	if max_count == 0:
+		return []
 	
 	for i in (randi() % max_count):
 		var cells = furnisher_get_free_space(size)
