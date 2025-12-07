@@ -18,7 +18,7 @@ func _ready():
 	self.health = 10
 	self.ammo = 25
 	max_health = 10
-	max_ammo = 25
+	max_ammo = 45
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
@@ -286,3 +286,7 @@ func _on_level_door_opened() -> void:
 
 func _on_start_turn() -> void:
 	_state_machine.change_state('IDLE')
+
+func handle_death() -> void:
+	var parent = self.get_parent()
+	parent.remove_child(self)

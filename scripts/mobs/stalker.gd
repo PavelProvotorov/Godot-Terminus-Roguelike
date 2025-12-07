@@ -4,11 +4,13 @@ func _ready():
 	behaviours = [
 		BEHAVIOUR_TYPE.MELEE,
 		BEHAVIOUR_TYPE.MOVE,
+		BEHAVIOUR_TYPE.WANDERING,
 	]
 	attack_range = 1
 	health = 4
 	melee_damage = 3
 	hide_enemy()
+	set_wandering(true)
 	
 func _turn_started_hook() -> void:
 	if target_nearby() and is_invisible(): 

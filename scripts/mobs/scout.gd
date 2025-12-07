@@ -5,16 +5,18 @@ var buff_trigger_count:int = 8
 
 func _ready():
 	behaviours = [
-		BEHAVIOUR_TYPE.WANDER,
 		BEHAVIOUR_TYPE.RANGED,
 		BEHAVIOUR_TYPE.MELEE,
 		BEHAVIOUR_TYPE.MOVE,
+		BEHAVIOUR_TYPE.OPEN_DOOR,
+		BEHAVIOUR_TYPE.WANDER,
 	]
 	attack_range = 2
 	health = 3
 	ranged_damage = 2
 	melee_damage = 1
-	setup()
+	visibility = 5
+	set_wandering(true)
 
 func _turn_started_hook():
 	buff_recharge += 1

@@ -6,6 +6,7 @@ var queue:Array = []
 
 func _init():
 	Events.connect("end_turn", self, "_on_end_turn")
+	connect("tree_exiting", self, "_on_tree_exiting")
 	
 func process_queue() -> void:
 	
@@ -24,16 +25,8 @@ func process_queue() -> void:
 func build_queue() -> void:
 	print("BUILDING QUEUE BY: ", self)
 	queue = []
-	
-#	var children = get_children()
-#	for child in children:
-#		if child.is_in_group("PLAYER") \
-#		or child.is_in_group("WANDERING") \
-#		or child.is_in_group("ACTIVE"):
-#			queue.append(child)
+	queue.append_array(_tree.get_nodes_in_group("ENEMY"))
 	queue.append_array(_tree.get_nodes_in_group("PLAYER"))
-	queue.append_array(_tree.get_nodes_in_group("WANDERING"))
-	queue.append_array(_tree.get_nodes_in_group("ACTIVE"))
 	print("QUEUE:", queue)
 
 func _on_end_turn(node:Node) -> void:
@@ -41,6 +34,8 @@ func _on_end_turn(node:Node) -> void:
 	print("TURN ENDED BY: ", node)
 	queue.erase(node)
 	process_queue()
-	
-#func sort_queue() -> Array:
-#	return []
+
+func _on_tree_exiting():
+	print("EXITING TREE: ", self)
+	Events.disconnect("end_turn", self, "_on_end_turn")
+	pass

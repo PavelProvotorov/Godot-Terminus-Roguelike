@@ -63,7 +63,7 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	return targets
 	
 func get_reachable_targets(positions:Array, center:Vector2) -> Array:
-	var shadowcast = ItemShadowcasting.new(funcref(self.level, 'is_tile_blocking'))
+	var shadowcast = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
 	var reachable_cells = shadowcast.cast(center / grid_size, MAX_ITEM_VISIBILITY)
 	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
 	var targets:Array = []

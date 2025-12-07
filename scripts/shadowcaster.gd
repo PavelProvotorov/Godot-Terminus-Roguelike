@@ -1,5 +1,5 @@
 extends Node
-class_name ItemShadowcasting
+class_name BaseShadowcaster
 
 var _shadowcasting:SymmetricShadowcasting2D
 var visible_cells:Array = []
@@ -20,6 +20,9 @@ func cast(center:Vector2, distance:int) -> Array:
 	on_tile_visible(center)
 
 	_shadowcasting.cast(center, distance)
+	return visible_cells
+
+func get_visible_cells() -> Array:
 	return visible_cells
 
 func on_tile_visible(tile:Vector2) -> void:

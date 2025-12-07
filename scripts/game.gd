@@ -29,3 +29,5 @@ func load_next_level():
 	var next_scene:PackedScene = config.get(current_depth, 0).get('scene', Resources.factory_scene)
 	print("LEVEL DEPTH IS: ", Global.get_depth())
 	_viewport.add_child(next_scene.instance())
+	
+

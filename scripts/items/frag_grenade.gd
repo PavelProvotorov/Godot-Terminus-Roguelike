@@ -25,7 +25,7 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 		Vector2(impact_pos.x+8, impact_pos.y+8),
 		Vector2(impact_pos.x+8, impact_pos.y-8),
 		Vector2(impact_pos.x-8, impact_pos.y+8),
-		Vector2(impact_pos.x-8, impact_pos.y-8)
+		Vector2(impact_pos.x-8, impact_pos.y-8),
 	], impact_pos))
 	
 	return targets

@@ -8,6 +8,7 @@ onready var path: Array = []
 onready var spawn: bool = false
 onready var _sprite = $AnimatedSprite
 onready var previous_position: Vector2 = position
+onready var _shadowcaster:BaseShadowcaster = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
 onready var _utility:Utility = Utility.new()
 
 onready var BEHAVIOUR_TYPE = {
@@ -72,7 +73,7 @@ onready var LIFECYCLE = {
 }
 
 func _ready():
-	Events.connect("level_fog_updated", self, "_on_level_fog_updated")
+	add_to_group('ENEMY')
 	set_random_frame()
 
 func target_in_sight() -> bool:
@@ -131,12 +132,20 @@ func process_behaviours() -> void:
 	end_turn()
 
 func melee_behaviour(config:Dictionary) -> bool:
+	
+	if not is_active():
+		return false
+		
 	if path.size() == 2 and target_in_sight():
 		print("MELEE")
 		return true
 	return false
 	
 func flee_behaviour(config:Dictionary) -> bool:
+	
+	if not is_active():
+		return false
+	
 	var health_threshold:int =  config.get("health_threshold", 0)
 	var flee_when_close:int = config.get("flee_when_close", false)
 	var skip_chance:int = config.get("skip_chance", 0)
@@ -159,6 +168,10 @@ func flee_behaviour(config:Dictionary) -> bool:
 	return false
 
 func ranged_behaviour(config:Dictionary) -> bool:
+	
+	if not is_active():
+		return false
+		
 	if (path.size() > 2) \
 	and target_in_range() \
 	and target_in_sight() \
@@ -168,12 +181,20 @@ func ranged_behaviour(config:Dictionary) -> bool:
 	return false
 
 func move_behaviour(config:Dictionary) -> bool:
-	if path.size() > 2:
+	
+	if not is_active():
+		return false
+		
+	if path.size() > 2 and is_active():
 		print("MOVE")
 		return true
 	return false
 
 func ambush_behaviour(config:Dictionary) -> bool:
+	
+	if not is_active():
+		return false
+	
 	var enemies:Array = enemies_near_target()
 	var close_in:bool = config.get("close_in", false)
 	var pack_size:int = config.get("pack_size", 2)
@@ -191,26 +212,38 @@ func ambush_behaviour(config:Dictionary) -> bool:
 	return false
 	
 func open_door_behaviour(config:Dictionary) -> bool:
-	print("Nearby doors count: ", get_nearby_doors().size())
+	
+	if not is_active() or not is_wandering():
+		return false
+		
+#	print("Nearby doors count: ", get_nearby_doors().size())
 	if get_nearby_doors().size() > 0:
 		print("OPEN DOOR")
 		return true
 	return false
 	
 func spawner_behaviour(config:Dictionary) -> bool:
+	
+	if not is_active():
+		return false
+		
 	if get_nearby_cells().size() >= 1:
 		print("SPAWNER")
 		return true
 	return false
 
 func wander_behaviour(config:Dictionary) -> bool:
-	if is_in_group("WANDERING"):
+	if is_wandering():
 		print("WANDER")
 		return true
 	return false
 
 func rally_behaviour(config:Dictionary) -> bool:
-	if path.size() == 0:
+	
+	if not is_active():
+		return false
+	
+	if path.size() == 0 and is_active():
 		print("RALLY")
 		return true
 	return false
@@ -242,7 +275,7 @@ func handle_movement() -> void:
 	end_turn()
 	
 func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
-	previous_position = prev_pos
+	previous_position = prev_pos * grid_size
 	self.level.set_pathfinding_points([new_pos], [prev_pos])
 
 func handle_melee_attack() -> void:
@@ -304,13 +337,17 @@ func sort_by_distance(a, b) -> bool:
 	
 func handle_wander_behaviour() -> void:
 	var nearby_cells:Array = get_nearby_cells()
-	nearby_cells.erase(previous_position / grid_size)
+	
+	
+	if nearby_cells.size() > 1:
+		nearby_cells.erase(previous_position / grid_size)
 	
 	if nearby_cells.size() > 0:
-		
 		var cell = nearby_cells.pick_random()
 		var start = position / grid_size
 		var finish = cell
+		
+		set_sprite_direction(start * grid_size, finish * grid_size)
 		
 		if is_invisible() or is_path_hidden(start, finish):
 			self.position = finish * grid_size
@@ -352,21 +389,26 @@ func handle_spawning() -> void:
 	end_turn()
 	
 func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vector2) -> void:
-	instance.set_active()
+	instance.set_active(true)
 	self.level.spawn_enemy(start / grid_size, instance)
 	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
 	update_pathfinding(finish / grid_size, finish / grid_size)
-	
-func _on_level_fog_updated(cells:Array) -> void:
-	if cells.has(self.position / grid_size) && not (self.is_in_group("ACTIVE")):
-		self.set_active()
-	
-	if cells.has(self.position / grid_size) && (self.is_in_group("WANDERING")):
-		self.remove_from_group("WANDERING")
 
 func _on_start_turn() -> void:
 	
 	if not self.level.node_exists(target):
+		return
+		
+	if not is_active():
+		var visible_cells = _shadowcaster.cast(self.position / grid_size, visibility)
+		if visible_cells.has(target.position / grid_size):
+			print("FOUND TARGET")
+			set_wandering(false)
+			set_active(true)
+		pass
+		
+	if not is_active() and not is_wandering():
+		end_turn()
 		return
 		
 	path = (self.level.find_path(self.position, target.position))
@@ -374,13 +416,11 @@ func _on_start_turn() -> void:
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	process_behaviours()
 	
+	
 func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
 	var direction = (finish - start)/grid_size
 	if direction == Vector2.LEFT: _sprite.flip_h = true
 	if direction == Vector2.RIGHT: _sprite.flip_h = false
-	
-func setup():
-	if behaviours.has(BEHAVIOUR_TYPE.WANDER): add_to_group("WANDERING")
 	
 func enemies_near_target() -> Array:
 	var target_pos = target.position
@@ -424,7 +464,27 @@ func is_invisible() -> bool:
 
 func is_active() -> bool:
 	return is_in_group('ACTIVE')
+	
+func is_wandering() -> bool:
+	return is_in_group('WANDERING')
 
-func set_active() -> void:
-	add_to_group('ACTIVE')
+func set_wandering(add:bool) -> void:
+	var group_name = 'WANDERING'
+	if add:
+		add_to_group(group_name)
+		return
+	
+	if get_groups().has(group_name):
+		remove_from_group(group_name)
+		return
+
+func set_active(add:bool) -> void:
+	var group_name = 'ACTIVE'
+	if add:
+		add_to_group(group_name)
+		return
+		
+	if get_groups().has(group_name):
+		remove_from_group(group_name)
+		return
 

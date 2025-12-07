@@ -4,14 +4,14 @@ var buff_used = false
 
 func _ready():
 	behaviours = [
-		BEHAVIOUR_TYPE.WANDER,
 		BEHAVIOUR_TYPE.MELEE,
 		BEHAVIOUR_TYPE.MOVE,
+		BEHAVIOUR_TYPE.WANDER,
 	]
 	attack_range = 1
 	health = 5
 	melee_damage = 2
-	setup()
+	set_wandering(true)
 
 func _turn_started_hook():
 	

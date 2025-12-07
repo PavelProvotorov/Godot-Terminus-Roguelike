@@ -13,7 +13,7 @@ func _ready():
 	speed = 1
 
 func _post_ranged_attack_hook() -> void:
-	if not get_chance(25):
+	if not get_chance(75):
 		return
 	
 	if target.add_buff('blindness'):
@@ -32,4 +32,4 @@ func spawn_creep() -> void:
 		var instance = Resources.debug_creep.instance()
 		var spawn_cell = hidden_cells.pick_random()
 		self.level.spawn_enemy(spawn_cell, instance)
-		instance.set_active()
+		instance.set_active(true)

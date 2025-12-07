@@ -5,13 +5,10 @@ onready var player:Player
 onready var depth:int = 0
 
 func _init():
-	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
+	pass
 
 func _ready():
 	set_player(Resources.player.instance())
-
-func _on_level_generation_complete(level:Level) -> void:
-	set_level(level)
 
 func set_depth(value:int) -> void:
 	depth = value

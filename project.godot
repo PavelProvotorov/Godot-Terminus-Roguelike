@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "BaseShadowcaster",
+"language": "GDScript",
+"path": "res://scripts/shadowcaster.gd"
+}, {
 "base": "Node2D",
 "class": "Buff",
 "language": "GDScript",
@@ -58,11 +63,6 @@ _global_script_classes=[ {
 "class": "Item",
 "language": "GDScript",
 "path": "res://scripts/items/item.gd"
-}, {
-"base": "Node",
-"class": "ItemShadowcasting",
-"language": "GDScript",
-"path": "res://scripts/items/item_shadowcasting.gd"
 }, {
 "base": "Node2D",
 "class": "Level",
@@ -140,6 +140,7 @@ _global_script_classes=[ {
 "path": "res://scripts/weapons/weapon.gd"
 } ]
 _global_script_class_icons={
+"BaseShadowcaster": "",
 "Buff": "",
 "BuffManager": "",
 "BuffShield": "",
@@ -150,7 +151,6 @@ _global_script_class_icons={
 "Generator2D": "",
 "Inventory": "",
 "Item": "",
-"ItemShadowcasting": "",
 "Level": "",
 "LevelShadowcasting": "",
 "MeleeWeapon": "",
@@ -186,8 +186,8 @@ Config="*res://scripts/singletons/config.gd"
 window/size/width=160
 window/size/height=120
 window/size/resizable=false
-window/size/test_width=1280
-window/size/test_height=960
+window/size/test_width=1600
+window/size/test_height=1200
 window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"

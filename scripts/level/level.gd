@@ -36,13 +36,16 @@ var disabled_point_color = Color('ff0000')
 var line_color = Color('0000ff')
 var line_width = 1
 
+func _init():
+	Global.set_level(self)
+
 func _ready():
 	randomize()
 	Events.connect("player_moved", self, "_on_player_moved")
 	
 func _process(delta):
-	if Input.is_action_just_pressed("ui_read"):
-		generate_level()
+#	if Input.is_action_just_pressed("ui_read"):
+#		generate_level()
 	pass
 	
 func _draw():
@@ -119,10 +122,10 @@ func add_player() -> void:
 	
 func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
-	add_enemies(entities.get('enemies', {}), 12, 18, free_cells)
+	add_player()
+	add_enemies(entities.get('enemies', {}), 10, 12, free_cells)
 	add_items(entities.get('items', {}), 3, 5, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
-	add_player()
 
 func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
 	var enemies_count = rand_range(min_count, max_count)
