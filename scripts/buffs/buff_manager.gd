@@ -11,9 +11,15 @@ onready var BUFF_LIST:Dictionary = {
 	'poison': load("res://scenes/buffs/BuffPoison.tscn"),
 	'bleed': load("res://scenes/buffs/BuffBleed.tscn"),
 	'regeneration': load("res://scenes/buffs/BuffRegeneration.tscn"),
+	'stun': load("res://scenes/buffs/BuffStun.tscn")
 }
 
-func add_buff(buff:String, self_applied:bool) -> bool:
+var callback:FuncRef
+	
+func init(callback:FuncRef):
+	self.callback = callback
+
+func add_buff(buff:String, duration:int, self_applied:bool) -> bool:
 	
 	if is_applied(buff):
 #		_text_animations.display_text("<X>", get_parent().position)
@@ -25,12 +31,27 @@ func add_buff(buff:String, self_applied:bool) -> bool:
 	var resource = BUFF_LIST.get(buff)
 	
 	if resource:
-		var instance = resource.instance()
+		var instance:Buff = resource.instance()
+		instance.set_duration(duration)
 		add_child(instance)
+		on_buff_changed_callback()
 		return true
 	else:
 		printerr("Buff not available: ", buff)
 	return false
+	
+func get_buffs() -> Array:
+	var buffs:Array = []
+	
+	for child in get_children():
+		var buff:Buff = child
+		
+		buffs.append({
+			"name": buff.original_name,
+			"duration": buff.duration,
+			"icon": buff.icon,
+		})
+	return buffs
 
 func tick_buffs():
 	for buff in get_children():
@@ -38,7 +59,12 @@ func tick_buffs():
 			buff.tick()
 		else:
 			printerr("Invalid child node in buff manager: ", buff)
-			
+	on_buff_changed_callback()
+
+func on_buff_changed_callback() -> void:
+	if callback is FuncRef and callback.is_valid():
+		callback.call_funcv([get_buffs()])
+
 func get_resisted_damage(damage:int) -> int:
 	var resisted_damage = damage
 	for buff in get_children():

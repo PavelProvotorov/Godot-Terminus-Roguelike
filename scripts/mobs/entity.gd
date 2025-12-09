@@ -31,6 +31,7 @@ var speed:int = 1
 var ammo:int = 0 setget set_ammo
 
 func _ready():
+	_buff_manager.init(funcref(self, "_on_buffs_changed"))
 	add_to_group("ENTITY")
 	
 func get_nearby_cells() -> Array:
@@ -71,15 +72,24 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 	yield(_tween_animations.animation_ranged(start, half, self, 'position'), 'completed')
 	self.z_index -= 1
 
-func receive_damage(damage:int) -> void:
+func receive_damage(damage:int, true_damage:bool = false) -> void:
 	play_hit_animation()
-	var resisted_damage:int = max(0, _buff_manager.get_resisted_damage(damage))
-	self.health -= resisted_damage
+	
+	var received_damage:int = 0
+	
+	if true_damage:
+		received_damage = damage
+	else:
+		var resisted_damage:int = max(0, _buff_manager.get_resisted_damage(damage))
+		received_damage = resisted_damage
+		
+	self.health -= received_damage
+	
 	if health <= 0:
-		_text_animations.display_damage_number(resisted_damage, position, true)
+		_text_animations.display_damage_number(received_damage, position, true)
 		handle_death()
 	else:
-		_text_animations.display_damage_number(resisted_damage, position, false)
+		_text_animations.display_damage_number(received_damage, position, false)
 		
 func restore_health(heal:int) -> bool:
 	if (health != max_health):
@@ -102,8 +112,8 @@ func handle_death() -> void:
 	self.level.set_pathfinding_points([], [self.position / grid_size])
 	self.queue_free()
 	
-func add_buff(buff:String, self_applied:bool=false) -> bool:
-	return _buff_manager.add_buff(buff, self_applied)
+func add_buff(buff:String, duration:int, self_applied:bool=false) -> bool:
+	return _buff_manager.add_buff(buff, duration, self_applied)
 	
 func update_fog() -> void:
 	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
@@ -146,6 +156,9 @@ func set_health(value:int) -> void:
 
 func set_level(level):
 	return level
+	
+func _on_buffs_changed(buffs:Array) -> void:
+	pass
 
 func get_level():
 	return Global.get_level()

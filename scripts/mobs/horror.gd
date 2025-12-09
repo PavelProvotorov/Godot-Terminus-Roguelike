@@ -19,5 +19,5 @@ func _turn_started_hook():
 		return
 	
 	if is_active() and path.size() > 0  and target_in_sight():
-		add_buff('speed')
+		add_buff('speed', 3)
 		buff_used = true

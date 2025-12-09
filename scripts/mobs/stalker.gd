@@ -4,7 +4,7 @@ func _ready():
 	behaviours = [
 		BEHAVIOUR_TYPE.MELEE,
 		BEHAVIOUR_TYPE.MOVE,
-		BEHAVIOUR_TYPE.WANDERING,
+		BEHAVIOUR_TYPE.WANDER,
 	]
 	attack_range = 1
 	health = 4

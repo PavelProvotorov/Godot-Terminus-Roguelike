@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/game.gd" type="Script" id=1]
-[ext_resource path="res://scenes/Inventory.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/ui/Inventory.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Interface.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/ui/Menu.tscn" type="PackedScene" id=4]
 
@@ -20,10 +20,13 @@ usage = 0
 render_target_update_mode = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="ViewportContainer/Viewport"]
+layer = 2
 
 [node name="Inventory" parent="ViewportContainer/Viewport/CanvasLayer" instance=ExtResource( 2 )]
 
-[node name="Interface" parent="ViewportContainer/Viewport/CanvasLayer" instance=ExtResource( 3 )]
+[node name="CanvasLayer3" type="CanvasLayer" parent="ViewportContainer/Viewport"]
+
+[node name="Interface" parent="ViewportContainer/Viewport/CanvasLayer3" instance=ExtResource( 3 )]
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="ViewportContainer/Viewport"]
 

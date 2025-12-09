@@ -16,7 +16,7 @@ func _post_ranged_attack_hook() -> void:
 	if not get_chance(75):
 		return
 	
-	if target.add_buff('blindness'):
+	if target.add_buff('blindness', 3):
 		target.update_fog()
 		spawn_creep() 
 

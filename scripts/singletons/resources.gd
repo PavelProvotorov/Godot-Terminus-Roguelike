@@ -23,6 +23,7 @@ onready var weapon_submachine = load("res://scenes/weapons/Submachine.tscn")
 onready var weapon_railgun = load("res://scenes/weapons/Railgun.tscn")
 
 onready var weapon_slicer = load("res://scenes/weapons/Slicer.tscn")
+onready var weapon_hammer = load("res://scenes/weapons/Hammer.tscn")
 onready var weapon_tactical_knife = load("res://scenes/weapons/TacticalKnife.tscn")
 
 onready var level_scene = load("res://scenes/levels/Level.tscn")
@@ -32,8 +33,19 @@ onready var location_3 = load("res://scenes/levels/Location3.tscn")
 onready var location_4 = load("res://scenes/levels/Location4.tscn")
 onready var location_5 = load("res://scenes/levels/Location5.tscn")
 
+onready var icon_none = load("res://assets/icons/icon_none.png")
+onready var icon_strength = load("res://assets/icons/icon_strength.png")
+onready var icon_speed = load("res://assets/icons/icon_speed.png")
+onready var icon_poison = load("res://assets/icons/icon_poison.png")
+onready var icon_shield = load("res://assets/icons/icon_shield.png")
+onready var icon_regeneration = load("res://assets/icons/icon_regeneration.png")
+onready var icon_blindness = load("res://assets/icons/icon_blindness.png")
+onready var icon_bleed = load("res://assets/icons/icon_bleed.png")
+onready var icon_stun = load("res://assets/icons/icon_stun.png")
+
 onready var customise_scene = load("res://scenes/ui/Customise.tscn")
 onready var menu_scene = load("res://scenes/ui/Menu.tscn")
+onready var buff_card = load("res://scenes/ui/BuffCard.tscn")
 
 const head_spritesheet: Dictionary = {
 	0: preload("res://assets/composites/head/player_head_0.png"),
@@ -82,14 +94,15 @@ const default_weapons: Dictionary = {
 	"RailGun": 100,
 	"TacticalKnife": 0,
 	"Slicer": 100,
+	"Hammer": 100,
 }
 
 const default_items: Dictionary = {
-	"Bandage": 5,
+	"Bandage": 10,
 	"Ammo": 50,
 	"Grenade": 5,
 	"FragGrenade": 5,
-	"Medkit": 5,
+	"Medkit": 10,
 	"Teleporter": 5,
 	"ShieldGenerator": 5,
 	"Adrenalin": 5,

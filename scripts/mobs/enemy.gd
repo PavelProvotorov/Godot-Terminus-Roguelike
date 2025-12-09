@@ -411,6 +411,10 @@ func _on_start_turn() -> void:
 		end_turn()
 		return
 		
+	if _buff_manager.get_modified_speed(self.speed) <= 0:
+		end_turn()
+		return
+		
 	path = (self.level.find_path(self.position, target.position))
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
 	if hook is GDScriptFunctionState: yield(hook, "completed")

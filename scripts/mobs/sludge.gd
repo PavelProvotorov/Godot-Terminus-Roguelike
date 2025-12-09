@@ -33,7 +33,7 @@ func _post_movement_hook() -> void:
 		)
 
 func _post_flee_hook() -> void:
-	self.add_buff('regeneration', true)
+	self.add_buff('regeneration', 3, true)
 
 func get_flee_behaviour_config() -> Dictionary:
 	return {

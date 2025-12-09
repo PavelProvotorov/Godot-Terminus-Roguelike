@@ -10,13 +10,14 @@ onready var LIFECYCLE = {
 	ON_TICK = funcref(self, "_on_buff_tick_hook"),
 }
 
+var icon = Resources.icon_none
 var original_name:String = ''
 var melee_damage_modifier = 0
 var ranged_damage_modifier = 0
 var visibility_modifier = 0
 var resistance_modifier = 0
 var speed_modifier = 0
-var duration = 1
+var duration = 0
 
 func tick():
 	duration -= 1
@@ -27,6 +28,9 @@ func tick():
 	if duration <= 0:
 		queue_free()
 		return
+		
+func set_duration(duration:int) -> void:
+	self.duration = min(99, duration)
 
 func get_speed_modifier() -> int:
 	return speed_modifier

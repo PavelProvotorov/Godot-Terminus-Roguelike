@@ -180,7 +180,11 @@ func handle_melee_attack(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
 	var target = data.target
-	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_weapon.get_damage(0, 0)))
+	var targets = melee_weapon.get_targets(
+		self.position, target.position
+	)
+	for entity in targets:
+		entity.receive_damage(_buff_manager.get_modified_melee_damage(melee_weapon.get_damage(0, 0)))
 	yield(play_melee_animation(start, finish), 'completed')
 	end_turn()
 
@@ -283,6 +287,9 @@ func _on_level_generation_complete(level:Level) -> void:
 func _on_level_door_opened() -> void:
 	print("Door was opened!")
 	update_fog()
+
+func _on_buffs_changed(buffs:Array) -> void:
+	Events.emit_signal("player_buffs_changed", buffs)
 
 func _on_start_turn() -> void:
 	_state_machine.change_state('IDLE')

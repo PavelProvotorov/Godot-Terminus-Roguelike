@@ -21,4 +21,4 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 func bleed_targets(targets:Array):
 	for target in targets:
 		if target is Entity2D and _utility.get_chance(50):
-			target.add_buff('bleed')
+			target.add_buff('bleed', 2)
