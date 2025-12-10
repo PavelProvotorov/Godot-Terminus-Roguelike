@@ -297,3 +297,7 @@ func _on_start_turn() -> void:
 func handle_death() -> void:
 	var parent = self.get_parent()
 	parent.remove_child(self)
+	
+func update_fog() -> void:
+	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
+	self.level.update_level_fog(self.position, max(min_visibility, modified_visibility))

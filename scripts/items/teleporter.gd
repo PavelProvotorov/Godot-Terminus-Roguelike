@@ -6,6 +6,8 @@ func _ready():
 func use() -> bool:
 	var cells:Array = self.level.get_free_cells()
 	_owner.position = cells.pick_random() * 8
-	_owner.update_fog()
+	
+	if _owner is Player: _owner.update_fog()
+
 	remove_item()
 	return false

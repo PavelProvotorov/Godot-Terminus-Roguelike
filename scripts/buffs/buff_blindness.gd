@@ -5,3 +5,7 @@ func _ready():
 	original_name = 'blindness'
 	visibility_modifier = -99
 	add_to_group('VISIBILITY_BUFF')
+
+func _on_buff_tick_hook() -> void:
+	if duration <= 0 and target is Player:
+		target.update_fog()

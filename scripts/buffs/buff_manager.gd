@@ -68,35 +68,35 @@ func on_buff_changed_callback() -> void:
 func get_resisted_damage(damage:int) -> int:
 	var resisted_damage = damage
 	for buff in get_children():
-		if buff is Buff and buff.is_in_group("RESISTANCE_BUFF"):
+		if buff is Buff and buff.is_in_group("RESISTANCE_BUFF") and buff.is_active():
 			resisted_damage += buff.get_resistance_modifier()
 	return resisted_damage
 
 func get_modified_melee_damage(damage:int) -> int:
 	var modified_damage = damage
 	for buff in get_children():
-		if buff is Buff and buff.is_in_group("MELEE_DAMAGE_BUFF"):
+		if buff is Buff and buff.is_in_group("MELEE_DAMAGE_BUFF") and buff.is_active():
 			modified_damage += buff.get_melee_damage_modifier()
 	return modified_damage
 
 func get_modified_ranged_damage(damage:int) -> int:
 	var modified_damage = damage
 	for buff in get_children():
-		if buff is Buff and buff.is_in_group("RANGED_DAMAGE_BUFF"):
+		if buff is Buff and buff.is_in_group("RANGED_DAMAGE_BUFF") and buff.is_active():
 			modified_damage += buff.get_ranged_damage_modifier()
 	return modified_damage
 
 func get_modified_speed(speed:int) -> int:
 	var modified_speed = speed
 	for buff in get_children():
-		if buff is Buff and buff.is_in_group("SPEED_BUFF"):
+		if buff is Buff and buff.is_in_group("SPEED_BUFF") and buff.is_active():
 			modified_speed += buff.get_speed_modifier()
 	return modified_speed
 
 func get_modified_visibility(visibility:int) -> int:
 	var modified_visibility = visibility
 	for buff in get_children():
-		if buff is Buff and buff.is_in_group("VISIBILITY_BUFF"):
+		if buff is Buff and buff.is_in_group("VISIBILITY_BUFF") and buff.is_active():
 			modified_visibility += buff.get_visibility_modifier()
 	return modified_visibility
 	

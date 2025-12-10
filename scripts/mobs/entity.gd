@@ -115,10 +115,6 @@ func handle_death() -> void:
 func add_buff(buff:String, duration:int, self_applied:bool=false) -> bool:
 	return _buff_manager.add_buff(buff, duration, self_applied)
 	
-func update_fog() -> void:
-	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
-	self.level.update_level_fog(self.position, max(min_visibility, modified_visibility))
-	
 func end_turn() -> bool:
 	print("USED TURN")
 	turn_count += 1

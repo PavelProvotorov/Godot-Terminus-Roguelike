@@ -31,6 +31,9 @@ func tick():
 		
 func set_duration(duration:int) -> void:
 	self.duration = min(99, duration)
+	
+func is_active() -> bool:
+	return self.duration > 0
 
 func get_speed_modifier() -> int:
 	return speed_modifier

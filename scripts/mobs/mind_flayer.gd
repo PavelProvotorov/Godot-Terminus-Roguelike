@@ -18,10 +18,12 @@ func _post_ranged_attack_hook() -> void:
 	target.position = self.position
 	self.position = target_pos
 	
-	target.update_fog()
+	if target is Player: target.update_fog()
+		
 	update_pathfinding(self_pos / grid_size, target_pos / grid_size)
 
 func _post_melee_attack_hook() -> void:
 	var cells:Array = self.level.get_free_cells()
 	target.position = cells.pick_random() * 8
-	target.update_fog()
+	if target is Player:
+		target.update_fog()

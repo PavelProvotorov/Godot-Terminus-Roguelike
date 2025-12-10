@@ -17,7 +17,10 @@ func _post_ranged_attack_hook() -> void:
 		return
 	
 	if target.add_buff('blindness', 3):
-		target.update_fog()
+		
+		if target is Player:
+			target.update_fog()
+			
 		spawn_creep() 
 
 func _post_melee_attack_hook() -> void:
