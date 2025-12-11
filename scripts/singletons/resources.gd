@@ -135,10 +135,10 @@ onready var level_configuration: Dictionary = {
 	2: {
 		'scene': location_3,
 		'enemies': {
-			"Hydra": 50,
+#			"Hydra": 50,
 			"Infestinator": 25,
-			"Behemoth": 50,
-			"Wart": 100,
+#			"Behemoth": 50,
+#			"Wart": 100,
 		},
 		'items': default_items,
 		'weapons': default_weapons,

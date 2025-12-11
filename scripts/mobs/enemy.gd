@@ -492,3 +492,9 @@ func set_active(add:bool) -> void:
 		remove_from_group(group_name)
 		return
 
+func play_animation(play:bool) -> void:
+	if play:
+		_sprite.play()
+	else:
+		_sprite.stop()
+

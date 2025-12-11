@@ -23,6 +23,12 @@ func play_inventory_animation():
 	
 func play_throw_animation():
 	_animation.current_animation = 'THROW'
+	
+func stop():
+	_animation.stop()
+	
+func play():
+	_animation.play()
 
 func flip_animation(flip:bool):
 	_head_sprite.flip_h = flip

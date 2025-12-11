@@ -292,6 +292,9 @@ func _on_buffs_changed(buffs:Array) -> void:
 	Events.emit_signal("player_buffs_changed", buffs)
 
 func _on_start_turn() -> void:
+	if _buff_manager.get_modified_speed(speed) < 1:
+		end_turn()
+		return
 	_state_machine.change_state('IDLE')
 
 func handle_death() -> void:
@@ -301,3 +304,9 @@ func handle_death() -> void:
 func update_fog() -> void:
 	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
 	self.level.update_level_fog(self.position, max(min_visibility, modified_visibility))
+
+func play_animation(play:bool) -> void:
+	if play:
+		_composite_animation.play()
+	else:
+		_composite_animation.stop()

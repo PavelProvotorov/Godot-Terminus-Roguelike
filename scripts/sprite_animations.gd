@@ -4,7 +4,8 @@ class_name SpriteAnimations2D
 var ANIMATIONS: Dictionary = {
 	'target': preload("res://resources/animations/AnimationTarget.tscn"),
 	'shield': preload("res://resources/animations/AnimationShield.tscn"),
-	'selected': preload("res://resources/animations/AnimationSelected.tscn")
+	'selected': preload("res://resources/animations/AnimationSelected.tscn"),
+	'stun': preload("res://resources/animations/AnimationStun.tscn")
 }
 var storage: Dictionary = {}
 var parent
