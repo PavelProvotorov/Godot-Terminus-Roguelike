@@ -40,6 +40,7 @@ onready var icon_poison = load("res://assets/icons/icon_poison.png")
 onready var icon_shield = load("res://assets/icons/icon_shield.png")
 onready var icon_regeneration = load("res://assets/icons/icon_regeneration.png")
 onready var icon_blindness = load("res://assets/icons/icon_blindness.png")
+onready var icon_vision = load("res://assets/icons/icon_vision.png")
 onready var icon_bleed = load("res://assets/icons/icon_bleed.png")
 onready var icon_stun = load("res://assets/icons/icon_stun.png")
 
@@ -100,6 +101,7 @@ const default_weapons: Dictionary = {
 const default_items: Dictionary = {
 	"Bandage": 10,
 	"Ammo": 50,
+	"Visor": 5,
 	"Grenade": 5,
 	"FragGrenade": 5,
 	"Medkit": 10,
@@ -135,10 +137,10 @@ onready var level_configuration: Dictionary = {
 	2: {
 		'scene': location_3,
 		'enemies': {
-#			"Hydra": 50,
+			"Hydra": 50,
 			"Infestinator": 25,
-#			"Behemoth": 50,
-#			"Wart": 100,
+			"Behemoth": 50,
+			"Wart": 100,
 		},
 		'items': default_items,
 		'weapons': default_weapons,

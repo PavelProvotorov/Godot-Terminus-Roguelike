@@ -29,6 +29,7 @@ var _decorator:Decorator2D
 
 var point_radius = 3
 var grid_size:int = 8
+var light_level:int = 5
 var scale_multiplier = 8
 var offset = Vector2(4,4)
 var enabled_point_color = Color('00ff00')
@@ -124,7 +125,7 @@ func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
 	add_player()
 	add_enemies(entities.get('enemies', {}), 10, 15, free_cells)
-	add_items(entities.get('items', {}), 3, 5, free_cells)
+	add_items(entities.get('items', {}), 10, 15, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
 
 func add_enemies(enemy_list: Dictionary, min_count:int, max_count:int, free_cells:Array) -> void:
@@ -301,3 +302,6 @@ func is_tile_blocking(cell:Vector2) -> bool:
 	
 func get_entrance() -> Vector2:
 	return _tilemap_logic.map_to_world(_generator.generator_get_entrance())
+
+func get_light_level():
+	return light_level

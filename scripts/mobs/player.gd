@@ -18,7 +18,7 @@ func _ready():
 	self.health = 10
 	self.ammo = 25
 	max_health = 10
-	max_ammo = 45
+	max_ammo = 30
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
@@ -32,12 +32,9 @@ func set_camera_limits() -> void:
 	_camera.limit_bottom = ((rect.end.y) * grid_size)
 	
 func mark_targets_in_range(check_range:int) -> bool:
-	var target_marked:bool = false
 	
-	var modified_visibility = _buff_manager.get_modified_visibility(
-		min(visibility, check_range)
-	)
-	var visible_range = max(min_visibility, modified_visibility)
+	var visible_range = min(self.visibility, check_range)
+	var target_marked:bool = false
 	
 	for direction in DIRECTIONS:
 		_raycast.cast_to = (direction * visible_range) * grid_size
@@ -52,12 +49,9 @@ func mark_targets_in_range(check_range:int) -> bool:
 
 func throw_in_direction(direction:Vector2, item:Item) -> bool:
 	
-	var modified_visibility = _buff_manager.get_modified_visibility(
-		min(visibility, item.get_throw_range())
-	)
-	var visible_range = max(min_visibility, modified_visibility)
+	var throw_range = min(self.visibility, item.get_throw_range())
 	
-	_raycast.cast_to = (direction * visible_range)
+	_raycast.cast_to = (direction * throw_range)
 	_raycast.force_raycast_update()
 	
 	if _raycast.is_colliding():
@@ -82,10 +76,7 @@ func throw_in_direction(direction:Vector2, item:Item) -> bool:
 	
 func shoot_in_direction(direction: Vector2) -> bool:
 	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
-	var modified_visibility = _buff_manager.get_modified_visibility(
-		min(visibility, ranged_weapon.get_shot_range())
-	)
-	var visible_range = max(min_visibility, modified_visibility)
+	var shot_range = min(self.visibility, ranged_weapon.get_shot_range())
 	var weapon_shot:bool = false
 	
 	for idx in ranged_weapon.get_shot_count():
@@ -93,7 +84,7 @@ func shoot_in_direction(direction: Vector2) -> bool:
 		if is_ammo_depleted():
 			break
 		
-		_raycast.cast_to = (direction * visible_range)
+		_raycast.cast_to = (direction * shot_range)
 		_raycast.force_raycast_update()
 		
 		if _raycast.is_colliding():
@@ -302,11 +293,15 @@ func handle_death() -> void:
 	parent.remove_child(self)
 	
 func update_fog() -> void:
-	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
-	self.level.update_level_fog(self.position, max(min_visibility, modified_visibility))
+	self.level.update_level_fog(self.position, self.visibility)
 
 func play_animation(play:bool) -> void:
 	if play:
 		_composite_animation.play()
 	else:
 		_composite_animation.stop()
+
+func get_visibility():
+	var light_level = self.level.get_light_level()
+	var modified_visibility = min(_buff_manager.get_modified_visibility(visibility), light_level)
+	return max(min_visibility, modified_visibility)

@@ -24,7 +24,7 @@ func _post_ranged_attack_hook() -> void:
 		spawn_creep() 
 
 func _post_melee_attack_hook() -> void:
-	if not get_chance(25):
+	if not get_chance(50):
 		return
 	spawn_creep()
 

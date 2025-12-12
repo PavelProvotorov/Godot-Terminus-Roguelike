@@ -24,7 +24,7 @@ var ranged_damage:int = 1
 var min_visibility:int = 1
 var max_health:int = 100
 var max_ammo:int = 100
-var visibility:int = 4
+var visibility:int = 4 setget set_visibility, get_visibility
 var health:int = 1 setget set_health
 var turn_count:int = 0
 var speed:int = 1
@@ -155,6 +155,12 @@ func set_level(level):
 	
 func _on_buffs_changed(buffs:Array) -> void:
 	pass
+	
+func set_visibility(value:int) -> void:
+	visibility = value
+
+func get_visibility():
+	return max(min_visibility, visibility)
 
 func get_level():
 	return Global.get_level()

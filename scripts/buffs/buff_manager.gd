@@ -11,7 +11,8 @@ onready var BUFF_LIST:Dictionary = {
 	'poison': load("res://scenes/buffs/BuffPoison.tscn"),
 	'bleed': load("res://scenes/buffs/BuffBleed.tscn"),
 	'regeneration': load("res://scenes/buffs/BuffRegeneration.tscn"),
-	'stun': load("res://scenes/buffs/BuffStun.tscn")
+	'vision': load("res://scenes/buffs/BuffVision.tscn"),
+	'stun': load("res://scenes/buffs/BuffStun.tscn"),
 }
 
 var callback:FuncRef
