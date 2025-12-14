@@ -108,7 +108,8 @@ const default_items: Dictionary = {
 	"Teleporter": 5,
 	"ShieldGenerator": 5,
 	"Adrenalin": 5,
-	"Steroids": 5
+	"Steroids": 5,
+	"ThunderFlash": 5,
 }
 
 onready var level_configuration: Dictionary = {

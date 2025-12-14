@@ -2,7 +2,7 @@ extends Node
 
 onready var level:Level
 onready var player:Player
-onready var depth:int = 2
+onready var depth:int = 0
 
 func _init():
 	pass

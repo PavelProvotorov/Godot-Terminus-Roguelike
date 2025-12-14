@@ -113,3 +113,9 @@ func is_shielded() -> bool:
 		if buff is BuffShield:
 			return true
 	return false
+	
+func is_stunned() -> bool:
+	for buff in get_children():
+		if buff is BuffStun:
+			return true
+	return false

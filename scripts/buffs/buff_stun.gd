@@ -1,4 +1,5 @@
 extends Buff
+class_name BuffStun
 
 func _ready():
 	icon = Resources.icon_stun

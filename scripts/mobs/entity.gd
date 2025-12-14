@@ -164,3 +164,9 @@ func get_visibility():
 
 func get_level():
 	return Global.get_level()
+
+func is_shielded() -> bool:
+	return _buff_manager.is_shielded()
+
+func is_stunned() -> bool:
+	return _buff_manager.is_stunned()

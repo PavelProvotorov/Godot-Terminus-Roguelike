@@ -26,5 +26,5 @@ func _turn_started_hook():
 		and path.size() > 0 \
 		and path.size() <= 4 \
 		:
-		add_buff('shield')
+		add_buff('shield', 5, true)
 		buff_recharge = 0

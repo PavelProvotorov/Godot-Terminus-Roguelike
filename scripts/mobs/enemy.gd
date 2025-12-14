@@ -399,7 +399,7 @@ func _on_start_turn() -> void:
 	if not self.level.node_exists(target):
 		return
 		
-	if not is_active():
+	if not is_active() and not is_stunned():
 		var visible_cells = _shadowcaster.cast(self.position / grid_size, visibility)
 		if visible_cells.has(target.position / grid_size):
 			print("FOUND TARGET")
@@ -497,4 +497,3 @@ func play_animation(play:bool) -> void:
 		_sprite.play()
 	else:
 		_sprite.stop()
-
