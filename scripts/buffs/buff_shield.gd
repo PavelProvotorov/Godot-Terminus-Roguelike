@@ -6,4 +6,4 @@ func _ready():
 	original_name = 'shield'
 	resistance_modifier = -99
 	add_to_group('RESISTANCE_BUFF')
-	_sprite_animations.add_animation('shield')
+	_sprite_animations.add_animation('shield', self)

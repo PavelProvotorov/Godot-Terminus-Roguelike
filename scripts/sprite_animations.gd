@@ -5,25 +5,30 @@ var ANIMATIONS: Dictionary = {
 	'target': preload("res://resources/animations/AnimationTarget.tscn"),
 	'shield': preload("res://resources/animations/AnimationShield.tscn"),
 	'selected': preload("res://resources/animations/AnimationSelected.tscn"),
-	'stun': preload("res://resources/animations/AnimationStun.tscn")
+	'stun': preload("res://resources/animations/AnimationStun.tscn"),
+	'explosion': preload("res://resources/animations/AnimationExplosion.tscn")
 }
 var storage: Dictionary = {}
 var parent
 
-func _init(parent) -> void:
-	self.parent = parent
+func _init() -> void:
+	pass
 
-func add_animation(name: String) -> void:
+func add_animation(name: String, node:Node, store:bool = false, pos:Vector2 = Vector2.ZERO) -> void:
 	if ANIMATIONS.has(name):
-		if not storage.has(name):
-			var resource = ANIMATIONS.get(name)
-			var instance = resource.instance()
+		
+		var resource = ANIMATIONS.get(name)
+		var instance = resource.instance()
+		instance.position = pos
+		
+		if not store and not storage.has(name):
 			storage[name] = instance
-			parent.add_child(instance)
+		
+		node.add_child(instance)
 	else:
 		push_error("Animation not found, failed to add: " + name)
 
-func remove_animation(name: String) -> void:
+func remove_animation(name: String, node:Node) -> void:
 	if ANIMATIONS.has(name):
 		if storage.has(name):
 			var child = storage.get(name)

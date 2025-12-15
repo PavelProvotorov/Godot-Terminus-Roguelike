@@ -2,7 +2,7 @@ extends Control
 class_name Item
 
 onready var level setget set_level, get_level
-onready var _sprite_animations = SpriteAnimations2D.new(self)
+onready var _sprite_animations = SpriteAnimations2D.new()
 onready var _utility:Utility = Utility.new()
 onready var _static_body = $StaticBody2D
 const MAX_ITEM_VISIBILITY:int = 5
@@ -41,10 +41,10 @@ func set_item_instant() -> void:
 	_static_body.add_to_group('INSTANT')
 
 func add_selected_animation() -> void:
-	_sprite_animations.add_animation("selected")
+	_sprite_animations.add_animation("selected", self)
 	
 func remove_selected_animation() -> void:
-	_sprite_animations.remove_animation("selected")
+	_sprite_animations.remove_animation("selected", self)
 	
 func get_description() -> String:
 	return description
@@ -72,6 +72,17 @@ func get_reachable_targets(positions:Array, center:Vector2) -> Array:
 		if (entity.position in positions) and (entity.position / grid_size in reachable_cells):
 			targets.append(entity)
 	return targets
+	
+func get_reachable_cells(positions, center:Vector2) -> Array:
+	var shadowcast = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
+	var visible_cells = shadowcast.cast(center / grid_size, MAX_ITEM_VISIBILITY)
+	var reachable_cells = []
+	
+	for pos in positions:
+		if (pos / grid_size in visible_cells):
+			reachable_cells.append(pos)
+			
+	return reachable_cells
 	
 func remove_item() -> void:
 	queue_free()

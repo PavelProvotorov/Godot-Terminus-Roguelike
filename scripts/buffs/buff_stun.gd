@@ -6,7 +6,7 @@ func _ready():
 	original_name = 'stun'
 	speed_modifier = -99
 	add_to_group('SPEED_BUFF')
-	_sprite_animations.add_animation('stun')
+	_sprite_animations.add_animation('stun', self)
 	target.play_animation(false)
 
 func _on_buff_tick_hook() -> void:

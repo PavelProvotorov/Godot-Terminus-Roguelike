@@ -15,8 +15,7 @@ func use() -> bool:
 	
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var targets:Array = []
-	
-	targets.append_array(get_reachable_targets([
+	var impact_positions = [
 		impact_pos,
 		Vector2(impact_pos.x, impact_pos.y - 8),
 		Vector2(impact_pos.x, impact_pos.y+8),
@@ -26,7 +25,12 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 		Vector2(impact_pos.x+8, impact_pos.y-8),
 		Vector2(impact_pos.x-8, impact_pos.y+8),
 		Vector2(impact_pos.x-8, impact_pos.y-8),
-	], impact_pos))
+	]
+	
+	targets.append_array(get_reachable_targets(impact_positions, impact_pos))
+	
+	for cell in get_reachable_cells(impact_positions, impact_pos):
+		_sprite_animations.add_animation('explosion', self.level, true, cell)
 	
 	return targets
 

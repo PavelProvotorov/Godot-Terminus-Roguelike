@@ -99,10 +99,10 @@ func play_appear_animation() -> GDScriptFunctionState:
 	return yield(_tween_animations.animation_appear(_sprite), 'completed')
 	
 func add_target_animation() -> void:
-	_sprite_animations.add_animation("target")
+	_sprite_animations.add_animation("target", self)
 	
 func remove_target_animation() -> void:
-	_sprite_animations.remove_animation("target")
+	_sprite_animations.remove_animation("target", self)
 	
 func set_random_frame() -> void:
 	randomize()

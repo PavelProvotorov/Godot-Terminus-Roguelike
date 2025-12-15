@@ -4,7 +4,7 @@ class_name Entity2D
 onready var level setget set_level, get_level
 onready var _text_animations = TextAnimations2D.new()
 onready var _tween_animations = TweenAnimation2D.new(self)
-onready var _sprite_animations = SpriteAnimations2D.new(self)
+onready var _sprite_animations = SpriteAnimations2D.new()
 onready var _collision_shape:CollisionShape2D = $CollisionShape2D
 onready var _buff_manager:BuffManager = $BuffManager
 onready var _hit_flash = $HitFlashAnimation

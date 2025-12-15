@@ -23,6 +23,11 @@ func _ready():
 	melee_damage = 1
 	ranged_damage = 2
 	visibility = 4
+	
+func _process(delta):
+	if Input.is_action_just_pressed("ui_read"):
+		_sprite_animations.add_animation('explosion', self.level, true, self.position)
+	pass
 
 func set_camera_limits() -> void:
 	var rect = self.level.level_rect

@@ -1,7 +1,7 @@
 extends Node2D
 class_name Buff
 
-onready var _sprite_animations:SpriteAnimations2D = SpriteAnimations2D.new(self)
+onready var _sprite_animations:SpriteAnimations2D = SpriteAnimations2D.new()
 onready var _buff_manager = get_parent()
 onready var target = _buff_manager.get_parent()
 onready var _utility:Utility = Utility.new()
