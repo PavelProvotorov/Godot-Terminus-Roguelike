@@ -1,15 +1,18 @@
 extends Item
 
-var flash_distance = 5
+var flash_distance = 4
 
 func _init():
 	description = "<Thunderflash>: Portable distraction device which stuns targets in close proximity to the user;"
 
 func use() -> bool:
 	var targets = get_flash_targets()
-	
-	if targets.size() <= 0:
-		return false
+	var visible_cells = get_visible_cells(_owner.position, flash_distance)
+		
+	for cell in visible_cells:
+		var final_cell = cell * grid_size
+		if final_cell != _owner.position:
+			_sprite_animations.add_animation('spark', self.level, true, final_cell)
 		
 	for target in targets:
 		target.add_buff('stun', 4, true)

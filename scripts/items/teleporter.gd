@@ -5,7 +5,10 @@ func _ready():
 
 func use() -> bool:
 	var cells:Array = self.level.get_free_cells()
-	_owner.position = cells.pick_random() * 8
+	var new_pos = cells.pick_random() * 8
+	_sprite_animations.add_animation('teleport', self.level, true, _owner.position)
+	_sprite_animations.add_animation('teleport', self.level, true, new_pos)
+	_owner.position = new_pos
 	
 	if _owner is Player: _owner.update_fog()
 

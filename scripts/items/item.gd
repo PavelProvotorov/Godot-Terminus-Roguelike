@@ -84,6 +84,11 @@ func get_reachable_cells(positions, center:Vector2) -> Array:
 			
 	return reachable_cells
 	
+func get_visible_cells(center:Vector2, distance:int) -> Array:
+	var shadowcast = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
+	var visible_cells:Array = shadowcast.cast(center / grid_size, distance)
+	return visible_cells
+	
 func remove_item() -> void:
 	queue_free()
 

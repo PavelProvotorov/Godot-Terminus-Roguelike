@@ -6,10 +6,11 @@ var ANIMATIONS: Dictionary = {
 	'shield': preload("res://resources/animations/AnimationShield.tscn"),
 	'selected': preload("res://resources/animations/AnimationSelected.tscn"),
 	'stun': preload("res://resources/animations/AnimationStun.tscn"),
-	'explosion': preload("res://resources/animations/AnimationExplosion.tscn")
+	'explosion': preload("res://resources/animations/AnimationExplosion.tscn"),
+	'teleport': preload("res://resources/animations/AnimationTeleport.tscn"),
+	'spark': preload("res://resources/animations/AnimationSpark.tscn"),
 }
 var storage: Dictionary = {}
-var parent
 
 func _init() -> void:
 	pass
