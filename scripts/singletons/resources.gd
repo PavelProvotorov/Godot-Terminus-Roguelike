@@ -51,12 +51,16 @@ onready var buff_card = load("res://scenes/ui/BuffCard.tscn")
 const head_spritesheet: Dictionary = {
 	0: preload("res://assets/composites/head/player_head_0.png"),
 	1: preload("res://assets/composites/head/player_head_1.png"),
-	2: preload("res://assets/composites/head/player_head_2.png")
+	2: preload("res://assets/composites/head/player_head_2.png"),
+	3: preload("res://assets/composites/head/player_head_3.png"),
+	4: preload("res://assets/composites/head/player_head_4.png")
 }
 
 const body_spritesheet: Dictionary = {
 	0: preload("res://assets/composites/body/player_body_0.png"),
-	1: preload("res://assets/composites/body/player_body_1.png")
+	1: preload("res://assets/composites/body/player_body_1.png"),
+	2: preload("res://assets/composites/body/player_body_2.png"),
+	3: preload("res://assets/composites/body/player_body_3.png")
 }
 
 const default_enemies: Dictionary = {

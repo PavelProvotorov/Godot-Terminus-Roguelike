@@ -11,6 +11,7 @@ func handle_spawning() -> void:
 	var nearby_cells = get_nearby_cells()
 	
 	if nearby_cells.size() != 0:
+		_sprite_animations.add_animation('burst', self.level, true, self.position)
 		for cell in nearby_cells:
 			var instance = Resources.debug_maggot.instance()
 			yield(minion_spawn_and_move(
@@ -22,3 +23,4 @@ func handle_spawning() -> void:
 			)
 		handle_death()
 	end_turn()
+
