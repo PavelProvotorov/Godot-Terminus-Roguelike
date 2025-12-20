@@ -41,6 +41,21 @@ func add_buff(buff:String, duration:int, self_applied:bool) -> bool:
 		printerr("Buff not available: ", buff)
 	return false
 	
+func remove_buff(buff:String) -> bool:
+	
+	if not BUFF_LIST.get(buff):
+		printerr("Buff not defined: ", buff)
+		return false
+	
+	if not is_applied(buff):
+		return false
+	
+	var applied_buff:Buff = get_buff(buff)
+	applied_buff.set_duration(0)
+	on_buff_changed_callback()
+	
+	return true
+	
 func get_buffs() -> Array:
 	var buffs:Array = []
 	
@@ -52,6 +67,8 @@ func get_buffs() -> Array:
 			"duration": buff.duration,
 			"icon": buff.icon,
 		})
+			
+	print(buffs)
 	return buffs
 
 func tick_buffs():
@@ -100,6 +117,13 @@ func get_modified_visibility(visibility:int) -> int:
 		if buff is Buff and buff.is_in_group("VISIBILITY_BUFF") and buff.is_active():
 			modified_visibility += buff.get_visibility_modifier()
 	return modified_visibility
+	
+func get_buff(buff_name:String):
+	for buff in get_children():
+		if buff is Buff:
+			if buff.original_name == buff_name:
+				return buff
+	return null
 	
 func is_applied(buff_name:String) -> bool:
 	for buff in get_children():

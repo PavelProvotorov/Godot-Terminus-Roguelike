@@ -12,6 +12,7 @@ onready var LIFECYCLE = {
 
 var icon = Resources.icon_none
 var original_name:String = ''
+var is_valid:bool = true
 var melee_damage_modifier = 0
 var ranged_damage_modifier = 0
 var visibility_modifier = 0

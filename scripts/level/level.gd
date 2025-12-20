@@ -23,6 +23,7 @@ onready var TILES = {
 	}
 
 var _shadowcasting:LevelShadowcasting
+var _furnisher:LevelFurnisher
 var _pathfinding:PathFinding2D
 var _generator:Generator2D
 var _decorator:Decorator2D
@@ -36,6 +37,7 @@ var enabled_point_color = Color('00ff00')
 var disabled_point_color = Color('ff0000')
 var line_color = Color('0000ff')
 var line_width = 1
+var furniture:Array = []
 
 func _init():
 	Global.set_level(self)
@@ -68,13 +70,20 @@ func set_tileset(tileset:TileSet) -> void:
 
 func generate_level():
 	_generator = Generator2D.new(
-		_tilemap_logic
+		_tilemap_logic,
+		furniture
 	)
 	
 	_decorator = Decorator2D.new(
 		_tilemap_decor,
 		_tilemap_base,
 		_tilemap_debris
+	)
+	
+	_furnisher = LevelFurnisher.new(
+		_tilemap_logic,
+		furniture,
+		TILES
 	)
 	
 	_pathfinding = PathFinding2D.new(
@@ -86,17 +95,18 @@ func generate_level():
 		])
 	)
 	_pathfinding.disable_points(_tilemap_logic.get_used_cells_by_id(TILES.DOOR))
-
+	
+	var floor_tiles:Array = []
+	floor_tiles.append_array(_tilemap_logic.get_used_cells_by_id(TILES.FLOOR))
+	floor_tiles.append_array(_tilemap_logic.get_used_cells_by_id(TILES.OBJECT))
 	_decorator.decorate_level({
-		"TILE_FLOOR": _tilemap_logic.get_used_cells_by_id(TILES.FLOOR),
+		"TILE_FLOOR": floor_tiles,
 		"TILE_WALL": _tilemap_logic.get_used_cells_by_id(TILES.WALL),
 		"TILE_ENTRANCE": _tilemap_logic.get_used_cells_by_id(TILES.ENTRANCE),
 		"TILE_EXIT": _tilemap_logic.get_used_cells_by_id(TILES.EXIT),
 		"TILE_BASE": _generator.generator_get_walls_base(),
 		"TILE_DEBRIS": _tilemap_logic.get_used_cells_by_id(TILES.FLOOR),
 		"TILE_DOOR_CLOSED": _tilemap_logic.get_used_cells_by_id(TILES.DOOR),
-		"TILE_OBJECT_BIG": _generator.object_big_cells,
-		"TILE_OBJECT_SMALL": _generator.object_small_cells
 	})
 	
 	_shadowcasting = LevelShadowcasting.new(
@@ -113,7 +123,6 @@ func generate_level():
 
 func populate_level():
 	var current_depth = Global.get_depth()
-	clear_tilemap_children(_tilemap_logic)
 	add_entities(Resources.level_configuration.get(current_depth))
 
 func add_player() -> void:
@@ -281,11 +290,6 @@ func node_exists(node:Node) -> bool:
 func get_spawn_chance(percentage:int) -> bool:
   return percentage > 0 and randi() % 100 < percentage
 
-func clear_tilemap_children(tilemap:TileMap) -> void:
-	for child in tilemap.get_children():
-		if not child.is_in_group("PLAYER"):
-			child.queue_free()
-			
 func get_array_difference(array_1:Array, array_2:Array) -> Array:
 	var output:Array = []
 	for element in array_1:

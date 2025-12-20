@@ -10,16 +10,18 @@ const DIRECTIONS = [
 
 const MIN_ROOM_SIZE = 2
 const MIN_SPLIT_SIZE = MIN_ROOM_SIZE * 2 + 1
-var object_big_cells
-var object_small_cells
-var MAP_HEIGHT
-var MAP_WIDTH
-var TILES
-var _tilemap
+var MAP_HEIGHT:int
+var MAP_WIDTH:int
+var TILES:Dictionary
+var _tilemap:TileMap
+var grid_size = 8
 
-func _init(tilemap:TileMap):
+var furniture:Array = []
+
+func _init(tilemap:TileMap, furniture:Array):
 	randomize()
 	self._tilemap = tilemap
+	self.furniture = furniture
 	self.MAP_WIDTH = tilemap.get_used_rect().size.x
 	self.MAP_HEIGHT = tilemap.get_used_rect().size.y
 	self.TILES = {
@@ -41,8 +43,6 @@ func generator_generate_level() -> void:
 	generator_fill_room_centre()
 	generator_remove_room_walls([TILES.WALL, TILES.DOOR])
 	generator_add_room_arches()
-	object_big_cells = furnisher_place_object(Vector2(2, 2), 3)
-	object_small_cells = furnisher_place_object(Vector2(1, 1), 5)
 	generator_add_passages()
 
 func generator_room_subdivide(x1, y1, x2, y2):
@@ -335,56 +335,6 @@ func generator_clear_level() -> void:
 		for height in range(int(rect_start.y), int(rect_end.y) + 1):
 			_tilemap.set_cell(width, height, TILES.FLOOR)
 	pass
-
-func furnisher_place_object(size:Vector2, max_count:int) -> Array:
-	var result = []
-	
-	if max_count == 0:
-		return []
-	
-	for i in (randi() % max_count):
-		var cells = furnisher_get_free_space(size)
-		if cells.size() != 0:
-			cells.shuffle()
-			var cell = cells.pick_random()
-			cells.erase(cell)
-			result.append(cell)
-
-			for x in range(size.x):
-				for y in range(size.y):
-					_tilemap.set_cell(cell.x + x, cell.y + y, TILES.OBJECT)
-
-	return result
-
-func furnisher_get_free_space(size:Vector2) -> Array:
-	var result = []
-	var cells = furnisher_get_cells()
-	for cell in cells:
-		if furnisher_space_is_free(cells, cell, size):
-			result.append(cell)
-	return result
-
-func furnisher_space_is_free(cells:Array, cell:Vector2, size:Vector2) -> bool:
-	for x in range(size.x):
-		for y in range(size.y):
-			var check_cell = cell + Vector2(x, y)
-			if !cells.has(check_cell):
-				return false
-	return true
-
-func furnisher_get_cells() -> Array:
-	var result_cells = []
-	var check_cells = _tilemap.get_used_cells_by_id(TILES.FLOOR)
-	for cell in check_cells:
-		var count = util_count_nearby_tiles_8(cell, [
-			TILES.WALL, 
-			TILES.DOOR, 
-			TILES.OBJECT
-		])
-		if count == 0:
-			result_cells.append(cell)
-			
-	return result_cells
 
 func tilemap_get_cells_in_array(ids:Array) -> Array:
 	var cells = []

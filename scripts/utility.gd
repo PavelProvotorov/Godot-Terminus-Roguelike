@@ -7,3 +7,15 @@ func call_lifecycle_hook(hook:FuncRef):
 
 func get_chance(percentage:int) -> bool:
   return percentage > 0 and randi() % 100 < percentage
+
+func count_nearby_tiles_8(tilemap:TileMap, cell:Vector2, tiles:Array) -> int:
+	var count:int = 0
+	if tilemap.get_cell(cell.x, cell.y-1)   in tiles:  count += 1
+	if tilemap.get_cell(cell.x, cell.y+1)   in tiles:  count += 1
+	if tilemap.get_cell(cell.x-1, cell.y)   in tiles:  count += 1
+	if tilemap.get_cell(cell.x+1, cell.y)   in tiles:  count += 1
+	if tilemap.get_cell(cell.x+1, cell.y+1) in tiles:  count += 1
+	if tilemap.get_cell(cell.x+1, cell.y-1) in tiles:  count += 1
+	if tilemap.get_cell(cell.x-1, cell.y+1) in tiles:  count += 1
+	if tilemap.get_cell(cell.x-1, cell.y-1) in tiles:  count += 1
+	return count

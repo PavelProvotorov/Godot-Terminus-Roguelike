@@ -48,6 +48,9 @@ onready var customise_scene = load("res://scenes/ui/Customise.tscn")
 onready var menu_scene = load("res://scenes/ui/Menu.tscn")
 onready var buff_card = load("res://scenes/ui/BuffCard.tscn")
 
+onready var obj_factory = load("res://scenes/furniture/ObjectFactory.tscn")
+onready var obj_cistern = load("res://scenes/furniture/ObjectCistern.tscn")
+
 const head_spritesheet: Dictionary = {
 	0: preload("res://assets/composites/head/player_head_0.png"),
 	1: preload("res://assets/composites/head/player_head_1.png"),

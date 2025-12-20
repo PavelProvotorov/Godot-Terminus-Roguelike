@@ -10,4 +10,4 @@ func _ready():
 	melee_damage = 2
 	
 func _post_melee_attack_hook():
-	if get_chance(25): target.add_buff('poison', 6)
+	if get_chance(25): target.add_buff('bleed', 3)
