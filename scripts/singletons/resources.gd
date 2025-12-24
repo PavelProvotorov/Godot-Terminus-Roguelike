@@ -51,6 +51,7 @@ onready var buff_card = load("res://scenes/ui/BuffCard.tscn")
 onready var obj_factory = load("res://scenes/furniture/ObjectFactory.tscn")
 onready var obj_cistern = load("res://scenes/furniture/ObjectCistern.tscn")
 onready var obj_conveyor = load("res://scenes/furniture/Conveyor.tscn")
+onready var obj_ventilation = load("res://scenes/furniture/Ventilation.tscn")
 
 const head_spritesheet: Dictionary = {
 	0: preload("res://assets/composites/head/player_head_0.png"),
