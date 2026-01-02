@@ -2,7 +2,7 @@ extends Item
 
 func _init():
 	throw_range = 3
-	throw_damage = 4
+	throw_damage = 5
 
 func _ready():
 	description = "<Grenade>: A standard combat explosive used to deliver high damage in close range;"
