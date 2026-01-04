@@ -24,6 +24,7 @@ onready var weapon_railgun = load("res://scenes/weapons/Railgun.tscn")
 
 onready var weapon_slicer = load("res://scenes/weapons/Slicer.tscn")
 onready var weapon_hammer = load("res://scenes/weapons/Hammer.tscn")
+onready var weapon_pike = load("res://scenes/weapons/Pike.tscn")
 onready var weapon_tactical_knife = load("res://scenes/weapons/TacticalKnife.tscn")
 
 onready var level_scene = load("res://scenes/levels/Level.tscn")
@@ -105,6 +106,7 @@ const default_weapons: Dictionary = {
 	"RailGun": 100,
 	"TacticalKnife": 0,
 	"Slicer": 100,
+	"Pike": 100,
 	"Hammer": 100,
 }
 
