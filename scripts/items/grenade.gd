@@ -16,6 +16,7 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	
 	_sprite_animations.add_animation('explosion', self.level, true, impact_pos)
 	
+	_audio.play_sound(impact_pos, Resources.SOUNDS.explosion_0)
 	return targets
 
 func use() -> bool:

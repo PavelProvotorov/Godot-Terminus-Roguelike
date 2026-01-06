@@ -133,7 +133,7 @@ func add_player() -> void:
 func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
 	add_player()
-	add_enemies(entities.get('enemies', {}), 10, 15, free_cells)
+	add_enemies(entities.get('enemies', {}), 1, 1, free_cells)
 	add_items(entities.get('items', {}), 3, 5, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
 

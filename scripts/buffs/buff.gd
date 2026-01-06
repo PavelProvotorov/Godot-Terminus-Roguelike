@@ -4,6 +4,7 @@ class_name Buff
 onready var _sprite_animations:SpriteAnimations2D = SpriteAnimations2D.new()
 onready var _buff_manager = get_parent()
 onready var target = _buff_manager.get_parent()
+onready var _audio:Audio2D = Audio2D.new()
 onready var _utility:Utility = Utility.new()
 
 onready var LIFECYCLE = {

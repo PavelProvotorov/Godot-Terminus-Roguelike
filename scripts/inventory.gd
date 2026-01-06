@@ -2,6 +2,7 @@ extends Control
 class_name Inventory
 
 onready var level setget set_level, get_level
+onready var _audio:Audio2D = Audio2D.new()
 onready var _description = null
 onready var _grid = $GridContainer
 onready var _ranged_weapon_slot = $RangedWeaponSlot
@@ -24,11 +25,13 @@ func _ready():
 func pickup_item_and_use(item:Item, owner:Node) -> bool:
 	item.set_item_owner(owner)
 	if item.use():
+		_audio.play_sound(owner.position, Resources.SOUNDS.pickup_0)
 		return true
 	return false
 
 func pickup_item(item:Item, owner:Node) -> bool:
 	if get_stored_items().size() < max_item_count:
+		_audio.play_sound(owner.position, Resources.SOUNDS.pickup_0)
 		item.get_parent().remove_child(item)
 		item.rect_position = Vector2.ZERO
 		item.set_item_owner(owner)

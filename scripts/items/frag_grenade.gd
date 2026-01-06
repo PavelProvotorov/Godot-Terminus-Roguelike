@@ -32,6 +32,7 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	for cell in get_reachable_cells(impact_positions, impact_pos):
 		_sprite_animations.add_animation('explosion', self.level, true, cell)
 	
+	_audio.play_sound(impact_pos, Resources.SOUNDS.explosion_0)
 	return targets
 
 func get_throw_damage(distance:int, offset:int) -> int:

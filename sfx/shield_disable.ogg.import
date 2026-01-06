@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/shield_disable.ogg-126d6229216aa9b8b8231f920cad5af2.oggstr"
+
+[deps]
+
+source_file="res://sfx/shield_disable.ogg"
+dest_files=[ "res://.import/shield_disable.ogg-126d6229216aa9b8b8231f920cad5af2.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

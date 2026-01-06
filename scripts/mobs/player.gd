@@ -167,6 +167,7 @@ func handle_idle(data:Dictionary) -> void:
 func handle_movement(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
+	_audio.play_sound(self.position, Resources.SOUNDS.move)
 	yield(play_move_animation(start, finish), 'completed')
 	update_fog()
 	end_turn()
@@ -281,7 +282,6 @@ func _on_level_generation_complete(level:Level) -> void:
 	update_fog()
 
 func _on_level_door_opened() -> void:
-	print("Door was opened!")
 	update_fog()
 
 func _on_buffs_changed(buffs:Array) -> void:
@@ -310,3 +310,7 @@ func get_visibility():
 	var light_level = self.level.get_light_level()
 	var modified_visibility = min(_buff_manager.get_modified_visibility(visibility), light_level)
 	return max(min_visibility, modified_visibility)
+	
+func receive_damage(damage:int, true_damage:bool = false) -> void:
+	_audio.play_sound(self.position, Resources.SOUNDS.hit_0)
+	.receive_damage(damage, true_damage)

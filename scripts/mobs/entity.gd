@@ -2,6 +2,7 @@ extends KinematicBody2D
 class_name Entity2D
 
 onready var level setget set_level, get_level
+onready var _audio:Audio2D = Audio2D.new()
 onready var _text_animations = TextAnimations2D.new()
 onready var _tween_animations = TweenAnimation2D.new(self)
 onready var _sprite_animations = SpriteAnimations2D.new()

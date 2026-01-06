@@ -263,6 +263,7 @@ func handle_movement() -> void:
 	
 	set_sprite_direction(start, finish)
 	
+	_audio.play_sound(self.position, Resources.SOUNDS.move)
 	if is_invisible() or is_path_hidden(start / grid_size, finish / grid_size):
 		self.position = finish
 	else:
@@ -349,6 +350,7 @@ func handle_wander_behaviour() -> void:
 		
 		set_sprite_direction(start * grid_size, finish * grid_size)
 		
+		_audio.play_sound(self.position, Resources.SOUNDS.move)
 		if is_invisible() or is_path_hidden(start, finish):
 			self.position = finish * grid_size
 		else:
