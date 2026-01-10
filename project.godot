@@ -125,6 +125,11 @@ _global_script_classes=[ {
 "path": "res://scripts/sfx.gd"
 }, {
 "base": "Node",
+"class": "Sfx2D",
+"language": "GDScript",
+"path": "res://scripts/sfx_2d.gd"
+}, {
+"base": "Node",
 "class": "SpriteAnimations2D",
 "language": "GDScript",
 "path": "res://scripts/sprite_animations.gd"
@@ -188,6 +193,7 @@ _global_script_class_icons={
 "Queue": "",
 "RangedWeapon": "",
 "Sfx": "",
+"Sfx2D": "",
 "SpriteAnimations2D": "",
 "State": "",
 "StateMachine": "",
@@ -216,8 +222,8 @@ Config="*res://scripts/singletons/config.gd"
 window/size/width=160
 window/size/height=120
 window/size/resizable=false
-window/size/test_width=1280
-window/size/test_height=960
+window/size/test_width=1600
+window/size/test_height=1200
 window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"

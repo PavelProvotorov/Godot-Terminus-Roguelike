@@ -2,6 +2,7 @@ extends Node
 
 onready var level:Level
 onready var player:Player
+onready var root:Node2D = get_tree().get_first_node_in_group('ROOT')
 onready var depth:int = 0
 
 func _init():
@@ -24,6 +25,9 @@ func get_player() -> Player:
 
 func set_level(level:Level) -> void:
 	self.level = level
+	
+func get_root() -> Node:
+	return self.root
 
 func get_level() -> Level:
 	return level

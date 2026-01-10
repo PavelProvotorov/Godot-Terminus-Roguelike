@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var _viewport = $ViewportContainer/Viewport
+onready var _audio:Audio2D = Audio2D.new()
 var current_level = 0
 
 func _ready():
@@ -11,6 +12,7 @@ func _on_game_started():
 	load_next_level()
 
 func _on_level_descended():
+	_audio.play_global_sound(Resources.SOUNDS.descend)
 	var config = Resources.level_configuration
 	var current_depth = Global.get_depth()
 	var player = Global.get_player()

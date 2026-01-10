@@ -14,7 +14,7 @@ var min_item_count:int = 0
 
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
-	var ranged_weapon_instance:RangedWeapon = Resources.weapon_pistol.instance()
+	var ranged_weapon_instance:RangedWeapon = Resources.weapon_assault_rifle.instance()
 	var melee_weapon_instance:MeleeWeapon = Resources.weapon_hammer.instance()
 	ranged_weapon_instance.set_item_owner(Global.get_player())
 	melee_weapon_instance.set_item_owner(Global.get_player())
@@ -25,22 +25,24 @@ func _ready():
 func pickup_item_and_use(item:Item, owner:Node) -> bool:
 	item.set_item_owner(owner)
 	if item.use():
-		_audio.play_sound(owner.position, Resources.SOUNDS.pickup_0)
+		_audio.play_global_sound(Resources.SOUNDS.pickup_0)
 		return true
+	_audio.play_sound(owner.position, Resources.SOUNDS.fail)
 	return false
 
 func pickup_item(item:Item, owner:Node) -> bool:
 	if get_stored_items().size() < max_item_count:
-		_audio.play_sound(owner.position, Resources.SOUNDS.pickup_0)
+		_audio.play_global_sound(Resources.SOUNDS.pickup_0)
 		item.get_parent().remove_child(item)
 		item.rect_position = Vector2.ZERO
 		item.set_item_owner(owner)
 		_grid.add_child(item)
 		return true
+	_audio.play_sound(owner.position, Resources.SOUNDS.fail)
 	return false
 
 func switch_selected_item(index:int) -> void:
-	
+	_audio.play_global_sound(Resources.SOUNDS.switch)
 	clear_selection()
 	
 	var size = get_stored_items().size()
@@ -92,7 +94,8 @@ func use_selected_item() -> bool:
 	if selected_item is Item:
 		if selected_item.use():
 			return true
-		
+
+	_audio.play_sound(owner.position, Resources.SOUNDS.fail)
 	return false
 
 func is_inventory_empty() -> bool:
@@ -136,6 +139,7 @@ func equip_melee_weapon(new_weapon:Weapon) -> void:
 	new_weapon.use()
 
 func drop_selected_item(pos:Vector2) -> bool:
+	_audio.play_global_sound(Resources.SOUNDS.drop)
 	_grid.remove_child(selected_item)
 	self.level.add_child(selected_item)
 	selected_item.rect_position = pos

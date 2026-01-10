@@ -55,15 +55,25 @@ onready var obj_conveyor = load("res://scenes/furniture/Conveyor.tscn")
 onready var obj_ventilation = load("res://scenes/furniture/Ventilation.tscn")
 onready var obj_power_cell = load("res://scenes/furniture/PowerCell.tscn")
 
-const sfx = preload("res://scenes/sfx.tscn")
+const sfx_2D = preload("res://scenes/Sfx2D.tscn")
+const sfx = preload("res://scenes/Sfx.tscn")
 
 const SOUNDS = {
 	move = preload("res://sfx/move.ogg"),
 	pickup_0 = preload("res://sfx/pickup_0.ogg"),
 	hit_0 = preload("res://sfx/hit_0.ogg"),
+	shot_0 = preload("res://sfx/shot_0.ogg"),
+	shot_1 = preload("res://sfx/shot_1.ogg"),
 	explosion_0 = preload("res://sfx/explosion_0.ogg"),
 	shield_enable = preload("res://sfx/shield_enable.ogg"),
 	shield_disable = preload("res://sfx/shield_disable.ogg"),
+	visor_enable = preload("res://sfx/visor_enable.ogg"),
+	visor_disable = preload("res://sfx/visor_disable.ogg"),
+	teleport = preload("res://sfx/teleport.ogg"),
+	fail = preload("res://sfx/fail.ogg"),
+	descend = preload("res://sfx/descend.ogg"),
+	switch = preload("res://sfx/switch.ogg"),
+	drop = preload("res://sfx/drop.ogg"),
 }
 
 const head_spritesheet: Dictionary = {

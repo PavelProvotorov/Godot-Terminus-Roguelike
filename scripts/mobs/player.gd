@@ -189,7 +189,7 @@ func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_p
 	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
 	
 	for target in targets:
-		
+		_audio.play_sound(self.position, ranged_weapon.sfx())
 		var offset = target.position.distance_to(impact_pos) / grid_size
 		var distance = self.position.distance_to(impact_pos) / grid_size
 		

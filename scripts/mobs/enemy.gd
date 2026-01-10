@@ -499,3 +499,7 @@ func play_animation(play:bool) -> void:
 		_sprite.play()
 	else:
 		_sprite.stop()
+		
+func receive_damage(damage:int, true_damage:bool = false) -> void:
+	_audio.play_sound(self.position, Resources.SOUNDS.hit_0)
+	.receive_damage(damage, true_damage)

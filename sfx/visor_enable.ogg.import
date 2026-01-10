@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/visor_enable.ogg-e1bfb9366b998a7409f3a6167b890e24.oggstr"
+
+[deps]
+
+source_file="res://sfx/visor_enable.ogg"
+dest_files=[ "res://.import/visor_enable.ogg-e1bfb9366b998a7409f3a6167b890e24.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

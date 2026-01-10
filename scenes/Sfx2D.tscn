@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sfx/move.ogg" type="AudioStream" id=1]
+[ext_resource path="res://scripts/sfx_2d.gd" type="Script" id=2]
+[ext_resource path="res://assets/icons/icon_none.png" type="Texture" id=3]
+
+[node name="Sfx" type="Node2D"]
+z_index = 15
+script = ExtResource( 2 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+max_distance = 50.0
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 3 )
+centered = false

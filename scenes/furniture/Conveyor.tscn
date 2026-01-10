@@ -27,7 +27,7 @@ animations = [ {
 } ]
 
 [node name="Conveyor" type="Node2D"]
-z_index = 5
+z_index = 4
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 5 )

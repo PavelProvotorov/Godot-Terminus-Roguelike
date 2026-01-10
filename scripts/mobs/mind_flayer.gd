@@ -18,6 +18,7 @@ func _post_ranged_attack_hook() -> void:
 	_sprite_animations.add_animation('teleport', self.level, true, self_pos)
 	target.position = self.position
 	self.position = target_pos
+	_audio.play_sound(self_pos, Resources.SOUNDS.teleport)
 	
 	if target is Player: target.update_fog()
 	
@@ -31,6 +32,7 @@ func _post_melee_attack_hook() -> void:
 	
 	_sprite_animations.add_animation('teleport', self.level, true, target.position)
 	target.position = new_pos
+	_audio.play_sound(new_pos, Resources.SOUNDS.teleport)
 	
 	if target is Player:
 		target.update_fog()

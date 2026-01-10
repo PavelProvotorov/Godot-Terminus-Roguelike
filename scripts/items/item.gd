@@ -26,6 +26,8 @@ func use() -> bool:
 func _on_item_thrown(success:bool) -> void:
 	if success:
 		remove_item()
+	else:
+		_audio.play_sound(_owner.position, Resources.SOUNDS.fail)
 	
 func set_item_owner(owner:Entity2D) -> void:
 	if owner is Entity2D:
