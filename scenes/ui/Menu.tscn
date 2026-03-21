@@ -22,7 +22,7 @@ script = ExtResource( 5 )
 margin_right = 40.0
 margin_bottom = 40.0
 rect_scale = Vector2( 3.99829, 3.00789 )
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.0666667, 0.0627451, 0.0627451, 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 160.0

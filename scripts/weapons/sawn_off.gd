@@ -7,6 +7,7 @@ func _init():
 	shot_range = 1
 	shot_count = 1
 	ammo_consumption = 1
+	shot_sound = Resources.SOUNDS.shot_shotgun
 	
 func _ready():
 	rng.randomize()
@@ -16,21 +17,17 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var forward_cell = (impact_pos + (direction * grid_size))
 	var targets:Array = []
 	
-	if is_horizontal(direction):
-		targets.append_array(get_reachable_targets([
-			impact_pos,
-			forward_cell,
-			forward_cell + (Vector2.UP * grid_size),
-			forward_cell + (Vector2.DOWN * grid_size),
-		], impact_pos))
+	var left = Vector2(-direction.y, direction.x)
+	var right = Vector2(direction.y, -direction.x)
+
+	var positions = [
+		impact_pos,
+		forward_cell,
+		forward_cell + left * grid_size,
+		forward_cell + right * grid_size,
+	]
 	
-	if is_vertical(direction):
-		targets.append_array(get_reachable_targets([
-			impact_pos,
-			forward_cell,
-			forward_cell + (Vector2.LEFT * grid_size),
-			forward_cell + (Vector2.RIGHT * grid_size),
-		], impact_pos))
+	targets.append_array(get_reachable_targets(positions, impact_pos))
 		
 	return targets
 

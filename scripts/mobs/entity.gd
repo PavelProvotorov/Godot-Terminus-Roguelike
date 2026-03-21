@@ -109,7 +109,6 @@ func recharge_ammo(recharge:int) -> bool:
 	return false
 
 func handle_death() -> void:
-	play_hit_animation()
 	self.level.set_pathfinding_points([], [self.position / grid_size])
 	self.queue_free()
 	

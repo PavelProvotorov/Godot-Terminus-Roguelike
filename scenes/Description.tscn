@@ -9,12 +9,12 @@ size = 5
 font_data = ExtResource( 3 )
 
 [node name="Description" type="Container"]
-anchor_left = 0.05
-anchor_top = 0.067
-anchor_right = 0.95
-anchor_bottom = 0.533
-margin_top = -0.0400002
-margin_bottom = 0.0400009
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.005
+margin_right = -16.0
+margin_bottom = -64.005
 rect_min_size = Vector2( 8, 8 )
 script = ExtResource( 2 )
 

@@ -10,11 +10,11 @@ anchor_bottom = 1.0
 script = ExtResource( 2 )
 
 [node name="GridContainer" type="GridContainer" parent="."]
-anchor_left = 0.025
-anchor_top = 0.067
-anchor_right = 0.075
-anchor_bottom = 0.933
-margin_top = -0.0400026
-margin_bottom = 0.0399966
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 8.0
+margin_right = -222.0
+margin_bottom = -10.01
 theme = SubResource( 1 )
 custom_constants/vseparation = 8

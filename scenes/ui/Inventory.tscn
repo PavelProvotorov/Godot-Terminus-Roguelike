@@ -24,10 +24,11 @@ anchor_bottom = 0.067
 margin_bottom = -0.0400002
 
 [node name="GridContainer" type="GridContainer" parent="."]
-anchor_left = 0.35
-anchor_right = 0.65
-anchor_bottom = 0.067
-margin_bottom = -0.0400002
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 56.0
+margin_right = -112.0
+margin_bottom = -125.995
 theme = SubResource( 1 )
 custom_constants/vseparation = 8
 custom_constants/hseparation = 8

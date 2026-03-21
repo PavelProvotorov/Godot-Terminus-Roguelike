@@ -23,6 +23,7 @@ func _post_movement_hook() -> void:
 func reveal_enemy() -> GDScriptFunctionState:
 	melee_damage -= 1
 	set_collision_layer_bit(0, true)
+	_audio.play_sound(self.position, Resources.SOUNDS.appear)
 	return yield(play_appear_animation(), 'completed')
 
 func hide_enemy() -> void:

@@ -2,6 +2,7 @@ extends Container
 
 onready var _timer = $Timer
 onready var _label = $RichTextLabel
+onready var _audio:Audio2D = Audio2D.new()
 var description = "" setget set_description
 
 func _ready():
@@ -15,6 +16,7 @@ func set_description(value:String) -> void:
 	var char_percentage:float = stepify(1.0 / char_count, 0.0001)
 	
 	for i in char_count:
+		_audio.play_global_sound(Resources.SOUNDS.typing)
 		_label.percent_visible += char_percentage
 		_timer.start(0.03)
 		yield(_timer, 'timeout')

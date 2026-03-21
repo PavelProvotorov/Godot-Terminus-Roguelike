@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var _viewport = $ViewportContainer/Viewport
+onready var _viewport = $ViewportContainer/Viewport/GameCanvas
 onready var _audio:Audio2D = Audio2D.new()
 var current_level = 0
 
@@ -32,4 +32,3 @@ func load_next_level():
 	print("LEVEL DEPTH IS: ", Global.get_depth())
 	_viewport.add_child(next_scene.instance())
 	
-

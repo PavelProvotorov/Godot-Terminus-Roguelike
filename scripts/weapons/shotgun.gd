@@ -5,24 +5,22 @@ func _init():
 	shot_range = 2
 	shot_count = 1
 	ammo_consumption = 1
+	shot_sound = Resources.SOUNDS.shot_shotgun
 	
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var direction = origin_pos.direction_to(impact_pos)
 	var targets:Array = []
 	
-	if is_horizontal(direction):
-		targets.append_array(get_reachable_targets([
-			impact_pos,
-			impact_pos + (Vector2.UP * grid_size),
-			impact_pos + (Vector2.DOWN * grid_size),
-		], impact_pos))
+	var left = Vector2(-direction.y, direction.x)
+	var right = Vector2(direction.y, -direction.x)
+
+	var positions = [
+		impact_pos,
+		impact_pos + left * grid_size,
+		impact_pos + right * grid_size,
+	]
 	
-	if is_vertical(direction):
-		targets.append_array(get_reachable_targets([
-			impact_pos,
-			impact_pos + (Vector2.LEFT * grid_size),
-			impact_pos + (Vector2.RIGHT * grid_size),
-		], impact_pos))
+	targets.append_array(get_reachable_targets(positions, impact_pos))
 		
 	return targets
 

@@ -1,41 +1,57 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/game.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/Inventory.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Interface.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/ui/Menu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://sfx/level_1.ogg" type="AudioStream" id=5]
+[ext_resource path="res://scenes/ui/BuffList.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/ui_overlay.png" type="Texture" id=7]
 
 [node name="Game" type="Node2D" groups=["ROOT"]]
 script = ExtResource( 1 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-margin_right = 160.0
-margin_bottom = 120.0
+margin_right = 240.0
+margin_bottom = 135.0
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 160, 120 )
+size = Vector2( 240, 135 )
 handle_input_locally = false
 hdr = false
 usage = 0
 render_target_update_mode = 3
 audio_listener_enable_2d = true
 
+[node name="Overlay" type="Sprite" parent="ViewportContainer/Viewport"]
+texture = ExtResource( 7 )
+offset = Vector2( 120, 68 )
+
 [node name="CanvasLayer" type="CanvasLayer" parent="ViewportContainer/Viewport"]
-layer = 2
+layer = 3
+offset = Vector2( 40, 7 )
+transform = Transform2D( 1, 0, 0, 1, 40, 7 )
+
+[node name="Menu" parent="ViewportContainer/Viewport/CanvasLayer" instance=ExtResource( 4 )]
+margin_right = 0.0
+margin_bottom = 0.0
 
 [node name="Inventory" parent="ViewportContainer/Viewport/CanvasLayer" instance=ExtResource( 2 )]
 
 [node name="CanvasLayer3" type="CanvasLayer" parent="ViewportContainer/Viewport"]
+layer = 2
+offset = Vector2( 40, 7 )
+transform = Transform2D( 1, 0, 0, 1, 40, 7 )
 
 [node name="Interface" parent="ViewportContainer/Viewport/CanvasLayer3" instance=ExtResource( 3 )]
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="ViewportContainer/Viewport"]
+[node name="BuffList" parent="ViewportContainer/Viewport/CanvasLayer3" instance=ExtResource( 6 )]
 
-[node name="Menu" parent="ViewportContainer/Viewport/CanvasLayer2" instance=ExtResource( 4 )]
+[node name="GameCanvas" type="CanvasLayer" parent="ViewportContainer/Viewport"]
+offset = Vector2( 40, 7 )
+transform = Transform2D( 1, 0, 0, 1, 40, 7 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-visible = false
 stream = ExtResource( 5 )
 volume_db = -10.0
 autoplay = true

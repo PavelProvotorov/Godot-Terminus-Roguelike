@@ -64,6 +64,8 @@ const SOUNDS = {
 	hit_0 = preload("res://sfx/hit_0.ogg"),
 	shot_0 = preload("res://sfx/shot_0.ogg"),
 	shot_1 = preload("res://sfx/shot_1.ogg"),
+	shot_shotgun = preload("res://sfx/shot_shotgun.ogg"),
+	shot_hunting_rifle = preload("res://sfx/shot_hunting_rifle.ogg"),
 	explosion_0 = preload("res://sfx/explosion_0.ogg"),
 	shield_enable = preload("res://sfx/shield_enable.ogg"),
 	shield_disable = preload("res://sfx/shield_disable.ogg"),
@@ -74,6 +76,10 @@ const SOUNDS = {
 	descend = preload("res://sfx/descend.ogg"),
 	switch = preload("res://sfx/switch.ogg"),
 	drop = preload("res://sfx/drop.ogg"),
+	typing = preload("res://sfx/typing.ogg"),
+	appear = preload("res://sfx/appear.ogg"),
+	open = preload("res://sfx/open.ogg"),
+	menu_move = preload("res://sfx/menu_move.ogg"),
 }
 
 const head_spritesheet: Dictionary = {

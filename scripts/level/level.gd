@@ -8,6 +8,7 @@ onready var _tilemap_decor:TileMap = $Decor
 onready var _tilemap_debris:TileMap = $Debris
 onready var _tilemap_base:TileMap = $Base
 onready var _tilemap_fog:TileMap = $Fog
+onready var _audio:Audio2D = Audio2D.new()
 onready var level_rect = _tilemap_logic.get_used_rect()
 onready var _utility:Utility = Utility.new()
 
@@ -259,6 +260,7 @@ func tilemap_get_cells_in_array(tilemap:TileMap, ids:Array) -> Array:
 func open_door(door_pos:Vector2) -> void:
 	var door_pos_tilemap = _tilemap_logic.world_to_map(door_pos)
 	
+	_audio.play_sound(door_pos, Resources.SOUNDS.open)
 	_tilemap_logic.set_cellv(door_pos_tilemap, TILES.FLOOR)
 	_decorator.update_decoration('TILE_DOOR_OPEN', [door_pos_tilemap])
 	_pathfinding.enable_points([door_pos_tilemap])
