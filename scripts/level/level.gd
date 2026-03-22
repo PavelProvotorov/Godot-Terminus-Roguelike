@@ -47,11 +47,6 @@ func _ready():
 	randomize()
 	Events.connect("player_moved", self, "_on_player_moved")
 	
-func _process(delta):
-#	if Input.is_action_just_pressed("ui_read"):
-#		generate_level()
-	pass
-	
 func _draw():
 	for point in _pathfinding._astar.get_points():
 		

@@ -10,20 +10,24 @@ size = 5
 font_data = ExtResource( 2 )
 
 [node name="BuffCard" type="Control" groups=["INVENTORY"]]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.062
+anchor_bottom = 0.052
+margin_right = 0.119999
+margin_bottom = -0.0200001
 script = ExtResource( 3 )
 
-[node name="Card" type="Sprite" parent="."]
+[node name="Container" type="Node2D" parent="."]
+
+[node name="Card" type="Sprite" parent="Container"]
 texture = ExtResource( 1 )
 centered = false
 
-[node name="Icon" type="Sprite" parent="."]
+[node name="Icon" type="Sprite" parent="Container"]
 texture = ExtResource( 4 )
 centered = false
 offset = Vector2( 1, 1 )
 
-[node name="Duration" type="Label" parent="."]
+[node name="Duration" type="Label" parent="Container"]
 margin_left = 6.0
 margin_top = 1.0
 margin_right = 14.0

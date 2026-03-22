@@ -4,7 +4,7 @@ class_name TweenAnimation2D
 const tween_speed = 10
 var parent
 
-func _init(parent:KinematicBody2D) -> void:
+func _init(parent:Node) -> void:
 	self.parent = parent
 
 func animation_move_to(pos:Vector2, target:Node, property:String) -> void:
