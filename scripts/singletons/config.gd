@@ -9,13 +9,9 @@ const SECTION = {
 func _ready():
 	
 	if config.load(file_path) != OK:
-		print("CONFIG DOES NOT EXIST, CREATING FILE AT ", file_path)
 		set_player_body(get_player_body())
 		set_player_head(get_player_head())
 		config.save(file_path)
-
-	print("The player head is: ", get_player_head())
-	print("The player body is: ", get_player_body())
 
 func get_player_head() -> int:
 	return config.get_value(SECTION.PLAYER, 'head', 0)

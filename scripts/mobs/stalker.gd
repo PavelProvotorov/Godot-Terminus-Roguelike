@@ -10,7 +10,6 @@ func _ready():
 	health = 4
 	melee_damage = 3
 	hide_enemy()
-	set_wandering(true)
 	
 func _turn_started_hook() -> void:
 	if target_nearby() and is_invisible(): 

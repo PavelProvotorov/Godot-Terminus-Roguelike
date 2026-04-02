@@ -21,4 +21,4 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 func get_damage(distance:int, offset:int) -> int:
 	if offset > 0:
 		return 2
-	return max(2, damage - (shot_range - distance)) as int
+	return max(3, damage - (shot_range - distance)) as int

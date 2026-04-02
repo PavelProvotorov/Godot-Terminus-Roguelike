@@ -9,4 +9,3 @@ func _ready():
 	attack_range = 1
 	health = 6
 	melee_damage = 3
-	set_wandering(true)

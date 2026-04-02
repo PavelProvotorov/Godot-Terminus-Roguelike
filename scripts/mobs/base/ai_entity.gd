@@ -1,15 +1,15 @@
 extends Entity2D
-class_name Enemy2D
+class_name EntityAI
 
-onready var target = Global.get_player()
 onready var behaviours: Array = []
 onready var nearby_free_cells: Array = []
+onready var target_visible:bool = false
+onready var target = null
 onready var path: Array = []
-onready var spawn: bool = false
 onready var _sprite = $AnimatedSprite
-onready var previous_position: Vector2 = position
-onready var _shadowcaster:BaseShadowcaster = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
 onready var _utility:Utility = Utility.new()
+onready var _shadowcaster:BaseShadowcaster = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
+onready var hostile_groups = ["PLAYER", "ALLY"]
 
 onready var BEHAVIOUR_TYPE = {
 	"IDLE": {
@@ -42,6 +42,11 @@ onready var BEHAVIOUR_TYPE = {
 		"handle": funcref(self, "handle_rally_behaviour"),
 		"config": {},
 	},
+	"FOLLOW": {
+		"check": funcref(self, "follow_behaviour"),
+		"handle": funcref(self, "handle_follow_behaviour"),
+		"config": funcref(self, "follow_behaviour_config"),
+	},
 	"WANDER": {
 		"check": funcref(self, "wander_behaviour"),
 		"handle": funcref(self, "handle_wander_behaviour"),
@@ -72,43 +77,73 @@ onready var LIFECYCLE = {
 	POST_FLEE_HOOK = funcref(self, "_post_flee_hook")
 }
 
-func _ready():
-	add_to_group('ENEMY')
-	set_random_frame()
+func _on_start_turn() -> void:
+	
+	if not self.level.node_exists(Global.player):
+		return
+	
+	select_target()
+	check_target_visibility()
+	build_path_to_target()
+	
+#	if target == null:
+#		print("target is null skipping")
+#		target_visible = false
+#		return end_turn()
+	
+	if not is_active() and not is_stunned() and target_visible:
+		set_active(true)
+		
+	if _buff_manager.get_modified_speed(self.speed) <= 0:
+		return end_turn()
+	
+	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
+	if hook is GDScriptFunctionState: yield(hook, "completed")
+	
+	process_behaviours()
 
-func target_in_sight() -> bool:
-	var self_pos = self.position
-	var target_pos = target.position
-	var direction = self_pos - target_pos
-	return direction.x == 0 or direction.y == 0
+func select_target() -> void:
 	
-func target_in_range() -> bool:
-	return ((path.size()-1) <= attack_range)
+	target = null
+	var tree = get_tree()
+	var entities:Array = []
 	
-func target_is_blocked(self_pos: Vector2, target_pos: Vector2) -> bool:
-	_raycast.cast_to = target_pos - self_pos
-	_raycast.force_raycast_update()
+	for group in hostile_groups:
+		entities.append_array(tree.get_nodes_in_group(group))
 	
-	if _raycast.is_colliding():
-		var collider = _raycast.get_collider()
-		if collider == target:
-			return false
-	return true
+	for entity in entities:
+		
+		if target == null:
+			self.target = entity
+		
+		var current_target_distance = position.distance_to(target.position)
+		var new_target_distance = position.distance_to(entity.position)
+		
+		if new_target_distance < current_target_distance:
+			self.target = entity
+			
+	print("NEW TARGET: ", target)
+
+func check_target_visibility() -> void:
 	
-func play_appear_animation() -> GDScriptFunctionState:
-	return yield(_tween_animations.animation_appear(_sprite), 'completed')
+	self.target_visible = false
 	
-func add_target_animation() -> void:
-	_sprite_animations.add_animation("target", self)
+	if target == null:
+		return
 	
-func remove_target_animation() -> void:
-	_sprite_animations.remove_animation("target", self)
+	var visible_cells = _shadowcaster.cast(self.position / grid_size, visibility)
+	target_visible = visible_cells.has(target.position / grid_size)
 	
-func set_random_frame() -> void:
-	randomize()
-	_sprite.set_frame(rand_range(0,_sprite.get_sprite_frames().get_frame_count("IDLE")))
-	_sprite.flip_h = (randi() % 2)
+func build_path_to_target() -> void:
+	path = []
 	
+	if target == null:
+		return
+	
+	self.level.set_pathfinding_points([], [target.position / grid_size])
+	path = (self.level.find_path(self.position, target.position))
+	self.level.set_pathfinding_points([target.position / grid_size], [])
+
 func process_behaviours() -> void:
 	for behaviour in behaviours:
 		var check:FuncRef = behaviour.get("check")
@@ -125,7 +160,7 @@ func process_behaviours() -> void:
 			continue
 		
 		if check.call_funcv([config]):
-			handle.call_func()
+			handle.call_funcv([config])
 			return
 			
 	print("SKIP")
@@ -166,7 +201,7 @@ func flee_behaviour(config:Dictionary) -> bool:
 		return true
 		
 	return false
-
+	
 func ranged_behaviour(config:Dictionary) -> bool:
 	
 	if not is_active():
@@ -213,10 +248,9 @@ func ambush_behaviour(config:Dictionary) -> bool:
 	
 func open_door_behaviour(config:Dictionary) -> bool:
 	
-	if not is_active() or not is_wandering():
-		return false
+#	if not is_active() or not is_wandering():
+#		return false
 		
-#	print("Nearby doors count: ", get_nearby_doors().size())
 	if get_nearby_doors().size() > 0:
 		print("OPEN DOOR")
 		return true
@@ -233,7 +267,8 @@ func spawner_behaviour(config:Dictionary) -> bool:
 	return false
 
 func wander_behaviour(config:Dictionary) -> bool:
-	if is_wandering():
+	
+	if not is_active():
 		print("WANDER")
 		return true
 	return false
@@ -247,63 +282,77 @@ func rally_behaviour(config:Dictionary) -> bool:
 		print("RALLY")
 		return true
 	return false
+	
+func follow_behaviour(config:Dictionary) -> bool:
+	
+	var follower = config.get("follower", null)
+	
+	if follower == null:
+		print("FOLLOWER NULL")
+		return false
+	
+	if not target_visible or path.size() >= 4:
+		print("FOLLOW")
+		return true
+	return false
 
 func idle_behaviour(config:Dictionary) -> bool:
 	if path.size() == 0:
 		print("IDLE")
 		return true
 	return false
-
-func handle_idle() -> void:
+	
+func handle_idle(config:Dictionary) -> void:
 	end_turn()
 
-func handle_movement() -> void:
+func handle_movement(config:Dictionary) -> void:
 	var start = self.position
 	var finish = path[1] * grid_size
 	
 	set_sprite_direction(start, finish)
 	
 	_audio.play_sound(self.position, Resources.SOUNDS.move)
-	if is_invisible() or is_path_hidden(start / grid_size, finish / grid_size):
-		self.position = finish
-	else:
+	
+	if not is_invisible() and not is_path_hidden(start / grid_size, finish / grid_size):
 		yield(play_move_animation(start, finish), 'completed')
 	
-	update_pathfinding(start / grid_size, finish / grid_size)
+	update_position(finish)
 	
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_MOVEMENT)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
-	
-func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
-	previous_position = prev_pos * grid_size
-	self.level.set_pathfinding_points([new_pos], [prev_pos])
 
-func handle_melee_attack() -> void:
+func handle_melee_attack(config:Dictionary) -> void:
 	var start = self.position
 	var finish = path[1] * grid_size
 	var target = self.target
 	
 	set_sprite_direction(start, finish)
 	target.receive_damage(_buff_manager.get_modified_melee_damage(melee_damage))
-	yield(play_melee_animation(start, finish), 'completed')
+	
+	if not is_path_hidden(start / grid_size, finish / grid_size):
+		yield(play_melee_animation(start, finish), 'completed')
+	
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_MELEE_ATTACK)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
 
-func handle_ranged_attack() -> void:
+func handle_ranged_attack(config:Dictionary) -> void:
 	var start = self.position
 	var finish = path[1] * grid_size
 	var target = self.target
 	
 	set_sprite_direction(start, finish)
 	target.receive_damage(ranged_damage)
-	yield(play_ranged_animation(start, finish), 'completed')
+	
+	if not is_path_hidden(start / grid_size, finish / grid_size):
+		yield(play_ranged_animation(start, finish), 'completed')
+		
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_RANGED_ATTACK)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	end_turn()
-	
-func handle_flee_behaviour() -> void:
+
+func handle_flee_behaviour(config:Dictionary) -> void:
 	var nearby_cells:Array = get_nearby_cells()
 	var sorted_cells = nearby_cells
 	sorted_cells.sort_custom(self, "sort_by_distance")
@@ -314,29 +363,23 @@ func handle_flee_behaviour() -> void:
 		var start = position / grid_size
 		var finish = cell
 		
-		if is_invisible() or is_path_hidden(start, finish):
-			self.position = finish * grid_size
-		else:
+		if not is_invisible() and not is_path_hidden(start, finish):
 			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
 		
-		update_pathfinding(start, finish)
+		update_position(finish * grid_size)
 		
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.POST_FLEE_HOOK)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	
 	end_turn()
 	
-func handle_open_door_behaviour() -> void:
+func handle_open_door_behaviour(config:Dictionary) -> void:
 	var nearby_doors:Array = get_nearby_doors()
 	var door:Vector2 = nearby_doors.pick_random()
 	self.level.open_door(door)
 	end_turn()
 	
-func sort_by_distance(a, b) -> bool:
-	var pos:Vector2 = target.position / grid_size
-	return a.distance_to(pos) > b.distance_to(pos)
-	
-func handle_wander_behaviour() -> void:
+func handle_wander_behaviour(config:Dictionary) -> void:
 	var nearby_cells:Array = get_nearby_cells()
 	
 	
@@ -351,15 +394,14 @@ func handle_wander_behaviour() -> void:
 		set_sprite_direction(start * grid_size, finish * grid_size)
 		
 		_audio.play_sound(self.position, Resources.SOUNDS.move)
-		if is_invisible() or is_path_hidden(start, finish):
-			self.position = finish * grid_size
-		else:
-			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
 		
-		update_pathfinding(start, finish)
+		if not is_invisible() and not is_path_hidden(start, finish):
+			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
+
+		update_position(finish * grid_size)
 	end_turn()
 
-func handle_rally_behaviour() -> void:
+func handle_rally_behaviour(config:Dictionary) -> void:
 	var nearby_cells:Array = get_nearby_cells()
 	var move_to_cell:Vector2  = self.position / grid_size
 	var shortest_distance:int = round((self.position / grid_size).distance_to(target.position / grid_size))
@@ -379,54 +421,41 @@ func handle_rally_behaviour() -> void:
 		var start = position / grid_size
 		var finish = move_to_cell
 		
-		if is_invisible() or is_path_hidden(start, finish):
-			self.position = finish * grid_size
-		else:
+		if not is_invisible() and not is_path_hidden(start, finish):
 			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
 		
-		update_pathfinding(start, finish)
-	end_turn()
-
-func handle_spawning() -> void:
+		update_position(finish * grid_size)
 	end_turn()
 	
-func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vector2) -> void:
-	instance.set_active(true)
-	self.level.spawn_enemy(start / grid_size, instance)
-	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
-	update_pathfinding(finish / grid_size, finish / grid_size)
+func handle_follow_behaviour(config:Dictionary) -> void:
+	var follower = config.get("follower")
+	var nearby_cells:Array = get_nearby_cells()
+	var move_to_cell:Vector2  = self.position / grid_size
+	var shortest_distance:int = round((self.position / grid_size).distance_to(follower.position / grid_size))
+	
+	if nearby_cells.size() > 0:
+		
+		for cell in nearby_cells:
+			var distance = cell.distance_to(follower.position / grid_size)
+			
+			if distance < shortest_distance:
+				shortest_distance = distance
+				move_to_cell = cell
+		
+		if move_to_cell == self.position / grid_size and shortest_distance > 1:
+			move_to_cell = nearby_cells.pick_random()
+		
+		var start = position / grid_size
+		var finish = move_to_cell
+		
+		if not is_invisible() and not is_path_hidden(start, finish):
+			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
+		
+		update_position(finish * grid_size)
+	end_turn()
 
-func _on_start_turn() -> void:
-	
-	if not self.level.node_exists(target):
-		return
-		
-	if not is_active() and not is_stunned():
-		var visible_cells = _shadowcaster.cast(self.position / grid_size, visibility)
-		if visible_cells.has(target.position / grid_size):
-			print("FOUND TARGET")
-			set_wandering(false)
-			set_active(true)
-		pass
-		
-	if not is_active() and not is_wandering():
-		end_turn()
-		return
-		
-	if _buff_manager.get_modified_speed(self.speed) <= 0:
-		end_turn()
-		return
-		
-	path = (self.level.find_path(self.position, target.position))
-	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
-	if hook is GDScriptFunctionState: yield(hook, "completed")
-	process_behaviours()
-	
-	
-func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
-	var direction = (finish - start)/grid_size
-	if direction == Vector2.LEFT: _sprite.flip_h = true
-	if direction == Vector2.RIGHT: _sprite.flip_h = false
+func handle_spawning(config:Dictionary) -> void:
+	end_turn()
 	
 func enemies_near_target() -> Array:
 	var target_pos = target.position
@@ -464,9 +493,25 @@ func get_nearby_doors() -> Array:
 			nearby_doors.append(door_pos) 
 	
 	return nearby_doors
-
-func is_invisible() -> bool:
-	return _sprite.modulate.a == 0
+	
+func target_in_sight() -> bool:
+	var self_pos = self.position
+	var target_pos = target.position
+	var direction = self_pos - target_pos
+	return direction.x == 0 or direction.y == 0
+	
+func target_in_range() -> bool:
+	return ((path.size()-1) <= attack_range)
+	
+func target_is_blocked(self_pos: Vector2, target_pos: Vector2) -> bool:
+	_raycast.cast_to = target_pos - self_pos
+	_raycast.force_raycast_update()
+	
+	if _raycast.is_colliding():
+		var collider = _raycast.get_collider()
+		if collider == target:
+			return false
+	return true
 
 func is_active() -> bool:
 	return is_in_group('ACTIVE')
@@ -493,13 +538,20 @@ func set_active(add:bool) -> void:
 	if get_groups().has(group_name):
 		remove_from_group(group_name)
 		return
-
-func play_animation(play:bool) -> void:
-	if play:
-		_sprite.play()
-	else:
-		_sprite.stop()
 		
-func receive_damage(damage:int, true_damage:bool = false) -> void:
-	_audio.play_sound(self.position, Resources.SOUNDS.hit_0)
-	.receive_damage(damage, true_damage)
+func is_invisible() -> bool:
+	return _sprite.modulate.a == 0
+
+func set_sprite_direction(start:Vector2, finish:Vector2) -> void:
+	var direction = (finish - start)/grid_size
+	if direction == Vector2.LEFT: _sprite.flip_h = true
+	if direction == Vector2.RIGHT: _sprite.flip_h = false
+	
+func set_random_frame() -> void:
+	randomize()
+	_sprite.set_frame(rand_range(0,_sprite.get_sprite_frames().get_frame_count("IDLE")))
+	_sprite.flip_h = (randi() % 2)
+	
+func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
+	previous_position = prev_pos * grid_size
+	self.level.set_pathfinding_points([new_pos], [prev_pos])

@@ -7,6 +7,8 @@ onready var target = _buff_manager.get_parent()
 onready var _audio:Audio2D = Audio2D.new()
 onready var _utility:Utility = Utility.new()
 
+signal buff_expired
+
 onready var LIFECYCLE = {
 	ON_TICK = funcref(self, "_on_buff_tick_hook"),
 }
@@ -28,6 +30,7 @@ func tick():
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 	
 	if duration <= 0:
+		emit_signal("buff_expired", self)
 		queue_free()
 		return
 		

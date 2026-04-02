@@ -11,7 +11,6 @@ func _ready():
 	attack_range = 1
 	health = 5
 	melee_damage = 2
-	set_wandering(true)
 
 func _turn_started_hook():
 	

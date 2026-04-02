@@ -15,6 +15,8 @@ func _init():
 	Events.connect("level_door_opened", self, "_on_level_door_opened")
 
 func _ready():
+	_buff_manager.connect("buff_added", self, "_on_buff_added")
+	_buff_manager.connect("buff_removed", self, "_on_buff_removed")
 	self.health = 10
 	self.ammo = 25
 	max_health = 10
@@ -28,6 +30,17 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
 		add_buff('regeneration', 1, true)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
+		
+		var nearby_cells = get_nearby_cells()
+		
+		if nearby_cells.size() == 0:
+			return 
+		
+		var cell = nearby_cells.pick_random()
+		var instance = Resources.debug_ally.instance()
+		self.level.spawn_enemy(cell, instance)
+		instance.previous_position = cell * grid_size
+		instance.update_position(cell * grid_size)
 	pass
 
 func set_camera_limits() -> void:
@@ -121,8 +134,25 @@ func check_move_direction(pos: Vector2) -> bool:
 	
 	if _move_raycast.is_colliding():
 		var collider = _move_raycast.get_collider()
+		
 		if collider.is_in_group("LEVEL"):
 			return process_tilemap_collision(self.position + pos)
+			
+		elif collider.is_in_group("ALLY"):
+			
+			var player_pos = self.position
+			var ally_pos = collider.position
+			
+			yield(self.play_move_animation(player_pos, ally_pos), 'completed')
+			yield(collider.play_move_animation(ally_pos, player_pos), 'completed')
+			
+			self.update_position(ally_pos, false)
+			collider.update_position(player_pos, false)
+
+			end_turn()
+			
+			return true
+			
 		elif collider.is_in_group("ENEMY"):
 			handle_melee_attack({
 				"start": self.position, 
@@ -170,7 +200,7 @@ func handle_movement(data:Dictionary) -> void:
 	var finish = data.finish
 	_audio.play_sound(self.position, Resources.SOUNDS.move)
 	yield(play_move_animation(start, finish), 'completed')
-	update_fog()
+	update_position(finish)
 	end_turn()
 
 func handle_melee_attack(data:Dictionary) -> void:
@@ -278,9 +308,10 @@ func is_ammo_depleted() -> bool:
 
 func _on_level_generation_complete(level:Level) -> void:
 	self.position = level.get_entrance()
+	previous_position = self.position
 	_camera.reset_smoothing()
 	set_camera_limits()
-	update_fog()
+	update_position(self.position)
 
 func _on_level_door_opened() -> void:
 	update_fog()
@@ -315,3 +346,13 @@ func get_visibility():
 func receive_damage(damage:int, true_damage:bool = false) -> void:
 	_audio.play_sound(self.position, Resources.SOUNDS.hit_0)
 	.receive_damage(damage, true_damage)
+	
+func update_position(pos:Vector2, free_previous:bool = true) -> void:
+	.update_position(pos, free_previous)
+	update_fog()
+	
+func _on_buff_added() -> void:
+	update_fog()
+	
+func _on_buff_removed() -> void:
+	update_fog()

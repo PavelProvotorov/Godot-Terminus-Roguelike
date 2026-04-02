@@ -10,6 +10,7 @@ onready var _collision_shape:CollisionShape2D = $CollisionShape2D
 onready var _buff_manager:BuffManager = $BuffManager
 onready var _hit_flash = $HitFlashAnimation
 onready var _raycast = $RayCast2D
+onready var previous_position = position
 
 const DIRECTIONS = [
 	Vector2.UP,
@@ -117,6 +118,21 @@ func add_buff(buff:String, duration:int, self_applied:bool=false) -> bool:
 
 func remove_buff(buff:String) -> bool:
 	return _buff_manager.remove_buff(buff)
+	
+func update_position(new_position:Vector2, free_previous:bool = true) -> void:
+	var disable_points = [new_position / grid_size]
+	var enable_points = [previous_position / grid_size]
+	
+	if not free_previous:
+		enable_points = []
+		
+	self.level.set_pathfinding_points(
+		disable_points, 
+		enable_points
+	)
+	
+	previous_position = new_position
+	self.position = new_position
 
 func end_turn() -> bool:
 	print("USED TURN")

@@ -9,6 +9,7 @@ onready var debug_maggot = preload("res://scenes/mobs/Maggot.tscn")
 onready var debug_creep = preload("res://scenes/mobs/Creep.tscn")
 onready var debug_grunt = preload("res://scenes/mobs/Grunt.tscn")
 onready var debug_goo = preload("res://scenes/mobs/Goo.tscn")
+onready var debug_ally = preload("res://scenes/mobs/Ally.tscn")
 onready var player = load("res://scenes/mobs/Player.tscn")
 
 onready var weapon_pistol = load("res://scenes/weapons/Pistol.tscn")

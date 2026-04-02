@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://scripts/mobs/player.gd" type="Script" id=2]
+[ext_resource path="res://scripts/mobs/base/player.gd" type="Script" id=2]
 [ext_resource path="res://scripts/states/state_machine.gd" type="Script" id=3]
 [ext_resource path="res://scripts/states/state_idle.gd" type="Script" id=4]
 [ext_resource path="res://scripts/states/state_ranged.gd" type="Script" id=5]

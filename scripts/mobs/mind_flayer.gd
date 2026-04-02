@@ -16,25 +16,18 @@ func _post_ranged_attack_hook() -> void:
 	var target_pos = target.position
 	
 	_sprite_animations.add_animation('teleport', self.level, true, self_pos)
-	target.position = self.position
-	self.position = target_pos
 	_audio.play_sound(self_pos, Resources.SOUNDS.teleport)
-	
-	if target is Player: target.update_fog()
-	
 	_sprite_animations.add_animation('teleport', self.level, true, target_pos)
-		
-	update_pathfinding(self_pos / grid_size, target_pos / grid_size)
+	
+	target.update_position(self_pos, false)
+	self.update_position(target_pos, false)
 
 func _post_melee_attack_hook() -> void:
 	var cells:Array = self.level.get_free_cells()
 	var new_pos = cells.pick_random() * 8
 	
 	_sprite_animations.add_animation('teleport', self.level, true, target.position)
-	target.position = new_pos
+	target.update_position(new_pos)
 	_audio.play_sound(new_pos, Resources.SOUNDS.teleport)
-	
-	if target is Player:
-		target.update_fog()
 	
 	_sprite_animations.add_animation('teleport', self.level, true, new_pos)

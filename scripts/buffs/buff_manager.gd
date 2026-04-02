@@ -15,11 +15,13 @@ onready var BUFF_LIST:Dictionary = {
 	'stun': load("res://scenes/buffs/BuffStun.tscn"),
 }
 
+signal buff_added
+signal buff_removed
 var callback:FuncRef
 	
 func init(callback:FuncRef):
 	self.callback = callback
-
+	
 func add_buff(buff:String, duration:int, self_applied:bool) -> bool:
 	
 	if is_applied(buff):
@@ -33,8 +35,10 @@ func add_buff(buff:String, duration:int, self_applied:bool) -> bool:
 	
 	if resource:
 		var instance:Buff = resource.instance()
+		instance.connect("buff_expired", self, "_on_buff_expired")
 		instance.set_duration(duration)
 		add_child(instance)
+		emit_signal("buff_added")
 		on_buff_changed_callback()
 		return true
 	else:
@@ -52,6 +56,7 @@ func remove_buff(buff:String) -> bool:
 	
 	var applied_buff:Buff = get_buff(buff)
 	applied_buff.set_duration(0)
+	emit_signal("buff_removed")
 	on_buff_changed_callback()
 	
 	return true
@@ -68,7 +73,6 @@ func get_buffs() -> Array:
 			"icon": buff.icon,
 		})
 			
-	print(buffs)
 	return buffs
 
 func tick_buffs():
@@ -143,3 +147,7 @@ func is_stunned() -> bool:
 		if buff is BuffStun:
 			return true
 	return false
+
+func _on_buff_expired(buff:Buff) -> void:
+	buff.disconnect("buff_expired", self, "_on_buff_expired")
+	emit_signal("buff_removed")

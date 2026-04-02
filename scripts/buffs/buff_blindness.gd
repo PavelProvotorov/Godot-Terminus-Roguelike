@@ -7,5 +7,4 @@ func _ready():
 	add_to_group('VISIBILITY_BUFF')
 
 func _on_buff_tick_hook() -> void:
-	if duration <= 0 and target is Player:
-		target.update_fog()
+	pass

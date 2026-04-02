@@ -15,7 +15,6 @@ func _ready():
 	melee_damage = 1
 	ranged_damage = 1
 	visibility = 5
-	set_wandering(true)
 
 func get_flee_behaviour_config() -> Dictionary:
 	return {

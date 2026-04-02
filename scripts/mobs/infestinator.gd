@@ -5,6 +5,7 @@ func _ready():
 		BEHAVIOUR_TYPE.RANGED,
 		BEHAVIOUR_TYPE.MELEE,
 		BEHAVIOUR_TYPE.MOVE,
+		BEHAVIOUR_TYPE.WANDER,
 	]
 	attack_range = 2
 	ranged_damage = 2
@@ -17,14 +18,15 @@ func _post_ranged_attack_hook() -> void:
 		return
 	
 	if target.add_buff('blindness', 3):
-		
-		if target is Player:
-			target.update_fog()
-			
 		spawn_creep() 
 
 func _post_melee_attack_hook() -> void:
-	if not get_chance(50):
+	if not get_chance(75):
+		return
+	spawn_creep()
+	
+func _post_movement_hook() -> void:
+	if not get_chance(25):
 		return
 	spawn_creep()
 

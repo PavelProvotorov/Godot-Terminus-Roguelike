@@ -26,12 +26,12 @@ func build_queue() -> void:
 	print("BUILDING QUEUE BY: ", self)
 	queue = []
 	queue.append_array(_tree.get_nodes_in_group("ENEMY"))
+	queue.append_array(_tree.get_nodes_in_group("ALLY"))
 	queue.append_array(_tree.get_nodes_in_group("PLAYER"))
 	print("QUEUE:", queue)
 
 func _on_end_turn(node:Node) -> void:
 	print("----------------------------------")
-	print("TURN ENDED BY: ", node)
 	queue.erase(node)
 	process_queue()
 

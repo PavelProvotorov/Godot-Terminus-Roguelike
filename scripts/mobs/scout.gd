@@ -17,7 +17,6 @@ func _ready():
 	ranged_damage = 2
 	melee_damage = 1
 	visibility = 5
-	set_wandering(true)
 
 func _turn_started_hook():
 	buff_recharge += 1

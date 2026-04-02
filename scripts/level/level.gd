@@ -206,6 +206,7 @@ func app_weapons(weapon_list: Dictionary, min_count:int, max_count:int, free_cel
 func spawn_enemy(pos:Vector2, enemy:KinematicBody2D) -> void:
 	enemy.set_position(_tilemap_logic.map_to_world(pos))
 	_tilemap_logic.add_child(enemy)
+	
 	_pathfinding.disable_points([
 		_tilemap_logic.world_to_map(pos * 8)
 	])

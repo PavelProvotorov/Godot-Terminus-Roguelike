@@ -12,7 +12,7 @@ func _ready():
 	melee_damage = 2
 	health = 4
 
-func handle_spawning() -> void:
+func handle_spawning(config:Dictionary) -> void:
 	var nearby_cells = get_nearby_cells()
 	
 	if nearby_cells.size() != 0 \
