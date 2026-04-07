@@ -26,12 +26,6 @@ func minion_spawn_and_move(instance:KinematicBody2D, start:Vector2, finish:Vecto
 	instance.previous_position = finish
 	update_pathfinding(finish / grid_size, finish / grid_size)
 	yield(instance.play_move_animation(Vector2.ZERO, finish), 'completed')
-
-func play_animation(play:bool) -> void:
-	if play:
-		_sprite.play()
-	else:
-		_sprite.stop()
 		
 func receive_damage(damage:int, true_damage:bool = false) -> void:
 	_audio.play_sound(self.position, Resources.SOUNDS.hit_0)

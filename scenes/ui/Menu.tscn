@@ -14,8 +14,8 @@ font_data = ExtResource( 4 )
 [node name="Menu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -160.0
-margin_bottom = -120.0
+margin_right = -80.0
+margin_bottom = -15.0
 script = ExtResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="."]

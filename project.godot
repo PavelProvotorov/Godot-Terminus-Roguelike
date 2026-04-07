@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "EntityAI",
+"class": "Ally",
+"language": "GDScript",
+"path": "res://scripts/mobs/base/ally.gd"
+}, {
 "base": "Node",
 "class": "Audio2D",
 "language": "GDScript",
@@ -175,6 +180,7 @@ _global_script_classes=[ {
 "path": "res://scripts/weapons/weapon.gd"
 } ]
 _global_script_class_icons={
+"Ally": "",
 "Audio2D": "",
 "BaseShadowcaster": "",
 "Buff": "",
@@ -232,7 +238,7 @@ window/size/test_width=1920
 window/size/test_height=1080
 window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 

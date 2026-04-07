@@ -421,6 +421,8 @@ func handle_rally_behaviour(config:Dictionary) -> void:
 		var start = position / grid_size
 		var finish = move_to_cell
 		
+		set_sprite_direction(start * grid_size, finish * grid_size)
+		
 		if not is_invisible() and not is_path_hidden(start, finish):
 			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
 		
@@ -447,6 +449,8 @@ func handle_follow_behaviour(config:Dictionary) -> void:
 		
 		var start = position / grid_size
 		var finish = move_to_cell
+		
+		set_sprite_direction(start * grid_size, finish * grid_size)
 		
 		if not is_invisible() and not is_path_hidden(start, finish):
 			yield(play_move_animation(start * grid_size, finish * grid_size), 'completed')
@@ -555,3 +559,9 @@ func set_random_frame() -> void:
 func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
 	previous_position = prev_pos * grid_size
 	self.level.set_pathfinding_points([new_pos], [prev_pos])
+	
+func play_animation(play:bool) -> void:
+	if play:
+		_sprite.play()
+	else:
+		_sprite.stop()

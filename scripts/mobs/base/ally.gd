@@ -1,4 +1,5 @@
 extends EntityAI
+class_name Ally
 
 func _init():
 	add_to_group('ALLY')

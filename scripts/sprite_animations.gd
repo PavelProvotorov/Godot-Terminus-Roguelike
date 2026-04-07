@@ -10,6 +10,7 @@ var ANIMATIONS: Dictionary = {
 	'teleport': preload("res://resources/animations/AnimationTeleport.tscn"),
 	'spark': preload("res://resources/animations/AnimationSpark.tscn"),
 	'burst': preload("res://resources/animations/AnimationBurst.tscn"),
+	'regeneration': preload("res://resources/animations/AnimationRegeneration.tscn"),
 }
 var storage: Dictionary = {}
 

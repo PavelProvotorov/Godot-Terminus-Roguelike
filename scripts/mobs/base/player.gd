@@ -28,16 +28,22 @@ func _ready():
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
-		add_buff('regeneration', 1, true)
+		add_buff('regeneration', 2, true)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
 		
 		var nearby_cells = get_nearby_cells()
 		
 		if nearby_cells.size() == 0:
 			return 
+			
+		var cats = [
+			Resources.debug_cat_maison,
+			Resources.debug_cat_sorik,
+			Resources.debug_cat_luxor
+		]
 		
 		var cell = nearby_cells.pick_random()
-		var instance = Resources.debug_ally.instance()
+		var instance = cats.pick_random().instance()
 		self.level.spawn_enemy(cell, instance)
 		instance.previous_position = cell * grid_size
 		instance.update_position(cell * grid_size)
