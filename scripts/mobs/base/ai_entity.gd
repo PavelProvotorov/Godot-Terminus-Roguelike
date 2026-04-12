@@ -86,11 +86,6 @@ func _on_start_turn() -> void:
 	check_target_visibility()
 	build_path_to_target()
 	
-#	if target == null:
-#		print("target is null skipping")
-#		target_visible = false
-#		return end_turn()
-	
 	if not is_active() and not is_stunned() and target_visible:
 		set_active(true)
 		
@@ -247,9 +242,6 @@ func ambush_behaviour(config:Dictionary) -> bool:
 	return false
 	
 func open_door_behaviour(config:Dictionary) -> bool:
-	
-#	if not is_active() or not is_wandering():
-#		return false
 		
 	if get_nearby_doors().size() > 0:
 		print("OPEN DOOR")

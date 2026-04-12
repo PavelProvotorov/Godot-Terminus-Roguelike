@@ -57,6 +57,9 @@ func _on_state_enabled(data: Dictionary) -> void:
 		return
 		
 	_player.set_throw_animation()
+	
+func _on_state_disabled(data:Dictionary) -> void:
+	get_tree().call_group("ENEMY", "remove_target_animation") 
 
 func set_variables(data:Dictionary) -> void:
 	throw_item = data.get('throw_item', null)

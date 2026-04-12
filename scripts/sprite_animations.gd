@@ -11,6 +11,7 @@ var ANIMATIONS: Dictionary = {
 	'spark': preload("res://resources/animations/AnimationSpark.tscn"),
 	'burst': preload("res://resources/animations/AnimationBurst.tscn"),
 	'regeneration': preload("res://resources/animations/AnimationRegeneration.tscn"),
+	'speed': preload("res://resources/animations/AnimationSpeed.tscn"),
 }
 var storage: Dictionary = {}
 
