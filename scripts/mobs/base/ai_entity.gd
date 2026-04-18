@@ -77,6 +77,9 @@ onready var LIFECYCLE = {
 	POST_FLEE_HOOK = funcref(self, "_post_flee_hook")
 }
 
+func _init():
+	add_to_group("ENTITY_AI")
+
 func _on_start_turn() -> void:
 	
 	if not self.level.node_exists(Global.player):

@@ -25,8 +25,7 @@ func process_queue() -> void:
 func build_queue() -> void:
 	print("BUILDING QUEUE BY: ", self)
 	queue = []
-	queue.append_array(_tree.get_nodes_in_group("ENEMY"))
-	queue.append_array(_tree.get_nodes_in_group("ALLY"))
+	queue.append_array(_tree.get_nodes_in_group("ENTITY_AI"))
 	queue.append_array(_tree.get_nodes_in_group("PLAYER"))
 	print("QUEUE:", queue)
 

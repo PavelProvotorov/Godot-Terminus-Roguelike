@@ -142,17 +142,17 @@ const default_weapons: Dictionary = {
 }
 
 const default_items: Dictionary = {
-	"Bandage": 10,
-	"Ammo": 50,
-	"Visor": 5,
-	"Grenade": 5,
-	"FragGrenade": 5,
-	"Medkit": 10,
-	"Teleporter": 5,
-	"ShieldGenerator": 5,
-	"Adrenalin": 5,
+#	"Bandage": 10,
+#	"Ammo": 50,
+#	"Visor": 5,
+#	"Grenade": 5,
+#	"FragGrenade": 5,
+#	"Medkit": 10,
+#	"Teleporter": 5,
+#	"ShieldGenerator": 5,
+#	"Adrenalin": 5,
 	"Steroids": 5,
-	"ThunderFlash": 5,
+#	"ThunderFlash": 5,
 }
 
 onready var level_configuration: Dictionary = {
