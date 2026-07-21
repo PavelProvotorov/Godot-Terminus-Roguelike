@@ -36,7 +36,7 @@ func radiate():
 		
 	var targets = get_reachable_targets(nearby_cells, self.position)
 	
-	for target in target:
+	for target in targets:
 		if is_entity_hostile(target):
 			target.add_buff('stun', 1)
 	
