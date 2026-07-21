@@ -5,16 +5,23 @@ var spawn_count:int = 0
 
 func _ready():
 	behaviours = [
-		BEHAVIOUR_TYPE.FLEE,
-		BEHAVIOUR_TYPE.MELEE,
-		BEHAVIOUR_TYPE.RALLY,
-		BEHAVIOUR_TYPE.MOVE,
+		FleeBehaviour.new(self, {
+			"health_threshold": 2,
+			"flee_when_close": false,
+			"skip_chance": 0,
+			"post_hook": funcref(self, "post_flee"),
+		}),
+		MeleeBehaviour.new(self, {}),
+		RallyBehaviour.new(self, {}),
+		MoveBehaviour.new(self, {
+			"post_hook": funcref(self, "post_move")
+		}),
 	]
 	attack_range = 1
 	melee_damage = 3
 	health = 7
 	
-func _post_movement_hook() -> void:
+func post_move() -> void:
 	var nearby_cells = get_nearby_cells()
 	
 	if nearby_cells.size() > 0 \
@@ -24,6 +31,7 @@ func _post_movement_hook() -> void:
 		spawn_count += 1
 		var cell = nearby_cells.pick_random()
 		var instance = Resources.debug_goo.instance()
+		print("SPAWN GOO - START: ", self)
 		yield(minion_spawn_and_move(
 			instance,
 			position,
@@ -31,13 +39,7 @@ func _post_movement_hook() -> void:
 			), 
 		"completed"
 		)
+		print("SPAWN GOO - END: ", self)
 
-func _post_flee_hook() -> void:
+func post_flee() -> void:
 	self.add_buff('regeneration', 3, true)
-
-func get_flee_behaviour_config() -> Dictionary:
-	return {
-		"health_threshold": 2,
-		"flee_when_close": false,
-		"skip_chance": 0,
-	}

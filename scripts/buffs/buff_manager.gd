@@ -131,7 +131,7 @@ func get_buff(buff_name:String):
 	
 func is_applied(buff_name:String) -> bool:
 	for buff in get_children():
-		if buff is Buff:
+		if buff is Buff and buff.is_active():
 			if buff.original_name == buff_name:
 				return true
 	return false

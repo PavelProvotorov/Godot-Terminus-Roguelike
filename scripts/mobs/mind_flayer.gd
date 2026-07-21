@@ -2,16 +2,20 @@ extends Enemy2D
 
 func _ready():
 	behaviours = [
-		BEHAVIOUR_TYPE.RANGED,
-		BEHAVIOUR_TYPE.MELEE,
-		BEHAVIOUR_TYPE.MOVE,
+		RangedBehaviour.new(self, {
+			"post_hook": funcref(self, "post_ranged"),
+		}),
+		MeleeBehaviour.new(self, {
+			"post_hook": funcref(self, "post_melee"),
+		}),
+		MoveBehaviour.new(self, {}),
 	]
 	health = 4
 	attack_range = 2
 	melee_damage = 2
 	ranged_damage = 1
 
-func _post_ranged_attack_hook() -> void:
+func post_ranged() -> void:
 	var self_pos = self.position
 	var target_pos = target.position
 	
@@ -22,7 +26,7 @@ func _post_ranged_attack_hook() -> void:
 	target.update_position(self_pos, false)
 	self.update_position(target_pos, false)
 
-func _post_melee_attack_hook() -> void:
+func post_melee() -> void:
 	var cells:Array = self.level.get_free_cells()
 	var new_pos = cells.pick_random() * 8
 	

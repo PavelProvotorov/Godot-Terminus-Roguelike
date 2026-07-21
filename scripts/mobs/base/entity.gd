@@ -11,6 +11,7 @@ onready var _buff_manager:BuffManager = $BuffManager
 onready var _hit_flash = $HitFlashAnimation
 onready var _raycast = $RayCast2D
 onready var previous_position = position
+onready var hostile_groups = []
 
 const DIRECTIONS = [
 	Vector2.UP,
@@ -21,7 +22,7 @@ const DIRECTIONS = [
 
 const grid_size:int = 8
 var attack_range:int = 1
-var melee_damage:int = 1
+var melee_damage:int = 1 setget , get_melee_damage
 var ranged_damage:int = 1
 var min_visibility:int = 1
 var max_health:int = 100
@@ -110,6 +111,10 @@ func recharge_ammo(recharge:int) -> bool:
 	return false
 
 func handle_death() -> void:
+	var parent = self.get_parent()
+	if parent:
+		parent.remove_child(self)
+		
 	self.level.set_pathfinding_points([], [self.position / grid_size])
 	self.queue_free()
 	
@@ -135,19 +140,22 @@ func update_position(new_position:Vector2, free_previous:bool = true) -> void:
 	self.position = new_position
 
 func end_turn() -> bool:
-	print("USED TURN")
+	print("USED TURN: ", self)
 	turn_count += 1
 
 	if  turn_count < _buff_manager.get_modified_speed(speed):
-		print("EXTRA TURN")
+		print("EXTRA TURN: ", self)
 		_on_start_turn()
 		return false
 		
 	turn_count = 0
-
-	_buff_manager.tick_buffs()
 	
-	print("ENDING TURN")
+	var buffs = _buff_manager.tick_buffs()
+	
+	if buffs is GDScriptFunctionState:
+		yield(buffs, "completed")
+	
+	print("ENDING TURN: ", self)
 	Events.emit_signal("end_turn", self)
 	return true
 
@@ -189,3 +197,12 @@ func is_shielded() -> bool:
 
 func is_stunned() -> bool:
 	return _buff_manager.is_stunned()
+	
+func is_entity_hostile(entity:Entity2D) -> bool:
+	for group in hostile_groups:
+		if entity.is_in_group(group):
+			return true
+	return false
+	
+func get_melee_damage() -> int:
+	return _buff_manager.get_modified_melee_damage(melee_damage)

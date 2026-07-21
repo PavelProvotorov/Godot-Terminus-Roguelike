@@ -26,14 +26,14 @@ var duration = 0
 func tick():
 	duration -= 1
 	
+#	Currently does not work with coroutines
 	var hook = _utility.call_lifecycle_hook(LIFECYCLE.ON_TICK)
-	if hook is GDScriptFunctionState: yield(hook, "completed")
 	
 	if duration <= 0:
 		emit_signal("buff_expired", self)
 		queue_free()
 		return
-		
+	
 func set_duration(duration:int) -> void:
 	self.duration = min(99, duration)
 	

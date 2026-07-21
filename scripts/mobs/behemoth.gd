@@ -2,9 +2,9 @@ extends Enemy2D
 
 func _ready():
 	behaviours = [
-		BEHAVIOUR_TYPE.MELEE,
-		BEHAVIOUR_TYPE.MOVE,
-		BEHAVIOUR_TYPE.WANDER,
+		MeleeBehaviour.new(self, {}),
+		MoveBehaviour.new(self, {}),
+		WanderBehaviour.new(self, {}),
 	]
 	attack_range = 1
 	health = 6

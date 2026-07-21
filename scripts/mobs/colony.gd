@@ -2,25 +2,13 @@ extends Enemy2D
 
 func _ready():
 	behaviours = [
-		BEHAVIOUR_TYPE.SPAWNER
+		SpawnBehaviour.new(self, {
+			"minion": Resources.debug_maggot,
+			"minion_count": 4,
+			"animation": "burst",
+			"spawn_chance": 100,
+			"die": true,
+		})
 	]
-	attack_range = 2
-	melee_damage = 1
-
-func handle_spawning(config:Dictionary) -> void:
-	var nearby_cells = get_nearby_cells()
-	
-	if nearby_cells.size() != 0:
-		_sprite_animations.add_animation('burst', self.level, true, self.position)
-		for cell in nearby_cells:
-			var instance = Resources.debug_maggot.instance()
-			yield(minion_spawn_and_move(
-				instance,
-				position,
-				cell * grid_size
-				), 
-			"completed"
-			)
-		handle_death()
-	end_turn()
-
+	attack_range = 0
+	melee_damage = 0

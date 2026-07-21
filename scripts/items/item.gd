@@ -93,6 +93,9 @@ func get_visible_cells(center:Vector2, distance:int) -> Array:
 	return visible_cells
 	
 func remove_item() -> void:
+	var parent = self.get_parent()
+	if parent:
+		parent.remove_child(self)
 	queue_free()
 
 func set_level(level):

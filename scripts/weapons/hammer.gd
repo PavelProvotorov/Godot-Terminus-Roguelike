@@ -43,4 +43,5 @@ func stun_targets(targets:Array, cells:Array):
 			target.add_buff('stun', 2)
 	
 	for cell in cells:
-		_sprite_animations.add_animation('spark', self.level, true, cell)
+		if not self.level.is_tile_blocking(cell / grid_size):
+			_sprite_animations.add_animation('spark', self.level, true, cell)

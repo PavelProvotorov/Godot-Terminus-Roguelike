@@ -7,7 +7,7 @@ func use() -> bool:
 		
 	var buff_added = _owner.add_buff('regeneration', 2, true)
 	if buff_added:
-		_owner.end_turn()
 		remove_item()
+		_owner.end_turn()
 		return true
 	return false

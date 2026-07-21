@@ -5,6 +5,8 @@ onready var player:Player
 onready var root:Node2D = get_tree().get_first_node_in_group('ROOT')
 onready var depth:int = 0
 
+const GRID_SIZE = 8
+
 func _init():
 	pass
 

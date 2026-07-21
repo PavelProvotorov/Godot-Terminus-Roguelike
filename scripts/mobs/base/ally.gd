@@ -10,13 +10,9 @@ func _ready():
 	hostile_groups = ["ENEMY"]
 	set_random_frame()
 	behaviours = [
-		BEHAVIOUR_TYPE.MELEE,
-		BEHAVIOUR_TYPE.FOLLOW,
-		BEHAVIOUR_TYPE.MOVE,
-		BEHAVIOUR_TYPE.IDLE
+		MeleeBehaviour.new(self, {}),
+		FollowBehaviour.new(self, {
+			"follower": Global.player
+		}),
+		MoveBehaviour.new(self, {}),
 	]
-
-func follow_behaviour_config() -> Dictionary:
-	return {
-		"follower": Global.player
-	}

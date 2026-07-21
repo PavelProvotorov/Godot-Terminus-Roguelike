@@ -142,17 +142,18 @@ const default_weapons: Dictionary = {
 }
 
 const default_items: Dictionary = {
-#	"Bandage": 10,
-#	"Ammo": 50,
-#	"Visor": 5,
-#	"Grenade": 5,
-#	"FragGrenade": 5,
-#	"Medkit": 10,
-#	"Teleporter": 5,
-#	"ShieldGenerator": 5,
-#	"Adrenalin": 5,
+	"Bandage": 10,
+	"Ammo": 50,
+	"Visor": 5,
+	"Grenade": 5,
+	"FragGrenade": 5,
+	"Medkit": 10,
+	"Teleporter": 5,
+	"ShieldGenerator": 5,
+	"Adrenalin": 5,
 	"Steroids": 5,
-#	"ThunderFlash": 5,
+	"PetCapsule": 1,
+	"ThunderFlash": 5,
 }
 
 onready var level_configuration: Dictionary = {
@@ -203,10 +204,11 @@ onready var level_configuration: Dictionary = {
 	4: {
 		'scene': location_5,
 		'enemies': {
-			"Stalker": 25,
+			"Stalker": 15,
 			"Scout": 50,
 			"Templar": 80,
-			"Zealot": 100,
+			"Zealot": 80,
+			"Radiator": 25,
 		},
 		'items': default_items,
 		'weapons': default_weapons,

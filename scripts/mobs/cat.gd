@@ -2,21 +2,20 @@ extends Ally
 
 func _ready():
 	behaviours = [
-		BEHAVIOUR_TYPE.FLEE,
-		BEHAVIOUR_TYPE.MELEE,
-		BEHAVIOUR_TYPE.FOLLOW,
-		BEHAVIOUR_TYPE.MOVE,
-		BEHAVIOUR_TYPE.IDLE
+		FleeBehaviour.new(self, {
+			"health_threshold": 3,
+			"flee_when_close": false,
+			"skip_chance": 0,
+			"post_hook": funcref(self, "post_flee")
+		}),
+		MeleeBehaviour.new(self, {}),
+		FollowBehaviour.new(self, {
+			"follower": Global.player,
+		}),
+		MoveBehaviour.new(self, {}),
 	]
 	health = 10
 	melee_damage = 2
 
-func _post_flee_hook() -> void:
+func post_flee() -> void:
 	self.add_buff('regeneration', 3, true)
-
-func get_flee_behaviour_config() -> Dictionary:
-	return {
-		"health_threshold": 3,
-		"flee_when_close": false,
-		"skip_chance": 0,
-	}
