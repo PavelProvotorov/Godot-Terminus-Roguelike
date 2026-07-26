@@ -100,16 +100,8 @@ func process_behaviours() -> void:
 	
 func enemies_near_target() -> Array:
 	var target_pos = target.position
-	var directions:Array = [
-		target_pos + Vector2(0, -1) * grid_size, 
-		target_pos + Vector2(0, 1) * grid_size, 
-		target_pos + Vector2(-1, 0) * grid_size, 
-		target_pos + Vector2(1, 0) * grid_size, 
-		target_pos + Vector2(1, 1) * grid_size, 
-		target_pos + Vector2(1, -1) * grid_size, 
-		target_pos + Vector2(-1, +1) * grid_size, 
-		target_pos + Vector2(-1, -1) * grid_size
-	]
+	var directions = _utility.get_nearby_cells_8(target_pos)
+	
 	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
 	var enemies:Array = []
 	

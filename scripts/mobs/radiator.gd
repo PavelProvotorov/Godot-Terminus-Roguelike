@@ -22,17 +22,8 @@ func radiate():
 	if not _utility.get_chance(30):
 		return
 		
-	var nearby_cells = [
-		self.position,
-		Vector2(self.position.x, self.position.y - 8),
-		Vector2(self.position.x, self.position.y+8),
-		Vector2(self.position.x-8, self.position.y),
-		Vector2(self.position.x+8, self.position.y),
-		Vector2(self.position.x+8, self.position.y+8),
-		Vector2(self.position.x+8, self.position.y-8),
-		Vector2(self.position.x-8, self.position.y+8),
-		Vector2(self.position.x-8, self.position.y-8),
-	]
+	var nearby_cells = _utility.get_nearby_cells_8(self.position)
+	nearby_cells.append(self.position)
 		
 	var targets = get_reachable_targets(nearby_cells, self.position)
 	

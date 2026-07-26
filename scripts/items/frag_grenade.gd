@@ -15,17 +15,8 @@ func use() -> bool:
 	
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	var targets:Array = []
-	var impact_positions = [
-		impact_pos,
-		Vector2(impact_pos.x, impact_pos.y - 8),
-		Vector2(impact_pos.x, impact_pos.y+8),
-		Vector2(impact_pos.x-8, impact_pos.y),
-		Vector2(impact_pos.x+8, impact_pos.y),
-		Vector2(impact_pos.x+8, impact_pos.y+8),
-		Vector2(impact_pos.x+8, impact_pos.y-8),
-		Vector2(impact_pos.x-8, impact_pos.y+8),
-		Vector2(impact_pos.x-8, impact_pos.y-8),
-	]
+	var impact_positions = _utility.get_nearby_cells_8(impact_pos)
+	impact_positions.append(impact_pos)
 	
 	targets.append_array(get_reachable_targets(impact_positions, impact_pos))
 	

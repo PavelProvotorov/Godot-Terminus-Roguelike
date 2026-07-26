@@ -4,33 +4,14 @@ func _init():
 	damage = 3
 
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
-	var targets:Array = []
-	var nearby_targets:Array = []
-	var nearby_cells = [
-		Vector2(origin_pos.x, origin_pos.y - 8),
-		Vector2(origin_pos.x, origin_pos.y+8),
-		Vector2(origin_pos.x-8, origin_pos.y),
-		Vector2(origin_pos.x+8, origin_pos.y),
-		Vector2(origin_pos.x+8, origin_pos.y+8),
-		Vector2(origin_pos.x+8, origin_pos.y-8),
-		Vector2(origin_pos.x-8, origin_pos.y+8),
-		Vector2(origin_pos.x-8, origin_pos.y-8),
-	]
-	targets.append_array(
-		get_reachable_targets([impact_pos], impact_pos)
+
+	var targets:Array = get_reachable_targets([impact_pos], impact_pos)
+	var nearby_cells = _utility.get_nearby_cells_8(origin_pos)
+	var nearby_targets:Array = get_reachable_targets(
+		nearby_cells, 
+		impact_pos
 	)
-	nearby_targets.append_array(
-		get_reachable_targets([
-			Vector2(origin_pos.x, origin_pos.y - 8),
-			Vector2(origin_pos.x, origin_pos.y+8),
-			Vector2(origin_pos.x-8, origin_pos.y),
-			Vector2(origin_pos.x+8, origin_pos.y),
-			Vector2(origin_pos.x+8, origin_pos.y+8),
-			Vector2(origin_pos.x+8, origin_pos.y-8),
-			Vector2(origin_pos.x-8, origin_pos.y+8),
-			Vector2(origin_pos.x-8, origin_pos.y-8),
-		], impact_pos)
-	)
+	
 	stun_targets(nearby_targets, nearby_cells)
 	return targets
 	

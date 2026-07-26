@@ -23,14 +23,14 @@ const DIRECTIONS = [
 const grid_size:int = 8
 var attack_range:int = 1
 var melee_damage:int = 1 setget , get_melee_damage
-var ranged_damage:int = 1
+var ranged_damage:int = 1 setget , get_ranged_damage
 var min_visibility:int = 1
 var max_health:int = 100
 var max_ammo:int = 100
-var visibility:int = 4 setget set_visibility, get_visibility
+var visibility:int = 4 setget , get_visibility
 var health:int = 1 setget set_health
 var turn_count:int = 0
-var speed:int = 1
+var speed:int = 1 setget , get_speed
 var ammo:int = 0 setget set_ammo
 
 func _ready():
@@ -143,7 +143,7 @@ func end_turn() -> bool:
 	print("USED TURN: ", self)
 	turn_count += 1
 
-	if  turn_count < _buff_manager.get_modified_speed(speed):
+	if  turn_count < self.speed:
 		print("EXTRA TURN: ", self)
 		_on_start_turn()
 		return false
@@ -182,12 +182,10 @@ func set_level(level):
 	
 func _on_buffs_changed(buffs:Array) -> void:
 	pass
-	
-func set_visibility(value:int) -> void:
-	visibility = value
 
 func get_visibility():
-	return max(min_visibility, visibility)
+	var modified_visibility = _buff_manager.get_modified_visibility(visibility)
+	return max(min_visibility, modified_visibility)
 
 func get_level():
 	return Global.get_level()
@@ -203,6 +201,12 @@ func is_entity_hostile(entity:Entity2D) -> bool:
 		if entity.is_in_group(group):
 			return true
 	return false
+	
+func get_speed() -> int:
+	return _buff_manager.get_modified_speed(speed)
+	
+func get_ranged_damage() -> int:
+	return _buff_manager.get_modified_ranged_damage(ranged_damage)
 	
 func get_melee_damage() -> int:
 	return _buff_manager.get_modified_melee_damage(melee_damage)

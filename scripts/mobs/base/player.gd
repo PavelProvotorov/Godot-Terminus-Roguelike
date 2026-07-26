@@ -29,7 +29,7 @@ func _ready():
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
-		add_buff('regeneration', 2, true)
+		add_buff('regeneration', 50, true)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
 	pass
 
@@ -310,7 +310,7 @@ func _on_buffs_changed(buffs:Array) -> void:
 	Events.emit_signal("player_buffs_changed", buffs)
 
 func _on_start_turn() -> void:
-	if _buff_manager.get_modified_speed(speed) < 1:
+	if self.speed < 1:
 		end_turn()
 		return
 	_state_machine.change_state('IDLE')
