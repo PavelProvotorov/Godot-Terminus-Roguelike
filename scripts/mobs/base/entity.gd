@@ -13,6 +13,8 @@ onready var _raycast = $RayCast2D
 onready var previous_position = position
 onready var hostile_groups = []
 
+signal start_turn
+
 const DIRECTIONS = [
 	Vector2.UP,
 	Vector2.DOWN,
@@ -28,18 +30,19 @@ var min_visibility:int = 1
 var max_health:int = 100
 var max_ammo:int = 100
 var visibility:int = 4 setget , get_visibility
-var health:int = 1 setget set_health
+var health:int = 1 setget set_health, get_health
 var turn_count:int = 0
 var speed:int = 1 setget , get_speed
 var ammo:int = 0 setget set_ammo
 
 func _ready():
+	connect("start_turn", self, "_on_start_turn")
 	_buff_manager.init(funcref(self, "_on_buffs_changed"))
 	add_to_group("ENTITY")
 	
 func get_nearby_cells() -> Array:
 	var nearby_cells:Array = []
-	var free_cells = self.level.get_free_cells() 
+	var free_cells = self.level.get_entity_free_cells() 
 	
 	for direction in DIRECTIONS:
 		var cell = (position / grid_size) + direction
@@ -143,7 +146,7 @@ func end_turn() -> bool:
 	print("USED TURN: ", self)
 	turn_count += 1
 
-	if  turn_count < self.speed:
+	if turn_count < self.speed:
 		print("EXTRA TURN: ", self)
 		_on_start_turn()
 		return false
@@ -204,6 +207,9 @@ func is_entity_hostile(entity:Entity2D) -> bool:
 	
 func get_speed() -> int:
 	return _buff_manager.get_modified_speed(speed)
+	
+func get_health() -> int:
+	return health
 	
 func get_ranged_damage() -> int:
 	return _buff_manager.get_modified_ranged_damage(ranged_damage)

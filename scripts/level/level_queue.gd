@@ -16,7 +16,7 @@ func process_queue() -> void:
 	var next_node = queue[0]
 	if self.has_node(str(next_node)):
 		print("CURRENTLY MOVING: ", next_node)
-		next_node._on_start_turn()
+		next_node.emit_signal("start_turn")
 	else:
 		print("QUEUE NODE DOES NOT EXIST: ", next_node)
 		queue.erase(next_node)

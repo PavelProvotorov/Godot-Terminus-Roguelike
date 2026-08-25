@@ -18,7 +18,7 @@ func check() -> bool:
 	return false
 
 func execute() -> void:
-	var pre_hook = _utility.call_lifecycle_hook(_config.get("pre_hook", null))
+	var pre_hook = _utility.call_funcref(_config.get("pre_hook", null))
 	if pre_hook is GDScriptFunctionState:
 		yield(pre_hook, "completed")
 	
@@ -26,7 +26,7 @@ func execute() -> void:
 	if handler is GDScriptFunctionState:
 		yield(handler, "completed")
 		
-	var post_hook = _utility.call_lifecycle_hook(_config.get("post_hook", null))
+	var post_hook = _utility.call_funcref(_config.get("post_hook", null))
 	if post_hook is GDScriptFunctionState: 
 		yield(post_hook, "completed")
 	

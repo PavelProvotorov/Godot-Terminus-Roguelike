@@ -21,11 +21,15 @@ func change_state(state_name: String, data:Dictionary = {}) -> void:
 		print("CHANGED STATE TO: " + upper_state_name)
 		current_state = STATE.get(upper_state_name)
 		
-		current_state.enable_state(data)
+		var check = current_state.check(data)
+		if check == true:
+			current_state.enable_state(data)
+		else:
+			change_state("IDLE", data)
 		
 	else:
 		push_error("State does not exist in state machine configuration: " + upper_state_name)
-		change_state(STATE.IDLE, data)
+		change_state("IDLE", data)
 
 func is_current_state(state: State) -> bool:
 	return current_state == state

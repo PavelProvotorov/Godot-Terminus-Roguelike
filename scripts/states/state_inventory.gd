@@ -22,12 +22,7 @@ func _input(event):
 	if Input.is_action_just_pressed("ui_skip"):
 		state_active()
 		
-		if _player.is_position_occupied():
-			_inventory.reset_state()
-			state_idle()
-			return
-		
-		var action = _inventory.drop_selected_item(_player.position)
+		var action = _inventory.drop_selected_item(_player.position / GRID_SIZE)
 		_inventory.reset_state()
 		
 		if action:
@@ -38,12 +33,14 @@ func _input(event):
 	if Input.is_action_just_pressed("ui_inventory"):
 		_inventory.reset_state()
 		state_idle()
-			
-func _on_state_enabled(data: Dictionary) -> void:
+
+func check(data:Dictionary) -> bool:
 	if _inventory.is_inventory_empty():
 		state_idle()
-		return
+		return false
+	return true
 	
+func _on_state_enabled(data: Dictionary) -> void:
 	_inventory.reset_state()
 	_inventory.switch_selected_item(0)
 	_player.set_inventory_animation()

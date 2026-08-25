@@ -27,7 +27,7 @@ func post_ranged() -> void:
 	self.update_position(target_pos, false)
 
 func post_melee() -> void:
-	var cells:Array = self.level.get_free_cells()
+	var cells:Array = self.level.get_entity_free_cells()
 	var new_pos = cells.pick_random() * 8
 	
 	_sprite_animations.add_animation('teleport', self.level, true, target.position)

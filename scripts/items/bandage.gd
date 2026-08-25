@@ -1,13 +1,17 @@
-extends Consumable
+extends Item
 
-func use() -> bool:
+func _ready():
+	category = CATEGORY.INSTANT
+	action = ConsumeItem.new(self, {
+		"on_check": funcref(self, "on_check"),
+		"on_use": funcref(self, "on_use"),
+		"use_turn": true,
+	})
 	
-	if _owner.is_max_health():
+func on_check() -> bool:
+	if _entity.is_max_health():
 		return false
-		
-	var buff_added = _owner.add_buff('regeneration', 2, true)
-	if buff_added:
-		remove_item()
-		_owner.end_turn()
-		return true
-	return false
+	return _entity.add_buff('regeneration', 2, true)
+
+func on_use() -> void:
+	pass

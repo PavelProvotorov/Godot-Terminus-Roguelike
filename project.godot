@@ -59,10 +59,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/buffs/buff_stun.gd"
 }, {
-"base": "Item",
-"class": "Consumable",
+"base": "ItemAction",
+"class": "ConsumeItem",
 "language": "GDScript",
-"path": "res://scripts/items/consumable.gd"
+"path": "res://scripts/items/actions/consume_action.gd"
 }, {
 "base": "Node",
 "class": "Decorator2D",
@@ -109,6 +109,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/items/item.gd"
 }, {
+"base": "Node",
+"class": "ItemAction",
+"language": "GDScript",
+"path": "res://scripts/items/actions/item_action.gd"
+}, {
 "base": "Node2D",
 "class": "Level",
 "language": "GDScript",
@@ -129,10 +134,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mobs/behaviors/melee_behaviour.gd"
 }, {
-"base": "Weapon",
-"class": "MeleeWeapon",
+"base": "ItemAction",
+"class": "MeleeItem",
 "language": "GDScript",
-"path": "res://scripts/weapons/melee_weapon.gd"
+"path": "res://scripts/items/actions/melee_action.gd"
 }, {
 "base": "BaseBehaviour",
 "class": "MoveBehaviour",
@@ -169,11 +174,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mobs/behaviors/ranged_behaviour.gd"
 }, {
-"base": "Weapon",
-"class": "RangedWeapon",
-"language": "GDScript",
-"path": "res://scripts/weapons/ranged_weapon.gd"
-}, {
 "base": "Node",
 "class": "Sfx",
 "language": "GDScript",
@@ -183,6 +183,11 @@ _global_script_classes=[ {
 "class": "Sfx2D",
 "language": "GDScript",
 "path": "res://scripts/sfx_2d.gd"
+}, {
+"base": "ItemAction",
+"class": "ShootItem",
+"language": "GDScript",
+"path": "res://scripts/items/actions/shoot_action.gd"
 }, {
 "base": "BaseBehaviour",
 "class": "SpawnBehaviour",
@@ -214,6 +219,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/text_animations.gd"
 }, {
+"base": "ItemAction",
+"class": "ThrowItem",
+"language": "GDScript",
+"path": "res://scripts/items/actions/throw_action.gd"
+}, {
 "base": "Node",
 "class": "TweenAnimation2D",
 "language": "GDScript",
@@ -228,11 +238,6 @@ _global_script_classes=[ {
 "class": "WanderBehaviour",
 "language": "GDScript",
 "path": "res://scripts/mobs/behaviors/wander_behaviour.gd"
-}, {
-"base": "Item",
-"class": "Weapon",
-"language": "GDScript",
-"path": "res://scripts/weapons/weapon.gd"
 } ]
 _global_script_class_icons={
 "Ally": "",
@@ -245,7 +250,7 @@ _global_script_class_icons={
 "BuffManager": "",
 "BuffShield": "",
 "BuffStun": "",
-"Consumable": "",
+"ConsumeItem": "",
 "Decorator2D": "",
 "Enemy2D": "",
 "Entity2D": "",
@@ -255,11 +260,12 @@ _global_script_class_icons={
 "Generator2D": "",
 "Inventory": "",
 "Item": "",
+"ItemAction": "",
 "Level": "",
 "LevelFurnisher": "",
 "LevelShadowcasting": "",
 "MeleeBehaviour": "",
-"MeleeWeapon": "",
+"MeleeItem": "",
 "MoveBehaviour": "",
 "OpenDoorBehaviour": "",
 "PathFinding2D": "",
@@ -267,19 +273,19 @@ _global_script_class_icons={
 "Queue": "",
 "RallyBehaviour": "",
 "RangedBehaviour": "",
-"RangedWeapon": "",
 "Sfx": "",
 "Sfx2D": "",
+"ShootItem": "",
 "SpawnBehaviour": "",
 "SpriteAnimations2D": "",
 "State": "",
 "StateMachine": "",
 "SymmetricShadowcasting2D": "",
 "TextAnimations2D": "",
+"ThrowItem": "",
 "TweenAnimation2D": "",
 "Utility": "",
-"WanderBehaviour": "",
-"Weapon": ""
+"WanderBehaviour": ""
 }
 
 [application]

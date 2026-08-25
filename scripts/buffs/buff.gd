@@ -27,7 +27,7 @@ func tick():
 	duration -= 1
 	
 #	Currently does not work with coroutines
-	var hook = _utility.call_lifecycle_hook(LIFECYCLE.ON_TICK)
+	var hook = _utility.call_funcref(LIFECYCLE.ON_TICK)
 	
 	if duration <= 0:
 		emit_signal("buff_expired", self)

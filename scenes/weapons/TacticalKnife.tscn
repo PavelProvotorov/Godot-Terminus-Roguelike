@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://resources/shaders/shader_hit_flash.tres" type="Shader" id=1]
-[ext_resource path="res://scripts/weapons/tactical_knife.gd" type="Script" id=2]
+[ext_resource path="res://scripts/items/weapons/melee/tactical_knife.gd" type="Script" id=2]
 [ext_resource path="res://assets/weapons/tactical_knife.png" type="Texture" id=3]
 
 [sub_resource type="ShaderMaterial" id=2]

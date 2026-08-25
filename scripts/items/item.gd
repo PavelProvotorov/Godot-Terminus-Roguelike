@@ -7,63 +7,46 @@ onready var _sprite_animations = SpriteAnimations2D.new()
 onready var _utility:Utility = Utility.new()
 onready var _static_body = $StaticBody2D
 const MAX_ITEM_VISIBILITY:int = 5
-var _storage:Control
-var _owner:Entity2D
+var _entity:Entity2D
+
+enum CATEGORY {
+	INSTANT,
+	CONSUMABLE,
+	MELEE_WEAPON,
+	RANGED_WEAPON
+}
 
 var item_name:String = ""
 var description:String = "[color=#%s]<Error>:[/color] Missing entry for item;" %Color.webgray.to_html()
-var throw_damage:int = 0
-var throw_range:int = 0
 var visibility:int = 10
-var grid_size:int = 8
+var grid_size:int = Global.GRID_SIZE
+var actions:Dictionary = {}
+var category:int = CATEGORY.CONSUMABLE
+var action
 
 func _ready():
 	add_to_group('ITEM')
 	
-func use() -> bool:
-	return false
+func use() -> void:
+	action.execute()
 	
-func _on_item_thrown(success:bool) -> void:
-	if success:
-		remove_item()
-	else:
-		_audio.play_sound(_owner.position, Resources.SOUNDS.fail)
+func usable() -> bool:
+	if action == null:
+		printerr("ACTION NOT DEFINED FOR ITEM: ", self)
+		return false
+	return action.check()
 	
-func set_item_owner(owner:Entity2D) -> void:
-	if owner is Entity2D:
-		_owner = owner
-	else:
-		printerr("Provided item owner is not an entity: ", owner)
-		
-func set_item_consumable() -> void:
-	add_to_group('CONSUMABLE')
-	_static_body.add_to_group('CONSUMABLE')
-
-func set_item_instant() -> void:
-	add_to_group('INSTANT')
-	_static_body.add_to_group('INSTANT')
-
-func add_selected_animation() -> void:
-	_sprite_animations.add_animation("selected", self)
+func in_category(category_number:int) -> bool:
+	return category == category_number
 	
-func remove_selected_animation() -> void:
-	_sprite_animations.remove_animation("selected", self)
+func pickup(entity:Entity2D) -> void:
+	self._entity = entity
+	
+func drop() -> void:
+	self._entity = null
 	
 func get_description() -> String:
 	return description
-	
-func get_throw_range() -> int:
-	return throw_range
-
-func get_throw_damage(distance:int, offset:int) -> int:
-	return throw_damage
-	
-func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
-	var targets:Array = []
-	targets.append_array(
-		get_reachable_targets([impact_pos], impact_pos)
-	)
-	return targets
 	
 func get_reachable_targets(positions:Array, center:Vector2) -> Array:
 	var shadowcast = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
@@ -103,3 +86,23 @@ func set_level(level):
 
 func get_level():
 	return Global.get_level()
+
+#func use_action(acc:String) -> void:
+#	var action = actions.get(acc, null)
+#	action.execute()
+#
+#func set_actions(acc:Array) -> void:
+#	for action in acc:
+#		actions[action.get_key()] = action
+#
+#func can_action(acc:String) -> bool:
+#	var action = actions.get(acc, null)
+#	if action:
+#		return action.check()
+#	return false
+#
+#func has_action(acc:String) -> bool:
+#	return actions.has(acc)
+#
+#func get_actions() -> Array:
+#	return actions.keys()

@@ -2,13 +2,11 @@ extends Entity2D
 class_name EntityAI
 
 onready var behaviours: Array = []
-onready var nearby_free_cells: Array = []
 onready var target_visible:bool = false
 onready var target = null
 onready var path: Array = []
 onready var _sprite = $AnimatedSprite
 onready var _utility:Utility = Utility.new()
-onready var _shadowcaster:BaseShadowcaster = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
 
 onready var LIFECYCLE = {
 	TURN_STARTED = funcref(self, "_turn_started_hook")
@@ -35,7 +33,7 @@ func _on_start_turn() -> void:
 	if _buff_manager.get_modified_speed(self.speed) <= 0:
 		return end_turn()
 
-	var hook = _utility.call_lifecycle_hook(LIFECYCLE.TURN_STARTED)
+	var hook = _utility.call_funcref(LIFECYCLE.TURN_STARTED)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 
 	process_behaviours()
@@ -69,7 +67,8 @@ func check_target_visibility() -> void:
 	if target == null:
 		return
 	
-	var visible_cells = _shadowcaster.cast(self.position / grid_size, visibility)
+	var shadowcaster:BaseShadowcaster = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
+	var visible_cells = shadowcaster.cast(self.position / grid_size, visibility)
 	target_visible = visible_cells.has(target.position / grid_size)
 	
 func build_path_to_target() -> void:
@@ -85,7 +84,6 @@ func build_path_to_target() -> void:
 func process_behaviours() -> void:
 	for i in behaviours:
 		var behaviour = i 
-#		as BaseBehaviour
 		
 		assert(behaviour != null, " %s, is not valid behaviour" % behaviour)
 		
@@ -156,19 +154,6 @@ func target_is_blocked(self_pos: Vector2, target_pos: Vector2) -> bool:
 
 func is_active() -> bool:
 	return is_in_group('ACTIVE')
-	
-func is_wandering() -> bool:
-	return is_in_group('WANDERING')
-
-func set_wandering(add:bool) -> void:
-	var group_name = 'WANDERING'
-	if add:
-		add_to_group(group_name)
-		return
-	
-	if get_groups().has(group_name):
-		remove_from_group(group_name)
-		return
 
 func set_active(add:bool) -> void:
 	var group_name = 'ACTIVE'
@@ -198,8 +183,8 @@ func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
 	self.level.set_pathfinding_points([new_pos], [prev_pos])
 	
 func get_reachable_targets(positions:Array, center:Vector2) -> Array:
-	var shadowcast = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
-	var reachable_cells = shadowcast.cast(center / grid_size, 10)
+	var shadowcaster:BaseShadowcaster = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
+	var reachable_cells = shadowcaster.cast(center / grid_size, 10)
 	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
 	var targets:Array = []
 	

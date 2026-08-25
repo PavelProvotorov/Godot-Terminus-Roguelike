@@ -6,7 +6,7 @@ func _init():
 func _input(event):
 	if Input.is_action_just_pressed("ui_skip"):
 		state_active()
-		_player.handle_idle({})
+		_player.end_turn()
 		
 	if Input.is_action_just_pressed("ui_up"):
 		state_active()
@@ -36,7 +36,8 @@ func _input(event):
 		if !action: state_idle()
 		
 	if Input.is_action_just_pressed("ui_space"):
-		state_ranged()
+		var ranged_weapon:Item = _player._inventory.get_ranged_weapon()
+		if ranged_weapon.usable(): ranged_weapon.use()
 		
 	if Input.is_action_just_pressed("ui_inventory"):
 		state_inventory()
@@ -44,3 +45,6 @@ func _input(event):
 func _on_state_enabled(data: Dictionary) -> void:
 	get_tree().call_group("ENEMY", "remove_target_animation")
 	_player.set_idle_animation()
+	
+func _on_state_disabled(data: Dictionary) -> void:
+	pass

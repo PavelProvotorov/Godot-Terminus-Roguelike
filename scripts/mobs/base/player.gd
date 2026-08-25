@@ -8,7 +8,9 @@ onready var _interact_raycast = $Pickup
 onready var _state_machine = $States
 onready var _camera = $Camera2D
 
-signal throw_successful
+signal throw_successful(success, impact_position)
+signal melee_successful(success, collider)
+signal shoot_successful(success, direction)
 
 func _init():
 	Events.connect("level_generation_complete", self, "_on_level_generation_complete")
@@ -40,10 +42,10 @@ func set_camera_limits() -> void:
 	_camera.limit_top = ((rect.position.y) * grid_size)
 	_camera.limit_bottom = ((rect.end.y) * grid_size)
 	
-func mark_targets_in_range(check_range:int) -> bool:
+func get_targets_in_range(check_range:int) -> Array:
 	
 	var visible_range = min(self.visibility, check_range)
-	var target_marked:bool = false
+	var targets:Array = []
 	
 	for direction in DIRECTIONS:
 		_raycast.cast_to = (direction * visible_range) * grid_size
@@ -51,71 +53,27 @@ func mark_targets_in_range(check_range:int) -> bool:
 		
 		if _raycast.is_colliding():
 			var collider = _raycast.get_collider()
-			if collider.is_in_group("ENEMY"):
-				collider.add_target_animation()
-				target_marked = true
-	return target_marked
-
-func throw_in_direction(direction:Vector2, item:Item) -> bool:
+			if collider is Enemy2D:
+				targets.append(collider)
+	return targets
 	
-	var throw_range = min(self.visibility, item.get_throw_range())
+func cast_in_direction(direction:Vector2, cast_range:int):
+	var visible_range = min(self.visibility, cast_range)
 	
-	_raycast.cast_to = (direction * throw_range)
+	_raycast.cast_to = (direction * visible_range)
 	_raycast.force_raycast_update()
 	
 	if _raycast.is_colliding():
-		var collider = _raycast.get_collider()
-		
-		if not collider.is_in_group("ENEMY"):
-			return false
-			
-		var targets = item.get_targets(
-			self.position, collider.position
-		)
-			
-		handle_throw_attack(
-			self.position, 
-			(self.position - (-direction)),
-			targets,
-			collider.position,
-			item
-		)
-		return true
-	return false
-	
-func shoot_in_direction(direction: Vector2) -> bool:
-	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
-	var shot_range = min(self.visibility, ranged_weapon.get_shot_range())
-	var weapon_shot:bool = false
-	
-	for idx in ranged_weapon.get_shot_count():
+		return _raycast.get_collider()
+	return null
 
-		if is_ammo_depleted():
-			break
-		
-		_raycast.cast_to = (direction * shot_range)
-		_raycast.force_raycast_update()
-		
-		if _raycast.is_colliding():
-			var collider = _raycast.get_collider()
-			
-			if not collider.is_in_group("ENEMY"):
-				break
-			
-			var targets  = ranged_weapon.get_targets(
-				self.position,
-				collider.position
-			)
-			self.ammo = ranged_weapon.get_ammo_consumption(self.ammo)
-			yield(handle_ranged_attack(position, (position - (-direction)), targets, collider.position), 'completed')
-			weapon_shot = true
-			
-		else: 
-			break
-			
-	if weapon_shot:
-		end_turn()
+func check_throw_direction(direction:Vector2, throw_range:int) -> bool:
+	var collider = cast_in_direction(direction, throw_range)
+	
+	if collider and collider is Enemy2D:
+		emit_signal("throw_successful", true, collider)
 		return true
+	emit_signal("throw_successful", false, null)
 	return false
 
 func check_move_direction(pos: Vector2) -> bool:
@@ -127,9 +85,8 @@ func check_move_direction(pos: Vector2) -> bool:
 		
 		if collider.is_in_group("LEVEL"):
 			return process_tilemap_collision(self.position + pos)
-			
-		elif collider.is_in_group("ALLY"):
-			
+		
+		if collider is Ally:
 			var player_pos = self.position
 			var ally_pos = collider.position
 			
@@ -140,15 +97,12 @@ func check_move_direction(pos: Vector2) -> bool:
 			collider.update_position(player_pos, false)
 
 			end_turn()
-			
 			return true
 			
-		elif collider.is_in_group("ENEMY"):
-			handle_melee_attack({
-				"start": self.position, 
-				"finish": collider.position,
-				"target": collider
-			})
+		if collider is Enemy2D:
+			var melee_weapon:Item = _inventory.get_melee_weapon()
+			if melee_weapon.usable(): melee_weapon.use()
+			emit_signal("melee_successful", true, collider)
 			return true
 	else:
 		handle_movement({
@@ -182,54 +136,12 @@ func process_tilemap_collision(pos:Vector2) -> bool:
 		_:
 			return false
 
-func handle_idle(data:Dictionary) -> void:
-	end_turn()
-
 func handle_movement(data:Dictionary) -> void:
 	var start = data.start
 	var finish = data.finish
 	_audio.play_sound(self.position, Resources.SOUNDS.move)
 	yield(play_move_animation(start, finish), 'completed')
 	update_position(finish)
-	end_turn()
-
-func handle_melee_attack(data:Dictionary) -> void:
-	var melee_weapon:Weapon = _inventory.get_melee_weapon()
-	var start = data.start
-	var finish = data.finish
-	var target = data.target
-	var targets = melee_weapon.get_targets(
-		self.position, target.position
-	)
-	for entity in targets:
-		entity.receive_damage(_buff_manager.get_modified_melee_damage(melee_weapon.get_damage(0, 0)))
-	yield(play_melee_animation(start, finish), 'completed')
-	end_turn()
-
-func handle_ranged_attack(start:Vector2, finish:Vector2, targets:Array, impact_pos:Vector2) -> GDScriptFunctionState:
-	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
-	
-	for target in targets:
-		_audio.play_sound(self.position, ranged_weapon.sfx())
-		var offset = target.position.distance_to(impact_pos) / grid_size
-		var distance = self.position.distance_to(impact_pos) / grid_size
-		
-		if target is Entity2D: 
-			target.receive_damage(ranged_weapon.get_damage(distance, offset))
-			
-	return yield(play_ranged_animation(start, finish), 'completed')
-
-func handle_throw_attack(start:Vector2, finish:Vector2, targets:Array, impact_pos:Vector2, item:Item) -> void:
-	
-	for target in targets:
-		
-		var offset = target.position.distance_to(impact_pos) / grid_size
-		var distance = self.position.distance_to(impact_pos) / grid_size
-		
-		if target is Entity2D:
-			target.receive_damage(item.get_throw_damage(distance, offset))
-			
-	yield(play_ranged_animation(start, finish), 'completed')
 	end_turn()
 	
 func handle_interaction() -> bool:
@@ -248,15 +160,9 @@ func handle_interaction() -> bool:
 		
 		if not parent is Item:
 			return false
-
-		if parent is Consumable:
-			if _inventory.pickup_item_and_use(collider.get_parent(), self):
-				return true
-			return false
 			
 		if parent is Item:
-			if _inventory.pickup_item(collider.get_parent(), self):
-				end_turn()
+			if _inventory.pickup_item(parent, self):
 				return true
 			return false
 				
@@ -267,16 +173,12 @@ func is_position_occupied() -> bool:
 	_interact_raycast.force_raycast_update()
 	return _interact_raycast.is_colliding()
 	
-func throw_state_bind(caller:Node, callback:String, data:Dictionary) -> void:
-	connect('throw_successful', caller, callback, [], CONNECT_ONESHOT)
-	_state_machine.change_state('THROW', data)
-	
-func throw_state_notify(success:bool) -> void:
-	emit_signal("throw_successful", success)
-	
-func get_shot_range() -> int:
-	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
-	return ranged_weapon.get_shot_range()
+func state_bind(state:String, caller:Node, callback:String, data:Dictionary) -> void:
+	if state == "THROW":
+		connect('throw_successful', caller, callback, [], CONNECT_ONESHOT)
+	if state == "RANGED":
+		connect('shoot_successful', caller, callback, [], CONNECT_ONESHOT)
+	_state_machine.change_state(state, data)
 
 func set_ammo(value:int) -> void:
 	ammo = value
@@ -287,14 +189,7 @@ func set_health(value:int) -> void:
 	Events.emit_signal("player_health_changed", value)
 	
 func is_ammo_depleted() -> bool:
-	if self.ammo == 0:
-		return true
-		
-	var ranged_weapon:Weapon = _inventory.get_ranged_weapon()
-	if ranged_weapon.get_ammo_consumption(self.ammo) < 0:
-		return true
-	
-	return false
+	return self.ammo == 0
 
 func _on_level_generation_complete(level:Level) -> void:
 	self.position = level.get_entrance()

@@ -23,6 +23,9 @@ func enable_state(data: Dictionary) -> void:
 func disable_state(data: Dictionary) -> void:
 	self.set_process_input(false)
 	_on_state_disabled(data)
+	
+func check(data: Dictionary) -> bool:
+	return true
 
 func _on_state_enabled(data: Dictionary) -> void:
 	pass

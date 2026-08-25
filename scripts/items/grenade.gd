@@ -1,28 +1,23 @@
 extends Item
 
-func _init():
-	throw_range = 3
-	throw_damage = 5
+const damage = 5
+const throw_range = 3
 
 func _ready():
 	description = "<Grenade>: A standard combat explosive used to deliver high damage in close range;"
-
+	action = ThrowItem.new(self, {
+			"on_use": funcref(self, "on_use"),
+			"get_targets": funcref(self, "get_targets"),
+			"get_damage": funcref(self, "get_damage"),
+			"sfx": Resources.SOUNDS.explosion_0,
+			"range": throw_range,
+		})
+		
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
-	var targets:Array = []
-	var impact_positions = [
-		impact_pos,
-	]
-	targets.append_array(get_reachable_targets(impact_positions, impact_pos))
+	return get_reachable_targets([impact_pos], impact_pos)
 	
+func get_damage(distance:int, offset:int) -> int:
+	return damage
+
+func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
 	_sprite_animations.add_animation('explosion', self.level, true, impact_pos)
-	
-	_audio.play_sound(impact_pos, Resources.SOUNDS.explosion_0)
-	return targets
-
-func use() -> bool:
-	_owner.throw_state_bind(self, '_on_item_thrown', {
-		'throw_item': self
-	})
-	return true
-
-

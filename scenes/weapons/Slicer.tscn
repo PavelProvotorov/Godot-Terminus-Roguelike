@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/shaders/shader_hit_flash.tres" type="Shader" id=1]
 [ext_resource path="res://assets/weapons/slicer.png" type="Texture" id=2]
-[ext_resource path="res://scripts/weapons/slicer.gd" type="Script" id=3]
+[ext_resource path="res://scripts/items/weapons/melee/slicer.gd" type="Script" id=3]
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true

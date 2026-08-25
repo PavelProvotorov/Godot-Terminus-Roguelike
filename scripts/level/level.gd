@@ -197,7 +197,7 @@ func app_weapons(weapon_list: Dictionary, min_count:int, max_count:int, free_cel
 		if get_spawn_chance(weapon_list.get(weapon)):
 			
 			var weapon_res = load("res://scenes/weapons/%s.tscn" % weapon)
-			var weapon_instance:Weapon = weapon_res.instance()
+			var weapon_instance:Item = weapon_res.instance()
 			
 			spawn_item(cell, weapon_instance)
 			free_cells.erase(cell)
@@ -219,7 +219,7 @@ func spawn_item(pos:Vector2, item:Control) -> void:
 func get_floor_cells() -> Array:
 	return _tilemap_logic.get_used_cells_by_id(TILES.FLOOR)
 	
-func get_free_cells() -> Array:
+func get_entity_free_cells() -> Array:
 	var free_cells = []
 	free_cells.append_array(_tilemap_logic.get_used_cells_by_id(TILES.FLOOR))
 	free_cells.append_array(_tilemap_logic.get_used_cells_by_id(TILES.ENTRANCE))
@@ -229,12 +229,21 @@ func get_free_cells() -> Array:
 	for entity in entities:
 		entities_positions.append(entity.position / 8)
 	return get_array_difference(free_cells, entities_positions)
+	
+func get_item_free_cells() -> Array:
+	var free_cells = []
+	free_cells.append_array(_tilemap_logic.get_used_cells_by_id(TILES.FLOOR))
+	var items = get_tree().get_nodes_in_group("ITEM")
+	var item_positions = []
+	for item in items:
+		item_positions.append(item.rect_position / 8)
+	return get_array_difference(free_cells, item_positions)
 
 func get_door_cells() -> Array:
 	return _tilemap_logic.get_used_cells_by_id(TILES.DOOR)
 	
 func get_hidden_free_cells() -> Array:
-	var free_cells:Array = get_free_cells()
+	var free_cells:Array = get_entity_free_cells()
 	var hidden_cells:Array = []
 	
 	for cell in free_cells:

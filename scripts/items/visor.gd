@@ -1,12 +1,15 @@
 extends Item
 
-func _init():
+func _ready():
 	description = "<Visor>: High-tech visor which enhances your visibility in the dark;"
+	action = ConsumeItem.new(self, {
+		"on_check": funcref(self, "on_check"),
+		"on_use": funcref(self, "on_use"),
+		"use_turn": true,
+	})
+	
+func on_check() -> bool:
+	return _entity.add_buff('vision', 60, true)
 
-func use() -> bool:
-	var buff_added = _owner.add_buff('vision', 60, true)
-	if buff_added:
-		remove_item()
-		_owner.end_turn()
-		return true
-	return false
+func on_use() -> void:
+	pass

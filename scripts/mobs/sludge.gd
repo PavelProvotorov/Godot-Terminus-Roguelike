@@ -31,7 +31,6 @@ func post_move() -> void:
 		spawn_count += 1
 		var cell = nearby_cells.pick_random()
 		var instance = Resources.debug_goo.instance()
-		print("SPAWN GOO - START: ", self)
 		yield(minion_spawn_and_move(
 			instance,
 			position,
@@ -39,7 +38,6 @@ func post_move() -> void:
 			), 
 		"completed"
 		)
-		print("SPAWN GOO - END: ", self)
 
 func post_flee() -> void:
 	self.add_buff('regeneration', 3, true)
