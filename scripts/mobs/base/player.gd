@@ -228,9 +228,9 @@ func get_visibility():
 	var modified_visibility = min(_buff_manager.get_modified_visibility(visibility), light_level)
 	return max(min_visibility, modified_visibility)
 	
-func receive_damage(damage:int, true_damage:bool = false) -> void:
+func receive_damage(damage:int, true_damage:bool = false) -> int:
 	_audio.play_sound(self.position, Resources.SOUNDS.hit_0)
-	.receive_damage(damage, true_damage)
+	return .receive_damage(damage, true_damage)
 	
 func update_position(pos:Vector2, free_previous:bool = true) -> void:
 	.update_position(pos, free_previous)

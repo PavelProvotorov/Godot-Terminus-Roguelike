@@ -39,11 +39,14 @@ func _callback(success:bool, collider:Entity2D) -> void:
 			target.position.distance_to(impact_pos) / 8,
 		])
 		_audio.play_sound(_entity.position, _config.get("sfx", Resources.SOUNDS.hit_0))
-		target.receive_damage(damage)
+		var received_damage:int = target.receive_damage(damage)
 		
-		if target.get_health() > 0:
-			var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [target])
-			if on_damage_hook is GDScriptFunctionState: yield(on_damage_hook, "completed")
+		var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [
+			target,
+			target.get_health() > 0,
+			received_damage,
+		])
+		if on_damage_hook is GDScriptFunctionState: yield(on_damage_hook, "completed")
 	
 	yield(_entity.play_melee_animation(origin_pos, impact_pos), 'completed')
 		

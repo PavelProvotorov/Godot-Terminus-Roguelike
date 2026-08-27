@@ -78,7 +78,7 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 	yield(_tween_animations.animation_ranged(start, half, self, 'position'), 'completed')
 	self.z_index -= 1
 
-func receive_damage(damage:int, true_damage:bool = false) -> void:
+func receive_damage(damage:int, true_damage:bool = false) -> int:
 	play_hit_animation()
 	
 	var received_damage:int = 0
@@ -96,6 +96,7 @@ func receive_damage(damage:int, true_damage:bool = false) -> void:
 		handle_death()
 	else:
 		_text_animations.display_damage_number(received_damage, position, false)
+	return received_damage
 		
 func restore_health(heal:int) -> bool:
 	if (health != max_health):

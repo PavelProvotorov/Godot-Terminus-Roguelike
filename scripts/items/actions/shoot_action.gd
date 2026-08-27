@@ -58,11 +58,15 @@ func _shoot(direction:Vector2):
 				target.position.distance_to(impact_pos) / 8,
 			])
 			_audio.play_sound(_entity.position, _config.get("sfx", Resources.SOUNDS.shot_0))
-			target.receive_damage(damage)
 			
-			if target.get_health() > 0:
-				var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [target])
-				if on_damage_hook is GDScriptFunctionState: yield(on_damage_hook, "completed")
+			var received_damage:int = target.receive_damage(damage)
+			
+			var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [
+				target,
+				target.get_health() > 0,
+				received_damage,
+			])
+			if on_damage_hook is GDScriptFunctionState: yield(on_damage_hook, "completed")
 		
 		var start = _entity.position
 		var end = (start - (-direction))

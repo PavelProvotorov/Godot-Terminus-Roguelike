@@ -30,6 +30,7 @@ onready var weapon_slicer = load("res://scenes/weapons/Slicer.tscn")
 onready var weapon_hammer = load("res://scenes/weapons/Hammer.tscn")
 onready var weapon_pike = load("res://scenes/weapons/Pike.tscn")
 onready var weapon_tactical_knife = load("res://scenes/weapons/TacticalKnife.tscn")
+onready var weapon_reaper = load("res://scenes/weapons/Reaper.tscn")
 
 onready var level_scene = load("res://scenes/levels/Level.tscn")
 onready var factory_scene = load("res://scenes/levels/Factory.tscn")
@@ -139,6 +140,7 @@ const default_weapons: Dictionary = {
 	"Slicer": 100,
 	"Pike": 100,
 	"Hammer": 100,
+	"Reaper": 100,
 }
 
 const default_items: Dictionary = {

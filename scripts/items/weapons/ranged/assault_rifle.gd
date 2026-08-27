@@ -5,8 +5,6 @@ const damage:int = 3
 func _init():
 	category = CATEGORY.RANGED_WEAPON
 	action = ShootItem.new(self, {
-		"on_damage": funcref(self, "on_damage"),
-		"on_use": funcref(self, "on_use"),
 		"get_damage": funcref(self, "get_damage"),
 		"get_targets": funcref(self, "get_targets"),
 		"sfx": Resources.SOUNDS.shot_1,

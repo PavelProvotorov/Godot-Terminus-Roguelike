@@ -20,6 +20,9 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 func get_damage(distance:int, offset:int) -> int:
 	return damage
 	
-func on_damage(target:Entity2D) -> void:
-	if target is Entity2D and _utility.get_chance(50):
+func on_damage(target:Entity2D, alive:bool, received_damage:int) -> void:
+	if not alive or received_damage == 0:
+		return
+	
+	if _utility.get_chance(50):
 		target.add_buff('bleed', 2)
