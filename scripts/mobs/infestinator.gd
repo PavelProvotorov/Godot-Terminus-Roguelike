@@ -13,6 +13,7 @@ func _ready():
 		}),
 		WanderBehaviour.new(self, {}),
 	]
+	blood = Blood.COLOUR.GREEN
 	attack_range = 2
 	ranged_damage = 2
 	melee_damage = 1

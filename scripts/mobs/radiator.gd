@@ -12,6 +12,7 @@ func _ready():
 		MoveBehaviour.new(self, {}),
 		WanderBehaviour.new(self, {}),
 	]
+	blood = Blood.COLOUR.GREY
 	attack_range = 1
 	health = 5
 	ranged_damage = 0

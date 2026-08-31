@@ -4,6 +4,7 @@ class_name PathFinding2D
 var _astar = AStar2D.new()
 
 func _init(cells:Array):
+	randomize()
 	astar_build(cells)
 
 func get_path(start:Vector2, end:Vector2) -> Array:
@@ -22,8 +23,11 @@ func astar_build(cells:Array):
 	astar_connect_points(_astar.get_points())
 
 func astar_add_points(cells:Array) -> void:
+	var weight:Array = [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 	for cell in cells:
-		_astar.add_point(uuid(cell), cell, 1.0)
+		_astar.add_point(uuid(cell), cell, weight.pick_random())
+#	for cell in cells:
+#		_astar.add_point(uuid(cell), cell, 1.0)
 
 func astar_connect_points(points:Array):
 	var directions = [

@@ -3,7 +3,6 @@ class_name Level
 
 onready var _tree:SceneTree = get_tree()
 onready var _tilemap_logic:TileMap = $Logic
-onready var _tilemap_debug:TileMap = $Debug
 onready var _tilemap_decor:TileMap = $Decor
 onready var _tilemap_debris:TileMap = $Debris
 onready var _tilemap_base:TileMap = $Base
@@ -48,6 +47,9 @@ func _ready():
 	Events.connect("player_moved", self, "_on_player_moved")
 	
 func _draw():
+	if not _pathfinding:
+		return
+		
 	for point in _pathfinding._astar.get_points():
 		
 		for other in _pathfinding._astar.get_point_connections(point):
@@ -64,23 +66,37 @@ func set_tileset(tileset:TileSet) -> void:
 	_tilemap_debris.set_tileset(tileset)
 	_tilemap_base.set_tileset(tileset)
 
-func generate_level():
-	_generator = Generator2D.new(
-		_tilemap_logic,
-		furniture
-	)
-	
-	_decorator = Decorator2D.new(
-		_tilemap_decor,
-		_tilemap_base,
-		_tilemap_debris
-	)
-	
-	_furnisher = LevelFurnisher.new(
-		_tilemap_logic,
-		furniture,
-		TILES
-	)
+func generate_level(is_custom:bool):
+	if not is_custom:
+		_generator = Generator2D.new(
+			_tilemap_logic,
+			furniture
+		)
+		
+		_decorator = Decorator2D.new(
+			_tilemap_decor,
+			_tilemap_base,
+			_tilemap_debris
+		)
+		
+		_furnisher = LevelFurnisher.new(
+			_tilemap_logic,
+			furniture,
+			TILES
+		)
+		
+		var floor_tiles:Array = []
+		floor_tiles.append_array(_tilemap_logic.get_used_cells_by_id(TILES.FLOOR))
+		floor_tiles.append_array(_tilemap_logic.get_used_cells_by_id(TILES.OBJECT))
+		_decorator.decorate_level({
+			"TILE_FLOOR": floor_tiles,
+			"TILE_WALL": _tilemap_logic.get_used_cells_by_id(TILES.WALL),
+			"TILE_ENTRANCE": _tilemap_logic.get_used_cells_by_id(TILES.ENTRANCE),
+			"TILE_EXIT": _tilemap_logic.get_used_cells_by_id(TILES.EXIT),
+			"TILE_BASE": _generator.generator_get_walls_base(),
+			"TILE_DEBRIS": _tilemap_logic.get_used_cells_by_id(TILES.FLOOR),
+			"TILE_DOOR_CLOSED": _tilemap_logic.get_used_cells_by_id(TILES.DOOR),
+		})
 	
 	_pathfinding = PathFinding2D.new(
 		tilemap_get_cells_in_array(_tilemap_logic, [
@@ -91,19 +107,6 @@ func generate_level():
 		])
 	)
 	_pathfinding.disable_points(_tilemap_logic.get_used_cells_by_id(TILES.DOOR))
-	
-	var floor_tiles:Array = []
-	floor_tiles.append_array(_tilemap_logic.get_used_cells_by_id(TILES.FLOOR))
-	floor_tiles.append_array(_tilemap_logic.get_used_cells_by_id(TILES.OBJECT))
-	_decorator.decorate_level({
-		"TILE_FLOOR": floor_tiles,
-		"TILE_WALL": _tilemap_logic.get_used_cells_by_id(TILES.WALL),
-		"TILE_ENTRANCE": _tilemap_logic.get_used_cells_by_id(TILES.ENTRANCE),
-		"TILE_EXIT": _tilemap_logic.get_used_cells_by_id(TILES.EXIT),
-		"TILE_BASE": _generator.generator_get_walls_base(),
-		"TILE_DEBRIS": _tilemap_logic.get_used_cells_by_id(TILES.FLOOR),
-		"TILE_DOOR_CLOSED": _tilemap_logic.get_used_cells_by_id(TILES.DOOR),
-	})
 	
 	_shadowcasting = LevelShadowcasting.new(
 		_tilemap_fog,
@@ -312,7 +315,13 @@ func is_tile_blocking(cell:Vector2) -> bool:
 	return blocking_tiles.has(_tilemap_logic.get_cellv(cell))
 	
 func get_entrance() -> Vector2:
-	return _tilemap_logic.map_to_world(_generator.generator_get_entrance())
+	var entrance = _tilemap_logic.get_used_cells_by_id(TILES.ENTRANCE)[0]
+	return _tilemap_logic.map_to_world(entrance)
 
 func get_light_level():
 	return light_level
+	
+func add_decorative_sprite(instance:Node2D, pos:Vector2) -> void:
+	print("THE INSTANCE IS: ", instance)
+	_tilemap_decor.add_child(instance)
+	instance.position = pos

@@ -32,6 +32,7 @@ var max_ammo:int = 100
 var visibility:int = 4 setget , get_visibility
 var health:int = 1 setget set_health, get_health
 var turn_count:int = 0
+var blood:int = Blood.COLOUR.RED
 var speed:int = 1 setget , get_speed
 var ammo:int = 0 setget set_ammo
 
@@ -118,8 +119,12 @@ func handle_death() -> void:
 	var parent = self.get_parent()
 	if parent:
 		parent.remove_child(self)
-		
+	
+	var blood_splatter:Blood = Resources.sprite_blood.instance()
+	blood_splatter.set_colour(blood)
+	
 	self.level.set_pathfinding_points([], [self.position / grid_size])
+	self.level.add_decorative_sprite(blood_splatter, self.position)
 	self.queue_free()
 	
 func add_buff(buff:String, duration:int, self_applied:bool=false) -> bool:

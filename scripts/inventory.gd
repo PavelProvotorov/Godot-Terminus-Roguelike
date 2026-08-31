@@ -15,8 +15,8 @@ var min_item_count:int = 0
 
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
-	var ranged_weapon_instance:Item = Resources.weapon_pistol.instance()
-	var melee_weapon_instance:Item = Resources.weapon_tactical_knife.instance()
+	var ranged_weapon_instance:Item = Resources.weapon_assault_rifle.instance()
+	var melee_weapon_instance:Item = Resources.weapon_reaper.instance()
 	ranged_weapon_instance._entity = Global.get_player()
 	melee_weapon_instance._entity = Global.get_player()
 	_ranged_weapon_slot.add_child(ranged_weapon_instance)

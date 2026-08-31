@@ -7,6 +7,7 @@ func _ready():
 		}),
 		MoveBehaviour.new(self, {}),
 	]
+	blood = Blood.COLOUR.GREY
 	attack_range = 1
 	health = 5
 	melee_damage = 2

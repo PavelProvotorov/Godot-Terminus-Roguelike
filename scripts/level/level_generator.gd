@@ -231,12 +231,6 @@ func generator_add_exit(cell:Vector2)  -> void:
 	_tilemap.set_cellv(cell, TILES.EXIT)
 	pass
 
-func generator_get_entrance() -> Vector2:
-	return _tilemap.get_used_cells_by_id(TILES.ENTRANCE)[0]
-
-func generator_get_exit() -> Vector2:
-	return _tilemap.get_used_cells_by_id(TILES.EXIT)[0]
-
 func generator_get_walls_base() -> Array:
 	var cells = _tilemap.get_used_cells_by_id(TILES.WALL)
 	var result = []

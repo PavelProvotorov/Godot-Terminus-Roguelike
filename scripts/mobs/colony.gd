@@ -10,5 +10,6 @@ func _ready():
 			"die": true,
 		})
 	]
+	blood = Blood.COLOUR.WHITE
 	attack_range = 0
 	melee_damage = 0

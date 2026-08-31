@@ -39,6 +39,7 @@ func _callback(success:bool, collider:Entity2D) -> void:
 			target.position.distance_to(impact_pos) / 8,
 		])
 		_audio.play_sound(_entity.position, _config.get("sfx", Resources.SOUNDS.hit_0))
+		_sprite_animations.add_animation('slash', _entity.level, true, target.position)
 		var received_damage:int = target.receive_damage(damage)
 		
 		var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [

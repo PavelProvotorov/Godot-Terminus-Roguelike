@@ -8,6 +8,7 @@ func _ready():
 		}),
 		WanderBehaviour.new(self, {}),
 	]
+	blood = Blood.COLOUR.GREY
 	attack_range = 1
 	health = 4
 	melee_damage = 3

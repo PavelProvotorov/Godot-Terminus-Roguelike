@@ -21,6 +21,7 @@ func _handler() -> void:
 	
 	_entity.set_sprite_direction(start, end)
 	target.receive_damage(_entity.get_melee_damage())
+	_sprite_animations.add_animation('slash', _entity.level, true, target.position)
 	
 	if not _entity.is_path_hidden(start / GRID_SIZE, end / GRID_SIZE):
 		yield(_entity.play_melee_animation(start, end), 'completed')

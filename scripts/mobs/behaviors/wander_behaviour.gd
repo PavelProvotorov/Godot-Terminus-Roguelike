@@ -23,8 +23,6 @@ func _handler() -> void:
 		
 		_entity.set_sprite_direction(start * GRID_SIZE, end * GRID_SIZE)
 		
-		_audio.play_sound(_entity.position, Resources.SOUNDS.move)
-		
 		if not _entity.is_invisible() and not _entity.is_path_hidden(start, end):
 			yield(_entity.play_move_animation(start * GRID_SIZE, end * GRID_SIZE), 'completed')
 

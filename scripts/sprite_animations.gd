@@ -13,6 +13,7 @@ var ANIMATIONS: Dictionary = {
 	'regeneration': preload("res://resources/animations/AnimationRegeneration.tscn"),
 	'strength': preload("res://resources/animations/AnimationStrength.tscn"),
 	'speed': preload("res://resources/animations/AnimationSpeed.tscn"),
+	'slash': preload("res://resources/animations/AnimationSlash.tscn"),
 }
 var storage: Dictionary = {}
 

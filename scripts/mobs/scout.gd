@@ -16,6 +16,7 @@ func _ready():
 		OpenDoorBehaviour.new(self, {}),
 		WanderBehaviour.new(self, {}),
 	]
+	blood = Blood.COLOUR.GREY
 	attack_range = 2
 	health = 4
 	ranged_damage = 2

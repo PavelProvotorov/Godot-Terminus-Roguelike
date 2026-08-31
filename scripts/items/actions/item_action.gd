@@ -2,6 +2,7 @@ extends Node
 class_name ItemAction
 
 var _utility:Utility = Utility.new()
+var _sprite_animations:SpriteAnimations2D = SpriteAnimations2D.new()
 var _audio:Audio2D = Audio2D.new()
 var _config:Dictionary
 var key:String

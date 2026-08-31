@@ -5,4 +5,4 @@ onready var _level = $Level
 
 func _ready():
 	_level.set_tileset(TILESET)
-	_level.generate_level()
+	_level.generate_level(false)

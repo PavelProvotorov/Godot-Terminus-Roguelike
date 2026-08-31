@@ -38,6 +38,7 @@ onready var location_2 = load("res://scenes/levels/Location2.tscn")
 onready var location_3 = load("res://scenes/levels/Location3.tscn")
 onready var location_4 = load("res://scenes/levels/Location4.tscn")
 onready var location_5 = load("res://scenes/levels/Location5.tscn")
+onready var location_final = load("res://scenes/levels/LocationFinal.tscn")
 
 onready var icon_none = load("res://assets/icons/icon_none.png")
 onready var icon_strength = load("res://assets/icons/icon_strength.png")
@@ -50,6 +51,7 @@ onready var icon_vision = load("res://assets/icons/icon_vision.png")
 onready var icon_bleed = load("res://assets/icons/icon_bleed.png")
 onready var icon_stun = load("res://assets/icons/icon_stun.png")
 
+onready var sprite_blood = preload("res://scenes/Blood.tscn")
 onready var customise_scene = load("res://scenes/ui/Customise.tscn")
 onready var menu_scene = load("res://scenes/ui/Menu.tscn")
 onready var buff_card = load("res://scenes/ui/BuffCard.tscn")
@@ -211,6 +213,14 @@ onready var level_configuration: Dictionary = {
 			"Templar": 80,
 			"Zealot": 80,
 			"Radiator": 25,
+		},
+		'items': default_items,
+		'weapons': default_weapons,
+	},
+	5: {
+		'scene': location_final,
+		'enemies': {
+			"Zealot": 1,
 		},
 		'items': default_items,
 		'weapons': default_weapons,
