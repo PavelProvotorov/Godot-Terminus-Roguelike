@@ -21,3 +21,4 @@ func get_damage(distance:int, offset:int) -> int:
 
 func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
 	_sprite_animations.add_animation('explosion', self.level, true, impact_pos)
+	self.level.add_decorative_sprite(Resources.sprite_crack.instance(), impact_pos)

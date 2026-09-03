@@ -29,3 +29,4 @@ func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
 	
 	for cell in get_reachable_cells(impact_positions, impact_pos):
 		_sprite_animations.add_animation('explosion', self.level, true, cell)
+		self.level.add_decorative_sprite(Resources.sprite_crack.instance(), cell)

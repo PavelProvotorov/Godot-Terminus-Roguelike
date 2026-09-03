@@ -121,8 +121,8 @@ func generator_remove_room_walls(tiles:Array) -> void:
 	walls.shuffle()
 	
 	var cells = []
-	for i in (randi() % 3 + 1):
-		if walls.size() > 3:
+	for i in (randi() % 6 + 1):
+		if walls.size() > 2:
 			var wall = walls.pick_random()
 			cells.append_array(wall)
 			walls.erase(wall)
@@ -275,6 +275,59 @@ func generator_add_room_arches() -> void:
 						_tilemap.set_cellv(cell, TILES.FLOOR)
 		else:
 			break
+			
+func generator_dig_tunnels() -> void:
+	var rooms = generator_get_rooms(TILES.FLOOR)
+	var candidate_rooms: Array = []
+
+	# 1. Find all rooms and filter for those with at least 2 doors
+	for room in rooms:
+		var room_doors: Array = []
+		for cell in room:
+			var adjacent_doors = util_get_nearby_tiles_4(cell, [TILES.DOOR])
+			for door in adjacent_doors:
+				if not room_doors.has(door):
+					room_doors.append(door)
+
+		if room_doors.size() >= 2:
+			candidate_rooms.append({
+				"cells": room,
+				"doors": room_doors,
+				"size": room.size()
+			})
+	
+	if candidate_rooms.empty():
+		return
+
+	# 2. Select the smallest room by tile count
+	var smallest_room = candidate_rooms[0]
+	for room_data in candidate_rooms:
+		if room_data.size < smallest_room.size:
+			smallest_room = room_data
+
+	# 3. Connect all doors in the selected room using L-shaped tunnels
+	for cell in smallest_room.cells:
+		_tilemap.set_cellv(cell, TILES.WALL)
+	
+	var doors: Array = smallest_room.doors
+	for i in range(doors.size() - 1):
+		_carve_tunnel(doors[i], doors[i + 1])
+
+func _carve_tunnel(from_pos: Vector2, to_pos: Vector2) -> void:
+	var current = from_pos
+	
+	# Horizontal step
+	while current.x != to_pos.x:
+		current.x += sign(to_pos.x - current.x)
+		_tilemap.set_cellv(current, TILES.FLOOR)
+
+	# Vertical step
+	while current.y != to_pos.y:
+		current.y += sign(to_pos.y - current.y)
+		_tilemap.set_cellv(current, TILES.FLOOR)
+		
+func generator_clean_stranded_doors() -> void:
+	pass
 
 func generator_fill_room_centre() -> void:
 	var rooms = generator_get_rooms(TILES.FLOOR)

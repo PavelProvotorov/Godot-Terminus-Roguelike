@@ -27,12 +27,13 @@ func _ready():
 	attack_range = 2
 	melee_damage = 1
 	ranged_damage = 2
-	visibility = 4
+	visibility = 5
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
 		add_buff('regeneration', 50, true)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
+#		self.level.generate_level(false)
 	pass
 
 func set_camera_limits() -> void:
@@ -225,7 +226,8 @@ func play_animation(play:bool) -> void:
 
 func get_visibility():
 	var light_level = self.level.get_light_level()
-	var modified_visibility = min(_buff_manager.get_modified_visibility(visibility), light_level)
+	var level_visibility = min(visibility, light_level)
+	var modified_visibility = _buff_manager.get_modified_visibility(level_visibility)
 	return max(min_visibility, modified_visibility)
 	
 func receive_damage(damage:int, true_damage:bool = false) -> int:

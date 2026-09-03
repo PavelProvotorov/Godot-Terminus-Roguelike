@@ -25,6 +25,7 @@ onready var weapon_assault_rifle = load("res://scenes/weapons/AssaultRifle.tscn"
 onready var weapon_sniper_rifle = load("res://scenes/weapons/SniperRifle.tscn")
 onready var weapon_submachine = load("res://scenes/weapons/Submachine.tscn")
 onready var weapon_railgun = load("res://scenes/weapons/Railgun.tscn")
+onready var weapon_grenade_launcher = load("res://scenes/weapons/GrenadeLauncher.tscn")
 
 onready var weapon_slicer = load("res://scenes/weapons/Slicer.tscn")
 onready var weapon_hammer = load("res://scenes/weapons/Hammer.tscn")
@@ -52,6 +53,7 @@ onready var icon_bleed = load("res://assets/icons/icon_bleed.png")
 onready var icon_stun = load("res://assets/icons/icon_stun.png")
 
 onready var sprite_blood = preload("res://scenes/Blood.tscn")
+onready var sprite_crack = preload("res://scenes/Cracks.tscn")
 onready var customise_scene = load("res://scenes/ui/Customise.tscn")
 onready var menu_scene = load("res://scenes/ui/Menu.tscn")
 onready var buff_card = load("res://scenes/ui/BuffCard.tscn")
@@ -138,6 +140,7 @@ const default_weapons: Dictionary = {
 	"Submachine": 100,
 	"TacticalShotgun": 100,
 	"RailGun": 100,
+	"GrenadeLauncher": 100,
 	"TacticalKnife": 0,
 	"Slicer": 100,
 	"Pike": 100,
@@ -146,18 +149,18 @@ const default_weapons: Dictionary = {
 }
 
 const default_items: Dictionary = {
-	"Bandage": 10,
-	"Ammo": 50,
+#	"Bandage": 10,
+#	"Ammo": 50,
 	"Visor": 5,
-	"Grenade": 5,
-	"FragGrenade": 5,
-	"Medkit": 10,
-	"Teleporter": 5,
-	"ShieldGenerator": 5,
-	"Adrenalin": 5,
-	"Steroids": 5,
-	"PetCapsule": 1,
-	"ThunderFlash": 5,
+#	"Grenade": 5,
+#	"FragGrenade": 5,
+#	"Medkit": 10,
+#	"Teleporter": 5,
+#	"ShieldGenerator": 5,
+#	"Adrenalin": 5,
+#	"Steroids": 5,
+#	"PetCapsule": 1,
+#	"ThunderFlash": 5,
 }
 
 onready var level_configuration: Dictionary = {

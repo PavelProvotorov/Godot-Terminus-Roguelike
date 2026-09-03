@@ -322,6 +322,5 @@ func get_light_level():
 	return light_level
 	
 func add_decorative_sprite(instance:Node2D, pos:Vector2) -> void:
-	print("THE INSTANCE IS: ", instance)
 	_tilemap_decor.add_child(instance)
 	instance.position = pos

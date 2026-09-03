@@ -36,6 +36,8 @@ func radiate():
 		if not self.level.is_tile_blocking(cell / grid_size):
 			_sprite_animations.add_animation('spark', self.level, true, cell)
 	
+	if target.is_stunned() and _utility.get_chance(50):
+		self.add_buff('speed', 1)
 #	Without a delay the stun buff animation is not visible on the player
 #	Adding a small delay fixes that and allows the player to evaluate the stuation before enemies action
 	var timer = get_tree().create_timer(0.5)

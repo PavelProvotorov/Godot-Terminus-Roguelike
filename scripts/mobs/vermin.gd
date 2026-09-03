@@ -10,7 +10,9 @@ func _ready():
 		AmbushBehaviour.new(self, {
 			"close_in": true,
 		}),
-		MeleeBehaviour.new(self, {}),
+		MeleeBehaviour.new(self, {
+			"post_hook": funcref(self, "post_melee")
+		}),
 		RallyBehaviour.new(self, {}),
 		MoveBehaviour.new(self, {}),
 	]
@@ -18,3 +20,6 @@ func _ready():
 	melee_damage = 1
 	health = 1
 	speed = 1
+
+func post_melee():
+	if get_chance(10): target.add_buff('bleed', 2)
