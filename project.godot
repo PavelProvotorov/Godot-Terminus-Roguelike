@@ -149,6 +149,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mobs/behaviors/move_behaviour.gd"
 }, {
+"base": "AudioStreamPlayer2D",
+"class": "Music",
+"language": "GDScript",
+"path": "res://scenes/music.gd"
+}, {
 "base": "BaseBehaviour",
 "class": "OpenDoorBehaviour",
 "language": "GDScript",
@@ -273,6 +278,7 @@ _global_script_class_icons={
 "MeleeBehaviour": "",
 "MeleeItem": "",
 "MoveBehaviour": "",
+"Music": "",
 "OpenDoorBehaviour": "",
 "PathFinding2D": "",
 "Player": "",

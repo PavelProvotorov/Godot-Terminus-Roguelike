@@ -182,17 +182,6 @@ func update_pathfinding(prev_pos:Vector2, new_pos:Vector2) -> void:
 	previous_position = prev_pos * grid_size
 	self.level.set_pathfinding_points([new_pos], [prev_pos])
 	
-func get_reachable_targets(positions:Array, center:Vector2) -> Array:
-	var shadowcaster:BaseShadowcaster = BaseShadowcaster.new(funcref(self.level, 'is_tile_blocking'))
-	var reachable_cells = shadowcaster.cast(center / grid_size, 10)
-	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
-	var targets:Array = []
-	
-	for entity in entities:
-		if (entity.position in positions) and (entity.position / grid_size in reachable_cells):
-			targets.append(entity)
-	return targets
-	
 func play_animation(play:bool) -> void:
 	if play:
 		_sprite.play()

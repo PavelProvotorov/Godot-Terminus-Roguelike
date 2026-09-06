@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/game.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/Inventory.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Interface.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/ui/Menu.tscn" type="PackedScene" id=4]
-[ext_resource path="res://sfx/level_1.ogg" type="AudioStream" id=5]
+[ext_resource path="res://sfx/music_0.ogg" type="AudioStream" id=5]
 [ext_resource path="res://scenes/ui/BuffList.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/ui_overlay.png" type="Texture" id=7]
+[ext_resource path="res://scenes/music.gd" type="Script" id=8]
 
 [node name="Game" type="Node2D" groups=["ROOT"]]
 script = ExtResource( 1 )
@@ -53,5 +54,5 @@ transform = Transform2D( 1, 0, 0, 1, 40, 7 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
-volume_db = -10.0
-autoplay = true
+volume_db = -80.0
+script = ExtResource( 8 )

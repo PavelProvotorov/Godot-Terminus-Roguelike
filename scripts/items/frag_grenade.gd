@@ -4,7 +4,7 @@ const damage = 5
 const throw_range = 3
 
 func _ready():
-	description = "<Grenade>: A standard combat explosive used to deliver high damage in close range;"
+	description = "<Frag Grenade>: A high-level combat explosive designed to inflict maximum damage in large impact area;"
 	action = ThrowItem.new(self, {
 			"on_use": funcref(self, "on_use"),
 			"get_targets": funcref(self, "get_targets"),

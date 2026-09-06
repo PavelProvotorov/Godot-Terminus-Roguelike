@@ -51,6 +51,7 @@ onready var icon_blindness = load("res://assets/icons/icon_blindness.png")
 onready var icon_vision = load("res://assets/icons/icon_vision.png")
 onready var icon_bleed = load("res://assets/icons/icon_bleed.png")
 onready var icon_stun = load("res://assets/icons/icon_stun.png")
+onready var icon_electrified = load("res://assets/icons/icon_electrified.png")
 
 onready var sprite_blood = preload("res://scenes/Blood.tscn")
 onready var sprite_crack = preload("res://scenes/Cracks.tscn")
@@ -88,8 +89,13 @@ const SOUNDS = {
 	typing = preload("res://sfx/typing.ogg"),
 	appear = preload("res://sfx/appear.ogg"),
 	open = preload("res://sfx/open.ogg"),
-	menu_move = preload("res://sfx/menu_move.ogg"),
+	menu_move = preload("res://sfx/menu_move.ogg")
 }
+
+onready var music_0 = load("res://sfx/music_0.ogg")
+onready var music_1 = load("res://sfx/music_1.ogg")
+onready var music_2 = load("res://sfx/music_2.ogg")
+onready var music_3 = load("res://sfx/music_3.ogg")
 
 const head_spritesheet: Dictionary = {
 	0: preload("res://assets/composites/head/player_head_0.png"),
@@ -149,18 +155,19 @@ const default_weapons: Dictionary = {
 }
 
 const default_items: Dictionary = {
-#	"Bandage": 10,
-#	"Ammo": 50,
+	"TeslaCoil": 5,
+	"Bandage": 10,
+	"Ammo": 50,
 	"Visor": 5,
-#	"Grenade": 5,
-#	"FragGrenade": 5,
-#	"Medkit": 10,
-#	"Teleporter": 5,
-#	"ShieldGenerator": 5,
-#	"Adrenalin": 5,
-#	"Steroids": 5,
-#	"PetCapsule": 1,
-#	"ThunderFlash": 5,
+	"Grenade": 5,
+	"FragGrenade": 5,
+	"Medkit": 10,
+	"Teleporter": 5,
+	"ShieldGenerator": 5,
+	"Adrenalin": 5,
+	"Steroids": 5,
+	"PetCapsule": 1,
+	"ThunderFlash": 5,
 }
 
 onready var level_configuration: Dictionary = {

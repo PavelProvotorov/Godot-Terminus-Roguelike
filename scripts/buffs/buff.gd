@@ -6,6 +6,8 @@ onready var _buff_manager = get_parent()
 onready var target = _buff_manager.get_parent()
 onready var _audio:Audio2D = Audio2D.new()
 onready var _utility:Utility = Utility.new()
+onready var level setget set_level, get_level
+onready var  grid_size = Global.GRID_SIZE
 
 signal buff_expired
 
@@ -54,3 +56,9 @@ func get_resistance_modifier() -> int:
 
 func get_visibility_modifier() -> int:
 	return visibility_modifier
+	
+func set_level(level):
+	return level
+
+func get_level():
+	return Global.get_level()

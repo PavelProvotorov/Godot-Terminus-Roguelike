@@ -30,6 +30,7 @@ func _input(event):
 func check(data:Dictionary) -> bool:
 	if _player.is_ammo_depleted():
 		_player.emit_signal("shoot_successful", false, Vector2.ZERO)
+		_audio.play_global_sound(Resources.SOUNDS.fail)
 		state_idle()
 		return false
 

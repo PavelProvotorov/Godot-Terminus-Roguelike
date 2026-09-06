@@ -32,6 +32,7 @@ func _ready():
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
 		add_buff('regeneration', 50, true)
+		add_buff('electrified', 12, true)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
 #		self.level.generate_level(false)
 	pass

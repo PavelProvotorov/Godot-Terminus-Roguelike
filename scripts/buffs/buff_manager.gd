@@ -13,6 +13,7 @@ onready var BUFF_LIST:Dictionary = {
 	'regeneration': load("res://scenes/buffs/BuffRegeneration.tscn"),
 	'vision': load("res://scenes/buffs/BuffVision.tscn"),
 	'stun': load("res://scenes/buffs/BuffStun.tscn"),
+	'electrified': load("res://scenes/buffs/BuffElectrified.tscn"),
 }
 
 signal buff_added
