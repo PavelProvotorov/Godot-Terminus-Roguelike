@@ -24,10 +24,6 @@ func _handler():
 func _callback(success:bool, direction:Vector2) -> void:
 	if not success:
 		return
-		
-#	var on_use_hook = _utility.call_funcref(_config.get("on_use", null), [])
-#	if on_use_hook is GDScriptFunctionState: yield(on_use_hook, "completed")
-	
 	_shoot(direction)
 
 func _shoot(direction:Vector2):
@@ -40,9 +36,12 @@ func _shoot(direction:Vector2):
 		
 		if not _has_ammo():
 			break
-			
+		
 		var collider = _entity.cast_in_direction(direction, shot_range)
 		if not collider or not collider is Enemy2D:
+			
+			if (idx != 0):
+				break
 			return _entity.emit_signal("start_turn")
 		
 		var origin_pos = _entity.position
