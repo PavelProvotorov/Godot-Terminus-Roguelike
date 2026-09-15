@@ -12,5 +12,5 @@ func _ready():
 
 func _turn_started_hook():
 	
-	if health <= 2:
+	if health <= 3:
 		add_buff('strength', 10, true)

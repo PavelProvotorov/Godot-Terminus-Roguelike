@@ -1,13 +1,126 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/game.gd" type="Script" id=1]
-[ext_resource path="res://scenes/ui/Inventory.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Interface.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/ui/Menu.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/RootCanvas.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sfx/music_0.ogg" type="AudioStream" id=5]
-[ext_resource path="res://scenes/ui/BuffList.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/ui_overlay.png" type="Texture" id=7]
-[ext_resource path="res://scenes/music.gd" type="Script" id=8]
+[ext_resource path="res://scripts/music.gd" type="Script" id=8]
+[ext_resource path="res://resources/shaders/pixelated_diamond_sweep.tres" type="Shader" id=9]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 9 )
+shader_param/progress = 1.0
+shader_param/reverse = true
+shader_param/numberOfTiles = Vector2( 30, 16.875 )
+shader_param/pixelsPrTile = Vector2( 8, 8 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/path = NodePath("TransitionRect:material:shader_param/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TransitionRect:material:shader_param/reverse")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("TransitionRect:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath("TransitionRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "transition_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath("TransitionRect:material:shader_param/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TransitionRect:material:shader_param/reverse")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "transition_out"
+tracks/0/type = "value"
+tracks/0/path = NodePath("TransitionRect:material:shader_param/reverse")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TransitionRect:material:shader_param/progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
 
 [node name="Game" type="Node2D" groups=["ROOT"]]
 script = ExtResource( 1 )
@@ -24,33 +137,28 @@ usage = 0
 render_target_update_mode = 3
 audio_listener_enable_2d = true
 
+[node name="TransitionCanvas" type="CanvasLayer" parent="ViewportContainer/Viewport"]
+layer = 5
+
+[node name="TransitionRect" type="ColorRect" parent="ViewportContainer/Viewport/TransitionCanvas"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+material = SubResource( 1 )
+margin_right = 240.0
+margin_bottom = 135.0
+
+[node name="TransitionPlayer" type="AnimationPlayer" parent="ViewportContainer/Viewport/TransitionCanvas"]
+autoplay = "RESET"
+anims/RESET = SubResource( 2 )
+anims/fade_in = SubResource( 6 )
+anims/transition_in = SubResource( 5 )
+anims/transition_out = SubResource( 4 )
+
 [node name="Overlay" type="Sprite" parent="ViewportContainer/Viewport"]
 texture = ExtResource( 7 )
 offset = Vector2( 120, 68 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="ViewportContainer/Viewport"]
-layer = 3
-offset = Vector2( 40, 7 )
-transform = Transform2D( 1, 0, 0, 1, 40, 7 )
-
-[node name="Menu" parent="ViewportContainer/Viewport/CanvasLayer" instance=ExtResource( 4 )]
-margin_right = 0.0
-margin_bottom = 0.0
-
-[node name="Inventory" parent="ViewportContainer/Viewport/CanvasLayer" instance=ExtResource( 2 )]
-
-[node name="CanvasLayer3" type="CanvasLayer" parent="ViewportContainer/Viewport"]
-layer = 2
-offset = Vector2( 40, 7 )
-transform = Transform2D( 1, 0, 0, 1, 40, 7 )
-
-[node name="Interface" parent="ViewportContainer/Viewport/CanvasLayer3" instance=ExtResource( 3 )]
-
-[node name="BuffList" parent="ViewportContainer/Viewport/CanvasLayer3" instance=ExtResource( 6 )]
-
-[node name="GameCanvas" type="CanvasLayer" parent="ViewportContainer/Viewport"]
-offset = Vector2( 40, 7 )
-transform = Transform2D( 1, 0, 0, 1, 40, 7 )
+[node name="RootCanvas" parent="ViewportContainer/Viewport" instance=ExtResource( 2 )]
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )

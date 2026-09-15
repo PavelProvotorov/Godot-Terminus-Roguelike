@@ -2,6 +2,7 @@ extends AudioStreamPlayer2D
 class_name Music
 
 func _ready() -> void:
+	Events.connect("game_ended", self, "_on_game_ended")
 	Events.connect("game_started", self, "_on_game_started")
 	Events.connect("change_music", self, "_on_change_music")
 	connect("finished", self, "_on_finished")
@@ -24,6 +25,10 @@ func _on_change_music(sfx:AudioStreamOGGVorbis) -> void:
 func _on_game_started() -> void:
 	sound_fade_in()
 	play()
+	
+func _on_game_ended() -> void:
+	sound_fade_out()
+	stop()
 
 func sound_fade_in() -> void:
 	var tween:SceneTreeTween = self.create_tween()

@@ -1,6 +1,7 @@
 extends Node
 
 signal game_started()
+signal game_ended()
 signal player_moved(pos, distance)
 signal player_health_changed(health)
 signal player_buffs_changed(buffs)

@@ -118,7 +118,7 @@ func generate_level(is_custom:bool):
 	print("----------------------------------")
 	print("LEVEL GENERATION COMPLETE")
 	Events.emit_signal("level_generation_complete", self)
-	_tilemap_logic.process_queue()
+#	_tilemap_logic.process_queue()
 
 func populate_level():
 	var current_depth = Global.get_depth()
@@ -324,3 +324,6 @@ func get_light_level():
 func add_decorative_sprite(instance:Node2D, pos:Vector2) -> void:
 	_tilemap_decor.add_child(instance)
 	instance.position = pos
+
+func process_queue() -> void:
+	_tilemap_logic.process_queue()

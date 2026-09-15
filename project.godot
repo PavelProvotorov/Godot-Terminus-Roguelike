@@ -152,7 +152,7 @@ _global_script_classes=[ {
 "base": "AudioStreamPlayer2D",
 "class": "Music",
 "language": "GDScript",
-"path": "res://scenes/music.gd"
+"path": "res://scripts/music.gd"
 }, {
 "base": "BaseBehaviour",
 "class": "OpenDoorBehaviour",

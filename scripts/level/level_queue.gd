@@ -35,6 +35,4 @@ func _on_end_turn(node:Node) -> void:
 	process_queue()
 
 func _on_tree_exiting():
-	print("EXITING TREE: ", self)
 	Events.disconnect("end_turn", self, "_on_end_turn")
-	pass

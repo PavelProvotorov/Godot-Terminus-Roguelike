@@ -215,6 +215,7 @@ func _on_start_turn() -> void:
 func handle_death() -> void:
 	var parent = self.get_parent()
 	parent.remove_child(self)
+	Events.emit_signal("game_ended")
 	
 func update_fog() -> void:
 	self.level.update_level_fog(self.position, self.visibility)
