@@ -161,6 +161,7 @@ offset = Vector2( 120, 68 )
 [node name="RootCanvas" parent="ViewportContainer/Viewport" instance=ExtResource( 2 )]
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+visible = false
 stream = ExtResource( 5 )
 volume_db = -80.0
 script = ExtResource( 8 )

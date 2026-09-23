@@ -14,6 +14,8 @@ onready var BUFF_LIST:Dictionary = {
 	'vision': load("res://scenes/buffs/BuffVision.tscn"),
 	'stun': load("res://scenes/buffs/BuffStun.tscn"),
 	'electrified': load("res://scenes/buffs/BuffElectrified.tscn"),
+	'thorns': load("res://scenes/buffs/BuffThorns.tscn"),
+	'bulwark': load("res://scenes/buffs/BuffBulwark.tscn"),
 }
 
 signal buff_added
@@ -56,10 +58,9 @@ func remove_buff(buff:String) -> bool:
 		return false
 	
 	var applied_buff:Buff = get_buff(buff)
-	applied_buff.set_duration(0)
+	applied_buff.set_duration(-1)
 	emit_signal("buff_removed")
 	on_buff_changed_callback()
-	
 	return true
 	
 func get_buffs() -> Array:
@@ -68,11 +69,12 @@ func get_buffs() -> Array:
 	for child in get_children():
 		var buff:Buff = child
 		
-		buffs.append({
-			"name": buff.original_name,
-			"duration": buff.duration,
-			"icon": buff.icon,
-		})
+		if buff.duration > 0:
+			buffs.append({
+				"name": buff.original_name,
+				"duration": buff.duration,
+				"icon": buff.icon,
+			})
 			
 	return buffs
 

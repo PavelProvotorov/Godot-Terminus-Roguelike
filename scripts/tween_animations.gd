@@ -9,7 +9,7 @@ func _init(parent:Node) -> void:
 
 func animation_move_to(pos:Vector2, target:Node, property:String) -> void:
 	var tween:SceneTreeTween = parent.create_tween()
-	tween.tween_property(target, property, pos, 1.0/tween_speed).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(target, property, pos, 1.0/ (tween_speed + 2)).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	yield(tween, "finished")
 
 func animation_ranged(start:Vector2, finish:Vector2, target:Node, property:String) -> void:

@@ -5,4 +5,4 @@ func _ready():
 	original_name = 'bleed'
 
 func _on_buff_tick_hook() -> void:
-	target.receive_damage(1)
+	target.receive_damage(self, 1)

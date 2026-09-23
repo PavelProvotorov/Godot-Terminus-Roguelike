@@ -29,6 +29,7 @@ func _on_game_started() -> void:
 func _on_game_ended() -> void:
 	sound_fade_out()
 	stop()
+	stream = Resources.music_0
 
 func sound_fade_in() -> void:
 	var tween:SceneTreeTween = self.create_tween()

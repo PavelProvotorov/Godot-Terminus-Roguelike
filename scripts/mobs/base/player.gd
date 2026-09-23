@@ -32,7 +32,8 @@ func _ready():
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
 		add_buff('regeneration', 50, true)
-		add_buff('electrified', 12, true)
+#		add_buff('thorns', 10, true)
+#		add_buff('electrified', 12, true)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
 #		self.level.generate_level(false)
 	pass
@@ -213,8 +214,12 @@ func _on_start_turn() -> void:
 	_state_machine.change_state('IDLE')
 
 func handle_death() -> void:
+	var tree = get_tree()
 	var parent = self.get_parent()
+	_sprite_animations.add_animation('skull', self.level, true, self.position)
 	parent.remove_child(self)
+	var timer = tree.create_timer(1.2)
+	yield(timer, "timeout")
 	Events.emit_signal("game_ended")
 	
 func update_fog() -> void:
@@ -232,9 +237,9 @@ func get_visibility():
 	var modified_visibility = _buff_manager.get_modified_visibility(level_visibility)
 	return max(min_visibility, modified_visibility)
 	
-func receive_damage(damage:int, true_damage:bool = false) -> int:
+func receive_damage(attacker: Node, damage:int, true_damage:bool = false) -> int:
 	_audio.play_sound(self.position, Resources.SOUNDS.hit_0)
-	return .receive_damage(damage, true_damage)
+	return .receive_damage(attacker, damage, true_damage)
 	
 func update_position(pos:Vector2, free_previous:bool = true) -> void:
 	.update_position(pos, free_previous)

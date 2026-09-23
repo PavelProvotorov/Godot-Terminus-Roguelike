@@ -38,6 +38,8 @@ func tick():
 	
 func set_duration(duration:int) -> void:
 	self.duration = min(99, duration)
+	if duration <= 0:
+		queue_free()
 	
 func is_active() -> bool:
 	return self.duration > 0
@@ -62,3 +64,6 @@ func set_level(level):
 
 func get_level():
 	return Global.get_level()
+
+func _on_tree_exiting() -> void:
+	Callback.remove_all(self)

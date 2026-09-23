@@ -40,7 +40,7 @@ func _callback(success:bool, collider:Enemy2D):
 			target.position.distance_to(impact_pos) / 8,
 		])
 		_audio.play_sound(impact_pos, _config.get("sfx", Resources.SOUNDS.explosion_0))
-		var received_damage:int = target.receive_damage(damage)
+		var received_damage:int = target.receive_damage(_item, damage)
 		
 		var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [
 			target,

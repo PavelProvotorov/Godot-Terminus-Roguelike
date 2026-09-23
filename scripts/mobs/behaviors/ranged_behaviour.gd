@@ -22,7 +22,7 @@ func _handler() -> void:
 	var target = _entity.target
 	
 	_entity.set_sprite_direction(start, end)
-	target.receive_damage(_entity.ranged_damage)
+	target.receive_damage(_entity, _entity.ranged_damage)
 	
 	if not _entity.is_path_hidden(start / GRID_SIZE, end / GRID_SIZE):
 		yield(_entity.play_ranged_animation(start, end), 'completed')

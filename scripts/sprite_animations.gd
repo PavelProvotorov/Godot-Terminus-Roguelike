@@ -14,6 +14,7 @@ var ANIMATIONS: Dictionary = {
 	'strength': preload("res://resources/animations/AnimationStrength.tscn"),
 	'speed': preload("res://resources/animations/AnimationSpeed.tscn"),
 	'slash': preload("res://resources/animations/AnimationSlash.tscn"),
+	'skull': preload("res://resources/animations/AnimationSkull.tscn"),
 }
 var storage: Dictionary = {}
 

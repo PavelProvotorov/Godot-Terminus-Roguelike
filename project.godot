@@ -44,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/buffs/buff.gd"
 }, {
+"base": "Buff",
+"class": "BuffBulwark",
+"language": "GDScript",
+"path": "res://scripts/buffs/buff_bulwark.gd"
+}, {
 "base": "Control",
 "class": "BuffCard",
 "language": "GDScript",
@@ -63,6 +68,11 @@ _global_script_classes=[ {
 "class": "BuffStun",
 "language": "GDScript",
 "path": "res://scripts/buffs/buff_stun.gd"
+}, {
+"base": "Buff",
+"class": "BuffThorns",
+"language": "GDScript",
+"path": "res://scripts/buffs/buff_thorns.gd"
 }, {
 "base": "ItemAction",
 "class": "ConsumeItem",
@@ -257,10 +267,12 @@ _global_script_class_icons={
 "BaseShadowcaster": "",
 "Blood": "",
 "Buff": "",
+"BuffBulwark": "",
 "BuffCard": "",
 "BuffManager": "",
 "BuffShield": "",
 "BuffStun": "",
+"BuffThorns": "",
 "ConsumeItem": "",
 "Decorator2D": "",
 "Enemy2D": "",
@@ -312,6 +324,7 @@ Events="*res://scripts/singletons/events.gd"
 Resources="*res://scripts/singletons/resources.gd"
 Global="*res://scripts/singletons/global.gd"
 Config="*res://scripts/singletons/config.gd"
+Callback="*res://scripts/callback.gd"
 
 [display]
 

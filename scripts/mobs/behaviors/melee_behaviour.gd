@@ -20,7 +20,7 @@ func _handler() -> void:
 	var target = _entity.target
 	
 	_entity.set_sprite_direction(start, end)
-	target.receive_damage(_entity.get_melee_damage())
+	target.receive_damage(_entity, _entity.get_melee_damage())
 	_sprite_animations.add_animation('slash', _entity.level, true, target.position)
 	
 	if not _entity.is_path_hidden(start / GRID_SIZE, end / GRID_SIZE):

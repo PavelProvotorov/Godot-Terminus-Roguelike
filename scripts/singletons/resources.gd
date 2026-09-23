@@ -32,6 +32,7 @@ onready var weapon_hammer = load("res://scenes/weapons/Hammer.tscn")
 onready var weapon_pike = load("res://scenes/weapons/Pike.tscn")
 onready var weapon_tactical_knife = load("res://scenes/weapons/TacticalKnife.tscn")
 onready var weapon_reaper = load("res://scenes/weapons/Reaper.tscn")
+onready var weapon_shield = load("res://scenes/weapons/Shield.tscn")
 
 onready var level_scene = load("res://scenes/levels/Level.tscn")
 onready var factory_scene = load("res://scenes/levels/Factory.tscn")
@@ -52,6 +53,8 @@ onready var icon_vision = load("res://assets/icons/icon_vision.png")
 onready var icon_bleed = load("res://assets/icons/icon_bleed.png")
 onready var icon_stun = load("res://assets/icons/icon_stun.png")
 onready var icon_electrified = load("res://assets/icons/icon_electrified.png")
+onready var icon_thorns = load("res://assets/icons/icon_thorns.png")
+onready var icon_bulwark = load("res://assets/icons/icon_bulwark.png")
 
 onready var sprite_blood = preload("res://scenes/Blood.tscn")
 onready var sprite_crack = preload("res://scenes/Cracks.tscn")
@@ -91,7 +94,8 @@ const SOUNDS = {
 	typing = preload("res://sfx/typing.ogg"),
 	appear = preload("res://sfx/appear.ogg"),
 	open = preload("res://sfx/open.ogg"),
-	menu_move = preload("res://sfx/menu_move.ogg")
+	menu_move = preload("res://sfx/menu_move.ogg"),
+	zap = preload("res://sfx/zap.ogg")
 }
 
 onready var music_0 = load("res://sfx/music_0.ogg")
@@ -154,6 +158,7 @@ const default_weapons: Dictionary = {
 	"Pike": 100,
 	"Hammer": 100,
 	"Reaper": 100,
+	"Shield": 100,
 }
 
 const default_items: Dictionary = {
@@ -170,6 +175,7 @@ const default_items: Dictionary = {
 	"Steroids": 5,
 	"PetCapsule": 1,
 	"ThunderFlash": 5,
+	"Bramble": 5,
 }
 
 onready var level_configuration: Dictionary = {

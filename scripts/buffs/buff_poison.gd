@@ -10,7 +10,7 @@ func _on_buff_tick_hook() -> void:
 	set_poison_tick()
 		
 	if poision_tick == true:
-		target.receive_damage(1, true)
+		target.receive_damage(self, 1, true)
 
 func set_poison_tick() -> void:
 	poision_tick = not poision_tick

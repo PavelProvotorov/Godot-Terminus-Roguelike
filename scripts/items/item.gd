@@ -87,22 +87,5 @@ func set_level(level):
 func get_level():
 	return Global.get_level()
 
-#func use_action(acc:String) -> void:
-#	var action = actions.get(acc, null)
-#	action.execute()
-#
-#func set_actions(acc:Array) -> void:
-#	for action in acc:
-#		actions[action.get_key()] = action
-#
-#func can_action(acc:String) -> bool:
-#	var action = actions.get(acc, null)
-#	if action:
-#		return action.check()
-#	return false
-#
-#func has_action(acc:String) -> bool:
-#	return actions.has(acc)
-#
-#func get_actions() -> Array:
-#	return actions.keys()
+func _on_tree_exiting() -> void:
+	Callback.remove_all(self)

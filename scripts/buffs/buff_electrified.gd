@@ -19,5 +19,6 @@ func _on_buff_tick_hook() -> void:
 	var entities:Array = target.get_reachable_targets(nearby_cells, target.position)
 	for entity in entities:
 		if _utility.get_chance(40):
+			_audio.play_sound(entity.position, Resources.SOUNDS.zap)
 			_sprite_animations.add_animation('spark', self.level, true, entity.position)
-			entity.receive_damage(1)
+			entity.receive_damage(self, 1)

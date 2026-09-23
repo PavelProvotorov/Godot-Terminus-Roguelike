@@ -11,6 +11,7 @@ onready var _buff_manager:BuffManager = $BuffManager
 onready var _hit_flash = $HitFlashAnimation
 onready var _raycast = $RayCast2D
 onready var previous_position = position
+onready var current_position = position
 onready var hostile_groups = []
 
 signal start_turn
@@ -37,6 +38,7 @@ var speed:int = 1 setget , get_speed
 var ammo:int = 0 setget set_ammo
 
 func _ready():
+	connect("tree_exiting", self, "_on_tree_exiting")
 	connect("start_turn", self, "_on_start_turn")
 	_buff_manager.init(funcref(self, "_on_buffs_changed"))
 	add_to_group("ENTITY")
@@ -79,7 +81,7 @@ func play_ranged_animation(start:Vector2, finish:Vector2) -> void:
 	yield(_tween_animations.animation_ranged(start, half, self, 'position'), 'completed')
 	self.z_index -= 1
 
-func receive_damage(damage:int, true_damage:bool = false) -> int:
+func receive_damage(attacker:Node, damage:int, true_damage:bool = false) -> int:
 	play_hit_animation()
 	
 	var received_damage:int = 0
@@ -97,6 +99,8 @@ func receive_damage(damage:int, true_damage:bool = false) -> int:
 		handle_death()
 	else:
 		_text_animations.display_damage_number(received_damage, position, false)
+	
+	Callback.trigger(Callback.TYPE.DAMAGE_RECEIVED, [damage, attacker, self])
 	return received_damage
 		
 func restore_health(heal:int) -> bool:
@@ -123,9 +127,12 @@ func handle_death() -> void:
 	var blood_splatter:Blood = Resources.sprite_blood.instance()
 	blood_splatter.set_colour(blood)
 	
-	self.level.set_pathfinding_points([], [self.position / grid_size])
-	self.level.add_decorative_sprite(blood_splatter, self.position)
+	self.level.set_pathfinding_points([], [position / grid_size])
+	self.level.add_decorative_sprite(blood_splatter, position)
+	self.health = 0
 	self.queue_free()
+	print("ENDING TURN - DEATH: ", self)
+	Events.emit_signal("end_turn", self)
 	
 func add_buff(buff:String, duration:int, self_applied:bool=false) -> bool:
 	return _buff_manager.add_buff(buff, duration, self_applied)
@@ -160,6 +167,9 @@ func get_reachable_targets(positions:Array, center:Vector2) -> Array:
 	return targets
 
 func end_turn() -> bool:
+	if (self.health <= 0):
+		return true
+		
 	print("USED TURN: ", self)
 	turn_count += 1
 
@@ -233,3 +243,6 @@ func get_ranged_damage() -> int:
 	
 func get_melee_damage() -> int:
 	return _buff_manager.get_modified_melee_damage(melee_damage)
+	
+func _on_tree_exiting() -> void:
+	Callback.remove_all(self)

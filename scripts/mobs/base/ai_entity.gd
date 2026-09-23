@@ -84,16 +84,17 @@ func build_path_to_target() -> void:
 func process_behaviours() -> void:
 	for i in behaviours:
 		var behaviour = i 
-		
+
 		assert(behaviour != null, " %s, is not valid behaviour" % behaviour)
-		
+
 		if not behaviour.check():
 			continue
-			
+
 		behaviour.execute()
 		return
 		
 	print("SKIP")
+#	Callback.trigger(Callback.TYPE.TURN_SKIP, [self])
 	end_turn()
 	
 func enemies_near_target() -> Array:

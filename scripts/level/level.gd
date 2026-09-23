@@ -118,7 +118,6 @@ func generate_level(is_custom:bool):
 	print("----------------------------------")
 	print("LEVEL GENERATION COMPLETE")
 	Events.emit_signal("level_generation_complete", self)
-#	_tilemap_logic.process_queue()
 
 func populate_level():
 	var current_depth = Global.get_depth()

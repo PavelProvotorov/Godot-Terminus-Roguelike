@@ -6,6 +6,7 @@ func _init():
 func _input(event):
 	if Input.is_action_just_pressed("ui_skip"):
 		state_active()
+		Callback.trigger(Callback.TYPE.TURN_SKIP, [_player])
 		_player.end_turn()
 		
 	if Input.is_action_just_pressed("ui_up"):

@@ -65,7 +65,7 @@ func _shoot(direction:Vector2):
 			])
 			_audio.play_sound(origin_pos, _config.get("sfx", Resources.SOUNDS.shot_0))
 			
-			var received_damage:int = target.receive_damage(damage)
+			var received_damage:int = target.receive_damage(_item, damage)
 			
 			var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [
 				target,
