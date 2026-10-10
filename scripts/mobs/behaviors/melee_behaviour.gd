@@ -9,7 +9,7 @@ func check() -> bool:
 		return false
 		
 	if _entity.path.size() == 2 and _entity.target_in_sight():
-		print("MELEE")
+		Utility.print_debug("MELEE", _entity)
 		return true
 		
 	return false

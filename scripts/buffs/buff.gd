@@ -5,7 +5,6 @@ onready var _sprite_animations:SpriteAnimations2D = SpriteAnimations2D.new()
 onready var _buff_manager = get_parent()
 onready var target = _buff_manager.get_parent()
 onready var _audio:Audio2D = Audio2D.new()
-onready var _utility:Utility = Utility.new()
 onready var level setget set_level, get_level
 onready var  grid_size = Global.GRID_SIZE
 
@@ -29,7 +28,7 @@ func tick():
 	duration -= 1
 	
 #	Currently does not work with coroutines
-	var hook = _utility.call_funcref(LIFECYCLE.ON_TICK)
+	var hook = Utility.call_funcref(LIFECYCLE.ON_TICK)
 	
 	if duration <= 0:
 		emit_signal("buff_expired", self)

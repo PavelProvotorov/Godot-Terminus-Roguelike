@@ -21,5 +21,5 @@ func on_damage(target:Entity2D, alive:bool, received_damage:int) -> void:
 	if received_damage == 0:
 		return
 	
-	if _utility.get_chance(40):
+	if Utility.get_chance(40):
 		target.add_buff('bleed', 2)

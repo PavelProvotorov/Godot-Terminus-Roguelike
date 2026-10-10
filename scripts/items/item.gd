@@ -4,7 +4,6 @@ class_name Item
 onready var level setget set_level, get_level
 onready var _audio:Audio2D = Audio2D.new()
 onready var _sprite_animations = SpriteAnimations2D.new()
-onready var _utility:Utility = Utility.new()
 onready var _static_body = $StaticBody2D
 const MAX_ITEM_VISIBILITY:int = 5
 var _entity:Entity2D

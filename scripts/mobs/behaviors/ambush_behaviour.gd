@@ -16,19 +16,19 @@ func check() -> bool:
 	if _entity.target.is_stunned():
 		return false
 	
-	if _utility.get_chance(skip_chance):
-		print("AMBUSH - SKIP")
+	if Utility.get_chance(skip_chance):
+		Utility.print_debug("AMBUSH - SKIP", _entity)
 		return false
 	
 	if _entity.path.size() != 3:
 		return false
 	
 	if close_in and enemies.size() >= pack_size:
-		print("AMBUSH - PACK")
+		Utility.print_debug("AMBUSH - PACK", _entity)
 		return false
 	
 	if not _entity.target_in_sight():
-		print("AMBUSH")
+		Utility.print_debug("AMBUSH", _entity)
 		return true
 	return false
 	

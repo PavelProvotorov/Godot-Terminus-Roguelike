@@ -48,18 +48,18 @@ func _shoot(direction:Vector2):
 		var impact_pos = collider.position
 		_entity.ammo -= ammo_consumption
 		
-		var on_use_hook = _utility.call_funcref(_config.get("on_use", null), [
+		var on_use_hook = Utility.call_funcref(_config.get("on_use", null), [
 			origin_pos, 
 			impact_pos
 		])
 		if on_use_hook is GDScriptFunctionState: yield(on_use_hook, "completed")
 		
-		var targets = _utility.call_funcref(_config.get("get_targets", null), [
+		var targets = Utility.call_funcref(_config.get("get_targets", null), [
 			origin_pos,
 			impact_pos
 		])
 		for target in targets:
-			var damage = _utility.call_funcref(_config.get("get_damage", null), [
+			var damage = Utility.call_funcref(_config.get("get_damage", null), [
 				origin_pos.distance_to(impact_pos) / 8,
 				target.position.distance_to(impact_pos) / 8,
 			])
@@ -67,7 +67,7 @@ func _shoot(direction:Vector2):
 			
 			var received_damage:int = target.receive_damage(_item, damage)
 			
-			var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [
+			var on_damage_hook = Utility.call_funcref(_config.get("on_damage", null), [
 				target,
 				target.get_health() > 0,
 				received_damage,

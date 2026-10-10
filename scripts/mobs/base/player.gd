@@ -32,7 +32,7 @@ func _ready():
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
 		add_buff('regeneration', 50, true)
-#		add_buff('thorns', 10, true)
+		add_buff('thorns', 10, true)
 #		add_buff('electrified', 12, true)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
 #		self.level.generate_level(false)
@@ -131,7 +131,9 @@ func flip_animation(flip:bool) -> void:
 	_composite_animation.flip_animation(flip)
 
 func process_tilemap_collision(pos:Vector2) -> bool:
-	print('COLISSION WITH: ', self.level.get_tile_position_name(pos))
+	Utility.print_debug("COLLISION WITH > {collider}".format(
+		{"collider": self.level.get_tile_position_name(pos)}
+	), self)
 	match self.level.get_tile_position_name(pos):
 		"DOOR":
 			self.level.open_door(pos)

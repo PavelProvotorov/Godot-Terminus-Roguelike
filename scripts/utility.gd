@@ -1,5 +1,14 @@
 extends Node
-class_name Utility
+class_name UtilityClass
+
+static func print_debug(msg:String, node=null) -> void:
+	if not OS.is_debug_build(): 
+		return
+
+	var template = "{msg}"
+	if node: template = "<{node}>: " + template
+	var output = template.format({"node": node, "msg": msg})
+	print(output)
 
 func call_funcref(hook:FuncRef, args:Array=[]):
 	if hook is FuncRef and hook.is_valid():

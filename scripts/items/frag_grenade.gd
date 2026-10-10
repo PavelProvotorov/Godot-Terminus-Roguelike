@@ -14,7 +14,7 @@ func _ready():
 		})
 		
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
-	var target_positions:Array = _utility.get_nearby_cells_8(impact_pos)
+	var target_positions:Array = Utility.get_nearby_cells_8(impact_pos)
 	target_positions.append(impact_pos)
 	return get_reachable_targets(target_positions, impact_pos)
 	
@@ -24,7 +24,7 @@ func get_damage(distance:int, offset:int) -> int:
 	return damage
 
 func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
-	var impact_positions:Array = _utility.get_nearby_cells_8(impact_pos)
+	var impact_positions:Array = Utility.get_nearby_cells_8(impact_pos)
 	impact_positions.append(impact_pos)
 	
 	for cell in get_reachable_cells(impact_positions, impact_pos):

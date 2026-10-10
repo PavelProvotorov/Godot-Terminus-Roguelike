@@ -12,7 +12,7 @@ func check() -> bool:
 	and _entity.target_in_range() \
 	and _entity.target_in_sight() \
 	and not _entity.target_is_blocked(_entity.position, _entity.target.position):
-		print("RANGED")
+		Utility.print_debug("RANGED", _entity)
 		return true
 	return false
 	

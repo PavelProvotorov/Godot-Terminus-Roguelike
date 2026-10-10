@@ -6,7 +6,7 @@ func _init(entity:EntityAI, config:Dictionary).(entity, config):
 
 func check() -> bool:
 	if _entity.get_nearby_doors().size() > 0:
-		print("OPEN DOOR")
+		Utility.print_debug("OPEN DOOR", _entity)
 		return true
 	return false
 	

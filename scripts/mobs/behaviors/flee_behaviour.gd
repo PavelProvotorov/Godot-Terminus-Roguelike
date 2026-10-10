@@ -12,19 +12,18 @@ func check() -> bool:
 	var flee_when_close:int = _config.get("flee_when_close", false)
 	var skip_chance:int = _config.get("skip_chance", 0)
 		
-	if _utility.get_chance(skip_chance):
-		print("FLEE - SKIP")
+	if Utility.get_chance(skip_chance):
 		return false
 	
 	if _entity.get_nearby_cells().size() == 0:
 		return false
 	
 	if _entity.health <= health_threshold:
-		print("FLEE - LOW HEALTH")
+		Utility.print_debug("FLEE - LOW HEALTH", _entity)
 		return true
 	
 	if flee_when_close and _entity.path.size() == 2 and _entity.target_in_sight():
-		print("FLEE")
+		Utility.print_debug("FLEE", _entity)
 		return true
 		
 	return false

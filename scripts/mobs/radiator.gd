@@ -20,10 +20,10 @@ func _ready():
 	visibility = 5
 
 func radiate():
-	if not _utility.get_chance(30):
+	if not Utility.get_chance(30):
 		return
 		
-	var nearby_cells = _utility.get_nearby_cells_8(self.position)
+	var nearby_cells = Utility.get_nearby_cells_8(self.position)
 	nearby_cells.append(self.position)
 		
 	var targets = get_reachable_targets(nearby_cells, self.position)
@@ -36,7 +36,7 @@ func radiate():
 		if not self.level.is_tile_blocking(cell / grid_size):
 			_sprite_animations.add_animation('spark', self.level, true, cell)
 	
-	if target.is_stunned() and _utility.get_chance(50):
+	if target.is_stunned() and Utility.get_chance(50):
 		self.add_buff('speed', 1)
 #	Without a delay the stun buff animation is not visible on the player
 #	Adding a small delay fixes that and allows the player to evaluate the stuation before enemies action

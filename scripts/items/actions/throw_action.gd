@@ -25,24 +25,24 @@ func _callback(success:bool, collider:Enemy2D):
 	var origin_pos = _entity.position
 	var impact_pos = collider.position
 	var direction = _entity.position.direction_to(impact_pos) * 8
-	var targets = _utility.call_funcref(_config.get("get_targets", null), [
+	var targets = Utility.call_funcref(_config.get("get_targets", null), [
 		_entity.position,
 		impact_pos
 	])
 	
-	var on_use_hook = _utility.call_funcref(_config.get("on_use", null), [origin_pos, impact_pos])
+	var on_use_hook = Utility.call_funcref(_config.get("on_use", null), [origin_pos, impact_pos])
 	if on_use_hook is GDScriptFunctionState:
 		yield(on_use_hook, "completed")
 	
 	for target in targets:
-		var damage = _utility.call_funcref(_config.get("get_damage", null), [
+		var damage = Utility.call_funcref(_config.get("get_damage", null), [
 			_entity.position.distance_to(impact_pos) / 8,
 			target.position.distance_to(impact_pos) / 8,
 		])
 		_audio.play_sound(impact_pos, _config.get("sfx", Resources.SOUNDS.explosion_0))
 		var received_damage:int = target.receive_damage(_item, damage)
 		
-		var on_damage_hook = _utility.call_funcref(_config.get("on_damage", null), [
+		var on_damage_hook = Utility.call_funcref(_config.get("on_damage", null), [
 			target,
 			target.get_health() > 0,
 			received_damage,

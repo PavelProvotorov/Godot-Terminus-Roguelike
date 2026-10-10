@@ -9,7 +9,7 @@ func check() -> bool:
 		return false
 	
 	if _entity.path.size() == 0 and _entity.is_active():
-		print("RALLY")
+		Utility.print_debug("RALLY", _entity)
 		return true
 	return false
 	

@@ -1,7 +1,6 @@
 extends Node
 class_name LevelFurnisher
 
-var _utility:Utility = Utility.new()
 var furniture:Array = []
 var TILES:Dictionary = {}
 var tilemap:TileMap
@@ -68,7 +67,7 @@ func get_cells() -> Array:
 	var result = []
 	var check_cells = tilemap.get_used_cells_by_id(TILES.FLOOR)
 	for cell in check_cells:
-		var count = _utility.count_nearby_tiles_8(tilemap, cell, [
+		var count = Utility.count_nearby_tiles_8(tilemap, cell, [
 			TILES.WALL, 
 			TILES.DOOR, 
 			TILES.OBJECT

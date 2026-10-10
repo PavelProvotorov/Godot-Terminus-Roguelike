@@ -182,10 +182,11 @@ onready var level_configuration: Dictionary = {
 	0: {
 		'scene': factory_scene,
 		'enemies': {
-			"GuardBot": 15,
-			"Grunt": 100,
-			"Bloater": 80,
-			"Colony": 50,
+			"Parasite": 50,
+#			"GuardBot": 15,
+#			"Grunt": 100,
+#			"Bloater": 80,
+#			"Colony": 50,
 		},
 		'items': default_items,
 		'weapons': default_weapons,

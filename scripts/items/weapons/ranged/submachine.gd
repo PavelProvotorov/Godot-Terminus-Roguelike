@@ -17,6 +17,6 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 	return get_reachable_targets([impact_pos], impact_pos)
 	
 func get_damage(distance:int, offset:int) -> int:
-	if _utility.get_chance(15):
+	if Utility.get_chance(15):
 		return damage + 1
 	return damage

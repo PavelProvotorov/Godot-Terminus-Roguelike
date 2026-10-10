@@ -6,7 +6,6 @@ onready var target_visible:bool = false
 onready var target = null
 onready var path: Array = []
 onready var _sprite = $AnimatedSprite
-onready var _utility:Utility = Utility.new()
 
 onready var LIFECYCLE = {
 	TURN_STARTED = funcref(self, "_turn_started_hook")
@@ -33,7 +32,7 @@ func _on_start_turn() -> void:
 	if _buff_manager.get_modified_speed(self.speed) <= 0:
 		return end_turn()
 
-	var hook = _utility.call_funcref(LIFECYCLE.TURN_STARTED)
+	var hook = Utility.call_funcref(LIFECYCLE.TURN_STARTED)
 	if hook is GDScriptFunctionState: yield(hook, "completed")
 
 	process_behaviours()
@@ -58,7 +57,7 @@ func select_target() -> void:
 		if new_target_distance < current_target_distance:
 			self.target = entity
 			
-	print("NEW TARGET: ", target)
+	Utility.print_debug("SELECT TARGET > {target}".format({"target": target}), self)
 
 func check_target_visibility() -> void:
 	
@@ -93,13 +92,12 @@ func process_behaviours() -> void:
 		behaviour.execute()
 		return
 		
-	print("SKIP")
-#	Callback.trigger(Callback.TYPE.TURN_SKIP, [self])
+	Utility.print_debug("SKIP", self)
 	end_turn()
 	
 func enemies_near_target() -> Array:
 	var target_pos = target.position
-	var directions = _utility.get_nearby_cells_8(target_pos)
+	var directions = Utility.get_nearby_cells_8(target_pos)
 	
 	var entities:Array = get_tree().get_nodes_in_group("ENTITY")
 	var enemies:Array = []

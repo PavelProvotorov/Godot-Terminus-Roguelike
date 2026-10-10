@@ -18,6 +18,6 @@ func get_damage(distance:int, offset:int) -> int:
 	return damage
 	
 func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
-	if _utility.get_chance(40):
+	if Utility.get_chance(40):
 		_entity.add_buff('speed', 1)
 

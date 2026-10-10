@@ -18,12 +18,12 @@ func get_damage(distance:int, offset:int) -> int:
 	return damage
 	
 func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
-	var trigger_stun = _utility.get_chance(35)
+	var trigger_stun = Utility.get_chance(35)
 	
 	if not trigger_stun:
 		return
 	
-	var nearby_cells = _utility.get_nearby_cells_8(origin_pos)
+	var nearby_cells = Utility.get_nearby_cells_8(origin_pos)
 	var entities:Array = get_reachable_targets(
 		nearby_cells, 
 		impact_pos

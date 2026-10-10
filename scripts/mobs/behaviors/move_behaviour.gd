@@ -9,7 +9,7 @@ func check() -> bool:
 		return false
 		
 	if _entity.path.size() > 2 and _entity.is_active():
-		print("MOVE")
+		Utility.print_debug("MOVE", _entity)
 		return true
 		
 	return false

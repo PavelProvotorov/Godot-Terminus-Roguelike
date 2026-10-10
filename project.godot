@@ -234,6 +234,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/shadowcasting.gd"
 }, {
+"base": "BaseBehaviour",
+"class": "TestBehaviour",
+"language": "GDScript",
+"path": "res://scripts/mobs/behaviors/test_behaviour.gd"
+}, {
 "base": "Node",
 "class": "TextAnimations2D",
 "language": "GDScript",
@@ -250,7 +255,7 @@ _global_script_classes=[ {
 "path": "res://scripts/tween_animations.gd"
 }, {
 "base": "Node",
-"class": "Utility",
+"class": "UtilityClass",
 "language": "GDScript",
 "path": "res://scripts/utility.gd"
 }, {
@@ -305,10 +310,11 @@ _global_script_class_icons={
 "State": "",
 "StateMachine": "",
 "SymmetricShadowcasting2D": "",
+"TestBehaviour": "",
 "TextAnimations2D": "",
 "ThrowItem": "",
 "TweenAnimation2D": "",
-"Utility": "",
+"UtilityClass": "",
 "WanderBehaviour": ""
 }
 
@@ -325,6 +331,7 @@ Resources="*res://scripts/singletons/resources.gd"
 Global="*res://scripts/singletons/global.gd"
 Config="*res://scripts/singletons/config.gd"
 Callback="*res://scripts/callback.gd"
+Utility="*res://scripts/utility.gd"
 
 [display]
 

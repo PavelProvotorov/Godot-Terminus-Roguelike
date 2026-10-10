@@ -8,11 +8,10 @@ func check() -> bool:
 	var follower = _config.get("follower", null)
 	
 	if follower == null:
-		print("FOLLOWER NULL")
 		return false
 	
 	if not _entity.target_visible or _entity.path.size() >= 4:
-		print("FOLLOW")
+		Utility.print_debug("FOLLOW", _entity)
 		return true
 	return false
 	

@@ -131,8 +131,6 @@ func handle_death() -> void:
 	self.level.add_decorative_sprite(blood_splatter, position)
 	self.health = 0
 	self.queue_free()
-	print("ENDING TURN - DEATH: ", self)
-	Events.emit_signal("end_turn", self)
 	
 func add_buff(buff:String, duration:int, self_applied:bool=false) -> bool:
 	return _buff_manager.add_buff(buff, duration, self_applied)
@@ -168,13 +166,15 @@ func get_reachable_targets(positions:Array, center:Vector2) -> Array:
 
 func end_turn() -> bool:
 	if (self.health <= 0):
+		Utility.print_debug("ENDING TURN - DEATH", self)
+		Events.emit_signal("end_turn", self)
 		return true
 		
-	print("USED TURN: ", self)
+	Utility.print_debug("USED MOVE", self)
 	turn_count += 1
 
 	if turn_count < self.speed:
-		print("EXTRA TURN: ", self)
+		Utility.print_debug("EXTRA MOVE", self)
 		_on_start_turn()
 		return false
 		
@@ -185,7 +185,7 @@ func end_turn() -> bool:
 	if buffs is GDScriptFunctionState:
 		yield(buffs, "completed")
 	
-	print("ENDING TURN: ", self)
+	Utility.print_debug("ENDING TURN", self)
 	Events.emit_signal("end_turn", self)
 	return true
 

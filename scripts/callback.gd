@@ -25,7 +25,7 @@ func _process(delta) -> void:
 			for listener in listeners[event_idx].duplicate():
 				var callback: FuncRef = listener.callback
 				if callback is FuncRef and callback.is_valid():
-#					print("PROCESSING CALLBACK: ", callback.function, " | ", event_args)
+					print("PROCESSING CALLBACK: ", callback.function, " | ", event_args)
 					var state = callback.call_funcv(event_args)
 					if state is GDScriptFunctionState and state.is_valid():
 						yield(state, "completed")
@@ -62,7 +62,7 @@ func active_processing() -> bool:
 	return queue.size() > 0 or processing or game_turn_ended
 
 func trigger(idx: int, args: Array = []) -> void:
-	print("TRIGGERED CALLBACK: ", TYPE.find_key(idx), " | ", idx)
+	Utility.print_debug("TRIGGERED > {key}".format({"key": TYPE.find_key(idx)}), "[Callback]")
 
 	if idx == TYPE.PROCESS_QUEUE:
 		if not active_processing():

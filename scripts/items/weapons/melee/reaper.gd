@@ -20,7 +20,7 @@ func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
 		impact_pos
 	]
 	
-	if _utility.get_chance(50):
+	if Utility.get_chance(50):
 		positions.append(impact_pos + left * grid_size)
 	else:
 		positions.append(impact_pos + right * grid_size)
@@ -36,6 +36,6 @@ func on_damage(target:Entity2D, alive:bool, received_damage:int) -> void:
 	if received_damage == 0:
 		return
 	
-	if _utility.get_chance(15):
+	if Utility.get_chance(15):
 		_entity.restore_health(1)
 

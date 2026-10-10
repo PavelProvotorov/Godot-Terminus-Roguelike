@@ -6,7 +6,7 @@ func _init(entity:EntityAI, config:Dictionary).(entity, config):
 
 func check() -> bool:
 	if not _entity.is_active():
-		print("WANDER")
+		Utility.print_debug("WANDER", _entity)
 		return true
 	return false
 	

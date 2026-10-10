@@ -14,7 +14,7 @@ func check() -> bool:
 		return false
 		
 	if _entity.get_nearby_cells().size() >= 1:
-		print("SPAWNER")
+		Utility.print_debug("SPAWN", _entity)
 		return true
 	return false
 	
@@ -39,7 +39,7 @@ func _handler() -> void:
 	for cell in nearby_cells:
 		var instance = minion.instance()
 		
-		if total_spawned < minion_count and _utility.get_chance(spawn_chance):
+		if total_spawned < minion_count and Utility.get_chance(spawn_chance):
 			total_spawned += 1
 			
 			if minion_reservoir != null:

@@ -9,7 +9,6 @@ onready var _tilemap_base:TileMap = $Base
 onready var _tilemap_fog:TileMap = $Fog
 onready var _audio:Audio2D = Audio2D.new()
 onready var level_rect = _tilemap_logic.get_used_rect()
-onready var _utility:Utility = Utility.new()
 
 onready var TILES = {
 	EMPTY = _tilemap_logic.tile_set.find_tile_by_name("TILE_EMPTY"),
@@ -131,7 +130,7 @@ func add_player() -> void:
 func add_entities(entities:Dictionary) -> void:
 	var free_cells = get_floor_cells()
 	add_player()
-	add_enemies(entities.get('enemies', {}), 10, 15, free_cells)
+	add_enemies(entities.get('enemies', {}), 1, 1, free_cells)
 	add_items(entities.get('items', {}), 3, 5, free_cells)
 	app_weapons(entities.get('weapons', {}), 0, 1, free_cells)
 

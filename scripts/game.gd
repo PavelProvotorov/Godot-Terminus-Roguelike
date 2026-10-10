@@ -50,7 +50,7 @@ func load_next_level():
 	var config = Resources.level_configuration
 	var current_depth = Global.get_depth()
 	var next_scene:PackedScene = config.get(current_depth, 0).get('scene', Resources.factory_scene)
-	print("LEVEL DEPTH IS: ", Global.get_depth())
+	if OS.is_debug_build(): print("LEVEL DEPTH IS: ", Global.get_depth())
 	_game_canvas.add_child(next_scene.instance())
 	
 func _on_level_generation_complete(level:Level) -> void:

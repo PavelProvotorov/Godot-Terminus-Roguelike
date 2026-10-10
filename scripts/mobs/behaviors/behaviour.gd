@@ -4,7 +4,6 @@ class_name BaseBehaviour
 var GRID_SIZE = Global.GRID_SIZE
 var _audio:Audio2D = Audio2D.new()
 var _sprite_animations = SpriteAnimations2D.new()
-var _utility:Utility = Utility.new()
 var _config:Dictionary
 var _entity:EntityAI
 
@@ -19,7 +18,7 @@ func check() -> bool:
 	return false
 
 func execute() -> void:
-	var pre_hook = _utility.call_funcref(_config.get("pre_hook", null))
+	var pre_hook = Utility.call_funcref(_config.get("pre_hook", null))
 	if pre_hook is GDScriptFunctionState:
 		yield(pre_hook, "completed")
 	
@@ -27,7 +26,7 @@ func execute() -> void:
 	if handler is GDScriptFunctionState:
 		yield(handler, "completed")
 		
-	var post_hook = _utility.call_funcref(_config.get("post_hook", null))
+	var post_hook = Utility.call_funcref(_config.get("post_hook", null))
 	if post_hook is GDScriptFunctionState: 
 		yield(post_hook, "completed")
 	

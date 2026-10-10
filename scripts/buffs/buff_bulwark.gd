@@ -11,5 +11,4 @@ func _ready():
 func _on_damage_received(damage:int, attacker, receiver:Entity2D) -> void:
 	if receiver != target:
 		return
-	print("BULWARK DAMAGE TRIGGERED")
 	target.remove_buff("bulwark")

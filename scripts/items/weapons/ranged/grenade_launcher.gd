@@ -16,7 +16,7 @@ func _init():
 	})
 	
 func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
-	var cells = _utility.get_nearby_cells_8(impact_pos)
+	var cells = Utility.get_nearby_cells_8(impact_pos)
 	cells.append(impact_pos)
 	
 	for cell in cells:
@@ -24,7 +24,7 @@ func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
 		self.level.add_decorative_sprite(Resources.sprite_crack.instance(), cell)
 	
 func get_targets(origin_pos:Vector2, impact_pos:Vector2) -> Array:
-	var target_positions:Array = _utility.get_nearby_cells_8(impact_pos)
+	var target_positions:Array = Utility.get_nearby_cells_8(impact_pos)
 	target_positions.append(impact_pos)
 	return get_reachable_targets(target_positions, impact_pos)
 	
