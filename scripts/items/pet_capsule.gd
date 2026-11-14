@@ -7,7 +7,7 @@ onready var cats = [
 ]
 
 func _ready():
-	description = "<Pet Capsule>: A device to awaken a foreign creature hybernating inside;"
+	description = "<Pet Capsule>: Use to awaken a foreign creature hybernating inside;"
 	action = ConsumeItem.new(self, {
 		"on_check": funcref(self, "on_check"),
 		"on_use": funcref(self, "on_use"),
@@ -26,4 +26,4 @@ func on_use() -> void:
 	instance.previous_position = cell * grid_size
 	instance.update_position(cell * grid_size)
 	
-	_audio.play_sound(cell * grid_size, Resources.SOUNDS.teleport)
+	_audio.play_sound(cell * grid_size, Resources.SOUNDS.cat)

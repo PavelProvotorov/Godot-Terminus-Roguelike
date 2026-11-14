@@ -1,14 +1,14 @@
 extends Item
 
 const shot_range:int = 3
-const damage:int = 2
+const damage:int = 3
 
 func _init():
 	category = CATEGORY.RANGED_WEAPON
 	action = ShootItem.new(self, {
 		"get_damage": funcref(self, "get_damage"),
 		"get_targets": funcref(self, "get_targets"),
-		"sfx": Resources.SOUNDS.shot_hunting_rifle,
+		"sfx": Resources.SOUNDS.shot_sniper,
 		"consumption": 1,
 		"range": shot_range,
 		"shots": 1,

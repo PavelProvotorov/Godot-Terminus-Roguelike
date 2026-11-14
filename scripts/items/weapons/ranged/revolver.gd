@@ -8,7 +8,7 @@ func _init():
 		"get_damage": funcref(self, "get_damage"),
 		"get_targets": funcref(self, "get_targets"),
 		"on_damage": funcref(self, "on_damage"),
-		"sfx": Resources.SOUNDS.shot_1,
+		"sfx": Resources.SOUNDS.shot_pistol,
 		"consumption": 1,
 		"range": 3,
 		"shots": 1,

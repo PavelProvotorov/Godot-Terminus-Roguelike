@@ -52,7 +52,9 @@ func _callback(success:bool, collider:Enemy2D):
 	var start = origin_pos
 	var end = (start - (-direction))
 	_entity.set_inventory_animation()
-	yield(_entity.play_ranged_animation(start, end), 'completed')
+	
+	if _entity.is_inside_tree():
+		yield(_entity.play_ranged_animation(start, end), 'completed')
 	
 	_item.remove_item()
 	_entity.end_turn()

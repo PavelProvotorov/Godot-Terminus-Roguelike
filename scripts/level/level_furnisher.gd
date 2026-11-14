@@ -35,6 +35,7 @@ func place_furniture() -> void:
 		
 		var data = furniture.pick_random()
 		var obj:PackedScene = data.get('object')
+		var is_solid:bool = data.get('solid', false)
 		var obj_cells:Array = data.get('cells')
 		var placeable:bool = true
 			
@@ -58,7 +59,11 @@ func place_furniture() -> void:
 						free_cells[occupied + Vector2(x, y)] = false
 						
 			for cell in obj_cells:
-				tilemap.set_cellv(placement_cell + cell, TILES.OBJECT)
+				
+				if is_solid:
+					tilemap.set_cellv(placement_cell + cell, TILES.WALL)
+				else:
+					tilemap.set_cellv(placement_cell + cell, TILES.OBJECT)
 			continue
 		
 	pass 

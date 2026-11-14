@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/syringe.ogg-bccf40f91b01a8c443f9115d8c48d4fa.oggstr"
+
+[deps]
+
+source_file="res://sfx/syringe.ogg"
+dest_files=[ "res://.import/syringe.ogg-bccf40f91b01a8c443f9115d8c48d4fa.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

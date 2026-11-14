@@ -10,7 +10,7 @@ func _ready():
 
 	
 func on_check() -> bool:
-	return _entity.add_buff('strength', 7, true)
+	return _entity.add_buff('strength', 9, true)
 
 func on_use() -> void:
-	pass
+	_audio.play_sound(_entity.position, Resources.SOUNDS.syringe)

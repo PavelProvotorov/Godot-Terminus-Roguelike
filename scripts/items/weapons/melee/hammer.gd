@@ -30,7 +30,8 @@ func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
 	)
 	
 	for entity in entities:
-		entity.add_buff('stun', 2)
+		if _entity.is_entity_hostile(entity):
+			entity.add_buff('stun', 2)
 	
 	for cell in nearby_cells:
 		if not self.level.is_tile_blocking(cell / grid_size):

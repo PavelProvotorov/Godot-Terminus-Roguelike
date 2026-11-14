@@ -9,8 +9,8 @@ func _ready():
 	attack_range = 1
 	health = 6
 	melee_damage = 3
+	blood = Blood.COLOUR.GREEN
 
 func _turn_started_hook():
-	
 	if health <= 3:
 		add_buff('strength', 10, true)

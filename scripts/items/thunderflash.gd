@@ -16,6 +16,7 @@ func on_check() -> bool:
 func on_use() -> void:
 	var targets = get_flash_targets()
 	var visible_cells = get_visible_cells(_entity.position, flash_distance)
+	_audio.play_sound(_entity.position, Resources.SOUNDS.use)
 		
 	for cell in visible_cells:
 		var final_cell = cell * grid_size

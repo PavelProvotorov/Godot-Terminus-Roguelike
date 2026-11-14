@@ -12,4 +12,4 @@ func on_check() -> bool:
 	return _entity.add_buff('speed', 3, true)
 
 func on_use() -> void:
-	pass
+	_audio.play_sound(_entity.position, Resources.SOUNDS.syringe)

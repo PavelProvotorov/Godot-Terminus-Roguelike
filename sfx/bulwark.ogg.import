@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bulwark.ogg-8f8e644a5aefa588aa2c2628e99217fd.oggstr"
+
+[deps]
+
+source_file="res://sfx/bulwark.ogg"
+dest_files=[ "res://.import/bulwark.ogg-8f8e644a5aefa588aa2c2628e99217fd.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

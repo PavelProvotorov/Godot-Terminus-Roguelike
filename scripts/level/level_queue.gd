@@ -13,6 +13,9 @@ func _init():
 func process_queue() -> void:
 	if queue.size() == 0:
 		build_queue()
+	
+	if queue.size() == 0:
+		return
 		
 	var next_node = queue[0]
 #	print("PROCESSING QUEUE: ", next_node)

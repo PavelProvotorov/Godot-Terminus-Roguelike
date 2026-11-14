@@ -15,8 +15,8 @@ var min_item_count:int = 0
 
 func _ready():
 	_grid.connect("child_exiting_tree", self, "_on_child_exiting_tree")
-	var ranged_weapon_instance:Item = Resources.weapon_assault_rifle.instance()
-	var melee_weapon_instance:Item = Resources.weapon_tactical_knife.instance()
+	var ranged_weapon_instance:Item = Resources.weapon_sniper_rifle.instance()
+	var melee_weapon_instance:Item = Resources.weapon_shield.instance()
 	ranged_weapon_instance._entity = Global.get_player()
 	melee_weapon_instance._entity = Global.get_player()
 	_ranged_weapon_slot.add_child(ranged_weapon_instance)
@@ -28,7 +28,6 @@ func pickup_item(item:Item, owner:Node) -> bool:
 		item.pickup(owner)
 		
 		if item.usable():
-			_audio.play_global_sound(Resources.SOUNDS.pickup_0)
 			item.use()
 			return true
 		_audio.play_global_sound(Resources.SOUNDS.fail)
@@ -91,11 +90,13 @@ func use_selected_item() -> bool:
 	if selected_item is Item:
 		
 		if selected_item.in_category(Item.CATEGORY.RANGED_WEAPON):
+			_audio.play_global_sound(Resources.SOUNDS.reload)
 			equip_ranged_weapon(selected_item)
 			Global.get_player().end_turn()
 			return true
 			
 		if selected_item.in_category(Item.CATEGORY.MELEE_WEAPON):
+			_audio.play_global_sound(Resources.SOUNDS.swap)
 			equip_melee_weapon(selected_item)
 			Global.get_player().end_turn()
 			return true

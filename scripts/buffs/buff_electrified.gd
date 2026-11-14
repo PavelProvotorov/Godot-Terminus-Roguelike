@@ -1,5 +1,7 @@
 extends Buff
 
+var charge:int = 0
+
 func _ready():
 	icon = Resources.icon_electrified
 	original_name = 'electrified'
@@ -15,10 +17,19 @@ func _on_buff_tick_hook() -> void:
 			
 			var cell = target.position + Vector2(x, y) * grid_size
 			nearby_cells.append(cell)
-		
+			
 	var entities:Array = target.get_reachable_targets(nearby_cells, target.position)
+	
+	var zapped:bool = false
+	
 	for entity in entities:
-		if Utility.get_chance(40):
+		if Utility.get_chance(25 + (charge * 10)):
 			_audio.play_sound(entity.position, Resources.SOUNDS.zap)
 			_sprite_animations.add_animation('spark', self.level, true, entity.position)
 			entity.receive_damage(self, 1)
+			zapped = true
+			
+	if not zapped:
+		charge += 1
+	else:
+		charge = 0

@@ -2,7 +2,6 @@ extends Node
 
 onready var text_label = preload("res://scenes/TextLabel.tscn")
 onready var scene_description = preload("res://scenes/Description.tscn")
-onready var debug_label = preload("res://scenes/DebugLabel.tscn")
 onready var debug_vermin = preload("res://scenes/mobs/Vermin.tscn")
 onready var debug_colony = preload("res://scenes/mobs/Colony.tscn")
 onready var debug_maggot = preload("res://scenes/mobs/Maggot.tscn")
@@ -69,18 +68,27 @@ onready var obj_cistern = load("res://scenes/furniture/ObjectCistern.tscn")
 onready var obj_conveyor = load("res://scenes/furniture/Conveyor.tscn")
 onready var obj_ventilation = load("res://scenes/furniture/Ventilation.tscn")
 onready var obj_power_cell = load("res://scenes/furniture/PowerCell.tscn")
+onready var obj_generator = load("res://scenes/furniture/Generator.tscn")
+onready var obj_power_relay = load("res://scenes/furniture/PowerRelay.tscn")
+onready var obj_corner_vent_1 = load("res://scenes/furniture/CornerVent1.tscn")
+onready var obj_corner_vent_2 = load("res://scenes/furniture/CornerVent2.tscn")
+onready var obj_corner_vent_3 = load("res://scenes/furniture/CornerVent3.tscn")
+onready var obj_corner_vent_4 = load("res://scenes/furniture/CornerVent4.tscn")
 
 const sfx_2D = preload("res://scenes/Sfx2D.tscn")
 const sfx = preload("res://scenes/Sfx.tscn")
 
 const SOUNDS = {
+	use = preload("res://sfx/use.ogg"),
 	move = preload("res://sfx/move.ogg"),
 	pickup_0 = preload("res://sfx/pickup_0.ogg"),
 	hit_0 = preload("res://sfx/hit_0.ogg"),
-	shot_0 = preload("res://sfx/shot_0.ogg"),
-	shot_1 = preload("res://sfx/shot_1.ogg"),
+	shot_pistol = preload("res://sfx/shot_pistol.ogg"),
+	shot_laser = preload("res://sfx/shot_laser.ogg"),
+	shot_launcher = preload("res://sfx/shot_launcher.ogg"),
 	shot_shotgun = preload("res://sfx/shot_shotgun.ogg"),
-	shot_hunting_rifle = preload("res://sfx/shot_hunting_rifle.ogg"),
+	shot_sniper = preload("res://sfx/shot_sniper.ogg"),
+	shot_machinegun = preload("res://sfx/shot_machinegun.ogg"),
 	explosion_0 = preload("res://sfx/explosion_0.ogg"),
 	shield_enable = preload("res://sfx/shield_enable.ogg"),
 	shield_disable = preload("res://sfx/shield_disable.ogg"),
@@ -95,7 +103,14 @@ const SOUNDS = {
 	appear = preload("res://sfx/appear.ogg"),
 	open = preload("res://sfx/open.ogg"),
 	menu_move = preload("res://sfx/menu_move.ogg"),
-	zap = preload("res://sfx/zap.ogg")
+	zap = preload("res://sfx/zap.ogg"),
+	heal = preload("res://sfx/heal.ogg"),
+	reload = preload("res://sfx/reload.ogg"),
+	cat = preload("res://sfx/cat.ogg"),
+	swap = preload("res://sfx/swap.ogg"),
+	bulwark = preload("res://sfx/bulwark.ogg"),
+	syringe = preload("res://sfx/syringe.ogg"),
+	teslacoil = preload("res://sfx/teslacoil.ogg")
 }
 
 onready var music_0 = load("res://sfx/music_0.ogg")
@@ -151,7 +166,7 @@ const default_weapons: Dictionary = {
 	"SniperRifle": 100,
 	"Submachine": 100,
 	"TacticalShotgun": 100,
-	"RailGun": 100,
+	"Railgun": 100,
 	"GrenadeLauncher": 100,
 	"TacticalKnife": 0,
 	"Slicer": 100,
@@ -182,11 +197,10 @@ onready var level_configuration: Dictionary = {
 	0: {
 		'scene': factory_scene,
 		'enemies': {
-			"Parasite": 50,
-#			"GuardBot": 15,
-#			"Grunt": 100,
-#			"Bloater": 80,
-#			"Colony": 50,
+			"GuardBot": 15,
+			"Grunt": 100,
+			"Bloater": 80,
+			"Colony": 50,
 		},
 		'items': default_items,
 		'weapons': default_weapons,

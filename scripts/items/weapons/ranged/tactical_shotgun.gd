@@ -9,7 +9,7 @@ func _init():
 		"get_targets": funcref(self, "get_targets"),
 		"sfx": Resources.SOUNDS.shot_shotgun,
 		"consumption": 1,
-		"range": 3,
+		"range": 2,
 		"shots": 1,
 	})
 	

@@ -12,5 +12,6 @@ func on_check() -> bool:
 	return _entity.restore_health(4)
 
 func on_use() -> void:
+	_audio.play_sound(_entity.position, Resources.SOUNDS.heal)
 	_entity.remove_buff('poison')
 	_entity.remove_buff('bleed')

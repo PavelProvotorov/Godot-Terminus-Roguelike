@@ -7,7 +7,7 @@ func _init():
 	action = ShootItem.new(self, {
 		"get_damage": funcref(self, "get_damage"),
 		"get_targets": funcref(self, "get_targets"),
-		"sfx": Resources.SOUNDS.shot_1,
+		"sfx": Resources.SOUNDS.shot_pistol,
 		"consumption": 1,
 		"range": 2,
 		"shots": 2,

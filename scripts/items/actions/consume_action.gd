@@ -13,6 +13,7 @@ func check():
 func _handler() -> void:
 	var _entity:Entity2D = _item._entity
 	var handler = Utility.call_funcref(_config.get("on_use", null))
+	
 	if handler is GDScriptFunctionState:
 		yield(handler, "completed")
 	_item.remove_item()

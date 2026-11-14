@@ -7,7 +7,12 @@ func _ready():
 	original_name = 'thorns'
 
 func _on_damage_received(damage:int, attacker, receiver:Entity2D) -> void:
+	if not attacker or not receiver:
+		return
+		
 	var node = attacker as Entity2D
 	if not attacker is Entity2D or receiver != target or attacker.is_queued_for_deletion(): 
 		return
-	node.receive_damage(self, 1)
+	
+	if (receiver.position.distance_to(node.position) / grid_size) == 1:
+		node.receive_damage(self, 1)

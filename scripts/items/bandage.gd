@@ -14,4 +14,4 @@ func on_check() -> bool:
 	return _entity.add_buff('regeneration', 2, true)
 
 func on_use() -> void:
-	pass
+	_audio.play_sound(_entity.position, Resources.SOUNDS.pickup_0)

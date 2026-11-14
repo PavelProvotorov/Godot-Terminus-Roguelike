@@ -12,4 +12,4 @@ func on_check() -> bool:
 	return _entity.recharge_ammo(5)
 
 func on_use() -> void:
-	pass
+	_audio.play_sound(_entity.position, Resources.SOUNDS.pickup_0)

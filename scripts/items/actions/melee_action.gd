@@ -17,10 +17,10 @@ func _handler():
 func _callback(success:bool, collider:Entity2D) -> void:
 	if not success:
 		return
-
+	
 	var _entity:Entity2D = _item._entity
-	var origin_pos = _entity.position
-	var impact_pos = collider.position
+	var origin_pos:Vector2 = _entity.position
+	var impact_pos:Vector2 = collider.position
 	
 	var on_use_hook = Utility.call_funcref(_config.get("on_use", null), [
 		origin_pos, 
@@ -34,13 +34,19 @@ func _callback(success:bool, collider:Entity2D) -> void:
 	])
 	
 	for target in targets:
-		var damage = Utility.call_funcref(_config.get("get_damage", null), [
+		
+		if not _entity.is_entity_hostile(target):
+			continue
+			
+		var weapon_damage = Utility.call_funcref(_config.get("get_damage", null), [
 			origin_pos.distance_to(impact_pos) / 8,
 			target.position.distance_to(impact_pos) / 8,
 		])
+		var modified_damage = weapon_damage + _entity.melee_damage
+		
 		_audio.play_sound(_entity.position, _config.get("sfx", Resources.SOUNDS.hit_0))
 		_sprite_animations.add_animation('slash', _entity.level, true, target.position)
-		var received_damage:int = target.receive_damage(_entity, damage)
+		var received_damage:int = target.receive_damage(_entity, modified_damage)
 		
 		var on_damage_hook = Utility.call_funcref(_config.get("on_damage", null), [
 			target,

@@ -9,7 +9,7 @@ func _init():
 		"get_damage": funcref(self, "get_damage"),
 		"get_targets": funcref(self, "get_targets"),
 		"on_use": funcref(self, "on_use"),
-		"sfx": Resources.SOUNDS.explosion_0,
+		"sfx": Resources.SOUNDS.shot_launcher,
 		"consumption": 4,
 		"range": shot_range,
 		"shots": 1,
@@ -18,6 +18,8 @@ func _init():
 func on_use(origin_pos:Vector2, impact_pos:Vector2) -> void:
 	var cells = Utility.get_nearby_cells_8(impact_pos)
 	cells.append(impact_pos)
+	
+	_audio.play_sound(_entity.position, Resources.SOUNDS.explosion_0)
 	
 	for cell in cells:
 		_sprite_animations.add_animation('explosion', self.level, true, cell)

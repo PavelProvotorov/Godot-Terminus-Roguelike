@@ -25,15 +25,16 @@ func _ready():
 	max_health = 10
 	max_ammo = 30
 	attack_range = 2
-	melee_damage = 1
+	melee_damage = 0
 	ranged_damage = 2
 	visibility = 5
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_read"):
-		add_buff('regeneration', 50, true)
-		add_buff('thorns', 10, true)
-#		add_buff('electrified', 12, true)
+#		add_buff('regeneration', 10, true)
+#		add_buff('thorns', 20, true)
+		add_buff('regeneration', 10, true)
+		recharge_ammo(10)
 		_sprite_animations.add_animation('explosion', self.level, true, self.position)
 #		self.level.generate_level(false)
 	pass

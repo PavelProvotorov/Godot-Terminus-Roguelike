@@ -58,12 +58,13 @@ func _shoot(direction:Vector2):
 			origin_pos,
 			impact_pos
 		])
+		
+		_audio.play_sound(origin_pos, _config.get("sfx", null))
 		for target in targets:
 			var damage = Utility.call_funcref(_config.get("get_damage", null), [
 				origin_pos.distance_to(impact_pos) / 8,
 				target.position.distance_to(impact_pos) / 8,
 			])
-			_audio.play_sound(origin_pos, _config.get("sfx", Resources.SOUNDS.shot_0))
 			
 			var received_damage:int = target.receive_damage(_item, damage)
 			
@@ -86,10 +87,8 @@ func _has_ammo() -> bool:
 	var _entity:Entity2D = _item._entity
 	var ammo_consumption:int = _config.get("consumption", 0)
 		
-	if _entity.ammo == 0:
-		return false
-		
-	if _entity.ammo - ammo_consumption < 0:
+	if _entity.ammo == 0 or _entity.ammo - ammo_consumption < 0:
+		_audio.play_global_sound(Resources.SOUNDS.fail)
 		return false
 		
 	return true
